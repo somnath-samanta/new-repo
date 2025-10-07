@@ -10,7 +10,6 @@ import {
     TouchableOpacity,
     Image,
     ImageBackground,
-    
     Modal,
     Pressable,
     TouchableWithoutFeedback,
@@ -412,7 +411,7 @@ function LoginScreen(props) {
                                                     Sign up
                                                 </Text>
                                             </Text>
-                                            <View style={LoginStyle.signUpUnderline}></View>
+                                            {/* <View style={LoginStyle.signUpUnderline}></View> */}
                                         </View>
                                         {/*  //////////////Verification button/////////////////////////*/}
                                         {/* <View style={LoginStyle.signUpRow}>

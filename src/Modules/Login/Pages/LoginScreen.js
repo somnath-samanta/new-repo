@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     Image,
     ImageBackground,
+    
     Modal,
     Pressable,
     TouchableWithoutFeedback,

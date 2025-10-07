@@ -50,7 +50,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import EventEmitter from '../../../Contexts/EventEmitter';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const renderEmptyComponent = () => {
     return (
         <View style={{ padding: 20, alignItems: 'center' }}>
@@ -216,15 +216,15 @@ function MyDocument({ props }) {
                             {
                                 ["jpg", "jpeg", "png"].includes(item?.item?.documentUrl.split(".").pop().toLowerCase()) ?
                                     <TouchableOpacity style={styles.eyeButton} onPress={() => handalShowDocument(item.item)}>
-                                        <Text style={styles.eyeButtonTxt}>{item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <AntDesign name="pdffile1" size={16} color="#fff" />
-                                            : item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "doc" || item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "docx" ? <AntDesign name="wordfile1" size={16} color="#fff" />
-                                                : <FontAwesome name="file-image-o" size={16} color="#fff" />} View</Text>
+                                        <Text style={styles.eyeButtonTxt}>{item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
+                                            : item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "doc" || item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "docx" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
+                                                : <Ionicons name="document-text-outline" size={18} color="#fff" />} View</Text>
                                     </TouchableOpacity>
                                     :
                                     <TouchableOpacity style={styles.eyeButton} onPress={() => downloadPDFLink(item.item)}>
-                                        <Text style={styles.eyeButtonTxt}>{item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <AntDesign name="pdffile1" size={16} color="#fff" />
-                                            : item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "doc" || item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "docx" ? <AntDesign name="wordfile1" size={16} color="#fff" />
-                                                : <FontAwesome name="file-image-o" size={16} color="#fff" />} View</Text>
+                                        <Text style={styles.eyeButtonTxt}>{item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
+                                            : item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "doc" || item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "docx" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
+                                                : <Ionicons name="document-text-outline" size={18} color="#fff" />} View</Text>
                                     </TouchableOpacity>
 
                             }
@@ -845,7 +845,7 @@ const styles = StyleSheet.create({
         shadowOpacity: Platform.OS == 'ios' ? 0.3 : 0.5,
         shadowRadius: 5,
         elevation: Platform.OS == 'ios' ? 3 : 5,
-        borderRadius: 5,
+        borderRadius: 10,
 
 
     },
@@ -888,23 +888,26 @@ const styles = StyleSheet.create({
     },
     eyeButton: {
         // backgroundColor:'red',
-        //width: 75,
-        //height: 60,
+        width: 90,
+        //height: 40,
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
         backgroundColor: '#24ad91',
-        borderRadius: 3,
+        borderRadius: 10,
+        flexDirection: 'row',
+        position: 'relative'
     },
     eyeButtonTxt: {
 
-        fontSize: 12,
+        fontSize: 16,
         color: '#fff',
         width: '100%',
-        padding: 10,
-        paddingHorizontal: 12,
+        paddingHorizontal: 0,
+        paddingVertical: 7,
         textAlign: 'center',
-        fontFamily: 'Montserrat-Medium',
+        fontFamily: 'Arimo-Bold',
+        //marginTop:-5,
 
     },
     videoIcon: {

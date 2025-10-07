@@ -71,6 +71,8 @@ const renderEmptyComponent = () => {
 function ThirdPartyDocument({ props }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const [issearchSheetVisible, setSearchSheetVisible] = useState(false);
+    const hidesearchSheet = () => setSearchSheetVisible(false);
     const reduxAuthJson = useSelector((state) => state);
     // console.log("reduxAuthJson", reduxAuthJson);
     const [appointmentsData, setAppointmentsData] = useState([]);
@@ -388,9 +390,9 @@ function ThirdPartyDocument({ props }) {
         return fileUrl.split('.').pop().split('?')[0].toLowerCase();
     };
 
-    const handleFilter = () => {
-        setFilterFlag(!filterFlag);
-    }
+    // const handleFilter = () => {
+    //     setFilterFlag(!filterFlag);
+    // }
 
     const handleBackPress = () => {
         //console.log("handleBackPress");
@@ -440,6 +442,11 @@ function ThirdPartyDocument({ props }) {
         navigation.goBack();
     };
 
+    const handleFilter = () => {
+        console.log("********")
+        setSearchSheetVisible(true);
+    }
+
     return (
 
         <View style={styles.container}>
@@ -461,7 +468,7 @@ function ThirdPartyDocument({ props }) {
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.refreshBtn}
-                onPress={() => refreshBtnFn()}
+                    onPress={() => refreshBtnFn()}
                 >
                     <FontAwesome name="refresh" size={26} color="#000" />
                 </TouchableOpacity>
@@ -589,7 +596,32 @@ function ThirdPartyDocument({ props }) {
                     </>
                 }
             />
+            <GlobalBottomSheet
+                isVisible={issearchSheetVisible}
+                onClose={hidesearchSheet}
+                snapPoints={Platform.OS == 'ios' ? ["74%"] : ["70%"]}
+                //style={{ backgroundColor: '#f3f3f3' }}
+                // backgroundStyle={{ backgroundColor: '#f3f3f3' }} 
+                bodyContent={
+                    <></>
+                    // <SearchBottomSheetDesign
+                    //     hidesearchSheet={hidesearchSheet}
+                    //     useFor="questionnaire"
+                    //     selectOptionForSendBy={selectOptionForSendBy}
+                    //     setSelectedSendBy={setSelectedSendBy}
+                    //     applyFilters={applyFilters}
+                    //     setSelectedTimeLine={setSelectedTimeLine}
+                    //     clearFilterFn={clearFilterFn}
+                    //     forceClearFilterFlag={forceClearFilterFlag}
+                    //     selectedSendBy={selectedSendBy}
+                    //     selectedTimeLine={selectedTimeLine}
+                    //     filterFor="questionnaire"
+                    //     refreshBtnFnFlag={refreshBtnFnFlag}
 
+                    // />
+
+                }
+            />
             {/* <Modal
                 visible={modalVisible}
                 animationType="fade"

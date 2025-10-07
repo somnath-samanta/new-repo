@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: 93,
         height: 88,
-        backgroundColor: 'red',
+       // backgroundColor: 'red',
         marginLeft: 20,
     },
     clockImagedocument: {
@@ -528,7 +528,7 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: Platform.OS == 'ios' ? 3 : 5,
         borderColor: '#3d3f3f',
-        borderWidth: 2,
+        borderWidth: 1,
     },
     middlePanelBoxRight: {
         backgroundColor: '#007b80',
@@ -541,7 +541,7 @@ const styles = StyleSheet.create({
         elevation: Platform.OS == 'ios' ? 3 : 5,
         borderColor: '#007b80',
         borderWidth: 2,
-        marginTop: 6,
+        marginTop: 10,
     },
     myTherapyTasks: {
         display: 'flex',

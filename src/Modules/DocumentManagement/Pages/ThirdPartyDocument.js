@@ -58,7 +58,8 @@ import Toast from 'react-native-simple-toast';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import EventEmitter from '../../../Contexts/EventEmitter';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 const renderEmptyComponent = () => {
     return (
         <View style={{ padding: 20, alignItems: 'center' }}>
@@ -196,7 +197,7 @@ function ThirdPartyDocument({ props }) {
     }
 
     const renderItem = (item) => {
-        // console.log("==========================", item);
+        console.log("=================********=========", item);
         return <>
             <View style={[styles.appointmentCardMainBox]}>
                 <View style={[styles.appointmentCard]}>
@@ -204,12 +205,11 @@ function ThirdPartyDocument({ props }) {
                         <View style={styles.leftView}>
                             <View style={styles.rowPractitioner}>
                                 <View style={styles.textContainer}>
+                                    <Text style={styles.practitionerName}>Name : {item?.item?.documentName}</Text>
+                                    <Text style={[styles.marginLeftClass, styles.showText]}>Upload date : {moment(item?.item?.createdOn, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
+                                    <Text style={[styles.marginLeftClass, styles.showText]}>Reported date : {moment(item?.item?.report_date, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
                                     <Text style={styles.practitionerSpeciality}>{item?.item?.documentType}</Text>
-                                    <Text style={styles.practitionerName}>{item?.item?.documentName}</Text>
                                 </View>
-                            </View>
-                            <View style={[styles.row]}>
-                                <Text style={[styles.marginLeftClass, styles.showText]}>{moment(item?.item?.createdOn, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
                             </View>
                         </View>
                         <View style={styles.rightView}>
@@ -217,15 +217,15 @@ function ThirdPartyDocument({ props }) {
 
                                 ["jpg", "jpeg", "png"].includes(item?.item?.documentUrl.split(".").pop().toLowerCase()) ?
                                     <TouchableOpacity style={styles.eyeButton} onPress={() => handalShowDocument(item.item)}>
-                                        <Text style={styles.eyeButtonTxt}> {item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <AntDesign name="pdffile1" size={16} color="#fff" />
-                                            : item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "doc" || item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "docx" ? <AntDesign name="wordfile1" size={16} color="#fff" />
-                                                : <FontAwesome name="file-image-o" size={16} color="#fff" />} View</Text>
+                                        <Text style={styles.eyeButtonTxt}> {item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
+                                            : item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "doc" || item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "docx" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
+                                                : <Ionicons name="document-text-outline" size={18} color="#fff" />} View</Text>
                                     </TouchableOpacity>
                                     :
                                     <TouchableOpacity style={styles.eyeButton} onPress={() => downloadPDFLink(item.item)}>
-                                        <Text style={styles.eyeButtonTxt}>{item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <AntDesign name="pdffile1" size={16} color="#fff" />
-                                            : item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "doc" || item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "docx" ? <AntDesign name="wordfile1" size={16} color="#fff" />
-                                                : <FontAwesome name="file-image-o" size={16} color="#fff" />} View</Text>
+                                        <Text style={styles.eyeButtonTxt}>{item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
+                                            : item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "doc" || item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "docx" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
+                                                : <Ionicons name="document-text-outline" size={18} color="#fff" />} View</Text>
                                     </TouchableOpacity>
                             }
                         </View>
@@ -262,7 +262,7 @@ function ThirdPartyDocument({ props }) {
     const downloadFile = async (url) => {
         try {
             // Request storage permissions on Android (if needed)
-           // console.log("Entry downloaded")
+            // console.log("Entry downloaded")
             setModalVisible(true)
             // setPdfView(true)
             setFileUri(url);
@@ -325,7 +325,7 @@ function ThirdPartyDocument({ props }) {
                 }
                 //console.log("filePath-----", filePath);
             } else {
-               // console.log("filePath-----exist", filePath);
+                // console.log("filePath-----exist", filePath);
             }
 
             //console.log("-----------ready to open");
@@ -347,7 +347,7 @@ function ThirdPartyDocument({ props }) {
 
     const downloadPdf = async (pdfUrl) => {
         if (Platform.OS == 'ios') {
-           // console.log("=========IOS==");
+            // console.log("=========IOS==");
             downloadPDFForIOS(pdfUrl);
         } else {
             const fileUrl = pdfUrl; // URL of the file
@@ -366,7 +366,7 @@ function ThirdPartyDocument({ props }) {
                     FileViewer.open(filePath, { showOpenWithDialog: true })
                         .then(() => {
                             setLoading(false);
-                           // console.log('FileViewer success');
+                            // console.log('FileViewer success');
                         })
                         .catch((error) => {
                             setLoading(false);
@@ -397,7 +397,7 @@ function ThirdPartyDocument({ props }) {
         if (navigation.canGoBack()) {
             navigation.goBack();
         } else {
-           // console.log("No previous screen to go back to.");
+            // console.log("No previous screen to go back to.");
         }
     }
 
@@ -436,7 +436,9 @@ function ThirdPartyDocument({ props }) {
         setRefreshing(true)
         getAppointmentListFn("refresh");
     }
-
+    const handleGoBack = () => {
+        navigation.goBack();
+    };
 
     return (
 
@@ -446,6 +448,24 @@ function ThirdPartyDocument({ props }) {
                     refreshBtnFn={refreshBtnFn} />
             </View>
             <Loader style={styles.loadingCss} loading={loading} />
+            <View style={styles.searchBoxes}>
+                <View style={styles.leftGroup}>
+                    <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
+                        onPress={() => handleGoBack()}
+                    >
+                        <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.searchBoX} onPress={() => handleFilter()} >
+                        <Image source={require('../../../Utility/Public/images/filter.png')} style={styles.filtericon} />
+                        <Text style={styles.searchBoXTxt}>Filter</Text>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.refreshBtn}
+                onPress={() => refreshBtnFn()}
+                >
+                    <FontAwesome name="refresh" size={26} color="#000" />
+                </TouchableOpacity>
+            </View>
             <View style={styles.uploadButtonBox}>
                 <TouchableOpacity style={styles.uploadButton} onPress={() => handleUpload()}>
                     <View style={styles.buttonContent}>
@@ -454,7 +474,7 @@ function ThirdPartyDocument({ props }) {
                             <Feather name="upload" size={40} color="#fff" style={styles.uploadIcon} />
                         </View>
                         <Text style={styles.hintTxt}>You can upload PDF/Word documents or
-                        PNG/JPEG files with max 5MB. </Text>
+                            PNG/JPEG files with max 5MB. </Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -622,7 +642,7 @@ const styles = StyleSheet.create({
         shadowOpacity: Platform.OS == 'ios' ? 0.3 : 0.5,
         shadowRadius: 5,
         elevation: Platform.OS == 'ios' ? 3 : 5,
-        borderRadius: 5,
+        borderRadius: 10,
 
     },
     appointmentCardRow: {
@@ -659,25 +679,37 @@ const styles = StyleSheet.create({
     },
     eyeButton: {
         // backgroundColor:'red',
-        //width: 75,
-        //height: 60,
+        width: 90,
+        //height: 40,
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
         backgroundColor: '#24ad91',
-        borderRadius: 3,
+        borderRadius: 10,
+        flexDirection: 'row',
+        position: 'relative'
     },
     eyeButtonTxt: {
 
-        fontSize: 12,
+        fontSize: 16,
         color: '#fff',
         width: '100%',
-        padding: 10,
-        paddingHorizontal: 12,
+        paddingHorizontal: 0,
+        paddingVertical: 7,
         textAlign: 'center',
-        fontFamily: 'Montserrat-Medium',
+        fontFamily: 'Arimo-Bold',
+        //marginTop:-5,
 
     },
+    //     docImg:{
+    // marginTop:20,
+    // backgroundColor:'black',
+    // paddingTop:10,
+    // paddingBottom:10,
+    // position:'absolute',
+    // left:0,
+    // top:15,
+    //     },
     videoIcon: {
         height: 30,
         width: 30,
@@ -803,7 +835,7 @@ const styles = StyleSheet.create({
     practitionerName: {
         fontSize: 14, // Adjust font size as needed
         color: Colors.black,
-        fontFamily: 'Montserrat-Medium',
+        fontFamily: 'Arimo-Bold',
     },
     practitionerSpeciality: {
         fontSize: 14, // Adjust font size as needed
@@ -830,6 +862,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         marginVertical: 15,
         height: uploadscreenheight,
+        marginTop: 5,
     },
     uploadButton: {
         backgroundColor: '#fff',
@@ -844,7 +877,7 @@ const styles = StyleSheet.create({
         shadowOpacity: Platform.OS == 'ios' ? 0.3 : 0.5,
         shadowRadius: 5,
         elevation: Platform.OS == 'ios' ? 3 : 5,
-        borderRadius: 5,
+        borderRadius: 10,
         padding: 0,
     },
     buttonContent: {
@@ -867,10 +900,11 @@ const styles = StyleSheet.create({
     buttonInnText: {
         color: '#000',
         fontSize: 16,
-        fontFamily: 'Montserrat-Bold',
+        fontFamily: 'Arimo-Bold',
+        textAlign: 'center'
     },
     uploadIconContainer: {
-        backgroundColor: '#24ad91',
+        backgroundColor: '#229980',
         padding: 15,
         borderRadius: 50,
         marginTop: 7.5,
@@ -882,7 +916,7 @@ const styles = StyleSheet.create({
     },
     uploadIcon: {
         color: '#fff',
-        fontSize: 24,
+        fontSize: 38,
     },
     uploadDocumentTxt: {
         padding: Platform.OS == 'ios' ? 10 : 0,
@@ -958,25 +992,64 @@ const styles = StyleSheet.create({
     },
     hintTxt: {
         color: '#333',
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Arimo-Regular',
         fontSize: 12,
         paddingTop: 10,
         textAlign: 'center'
         //padding: 15,
     },
-    noImageContainer:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center',
-        padding:25,
+    noImageContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 25,
     },
     messageTxt: {
         fontSize: 20,
-        lineHeight:28,
+        lineHeight: 28,
         fontFamily: 'Montserrat-Medium',
         color: '#000',
-        textAlign:'center',
-    }
+        textAlign: 'center',
+    },
+    searchBoxes: {
+        padding: 0,
+        paddingHorizontal: 15,
+        display: 'flex',
+        width: screenWidth,
+        // backgroundColor: 'red',
+        //height: filterheight,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
 
+    },
+    leftGroup: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    searchBoX: {
+        //backgroundColor: 'blue',
+        padding: 0,
+        paddingVertical: 5,
+        paddingHorizontal: 15,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        width: 150,
+    },
+    filtericon: {
+        width: 20,
+        height: 20,
+        objectFit: 'contain',
+    },
+    searchBoXTxt: {
+        //backgroundColor: '#fff',
+        fontSize: 17,
+        fontFamily: 'Montserrat-Bold',
+        color: Colors.black,
+        padding: 10,
+        paddingVertical: 5,
+    },
 
 });

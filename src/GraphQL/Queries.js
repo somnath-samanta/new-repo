@@ -13,6 +13,7 @@ export const MY_DOCUMENT_QUERY = gql`
             organizationName
             createdOn
             id
+            report_date
         }
     }
 `;

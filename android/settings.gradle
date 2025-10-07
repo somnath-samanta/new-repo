@@ -1,0 +1,11 @@
+pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
+plugins { id("com.facebook.react.settings") }
+extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autolinkLibrariesFromCommand() }
+rootProject.name = 'uk.co.oaktreeconnect.oaktree'
+include ':app'
+includeBuild('../node_modules/@react-native/gradle-plugin')
+
+// rootProject.name = 'uk.co.oaktreeconnect.oaktree'
+// apply from: file("../node_modules/@react-native/gradle-plugin"); applyNativeModulesSettingsGradle(settings)
+// include ':app'
+// includeBuild('../node_modules/@react-native/gradle-plugin')

@@ -41,6 +41,9 @@ import SwipeWrapper from './src/Utility/Components/SwipeWrapper';
 import Verification from './src/Modules/Login/Pages/Verification';
 import ForgotPassword from './src/Modules/Login/Pages/ForgotPassword';
 import ResetPassword from './src/Modules/Login/Pages/ResetPassword';
+import HealthParameter from './src/Modules/HealthParameters/Pages/HealthParameter';
+import AddHealthRecord from './src/Modules/HealthParameters/Pages/AddHealthRecord';
+import HealthMonitoring from './src/Modules/HealthParameters/Pages/HealthMonitoring';
 
 enableScreens();
 const Drawer = createDrawerNavigator();
@@ -88,7 +91,6 @@ const DefaultLayoutScreen = ({ navigation }) => (
         headerShown: false
       }}
     />
-
   </DefaultLayout.Navigator>
 );
 
@@ -466,6 +468,27 @@ function App() {
                 {(props) => (
                   // <ScreenWrapper>
                     <ThirdPartyDocument {...props} />
+                  // </ScreenWrapper>
+                )}
+              </Drawer.Screen>
+              <Drawer.Screen name="HealthParameter">
+                {(props) => (
+                  // <ScreenWrapper>
+                    <HealthParameter {...props} />
+                  // </ScreenWrapper>
+                )}
+              </Drawer.Screen>
+              <Drawer.Screen name="AddHealthRecord">
+                {(props) => (
+                  // <ScreenWrapper>
+                    <AddHealthRecord {...props} />
+                  // </ScreenWrapper>
+                )}
+              </Drawer.Screen>
+              <Drawer.Screen name="HealthMonitoring">
+                {(props) => (
+                  // <ScreenWrapper>
+                    <HealthMonitoring {...props} />
                   // </ScreenWrapper>
                 )}
               </Drawer.Screen>

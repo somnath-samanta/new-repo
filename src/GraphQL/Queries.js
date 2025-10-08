@@ -85,3 +85,53 @@ export const GET_PRACTITIONER_LIST = gql`
     }
   }
 `;
+
+export const QUERY_GET_PATIENT_HEALTH_PROFILE = gql`
+  query getPatientHealthProfile($id: token) {
+    Patient(_id: $id) {
+      id
+      healthProfile {
+        nhsCity
+        nhsNumber
+        nhsPracticeName
+        nhsPracticeEmail
+        nhsPhone
+        disabilities
+        risk
+        deviceImplant
+        gpName
+        medication {
+          code {
+            coding {
+              display
+            }
+          }
+        }
+        diagnosis {
+          code {
+            coding {
+              display
+            }
+          }
+        }
+        immunization {
+          vaccineCode {
+            text
+          }
+          occurrenceDateTime
+        }
+        allergies {
+          allergyType
+          allergyTypeValues
+        }
+        vitals {
+          valueString
+          valueInteger
+          effectiveDateTime
+          id
+        }
+        canWeContactYourGP
+      }
+    }
+  }
+`;

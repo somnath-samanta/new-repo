@@ -413,3 +413,18 @@ export const RESET_PASSWORD_MUTATION = gql`
   }
 `;
 
+export const QUERY_UPDATE_PATIENT_VITALS = gql`
+  mutation updatePatientVitals($id: id, $vitals: [Observation_Input]) {
+    PatientUpdate(
+      resource: {
+        resourceType: Patient
+        patientExtension: { operationType: "HEALTH_PROFILE_VITALS" }
+        id: $id
+        healthProfile: { vitals: $vitals }
+      }
+    ) {
+      id
+    }
+  }
+`;
+

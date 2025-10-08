@@ -124,6 +124,9 @@ function Home({ props }) {
     const thirdPartyDocumentLink = async () => {
         navigation.navigate('ThirdPartyDocument');
     }
+    const healthParameterLink = async () => {
+        navigation.navigate('HealthParameter');
+    }
 
     const goToAppointmentScreen = () => {
 
@@ -287,21 +290,21 @@ function Home({ props }) {
                                 <View style={styles.middlePanelBoxRight}>
                                     <Text style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
                                     <View style={styles.myTherapyTasks}>
-                                        <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={questionnaireLink}>
+                                        <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={healthParameterLink}>
                                             <View style={styles.roundiconBox}>
-                                            <Image
-                                                source={require('../Public/images/physicalParametersIcon.png')}
-                                                style={styles.heartRatingImage}
-                                            />
+                                                <Image
+                                                    source={require('../Public/images/physicalParametersIcon.png')}
+                                                    style={styles.heartRatingImage}
+                                                />
                                             </View>
                                             <Text style={styles.panelBoxRightMainTextDown}>View / Add{'\n'}Physical Parameters</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={questionnaireLink}>
                                             <View style={styles.roundiconBox}>
-                                            <Image
-                                                source={require('../Public/images/questionnairesIcon.png')}
-                                                style={styles.calenderImage}
-                                            />
+                                                <Image
+                                                    source={require('../Public/images/questionnairesIcon.png')}
+                                                    style={styles.calenderImage}
+                                                />
                                             </View>
                                             <Text style={styles.panelBoxRightMainTextDown}> View / Complete{'\n'}Questionnaires</Text>
                                         </TouchableOpacity>
@@ -327,6 +330,14 @@ const styles = StyleSheet.create({
         position: 'relative',
         width: screenWidth,
         height: screenheight,
+    },
+    loadingCss: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        left: 0,
+        top: 0
     },
     oaktreeLogo: {
         height: 110,
@@ -549,30 +560,30 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    roundiconBox:{
-        width:70,
-        height:70,
-        backgroundColor:'#007b80',
-        borderRadius:100,
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'center'
+    roundiconBox: {
+        width: 70,
+        height: 70,
+        backgroundColor: '#007b80',
+        borderRadius: 100,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-        calenderImage: {
+    calenderImage: {
         width: 40,
         height: 40,
         objectFit: 'contain',
         marginTop: 0,
         // backgroundColor:'red'
     },
-     heartRatingImage: {
+    heartRatingImage: {
         width: 50,
         height: 50,
         objectFit: 'contain',
         marginTop: 0,
         // backgroundColor:'red'
     },
-    
+
     myTherapyTasksPanelBox: {
         width: screenWidth / 2 - 36,
         padding: 5,
@@ -601,7 +612,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Bold',
         textAlign: 'center',
         padding: 5,
-        marginBottom:5,
+        marginBottom: 5,
     }
 });
 

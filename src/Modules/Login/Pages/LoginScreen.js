@@ -56,7 +56,7 @@ function LoginScreen(props) {
 
     //const [email, setEmail] = useState(__DEV__ ? "app.admin@hotelmanage.com" : "");
     //const [password, setPassword] = useState(__DEV__ ? "Admin@123!" : "");
-    const [email, setEmail] = useState(__DEV__ ? "atanu.mondal@mettletech.in" : "");
+    const [email, setEmail] = useState(__DEV__ ? "ankita.das@yopmail.com" : "");
     const [password, setPassword] = useState(__DEV__ ? "Mettle1!2" : "");
 
     const [isRemember, setIsRemember] = useState(Cookies.get('rememberMe') == 'true' ? true : false);

@@ -277,7 +277,6 @@ function QuestionnaireScreen(props) {
 
     const applyFilters = (obj) => {
         if (isConnected) {
-            console.log("*******applyFilters**********2222", obj);
             // Make a copy of questionnaireData so that all filters can be applied sequentially
             let filteredData = [...questionnaireData]; // Ensure it's a new reference
 

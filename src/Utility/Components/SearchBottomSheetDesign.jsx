@@ -6,18 +6,26 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, SafeAreaView, StyleSheet, FlatList, TouchableOpacity, Dimensions, Alert, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import CheckBox from '@react-native-community/checkbox';
+import { Dropdown } from 'react-native-element-dropdown';
+
 
 const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPaymentStatus, setSelectedPaymentMode, applyFilters, selectOptionForSendBy, setSelectedSendBy, clearFilterFn, forceClearFilterFlag, selectedTimeLine, selectedPaymentStatus, selectedPaymentMode, selectedSendBy, filterFor, refreshBtnFnFlag }) => {
 
     const [activeTab, setActiveTab] = useState(0); // track the active tab
     const tabs = useFor === "appointment" ? ["Timeline", "Payment Status", "Payment Mode"] : ["Timeline", "Sent By"];
-    const [selectedTimelineOption, setSelectedTimelineOption] = useState(null);
+    // const [selectedTimelineOption, setSelectedTimelineOption] = useState(null);
+    const [selectedTimelineOption, setSelectedTimelineOption] = useState('');
     const [selectedPaymentStatusOption, setSelectedPaymentStatusOption] = useState(null);
     const [selectedPaymentModeOption, setSelectedPaymentModeOption] = useState(null);
+    const [value, setValue] = useState(''); // default = Anytime
+    const [isFocus, setIsFocus] = useState(false);
     const [SelectOptionForTimeLine, setSelectOptionForTimeLine] = useState([
-        { label: 'Last 30 days', value: '30' },
-        { label: 'Last three months', value: '90' },
-        { label: 'Last six months', value: '180' },
+        { label: 'Anytime', value: '' },
+        { label: '1 Week', value: '7' },
+        { label: '1 Month', value: '30' },
+        { label: '3 Months', value: '90' },
+        { label: '6 Months', value: '180' },
+        { label: '1 Year', value: '365' },
     ]);
     // Function to render each tab item
     const renderTab = ({ item, index }) => (
@@ -47,10 +55,16 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
     useEffect(() => {
         if (useFor === "questionnaire") {
             setSelectOptionForTimeLine([
-                { label: 'Week', value: '7' },
-                { label: 'Last 30 days', value: '30' },
-                { label: 'Last three months', value: '90' },
-                { label: 'Last six months', value: '180' },
+                // { label: 'Week', value: '7' },
+                // { label: 'Last 30 days', value: '30' },
+                // { label: 'Last three months', value: '90' },
+                // { label: 'Last six months', value: '180' },
+                { label: 'Anytime', value: '' },
+                { label: '1 Week', value: '7' },
+                { label: '1 Month', value: '30' },
+                { label: '3 Months', value: '90' },
+                { label: '6 Months', value: '180' },
+                { label: '1 Year', value: '365' },
             ])
         }
     }, [useFor])
@@ -74,8 +88,16 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
         { label: '90', value: '3 months' },
         { label: '180', value: '6 months' }
     ]
-
-
+    const data = [
+        { label: 'Item 1', value: '1' },
+        { label: 'Item 2', value: '2' },
+        { label: 'Item 3', value: '3' },
+        { label: 'Item 4', value: '4' },
+        { label: 'Item 5', value: '5' },
+        { label: 'Item 6', value: '6' },
+        { label: 'Item 7', value: '7' },
+        { label: 'Item 8', value: '8' },
+    ];
 
     const handleSelect = (value, type) => {
         console.log("handleSelect", value, type);
@@ -153,7 +175,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
     };
     const clearFilters = () => {
         // clearFilterFn();
-        setSelectedTimelineOption(null);
+        setSelectedTimelineOption('');
         setSelectedTimeLine("")
         if (filterFor === "appointment") {
             setSelectedPaymentStatusOption(null);
@@ -166,6 +188,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
             setSelectedSendBy("");
         }
     };
+
 
     return (
         <SafeAreaView style={styles.Container}>
@@ -182,37 +205,57 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
             {/* {useFor === "appointment" ? */}
             <View style={styles.containerTop}>
                 {/* Vertical Tabs */}
-                <View style={styles.containerLeft}>
+                {/* <View style={styles.containerLeft}>
                     <FlatList
                         data={tabs}
                         renderItem={renderTab}
                         keyExtractor={(item, index) => index.toString()}
                     //style={styles.tabContainer}
                     />
-                </View>
+                </View> */}
                 <View style={styles.containerRight}>
                     <ScrollView style={styles.inncontainerRight}>
-                        {`${tabs[activeTab]}` === "Timeline" ?
-                            <>
-                                {SelectOptionForTimeLine.map((option) => (
-                                    <TouchableOpacity
-                                        key={option.value}
-                                        style={styles.checkboxContainer}
-                                        onPress={() => handleSelect(option.value, "Timeline")}
-                                    >
-                                        <CustomCheckbox
-                                            value={selectedTimelineOption === option.value}
+                        <View style={styles.searchBoxPanel}>
+                            <Text style={styles.searchBoxPanelTitle}>Timeline</Text>
+                            <View style={styles.searchBoxPanelRow}>
+                                {/* Column 1 */}
+                                <View style={styles.column}>
+                                    {SelectOptionForTimeLine.slice(0, 3).map((option) => (
+                                        <TouchableOpacity
+                                            key={option.value}
+                                            style={styles.radioContainer}
                                             onPress={() => handleSelect(option.value, "Timeline")}
-                                        />
-                                        <Text style={styles.label}>{option.label}</Text>
-                                    </TouchableOpacity>
-
-                                ))}
-                            </>
-
-                            : `${tabs[activeTab]}` === "Payment Status" ?
-                                <>
-                                    {selectOptionForPaymentStatus.map((option) => (
+                                        >
+                                            <View style={styles.outerCircle}>
+                                                {selectedTimelineOption === option.value && <View style={styles.innerCircle} />}
+                                            </View>
+                                            <Text style={styles.label}>{option.label}</Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                                {/* Column 2 */}
+                                <View style={styles.column2}>
+                                    {SelectOptionForTimeLine.slice(3, 6).map((option) => (
+                                        <TouchableOpacity
+                                            key={option.value}
+                                            style={styles.radioContainer}
+                                            onPress={() => handleSelect(option.value, "Timeline")}
+                                        >
+                                            <View style={styles.outerCircle}>
+                                                {selectedTimelineOption === option.value && <View style={styles.innerCircle} />}
+                                            </View>
+                                            <Text style={styles.label}>{option.label}</Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.searchBoxPanel}>
+                            <Text style={styles.searchBoxPanelTitle}>Payment Status</Text>
+                            <View style={styles.searchBoxPanelRow}>
+                                {/* Column 1 */}
+                                <View style={styles.column}>
+                                    {selectOptionForPaymentStatus.slice(0, 3).map((option) => (
                                         <TouchableOpacity
                                             key={option.value}
                                             style={styles.checkboxContainer}
@@ -224,44 +267,110 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                             />
                                             <Text style={styles.label}>{option.label}</Text>
                                         </TouchableOpacity>
-
                                     ))}
-                                </>
-                                : `${tabs[activeTab]}` === "Payment Mode" ?
-                                    <>
-                                        {SelectOptionForPaymentMode.map((option) => (
-                                            <TouchableOpacity
-                                                key={option.value}
-                                                style={styles.checkboxContainer}
-                                                onPress={() => handleSelect(option.value, "PaymentMode")}
-                                            >
-                                                <CustomCheckbox
-                                                    value={selectedPaymentModeOption === option.value}
-                                                    onPress={() => handleSelect(option.value, "PaymentMode")}
-                                                />
-                                                <Text style={styles.label}>{option.label}</Text>
-                                            </TouchableOpacity>
-
-                                        ))}
-                                    </>
-                                    :
-                                    <>
-                                      {selectOptionForSendBy.map((option) => (
+                                </View>
+                                {/* Column 2 */}
+                                <View style={styles.column2}>
+                                    {selectOptionForPaymentStatus.slice(3, 6).map((option) => (
                                         <TouchableOpacity
                                             key={option.value}
                                             style={styles.checkboxContainer}
-                                            onPress={() => handleSelect(option.value, "SendBy")}
+                                            onPress={() => handleSelect(option.value, "PaymentStatus")}
                                         >
                                             <CustomCheckbox
-                                                value={selectedSendByOption === option.value}
-                                                onPress={() => handleSelect(option.value, "SendBy")}
+                                                value={selectedPaymentStatusOption === option.value}
+                                                onPress={() => handleSelect(option.value, "PaymentStatus")}
                                             />
                                             <Text style={styles.label}>{option.label}</Text>
                                         </TouchableOpacity>
+                                    ))}
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.searchBoxPanel}>
+                            <Text style={styles.searchBoxPanelTitle}>Payment Mode</Text>
+                            <>
+                                {SelectOptionForPaymentMode.map((option) => (
+                                    <TouchableOpacity
+                                        key={option.value}
+                                        style={styles.checkboxContainer}
+                                        onPress={() => handleSelect(option.value, "PaymentMode")}
+                                    >
+                                        <CustomCheckbox
+                                            value={selectedPaymentModeOption === option.value}
+                                            onPress={() => handleSelect(option.value, "PaymentMode")}
+                                        />
+                                        <Text style={styles.label}>{option.label}</Text>
+                                    </TouchableOpacity>
 
-                                    ))}                                     
-                                    </>
-                        }
+                                ))}
+                            </>
+                        </View>
+                        <View style={styles.searchBoxPanel}>
+                            <View style={styles.searchBoxPanelSelectRow}>
+                                {/* Column 1 */}
+                                <View style={styles.column}>
+                                    <Text style={styles.searchBoxPanelTitle}>Keyword Search</Text>
+                                </View>
+                                {/* Column 2 */}
+                                <View style={styles.column2}>
+                                    <Dropdown
+                                        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                                        placeholderStyle={styles.placeholderStyle}
+                                        selectedTextStyle={styles.selectedTextStyle}
+                                        inputSearchStyle={styles.inputSearchStyle}
+                                        iconStyle={styles.iconStyle}
+                                        data={data}
+                                        search
+                                        maxHeight={300}
+                                        labelField="label"
+                                        valueField="value"
+                                        placeholder={!isFocus ? 'Select item' : '...'}
+                                        searchPlaceholder="Search..."
+                                        value={value}
+                                        onFocus={() => setIsFocus(true)}
+                                        onBlur={() => setIsFocus(false)}
+                                        onChange={item => {
+                                            setValue(item.value);
+                                            setIsFocus(false);
+                                        }}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.searchBoxPanel}>
+                            <View style={styles.searchBoxPanelSelectRow}>
+                                {/* Column 1 */}
+                                <View style={styles.column}>
+                                    <Text style={styles.searchBoxPanelTitle}>Sent By</Text>
+                                </View>
+                                {/* Column 2 */}
+                                <View style={styles.column2}>
+                                    <Dropdown
+                                        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                                        placeholderStyle={styles.placeholderStyle}
+                                        selectedTextStyle={styles.selectedTextStyle}
+                                        inputSearchStyle={styles.inputSearchStyle}
+                                        iconStyle={styles.iconStyle}
+                                        data={data}
+                                        search
+                                        maxHeight={300}
+                                        labelField="label"
+                                        valueField="value"
+                                        placeholder={!isFocus ? 'Select item' : '...'}
+                                        searchPlaceholder="Search..."
+                                        value={value}
+                                        onFocus={() => setIsFocus(true)}
+                                        onBlur={() => setIsFocus(false)}
+                                        onChange={item => {
+                                            setValue(item.value);
+                                            setIsFocus(false);
+                                        }}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                       
                     </ScrollView>
                 </View>
             </View>
@@ -313,9 +422,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        position:'absolute',
-        left:0,
-        top:0,
+        position: 'absolute',
+        left: 0,
+        top: 0,
 
     },
     containerTopBoxTxt: {
@@ -332,66 +441,66 @@ const styles = StyleSheet.create({
     containerTop: {
         width: "100%",
         //height: "52%",
-      //backgroundColor: 'pink',
+        //backgroundColor: 'pink',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: "flex-start",
-        marginTop:50,
-       height: filterContainerheight -110,
+        marginTop: 50,
+        height: filterContainerheight - 110,
     },
     containerBottom: {
         width: screenWidth,
         // height:"20%",
-       backgroundColor: '#fff',
+        backgroundColor: '#fff',
         paddingLeft: 15,
         paddingRight: 15,
         flexDirection: 'row',
         justifyContent: "space-between",
-        position:'absolute',
-        left:0,
-        bottom:0,
+        position: 'absolute',
+        left: 0,
+        bottom: 0,
     },
-    containerLeft: {
-        width: "35%",
-        padding: 0,
-        // backgroundColor: "#f3f3f3",
-    },
+    // containerLeft: {
+    //     width: "35%",
+    //     padding: 0,
+    //     backgroundColor: "red",
+    // },
     containerRight: {
-        width: "65%",
+        width: "100%",
         // height: "100%",
         //flex: 1,
         // padding: 0,
-        backgroundColor: "#f3f3f3",
+        backgroundColor: "#fff",
         // borderTopRightRadius: 15,
         // borderBottomRightRadius: 15,
         //height: filterContainerheight,
     },
     inncontainerRight: {
-       // backgroundColor: 'red',
-        display:'flex',
-        flexDirection:'column',
-        flexWrap:'wrap',
-       // height: 300,
+        // backgroundColor: 'red',
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        // height: 300,
         // overflow: 'scroll',
     },
-    tab: {
-        paddingVertical: 15,
-        paddingHorizontal: 10,
-        borderTopLeftRadius: 15,
-        borderBottomLeftRadius: 15,
-    },
-    activeTab: {
-        backgroundColor: '#f3f3f3', // Active tab background color
+    // tab: {
+    //     paddingVertical: 15,
+    //     paddingHorizontal: 10,
+    //     borderTopLeftRadius: 15,
+    //     borderBottomLeftRadius: 15,
+    // },
+    // activeTab: {
+    //     backgroundColor: '#f3f3f3', // Active tab background color
 
-    },
-    tabText: {
-        color: '#333',
-        fontSize: 16,
-    },
-    activeTabText: {
-        color: '#24ad91', // Active tab text color
-        //fontWeight: 'bold',
-    },
+    // },
+    // tabText: {
+    //     color: '#333',
+    //     fontSize: 16,
+    // },
+    // activeTabText: {
+    //     color: '#24ad91', // Active tab text color
+    //     //fontWeight: 'bold',
+    // },
     checkboxContainer: {
         // backgroundColor: 'pink',
         borderBottomColor: "#fff",
@@ -400,8 +509,8 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: 'center',
         flexDirection: 'row',
-        paddingVertical: 15,
-        paddingHorizontal: 10,
+        paddingVertical: 5,
+        paddingHorizontal: 0,
     },
     checkbox: {
         height: 24,
@@ -412,7 +521,8 @@ const styles = StyleSheet.create({
         borderRadius: 0, // Rounded corners
         padding: Platform.OS == "android" ? 0 : 5,
         paddingLeft: 5,
-        color: '#fff'
+        color: '#fff',
+        marginRight: 5,
     },
     // checkboxDisabled: {
     //     pointerEvents: 'none',
@@ -442,8 +552,88 @@ const styles = StyleSheet.create({
     },
     filterCancelbutton: {
         backgroundColor: "#999999",
-    }
+    },
+    radioContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 6,
+    },
+    outerCircle: {
+        height: 20,
+        width: 20,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: '#000',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 10,
+    },
+    innerCircle: {
+        height: 10,
+        width: 10,
+        borderRadius: 50,
+        backgroundColor: '#219880',
+    },
+    label: {
+        fontSize: 16,
+        color: '#333',
+    },
 
+    searchBoxPanel: {
+        //backgroundColor: 'green',
+        display: 'flex',
+        width: screenWidth - 15,
+        margin: 0,
+        padding: 0,
+        marginHorizontal: 5,
+        marginTop: 5,
+    },
+    searchBoxPanelTitle: {
+        fontSize: 16,
+        color: '#333',
+        fontFamily: 'Arimo-Bold',
+    },
+    searchBoxPanelRow: {
+        //backgroundColor: '#007AFF',
+        width: screenWidth - 15,
+        flexDirection: 'row',       // ✅ set row direction
+        justifyContent: 'space-between', // space between columns
+        alignItems: 'flex-start',
+        padding: 5,                 // optional padding
+    },
+    column: {
+        // backgroundColor: 'yellow',
+        width: '48%',               // ✅ slightly less than 50% to prevent wrapping
+    },
+
+    column2: {
+        // backgroundColor: 'green',
+        width: '48%',               // ✅ slightly less than 50% to prevent wrapping
+    },
+    searchBoxPanelSelectRow: {
+        //backgroundColor: '#007AFF',
+        width: screenWidth - 15,
+        flexDirection: 'row',       // ✅ set row direction
+        justifyContent: 'flex-start', // space between columns
+        alignItems: 'center',
+        padding: 5,                 // optional padding
+    },
+    dropdown: {
+        height: 40,
+        borderColor: '#ccc',
+        borderRadius: 0,
+        paddingHorizontal: 10,
+        borderBottomWidth:1,
+        borderBottomColor:'#000'
+    },
+    placeholderStyle: {
+        fontSize: 16,
+        color: '#999',
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+        color: '#333',
+    },
 
 
 });

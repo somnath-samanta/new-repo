@@ -60,6 +60,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import EventEmitter from '../../../Contexts/EventEmitter';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import SearchBottomSheetDesign from '../../../Utility/Components/SearchBottomSheetDesign';
 const renderEmptyComponent = () => {
     return (
         <View style={{ padding: 20, alignItems: 'center' }}>
@@ -603,23 +604,23 @@ function ThirdPartyDocument({ props }) {
                 //style={{ backgroundColor: '#f3f3f3' }}
                 // backgroundStyle={{ backgroundColor: '#f3f3f3' }} 
                 bodyContent={
-                    <></>
-                    // <SearchBottomSheetDesign
-                    //     hidesearchSheet={hidesearchSheet}
-                    //     useFor="questionnaire"
-                    //     selectOptionForSendBy={selectOptionForSendBy}
-                    //     setSelectedSendBy={setSelectedSendBy}
-                    //     applyFilters={applyFilters}
-                    //     setSelectedTimeLine={setSelectedTimeLine}
-                    //     clearFilterFn={clearFilterFn}
-                    //     forceClearFilterFlag={forceClearFilterFlag}
-                    //     selectedSendBy={selectedSendBy}
-                    //     selectedTimeLine={selectedTimeLine}
-                    //     filterFor="questionnaire"
-                    //     refreshBtnFnFlag={refreshBtnFnFlag}
+                    <>
+                        <SearchBottomSheetDesign
+                            hidesearchSheet={hidesearchSheet}
+                            useFor="thirdPartyDocument"
+                            // selectOptionForSendBy={selectOptionForSendBy}
+                            // setSelectedSendBy={setSelectedSendBy}
+                            // applyFilters={applyFilters}
+                            // setSelectedTimeLine={setSelectedTimeLine}
+                            // clearFilterFn={clearFilterFn}
+                            // forceClearFilterFlag={forceClearFilterFlag}
+                            // selectedSendBy={selectedSendBy}
+                            // selectedTimeLine={selectedTimeLine}
+                            filterFor="thirdPartyDocument"
+                            // refreshBtnFnFlag={refreshBtnFnFlag}
 
-                    // />
-
+                        />
+                    </>
                 }
             />
             {/* <Modal

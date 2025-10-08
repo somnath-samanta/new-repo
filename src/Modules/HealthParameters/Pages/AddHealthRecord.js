@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, TextInput, Switch, ScrollView, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, TextInput, Switch, ScrollView, BackHandler, Image } from 'react-native';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import Loader from '../../../Utility/Components/Loader';
 import Colors from '../../../Utility/Colors';
@@ -246,11 +246,21 @@ function AddHealthRecord() {
     }
   };
 
-  const SectionHeader = ({ icon, title, tint = '#0f988a' }) => (
+  // const SectionHeader = ({ icon, title, tint = '#0f988a' }) => (
+  //   <View style={styles.sectionHeader}>
+  //     <View style={[styles.sectionIconWrap, { backgroundColor: tint }]}>
+  //       <MaterialCommunityIcons name={icon} size={20} color={Colors.white} />
+  //     </View>
+  //     <Text style={styles.sectionTitle}>{title}</Text>
+  //   </View>
+  // );
+
+  const SectionHeader = ({ icon, title, image }) => (
     <View style={styles.sectionHeader}>
-      <View style={[styles.sectionIconWrap, { backgroundColor: tint }]}>
-        <MaterialCommunityIcons name={icon} size={20} color={Colors.white} />
-      </View>
+       <Image
+          source={image}
+          style={{ width: 40, height: 40, resizeMode: 'contain' }}
+        />
       <Text style={styles.sectionTitle}>{title}</Text>
     </View>
   );
@@ -275,104 +285,113 @@ function AddHealthRecord() {
         </View>
 
         {/* Height */}
-        <SectionHeader icon="human-male-height-variant" title="Height" />
-        <View style={styles.twoColRow}>
-          <TextInput
-            style={styles.input}
-            placeholder={isMetric ? 'M' : 'Ft'}
-            placeholderTextColor={'#666'}
-            keyboardType="numeric"
-            value={heightM}
-            onChangeText={setHeightM}
+        <View style={styles.rowBox}>
+          <SectionHeader
+            title="Height"
+            image={require('../../../Utility/Public/images/healthIcon1.png')}
           />
+          <View style={styles.twoColRow}>
+            <TextInput
+              style={styles.input}
+              placeholder={isMetric ? 'M' : 'Ft'}
+              placeholderTextColor={'#666'}
+              keyboardType="numeric"
+              value={heightM}
+              onChangeText={setHeightM}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder={isMetric ? 'Cm' : 'In'}
+              placeholderTextColor={'#666'}
+              keyboardType="numeric"
+              value={heightCm}
+              onChangeText={setHeightCm}
+            />
+          </View>
+        </View>
+        <View style={styles.rowBox}>
+          {/* Weight */}
+          <SectionHeader image={require('../../../Utility/Public/images/healthIcon2.png')} title="Weight" />
+          <View style={styles.twoColRow}>
+            <TextInput
+              style={styles.input}
+              placeholder={isMetric ? 'Kg' : 'Lb'}
+              placeholderTextColor={'#666'}
+              keyboardType="numeric"
+              value={weightKg}
+              onChangeText={setWeightKg}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder={isMetric ? 'G' : 'Oz'}
+              placeholderTextColor={'#666'}
+              keyboardType="numeric"
+              value={weightG}
+              onChangeText={setWeightG}
+            />
+          </View>
+        </View>
+        <View style={styles.rowBox}>
+          {/* BMI */}
+          <SectionHeader image={require('../../../Utility/Public/images/healthIcon7.png')} title="BMI" />
           <TextInput
-            style={styles.input}
-            placeholder={isMetric ? 'Cm' : 'In'}
+            style={styles.inputFull}
+            placeholder={'BMI'}
             placeholderTextColor={'#666'}
             keyboardType="numeric"
-            value={heightCm}
-            onChangeText={setHeightCm}
+            value={bmi}
+            onChangeText={setBmi}
           />
         </View>
-
-        {/* Weight */}
-        <SectionHeader icon="scale-bathroom" title="Weight" />
-        <View style={styles.twoColRow}>
+        <View style={styles.rowBox}>
+          {/* Waist Circumference */}
+          <SectionHeader image={require('../../../Utility/Public/images/healthIcon8.png')} title="Waist Circumference" />
           <TextInput
-            style={styles.input}
-            placeholder={isMetric ? 'Kg' : 'Lb'}
+            style={styles.inputFull}
+            placeholder={isMetric ? 'cm' : 'inch'}
             placeholderTextColor={'#666'}
             keyboardType="numeric"
-            value={weightKg}
-            onChangeText={setWeightKg}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder={isMetric ? 'G' : 'Oz'}
-            placeholderTextColor={'#666'}
-            keyboardType="numeric"
-            value={weightG}
-            onChangeText={setWeightG}
+            value={waist}
+            onChangeText={setWaist}
           />
         </View>
-
-        {/* BMI */}
-        <SectionHeader icon="speedometer" title="BMI" />
-        <TextInput
-          style={styles.inputFull}
-          placeholder={'BMI'}
-          placeholderTextColor={'#666'}
-          keyboardType="numeric"
-          value={bmi}
-          onChangeText={setBmi}
-        />
-
-        {/* Waist Circumference */}
-        <SectionHeader icon="tape-measure" title="Waist Circumference" />
-        <TextInput
-          style={styles.inputFull}
-          placeholder={isMetric ? 'cm' : 'inch'}
-          placeholderTextColor={'#666'}
-          keyboardType="numeric"
-          value={waist}
-          onChangeText={setWaist}
-        />
-
-        {/* Pulse & BP */}
-        <View style={styles.rowHeaderWrap}>
-          <SectionHeader icon="pulse" title="Pulse Rate" />
-          <SectionHeader icon="stethoscope" title="Blood Pressure" />
+        <View style={styles.rowBox}>
+          {/* Pulse & BP */}
+          <View style={styles.rowHeaderWrap}>
+            <SectionHeader image={require('../../../Utility/Public/images/healthIcon5.png')} title="Pulse Rate" />
+            <SectionHeader image={require('../../../Utility/Public/images/healthIcon6.png')} title="Blood Pressure" />
+          </View>
+          <View style={styles.twoColRow}>
+            <TextInput
+              style={styles.input}
+              placeholder={'Per minute'}
+              placeholderTextColor={'#666'}
+              keyboardType="numeric"
+              value={pulse}
+              onChangeText={setPulse}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder={'Dia/ Sys mmHg'}
+              placeholderTextColor={'#666'}
+              keyboardType="default"
+              value={bp}
+              onChangeText={setBp}
+            />
+          </View>
         </View>
-        <View style={styles.twoColRow}>
-          <TextInput
-            style={styles.input}
-            placeholder={'Per minute'}
-            placeholderTextColor={'#666'}
-            keyboardType="numeric"
-            value={pulse}
-            onChangeText={setPulse}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder={'Dia/ Sys mmHg'}
-            placeholderTextColor={'#666'}
-            keyboardType="default"
-            value={bp}
-            onChangeText={setBp}
-          />
-        </View>
-
-        <View style={styles.footerSpace} />
+        {/* <View style={styles.footerSpace} /> */}
       </ScrollView>
 
       <View style={styles.footerBtns}>
-        <TouchableOpacity style={[styles.ctaBtn, styles.ctaCancel]} onPress={handleGoBack}>
+        <TouchableOpacity style={[styles.ctaBtn, styles.ctaSecondary]} onPress={handleGoBack}>
           <Text style={styles.ctaText}>Cancel</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.ctaBtn, styles.ctaSave]} onPress={onSave}>
+        <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onSave}>
           <Text style={styles.ctaText}>Save New Record</Text>
         </TouchableOpacity>
       </View>
+
     </View>
   );
 }
@@ -395,9 +414,15 @@ const styles = StyleSheet.create({
     top: 0,
   },
   content: {
+    // paddingHorizontal: 15,
+    // paddingTop: 10,
+    // paddingBottom: 0,
+    // backgroundColor:'red'
+    flex: 1,
     paddingHorizontal: 15,
-    paddingTop: 10,
-    paddingBottom: 100,
+    paddingTop: 0,
+    paddingBottom: 0,
+   // backgroundColor: 'red'
   },
   formTitle: {
     color: '#000',
@@ -413,40 +438,56 @@ const styles = StyleSheet.create({
   },
   unitLabel: {
     color: '#000',
-    fontFamily: 'Montserrat-Medium',
+    fontFamily: 'Arimo-Bold',
   },
   unitActive: {
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Arimo-Bold',
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 12,
+    marginTop: 0,
     marginBottom: 6,
+    // backgroundColor: 'blue',
+    width: '48%'
   },
-  sectionIconWrap: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 8,
-  },
+  // sectionIconWrap: {
+  //   width: 28,
+  //   height: 28,
+  //   borderRadius: 14,
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   marginRight: 8,
+  //  // backgroundColor: 'RED'
+  // },
   sectionTitle: {
     color: '#000',
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Arimo-Bold',
     fontSize: 14,
+    marginLeft: 10,
+  },
+  rowBox: {
+    width: '100%',
+    // backgroundColor: 'red',
+    padding: 0,
+    margin: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    marginBottom: 8,
   },
   twoColRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 12,
     marginBottom: 10,
+    //backgroundColor: 'red'
   },
   rowHeaderWrap: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 12,
   },
   input: {
     flex: 1,
@@ -455,9 +496,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     color: '#000',
-    fontFamily: 'Montserrat-Medium',
+    fontFamily: 'Arimo-Regular',
     borderWidth: 1,
     borderColor: '#e0e0e0',
+    height:45
   },
   inputFull: {
     backgroundColor: '#fff',
@@ -465,44 +507,53 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     color: '#000',
-    fontFamily: 'Montserrat-Medium',
+    fontFamily: 'Arimo-Regular',
     borderWidth: 1,
     borderColor: '#e0e0e0',
     marginBottom: 10,
+    width: '100%',
+    height:45
   },
-  footerSpace: {
-    height: 20,
-  },
+  
   footerBtns: {
     position: 'absolute',
     left: 15,
     right: 15,
-    bottom: 15,
+    bottom: Platform.OS === 'ios' ? 15 : 35,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    zIndex: 999,
     gap: 12,
   },
+
   ctaBtn: {
-    flex: 1,
+    flex: 1, // 👈 ensures equal width for both buttons
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
   },
-  ctaCancel: {
-    backgroundColor: '#8a8a8a',
+
+  ctaSecondary: {
+    backgroundColor: '#7f7f7f',
+    marginRight: 6, // 👈 gives a small gap on the right side
   },
-  ctaSave: {
-    backgroundColor: '#178f86',
+
+  ctaPrimary: {
+    backgroundColor: '#229980',
   },
+
   ctaText: {
     color: '#fff',
     fontSize: 14,
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Arimo-Bold',
   },
   subHeaderRow: {
     flexDirection: 'row',

@@ -688,9 +688,9 @@ function AppointmentScreen(props) {
                                     <View style={styles.appointmentCardRow}>
                                         <View style={[styles.leftView, styles.leftViewFlatListBox]}>
                                             <Text style={[styles.nextAppointmentBoxTxt, styles.smalltxt]}>{getStatusName(obj?.item?.appointmentStatus)}</Text>
-                                            <Text style={styles.practitionerName}>{obj?.item?.appointmentType}, 
+                                            <Text style={styles.practitionerName}>{obj?.item?.appointmentType},
                                                 {obj?.item?.appointmentMode === "Video Consultation" ? "Online" : ""}
-                                                </Text>
+                                            </Text>
                                             <Text style={[styles.practitionerName, styles.marginMore]}>{obj?.item?.practitionerName}</Text>
                                             <Text style={styles.practitionerSpeciality}>
                                                 {/* {moment(item.appointmentDate, 'DD-MM-YYYY').format('DD-MM-YYYY')} */}
@@ -975,8 +975,13 @@ function AppointmentScreen(props) {
     };
 
     const handleGoBack = () => {
-        navigation.goBack();
-
+        // Check if navigation can go back to avoid errors
+        if (navigation.canGoBack()) {
+            navigation.goBack();
+        } else {
+            // Optional fallback if this is the first screen
+            console.log("No screen to go back to");
+        }
     };
 
     return (
@@ -1298,7 +1303,7 @@ const styles = StyleSheet.create({
         padding: 0,
         //paddingHorizontal: 15,
         flexDirection: 'row',
-       // backgroundColor: 'red',
+        // backgroundColor: 'red',
         height: nextAppointmentBoxInnheight,
         borderRadius: 10,
         shadowColor: Platform.OS == 'ios' ? '#666' : '#000',
@@ -1379,7 +1384,7 @@ const styles = StyleSheet.create({
         padding: 0,
         borderRadius: 0,
         alignItems: 'center',
-       // backgroundColor: 'blue'
+        // backgroundColor: 'blue'
     },
     practitionerName: {
         fontSize: 14,

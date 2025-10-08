@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, BackHandler, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, BackHandler, FlatList, TouchableOpacity, Image, SafeAreaView, Platform } from 'react-native';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import Loader from '../../../Utility/Components/Loader';
 import Colors from '../../../Utility/Colors';
@@ -8,6 +8,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import { getPatientHealthProfile } from '../Controller/HealthParametersController';
 import { useSelector } from 'react-redux';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
 const screen = Dimensions.get("window");
 const screenWidth = screen.width;
 const screenHeight = screen.height;
@@ -27,9 +29,7 @@ function HealthParameter() {
             value: '-',
             unit: '',
             lastUpdate: '22.04.2024, 9.30 am',
-            iconLib: 'MaterialCommunityIcons',
-            icon: 'human-male-height-variant',
-            iconBg: '#0f988a',
+            icon: require('../../../Utility/Public/images/healthIcon1.png'),
         },
         {
             key: 'weight',
@@ -37,9 +37,7 @@ function HealthParameter() {
             value: '-',
             unit: '',
             lastUpdate: '22.04.2024, 9.30 am',
-            iconLib: 'MaterialCommunityIcons',
-            icon: 'scale-bathroom',
-            iconBg: '#0f988a',
+            icon: require('../../../Utility/Public/images/healthIcon2.png'),
         },
         {
             key: 'bmi',
@@ -47,9 +45,7 @@ function HealthParameter() {
             value: '-',
             unit: '',
             lastUpdate: '22.04.2024, 9.30 am',
-            iconLib: 'MaterialCommunityIcons',
-            icon: 'speedometer',
-            iconBg: '#56c3c1',
+            icon: require('../../../Utility/Public/images/healthIcon2.png'),
         },
         {
             key: 'waist',
@@ -57,9 +53,7 @@ function HealthParameter() {
             value: '-',
             unit: '',
             lastUpdate: '22.04.2024, 9.30 am',
-            iconLib: 'MaterialCommunityIcons',
-            icon: 'tape-measure',
-            iconBg: '#56c3c1',
+            icon: require('../../../Utility/Public/images/healthIcon4.png'),
         },
         {
             key: 'pulse',
@@ -67,9 +61,7 @@ function HealthParameter() {
             value: '-',
             unit: '',
             lastUpdate: '22.04.2024, 9.30 am',
-            iconLib: 'FontAwesome5',
-            icon: 'heartbeat',
-            iconBg: '#204b86',
+            icon: require('../../../Utility/Public/images/healthIcon5.png'),
         },
         {
             key: 'bp',
@@ -77,9 +69,7 @@ function HealthParameter() {
             value: '00/00',
             unit: '',
             lastUpdate: '22.04.2024, 9.30 am',
-            iconLib: 'MaterialCommunityIcons',
-            icon: 'stethoscope',
-            iconBg: '#204b86',
+            icon: require('../../../Utility/Public/images/healthIcon6.png'),
         },
     ]);
 
@@ -159,29 +149,17 @@ function HealthParameter() {
         // setWebViewFlag(false);
     };
 
-    const renderIcon = (item) => {
-        const wrapperStyle = [styles.iconCircle, { backgroundColor: item.iconBg }];
-        if (item.iconLib === 'FontAwesome5') {
-            return (
-                <View style={wrapperStyle}>
-                    <FontAwesome5 name={item.icon} size={28} color={Colors.white} />
-                </View>
-            );
-        }
-        return (
-            <View style={wrapperStyle}>
-                <MaterialCommunityIcons name={item.icon} size={30} color={Colors.white} />
-            </View>
-        );
-    };
-
     const renderMetric = ({ item }) => (
         <View style={styles.card}>
-            {renderIcon(item)}
+
+            <Image
+                source={item.icon}
+                style={styles.iconCircle}
+            />
             <Text style={styles.cardTitle}>{item.title}</Text>
             <Text style={styles.cardValue}>
                 <Text style={styles.cardValueNumber}>{item.value}</Text>
-                {item.unit ? <Text style={styles.cardValueUnit}> {item.unit}</Text> : null}
+                {item.unit ? <Text style={styles.cardValueUnit}>{item.unit}</Text> : null}
             </Text>
             <Text style={styles.lastUpdateLabel}>Last Update:</Text>
             <Text style={styles.lastUpdateText}>{item.lastUpdate}</Text>
@@ -196,14 +174,30 @@ function HealthParameter() {
         navigation.navigate('AddHealthRecord');
     };
 
+    const handleGoBack = () => {
+        // Check if navigation can go back to avoid errors
+        if (navigation.canGoBack()) {
+            navigation.goBack();
+        } else {
+            // Optional fallback if this is the first screen
+            console.log("No screen to go back to");
+        }
+    };
     return (
-        <View style={styles.container}>
+        // <View style={styles.container}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#E6F6F3' }}>
             <Loader style={styles.loadingCss} loading={pageLoading} />
             <CustomHeader
                 pageName="Health Parameters"
                 hideBookAppointmentScreen={hideBookAppointmentScreen}
             />
+
             <View style={styles.content}>
+                <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
+                    onPress={handleGoBack}
+                >
+                    <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
+                </TouchableOpacity>
                 <FlatList
                     contentContainerStyle={styles.gridContent}
                     data={metrics}
@@ -216,15 +210,16 @@ function HealthParameter() {
                     onRefresh={() => fetchVitals(true)}
                 />
             </View>
+            {/* Footer */}
             <View style={styles.footerBtns}>
-                <TouchableOpacity style={[styles.ctaBtn, styles.ctaSecondary]} onPress={onViewMonitoring}>
+                <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onViewMonitoring}>
                     <Text style={styles.ctaText}>View Health Monitoring</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onAddNewRecord}>
+                <TouchableOpacity style={[styles.ctaBtn, styles.ctaSecondary]} onPress={onAddNewRecord}>
                     <Text style={styles.ctaText}>Add New Record</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -233,6 +228,7 @@ export default HealthParameter;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#dff7f8',
+        //backgroundColor: 'red',
         position: 'relative',
         width: screenWidth,
         height: screenHeight,
@@ -248,8 +244,9 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         paddingHorizontal: 15,
-        paddingTop: 10,
-        paddingBottom: 80,
+        paddingTop: 0,
+        paddingBottom: 0,
+        // backgroundColor: 'blue',
     },
     gridContent: {
         paddingBottom: 10,
@@ -272,19 +269,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     iconCircle: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,
+        width: 65,
+        height: 65,
+        borderRadius: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 12,
+        marginBottom: 10,
+
     },
     cardTitle: {
         color: '#222',
         fontSize: 14,
-        fontFamily: 'Montserrat-Bold',
-        marginBottom: 4,
+        fontFamily: 'Arimo-Bold',
+        marginBottom: 5,
         textAlign: 'center',
+        marginBottom: 0,
     },
     cardValue: {
         marginBottom: 10,
@@ -292,53 +291,81 @@ const styles = StyleSheet.create({
     cardValueNumber: {
         color: '#0a978b',
         fontSize: 16,
-        fontFamily: 'Montserrat-Bold',
+        fontFamily: 'Arimo-Bold',
         textAlign: 'center',
     },
     cardValueUnit: {
         color: '#0a978b',
         fontSize: 14,
-        fontFamily: 'Montserrat-Medium',
+        fontFamily: 'Arimo-Bold',
     },
     lastUpdateLabel: {
         color: '#000',
-        fontSize: 12,
-        fontFamily: 'Montserrat-Bold',
+        fontSize: 14,
+        fontFamily: 'Arimo-Bold',
     },
     lastUpdateText: {
         color: '#000',
-        fontSize: 12,
-        fontFamily: 'Montserrat-Regular',
+        fontSize: 14,
+        fontFamily: 'Arimo-Regular',
     },
+    // footerBtns: {
+    //     position: 'absolute',
+    //     left: 15,
+    //     right: 15,
+    //     bottom: 15,
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-between',
+    //     gap: 12,
+    //     backgroundColor: 'red'
+    // },
     footerBtns: {
         position: 'absolute',
         left: 15,
         right: 15,
-        bottom: 15,
+        bottom: Platform.OS === 'ios' ? 15 : 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 10,
+        zIndex: 999,
         gap: 12,
     },
+
     ctaBtn: {
-        flex: 1,
+        flex: 1, // 👈 ensures equal width for both buttons
         borderRadius: 8,
         paddingVertical: 12,
         alignItems: 'center',
+        justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 2,
     },
+
     ctaSecondary: {
-        backgroundColor: '#0a978b',
+        backgroundColor: '#229980',
+        marginRight: 6, // 👈 gives a small gap on the right side
     },
+
     ctaPrimary: {
-        backgroundColor: '#178f86',
+        backgroundColor: '#007b80',
     },
+
     ctaText: {
         color: '#fff',
-        fontSize: 14,
-        fontFamily: 'Montserrat-Bold',
+        fontSize: 13,
+        fontFamily: 'Arimo-Bold',
     },
+    backbtnTop: {
+        width: 40,
+        height: 35,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        //backgroundColor: "#24ad91",
+
+    }
 });

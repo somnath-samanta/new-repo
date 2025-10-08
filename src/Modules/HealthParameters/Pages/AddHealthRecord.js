@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, TextInput, Switch, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, TextInput, Switch, ScrollView, BackHandler } from 'react-native';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import Loader from '../../../Utility/Components/Loader';
 import Colors from '../../../Utility/Colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import { savePatientHealthParameters } from '../Controller/HealthParametersController';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -29,6 +29,18 @@ function AddHealthRecord() {
   const [waist, setWaist] = useState('');
   const [pulse, setPulse] = useState('');
   const [bp, setBp] = useState(''); // e.g., 110/70
+
+  // Handle hardware back button: always go to HealthParameter
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate('HealthParameter');
+        return true; // prevent default behavior
+      };
+      const sub = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => sub.remove();
+    }, [navigation])
+  );
 
   const resetForm = () => {
     setHeightM('');

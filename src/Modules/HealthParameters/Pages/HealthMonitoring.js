@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl, BackHandler } from 'react-native';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import Loader from '../../../Utility/Components/Loader';
 import Colors from '../../../Utility/Colors';
@@ -8,7 +8,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector } from 'react-redux';
 import { getPatientHealthProfile } from '../Controller/HealthParametersController';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const screen = Dimensions.get('window');
 const screenWidth = screen.width;
@@ -92,6 +92,18 @@ export default function HealthMonitoring() {
   const navigation = useNavigation();
   const hasFetchedVitalsRef = useRef(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Handle hardware back button: always go to HealthParameter
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate('HealthParameter');
+        return true; // prevent default behavior
+      };
+      const sub = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => sub.remove();
+    }, [navigation])
+  );
 
   const fetchVitals = async (force = false) => {
     if (!userId) return;

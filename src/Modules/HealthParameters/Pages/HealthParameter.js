@@ -45,7 +45,7 @@ function HealthParameter() {
             value: '-',
             unit: '',
             lastUpdate: '22.04.2024, 9.30 am',
-            icon: require('../../../Utility/Public/images/healthIcon2.png'),
+            icon: require('../../../Utility/Public/images/healthIcon3.png'),
         },
         {
             key: 'waist',

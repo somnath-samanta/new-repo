@@ -800,7 +800,7 @@ const pickerStyle = {
         padding: 5,
         paddingVertical: 10,
         margin: 0,
-        fontFamily: 'Montserrat-Medium',
+         fontFamily: 'Arimo-Regular',
     },
     placeholder: {
         color: '#000',
@@ -813,7 +813,7 @@ const pickerStyle = {
         fontWeight: 'bold',
         padding: 0,
         margin: 0,
-        fontFamily: 'Montserrat-Medium',
+         fontFamily: 'Arimo-Regular',
     },
 };
 

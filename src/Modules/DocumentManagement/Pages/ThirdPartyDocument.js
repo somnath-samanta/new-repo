@@ -1026,7 +1026,7 @@ const styles = StyleSheet.create({
     hintTxt: {
         color: '#333',
         fontFamily: 'Arimo-Regular',
-        fontSize: 12,
+        fontSize: 13,
         paddingTop: 10,
         textAlign: 'center'
         //padding: 15,

@@ -799,7 +799,7 @@ const styles = StyleSheet.create({
         width: '60%',
         //padding: 15,
         marginTop: 15,
-        borderRadius: 5,
+        borderRadius: 10,
         shadowColor: '#666',
         shadowOffset: { width: .5 },
         shadowOpacity: 0.2,

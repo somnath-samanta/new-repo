@@ -80,7 +80,7 @@ const QuestionnaireItem = memo(({ item, index, onSelectDocument }) => {
                                 <Text style={[styles.statusvalue, styles.statusComplete]}>{item.status}</Text>
                         }
                         <TouchableOpacity onPress={() => onSelectDocument(item)} style={styles.questionnaireAction}>
-                            <Text style={styles.questionnaireActionText}>View/ Complete</Text>
+                            <Text style={styles.questionnaireActionText}>View / Complete</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -371,7 +371,7 @@ function QuestionnaireScreen(props) {
                                     <Text style={[styles.statusvalue, styles.statusComplete]}>{item?.item?.status}</Text>
                             }
                             <TouchableOpacity onPress={() => handleSelectedDocument(item?.item)} style={styles.questionnaireAction}>
-                                <Text style={styles.questionnaireActionText}>View/ Complete</Text>
+                                <Text style={styles.questionnaireActionText}>View / Complete</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -668,7 +668,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#24ad91',
         padding: 8,
         paddingHorizontal: 10,
-        borderRadius: 3,
+        borderRadius: 10,
     },
     questionnaireActionText: {
         fontSize: 12,

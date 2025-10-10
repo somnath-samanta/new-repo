@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl, BackHandler, Image } from 'react-native';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import Loader from '../../../Utility/Components/Loader';
 import Colors from '../../../Utility/Colors';
@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { getPatientHealthProfile } from '../Controller/HealthParametersController';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const screen = Dimensions.get('window');
 const screenWidth = screen.width;
@@ -23,36 +24,32 @@ const MONTHS = [
 
 const ICONS = {
   pulse: {
-    lib: 'FontAwesome5',
-    name: 'heartbeat',
-    tint: '#204b86'
+    image: require('../../../Utility/Public/images/healthIcon5.png'),
+    tint: '#204b86',
   },
   bp: {
-    lib: 'MaterialCommunityIcons',
-    name: 'stethoscope',
-    tint: '#204b86'
+    image: require('../../../Utility/Public/images/healthIcon6.png'),
+    tint: '#204b86',
   },
   height: {
-    lib: 'MaterialCommunityIcons',
-    name: 'human-male-height-variant',
-    tint: '#0f988a'
+    image: require('../../../Utility/Public/images/healthIcon1.png'),
+    tint: '#0f988a',
   },
   weight: {
-    lib: 'MaterialCommunityIcons',
-    name: 'scale-bathroom',
-    tint: '#0f988a'
+    image: require('../../../Utility/Public/images/healthIcon2.png'),
+    tint: '#0f988a',
   },
   bmi: {
-    lib: 'MaterialCommunityIcons',
-    name: 'speedometer',
-    tint: '#56c3c1'
+    image: require('../../../Utility/Public/images/healthIcon7.png'),
+    tint: '#56c3c1',
   },
   waist: {
-    lib: 'MaterialCommunityIcons',
-    name: 'tape-measure',
-    tint: '#56c3c1'
+    image: require('../../../Utility/Public/images/healthIcon8.png'),
+    tint: '#56c3c1',
   },
 };
+
+
 
 function Chip({ label, active, onPress }) {
   return (
@@ -63,21 +60,24 @@ function Chip({ label, active, onPress }) {
 }
 
 function IconCell({ iconKey }) {
-  const { lib, name, tint } = ICONS[iconKey] || {};
-  const Wrap = ({ children }) => (
-    <View style={[styles.iconCircle, { backgroundColor: tint || '#0f988a' }]}>{children}</View>
-  );
-  if (lib === 'FontAwesome5') {
-    return (
-      <Wrap>
-        <FontAwesome5 name={name} size={20} color={Colors.white} />
-      </Wrap>
-    );
-  }
+  const { image, tint } = ICONS[iconKey] || {};
+  console.log("iconKey>>>>>>>>>>>>>>>>", image);
+
   return (
-    <Wrap>
-      <MaterialCommunityIcons name={name} size={22} color={Colors.white} />
-    </Wrap>
+    <View style={[styles.iconCircle, { backgroundColor: tint || '#0f988a' }]}>
+      {image ? (
+        <Image
+          source={image}
+          style={{
+            width: 34,
+            height: 34,
+            resizeMode: 'contain', // remove tintColor if you want original colors
+          }}
+        />
+      ) : (
+        <MaterialCommunityIcons name="heart-pulse" size={20} color={Colors.white} />
+      )}
+    </View>
   );
 }
 
@@ -204,7 +204,7 @@ export default function HealthMonitoring() {
       6: { key: 'pulse', label: 'Pulse Rate' },
     };
 
-    const rowsBuilt = [1, 5, 3, 4, 2, 6] // order similar to mock
+    const rowsBuilt = [6, 5, 1, 2, 3, 4] // order similar to mock
       .map((vi) => {
         const meta = labelByInt[vi];
         const values = Object.keys(idWiseDate).map((dstr) => {
@@ -263,9 +263,8 @@ export default function HealthMonitoring() {
         </View>
 
         {/* Table */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View>
-            {/* Header row */}
+        {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View style={styles.tableBox}>
             <View style={[styles.tableRow, styles.headerRow]}>
               <View style={[styles.cellMetric, styles.headerCell]}>
                 <Text style={[styles.headerText]}>Date</Text>
@@ -278,7 +277,6 @@ export default function HealthMonitoring() {
                 ))}
             </View>
 
-            {/* Data rows */}
             {rows.map((r, idx) => (
               <View key={r.key} style={[styles.tableRow, idx % 2 === 0 ? styles.rowEven : styles.rowOdd]}>
                 <View style={[styles.cellMetric, styles.metricCell]}>
@@ -295,13 +293,64 @@ export default function HealthMonitoring() {
               </View>
             ))}
           </View>
-        </ScrollView>
+        </ScrollView> */}
+        <View style={styles.tableWrapper}>
+          {/* Fixed left column */}
+          <View style={styles.fixedColumn}>
+            <View style={[styles.headerCell, styles.fixedHeader]}>
+              <Text style={[styles.headerText, styles.headerTextStart]}>Date</Text>
+            </View>
+            {rows.map((r, idx) => (
+              <View
+                key={r.key}
+                style={[styles.cellMetric, idx % 2 === 0 ? styles.rowEven : styles.rowOdd]}>
+                <View style={styles.metricCellInner}>
+                  <IconCell iconKey={r.key} />
+                  <Text style={styles.metricLabel}>{r.label}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+
+          {/* Scrollable right section */}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View>
+              {/* Header row */}
+              <View style={[styles.tableRow, styles.headerRow]}>
+                {Object.keys(dates).length > 0 &&
+                  Object.values(dates).map((d, index) => (
+                    <View key={index} style={[styles.cellDate, styles.headerCell]}>
+                      <Text style={styles.headerText}>{d}</Text>
+                    </View>
+                  ))}
+              </View>
+
+              {/* Data rows */}
+              {rows.map((r, idx) => (
+                <View
+                  key={r.key}
+                  style={[
+                    styles.tableRow,
+                    idx % 2 === 0 ? styles.rowEven : styles.rowOdd,
+                  ]}
+                >
+                  {r.values.map((v, i) => (
+                    <View key={i} style={[styles.cellDate, styles.valueCell]}>
+                      <Text style={styles.valueText}>{v}</Text>
+                    </View>
+                  ))}
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+
       </ScrollView>
     </View>
   );
 }
 
-const BORDER = '#2aa394';
+const BORDER = '#000';
 
 const styles = StyleSheet.create({
   container: {
@@ -324,10 +373,11 @@ const styles = StyleSheet.create({
   },
   filters: {
     marginBottom: 12,
+    //backgroundColor: 'red',
   },
   filterLabel: {
     color: '#000',
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Arimo-Bold',
     fontSize: 14,
     marginBottom: 6,
   },
@@ -338,53 +388,64 @@ const styles = StyleSheet.create({
   },
   chip: {
     paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 14,
+    paddingHorizontal: 12,
+    borderRadius: 10,
     borderWidth: 1,
   },
   chipActive: {
     borderColor: '#2aa394',
-    backgroundColor: '#e6f6f4',
+    backgroundColor: '#fff',
   },
   chipInactive: {
-    borderColor: '#d1d1d1',
-    backgroundColor: '#efefef',
+    borderColor: '#e1e1e1',
+    backgroundColor: '#e1e1e1',
   },
   chipText: {
-    fontFamily: 'Montserrat-Medium',
-    fontSize: 12,
+    fontFamily: 'Arimo-Regular',
+    fontSize: 13,
   },
   chipTextActive: { color: '#2aa394' },
-  chipTextInactive: { color: '#9c9c9c' },
+  chipTextInactive: { color: '#333' },
   helperText: {
-    color: '#666',
-    fontFamily: 'Montserrat-Regular',
-    fontSize: 12,
-    marginTop: 8,
+    color: '#333',
+    fontFamily: 'Arimo-Regular',
+    fontSize: 13,
+    marginTop: 10,
   },
   tableRow: {
     flexDirection: 'row',
+
   },
   headerRow: {
     backgroundColor: '#2aa394',
+  },
+  tableBox: {
+    // backgroundColor: 'red',
+    padding: 0,
   },
   headerCell: {
     borderWidth: 1,
     borderColor: BORDER,
     paddingVertical: 10,
     paddingHorizontal: 10,
+    backgroundColor: '#2aa394',
+
   },
   headerText: {
     color: '#fff',
     fontFamily: 'Montserrat-Bold',
     fontSize: 12,
+    //paddingLeft:10
+  },
+  headerTextStart: {
+    paddingLeft: 10
   },
   cellMetric: {
     width: 140,
     backgroundColor: '#eaf8f6',
     borderWidth: 1,
     borderColor: BORDER,
-    padding: 10,
+    padding: 10.23,
   },
   cellDate: {
     minWidth: 130,
@@ -398,17 +459,21 @@ const styles = StyleSheet.create({
   metricCellInner: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 6,
   },
   metricLabel: {
     color: '#000',
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Arimo-Bold',
     fontSize: 13,
+    display: 'flex',
+    flexWrap: 'wrap',
+    width: 90,
+    //backgroundColor:'blue'
   },
   iconCircle: {
     width: 34,
     height: 34,
-    borderRadius: 17,
+    borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -423,6 +488,8 @@ const styles = StyleSheet.create({
     color: '#000',
     fontFamily: 'Montserrat-Medium',
     fontSize: 12,
+    paddingHorizontal: 5,
+    paddingVertical: 8,
   },
   subHeaderRow: {
     flexDirection: 'row',
@@ -434,14 +501,30 @@ const styles = StyleSheet.create({
   },
   subHeaderBackBtn: {
     padding: 6,
-    // borderRadius: 20,
-    // backgroundColor: '#efefef',
-    // borderWidth: 1,
-    // borderColor: '#ddd',
   },
   subHeaderTitle: {
     color: '#000',
     fontFamily: 'Montserrat-Bold',
     fontSize: 16,
+  },
+  tableWrapper: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderColor: BORDER,
+    borderWidth: 1,
+  },
+  fixedColumn: {
+    backgroundColor: '#eaf8f6',
+    zIndex: 2,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 0 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  fixedHeader: {
+    backgroundColor: '#2aa394',
+    borderRightWidth: 1,
+    borderColor: BORDER,
   },
 });

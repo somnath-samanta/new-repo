@@ -2,7 +2,6 @@ const screen = Dimensions.get("window");
 
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import {
-    SafeAreaView,
     FlatList,
     Text,
     useColorScheme,
@@ -37,7 +36,7 @@ import EventEmitter from '../../../Contexts/EventEmitter';
 import { LogOut } from '../../../Utility/Components/LogOut';
 import { WebView } from 'react-native-webview';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 function Home({ props }) {
     const navigation = useNavigation();
@@ -206,45 +205,45 @@ function Home({ props }) {
     }
 
     return (
-
-        <View style={styles.container}>
-            <Loader style={styles.loadingCss} loading={pageLoading} />
-            {
-                webViewFlag ?
-                    <>
-                        <CustomHeader
-                            pageName={"Book an Appointment"}
-                            hideBookAppointmentScreen={hideBookAppointmentScreen}
-                        />
-                        <WebView
-                            source={{ uri: `${Config.bookingUrl}?data=${webViewData}` }}
-                            mediaPlaybackRequiresUserAction={false}
-                            allowsInlineMediaPlayback={true}
-                            javaScriptEnabled={true}
-                            domStorageEnabled={true}
-                            onMessage={handleMessage}
-                        />
-                    </> :
-                    <>
-                        <Image source={require('../../../Utility/Public/images/oaktreeLogo.png')} style={styles.oaktreeLogo} />
-                        <TouchableOpacity
-                            style={[styles.signout]} // Temporary background for testing
-                            onPress={() => logoutApp()}
-                        >
-                            <Image
-                                source={require('../../../Utility/Public/images/signout.png')}
-                                style={{ width: 24, height: 24 }}
+        <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
+            <View style={styles.container}>
+                <Loader style={styles.loadingCss} loading={pageLoading} />
+                {
+                    webViewFlag ?
+                        <>
+                            <CustomHeader
+                                pageName={"Book an Appointment"}
+                                hideBookAppointmentScreen={hideBookAppointmentScreen}
                             />
-                        </TouchableOpacity>
-                        <View style={[styles.panel]}>
-                            <View style={styles.topPanelTaxtBox}>
-                                <Text style={styles.topPanelTaxt}>Welcome to Oaktree Connect</Text>
-                            </View>
-                            <ScrollView>
-                                {/* <TouchableOpacity style={[styles.panelBox, styles.appointmentBox]} onPress={openWebsite}>
+                            <WebView
+                                source={{ uri: `${Config.bookingUrl}?data=${webViewData}` }}
+                                mediaPlaybackRequiresUserAction={false}
+                                allowsInlineMediaPlayback={true}
+                                javaScriptEnabled={true}
+                                domStorageEnabled={true}
+                                onMessage={handleMessage}
+                            />
+                        </> :
+                        <>
+                            <Image source={require('../../../Utility/Public/images/oaktreeLogo.png')} style={styles.oaktreeLogo} />
+                            <TouchableOpacity
+                                style={[styles.signout]} // Temporary background for testing
+                                onPress={() => logoutApp()}
+                            >
+                                <Image
+                                    source={require('../../../Utility/Public/images/signout.png')}
+                                    style={{ width: 24, height: 24 }}
+                                />
+                            </TouchableOpacity>
+                            <View style={[styles.panel]}>
+                                <View style={styles.topPanelTaxtBox}>
+                                    <Text style={styles.topPanelTaxt}>Welcome to Oaktree Connect</Text>
+                                </View>
+                                <ScrollView>
+                                    {/* <TouchableOpacity style={[styles.panelBox, styles.appointmentBox]} onPress={openWebsite}>
                                     <Text style={styles.panelBoxText}>Book an {'\n'} Appointment </Text>
                                 </TouchableOpacity> */}
-                                {/* <TouchableOpacity style={[styles.panelBox, styles.panelBoxDocument]} onPress={myDocumentLink}>
+                                    {/* <TouchableOpacity style={[styles.panelBox, styles.panelBoxDocument]} onPress={myDocumentLink}>
                                     <Text style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>My Documents</Text>
                                     <Image
                                         source={require('../../../Utility/Public/images/idCard.png')}
@@ -252,73 +251,74 @@ function Home({ props }) {
                                     />
                                     <Text style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>Upload Your Photo ID</Text>
                                 </TouchableOpacity> */}
-                                <TouchableOpacity style={[styles.panelBox, styles.panelBoxDocument]} onPress={appointmentLink}>
-                                    {/* <Text style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>My Documents</Text> */}
-                                    <View style={styles.innerPanelBoxDocument}>
-                                        <Image
-                                            source={require('../../../Utility/Public/images/clock.png')}
-                                            style={[styles.calenderImage, styles.clockImagedocument]}
-                                        />
-                                        <Image
-                                            source={require('../../../Utility/Public/images/calender.png')}
-                                            style={[styles.calenderImage, styles.calenderImagedocument]}
-                                        />
-                                    </View>
-                                    <View style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>
-                                        <Text style={[styles.panelBoxRightMainTextDownDocumentText]}>
-                                            View & Start Appointment</Text>
-                                    </View>
-                                </TouchableOpacity>
-
-                                <View style={styles.middlePanelBoxes}>
-                                    <TouchableOpacity style={styles.middlePanelBox} onPress={thirdPartyDocumentLink}>
-                                        <Image
-                                            source={require('../../../Utility/Public/images/icon1.png')}
-                                            style={[styles.calenderImage, styles.appointmentsIcon]}
-                                        />
-                                        <Text style={styles.panelBoxRightMainTextDown}>View / Upload{'\n'}3rd Party Documents</Text>
+                                    <TouchableOpacity style={[styles.panelBox, styles.panelBoxDocument]} onPress={appointmentLink}>
+                                        {/* <Text style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>My Documents</Text> */}
+                                        <View style={styles.innerPanelBoxDocument}>
+                                            <Image
+                                                source={require('../../../Utility/Public/images/clock.png')}
+                                                style={[styles.calenderImage, styles.clockImagedocument]}
+                                            />
+                                            <Image
+                                                source={require('../../../Utility/Public/images/calender.png')}
+                                                style={[styles.calenderImage, styles.calenderImagedocument]}
+                                            />
+                                        </View>
+                                        <View style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>
+                                            <Text style={[styles.panelBoxRightMainTextDownDocumentText]}>
+                                                View & Start Appointment</Text>
+                                        </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.middlePanelBox} onPress={myDocumentLink}>
 
-                                        <Image
-                                            source={require('../../../Utility/Public/images/icon2.png')}
-                                            style={[styles.calenderImage, styles.appointmentsIcon]}
-                                        />
-                                        <Text style={styles.panelBoxRightMainTextDown}>Upload ID</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={styles.middlePanelBoxRight}>
-                                    <Text style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
-                                    <View style={styles.myTherapyTasks}>
-                                        <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={healthParameterLink}>
-                                            <View style={styles.roundiconBox}>
-                                                <Image
-                                                    source={require('../Public/images/physicalParametersIcon.png')}
-                                                    style={styles.heartRatingImage}
-                                                />
-                                            </View>
-                                            <Text style={styles.panelBoxRightMainTextDown}>View / Add{'\n'}Physical Parameters</Text>
+                                    <View style={styles.middlePanelBoxes}>
+                                        <TouchableOpacity style={styles.middlePanelBox} onPress={thirdPartyDocumentLink}>
+                                            <Image
+                                                source={require('../../../Utility/Public/images/icon1.png')}
+                                                style={[styles.calenderImage, styles.appointmentsIcon]}
+                                            />
+                                            <Text style={styles.panelBoxRightMainTextDown}>View / Upload{'\n'}3rd Party Documents</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={questionnaireLink}>
-                                            <View style={styles.roundiconBox}>
-                                                <Image
-                                                    source={require('../Public/images/questionnairesIcon.png')}
-                                                    style={styles.calenderImage}
-                                                />
-                                            </View>
-                                            <Text style={styles.panelBoxRightMainTextDown}> View / Complete{'\n'}Questionnaires</Text>
+                                        <TouchableOpacity style={styles.middlePanelBox} onPress={myDocumentLink}>
+
+                                            <Image
+                                                source={require('../../../Utility/Public/images/icon2.png')}
+                                                style={[styles.calenderImage, styles.appointmentsIcon]}
+                                            />
+                                            <Text style={styles.panelBoxRightMainTextDown}>Upload ID</Text>
                                         </TouchableOpacity>
                                     </View>
-                                </View>
-                                {/* <TouchableOpacity style={[styles.panelBox, styles.appointmentBox]} onPress={goToAppointmentScreen}>
+                                    <View style={styles.middlePanelBoxRight}>
+                                        <Text style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
+                                        <View style={styles.myTherapyTasks}>
+                                            <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={healthParameterLink}>
+                                                <View style={styles.roundiconBox}>
+                                                    <Image
+                                                        source={require('../Public/images/physicalParametersIcon.png')}
+                                                        style={styles.heartRatingImage}
+                                                    />
+                                                </View>
+                                                <Text style={styles.panelBoxRightMainTextDown}>View / Add{'\n'}Physical Parameters</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={questionnaireLink}>
+                                                <View style={styles.roundiconBox}>
+                                                    <Image
+                                                        source={require('../Public/images/questionnairesIcon.png')}
+                                                        style={styles.calenderImage}
+                                                    />
+                                                </View>
+                                                <Text style={styles.panelBoxRightMainTextDown}> View / Complete{'\n'}Questionnaires</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                    {/* <TouchableOpacity style={[styles.panelBox, styles.appointmentBox]} onPress={goToAppointmentScreen}>
                                     <Text style={styles.panelBoxText}>Book an {'\n'} Appointment </Text>
                                 </TouchableOpacity> */}
 
-                            </ScrollView>
-                        </View>
-                    </>
-            }
-        </View >
+                                </ScrollView>
+                            </View>
+                        </>
+                }
+            </View >
+        </SafeAreaView>
     );
 }
 
@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: 93,
         height: 88,
-       // backgroundColor: 'red',
+        // backgroundColor: 'red',
         marginLeft: 20,
     },
     clockImagedocument: {

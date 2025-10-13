@@ -10,7 +10,7 @@ import { getPatientHealthProfile } from '../Controller/HealthParametersControlle
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const screen = Dimensions.get('window');
 const screenWidth = screen.width;
 const screenHeight = screen.height;
@@ -228,42 +228,44 @@ export default function HealthMonitoring() {
   };
 
   return (
-    <View style={styles.container}>
-      <Loader style={styles.loadingCss} loading={pageLoading} />
-      <CustomHeader pageName={'Health Parameters'} />
 
-      <View style={styles.subHeaderRow}>
-        <TouchableOpacity style={styles.subHeaderBackBtn} onPress={handleGoBack}>
-          <FontAwesome6 name="arrow-left-long" size={20} color={Colors.black} />
-        </TouchableOpacity>
-        <Text style={styles.subHeaderTitle}>Previous Records</Text>
-      </View>
+    <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
+      <View style={styles.container}>
+        <Loader style={styles.loadingCss} loading={pageLoading} />
+        <CustomHeader pageName={'Health Parameters'} />
 
-      <ScrollView
-        contentContainerStyle={styles.content}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={() => fetchVitals(true)} />
-        }
-      >
-        {/* Filters */}
-        <View style={styles.filters}>
-          <Text style={styles.filterLabel}>Year</Text>
-          <View style={styles.filterRow}>
-            {YEARS.map((y) => (
-              <Chip key={y} label={String(y)} active={y === activeYear} onPress={() => setActiveYear(y)} />
-            ))}
-          </View>
-          <Text style={[styles.filterLabel, { marginTop: 10 }]}>Month</Text>
-          <View style={styles.filterRow}>
-            {MONTHS.map((m, index) => (
-              <Chip key={m} label={m} active={index === activeMonth} onPress={() => setActiveMonth(index)} />
-            ))}
-          </View>
-          <Text style={styles.helperText}>Only the months for which you entered readings are displayed here.</Text>
+        <View style={styles.subHeaderRow}>
+          <TouchableOpacity style={styles.subHeaderBackBtn} onPress={handleGoBack}>
+            <FontAwesome6 name="arrow-left-long" size={20} color={Colors.black} />
+          </TouchableOpacity>
+          <Text style={styles.subHeaderTitle}>Previous Records</Text>
         </View>
 
-        {/* Table */}
-        {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.content}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={() => fetchVitals(true)} />
+          }
+        >
+          {/* Filters */}
+          <View style={styles.filters}>
+            <Text style={styles.filterLabel}>Year</Text>
+            <View style={styles.filterRow}>
+              {YEARS.map((y) => (
+                <Chip key={y} label={String(y)} active={y === activeYear} onPress={() => setActiveYear(y)} />
+              ))}
+            </View>
+            <Text style={[styles.filterLabel, { marginTop: 10 }]}>Month</Text>
+            <View style={styles.filterRow}>
+              {MONTHS.map((m, index) => (
+                <Chip key={m} label={m} active={index === activeMonth} onPress={() => setActiveMonth(index)} />
+              ))}
+            </View>
+            <Text style={styles.helperText}>Only the months for which you entered readings are displayed here.</Text>
+          </View>
+
+          {/* Table */}
+          {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.tableBox}>
             <View style={[styles.tableRow, styles.headerRow]}>
               <View style={[styles.cellMetric, styles.headerCell]}>
@@ -294,59 +296,60 @@ export default function HealthMonitoring() {
             ))}
           </View>
         </ScrollView> */}
-        <View style={styles.tableWrapper}>
-          {/* Fixed left column */}
-          <View style={styles.fixedColumn}>
-            <View style={[styles.headerCell, styles.fixedHeader]}>
-              <Text style={[styles.headerText, styles.headerTextStart]}>Date</Text>
-            </View>
-            {rows.map((r, idx) => (
-              <View
-                key={r.key}
-                style={[styles.cellMetric, idx % 2 === 0 ? styles.rowEven : styles.rowOdd]}>
-                <View style={styles.metricCellInner}>
-                  <IconCell iconKey={r.key} />
-                  <Text style={styles.metricLabel}>{r.label}</Text>
-                </View>
+          <View style={styles.tableWrapper}>
+            {/* Fixed left column */}
+            <View style={styles.fixedColumn}>
+              <View style={[styles.headerCell, styles.fixedHeader]}>
+                <Text style={[styles.headerText, styles.headerTextStart]}>Date</Text>
               </View>
-            ))}
-          </View>
-
-          {/* Scrollable right section */}
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View>
-              {/* Header row */}
-              <View style={[styles.tableRow, styles.headerRow]}>
-                {Object.keys(dates).length > 0 &&
-                  Object.values(dates).map((d, index) => (
-                    <View key={index} style={[styles.cellDate, styles.headerCell]}>
-                      <Text style={styles.headerText}>{d}</Text>
-                    </View>
-                  ))}
-              </View>
-
-              {/* Data rows */}
               {rows.map((r, idx) => (
                 <View
                   key={r.key}
-                  style={[
-                    styles.tableRow,
-                    idx % 2 === 0 ? styles.rowEven : styles.rowOdd,
-                  ]}
-                >
-                  {r.values.map((v, i) => (
-                    <View key={i} style={[styles.cellDate, styles.valueCell]}>
-                      <Text style={styles.valueText}>{v}</Text>
-                    </View>
-                  ))}
+                  style={[styles.cellMetric, idx % 2 === 0 ? styles.rowEven : styles.rowOdd]}>
+                  <View style={styles.metricCellInner}>
+                    <IconCell iconKey={r.key} />
+                    <Text style={styles.metricLabel}>{r.label}</Text>
+                  </View>
                 </View>
               ))}
             </View>
-          </ScrollView>
-        </View>
 
-      </ScrollView>
-    </View>
+            {/* Scrollable right section */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View>
+                {/* Header row */}
+                <View style={[styles.tableRow, styles.headerRow]}>
+                  {Object.keys(dates).length > 0 &&
+                    Object.values(dates).map((d, index) => (
+                      <View key={index} style={[styles.cellDate, styles.headerCell]}>
+                        <Text style={styles.headerText}>{d}</Text>
+                      </View>
+                    ))}
+                </View>
+
+                {/* Data rows */}
+                {rows.map((r, idx) => (
+                  <View
+                    key={r.key}
+                    style={[
+                      styles.tableRow,
+                      idx % 2 === 0 ? styles.rowEven : styles.rowOdd,
+                    ]}
+                  >
+                    {r.values.map((v, i) => (
+                      <View key={i} style={[styles.cellDate, styles.valueCell]}>
+                        <Text style={styles.valueText}>{v}</Text>
+                      </View>
+                    ))}
+                  </View>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 

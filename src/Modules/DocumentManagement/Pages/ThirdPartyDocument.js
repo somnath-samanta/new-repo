@@ -200,7 +200,6 @@ function ThirdPartyDocument({ props }) {
     }
 
     const renderItem = (item) => {
-        console.log("=================********=========", item);
         return <>
             <View style={[styles.appointmentCardMainBox]}>
                 <View style={[styles.appointmentCard]}>

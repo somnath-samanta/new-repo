@@ -14,6 +14,8 @@ import RNFS from 'react-native-fs';
 import { savePatientDocumentsMutation } from "../Controller/DocumentManagementController"
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
+import DatePicker from "react-native-date-picker";
+
 const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientName }) => {
   const [documentObj, setDocumentObj] = useState({});
   const [selectedDocument, setSelectedDocument] = useState("");
@@ -29,6 +31,8 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
   const [documentNameError, setdocumentNameError] = useState(false);
   const [documentAutherError, setdocumentAutherError] = useState(false);
   const [organisationNameError, setorganisationNameError] = useState(false);
+  const [openDateofReport, setOpenDateofReport] = useState(false);
+  const [dateOfReport, setDateOfReport] = useState(new Date());
 
   const [SelectOptionForDocument, setselectOptionForDocument] = useState([
     { label: 'Passport', value: 'Current_signed_passport' },
@@ -483,6 +487,20 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
       delete newObj[key];
       return newObj;
     });
+  }
+
+  function formatDateWithSuffix(date) {
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "short" }); // "Apr"
+    const year = date.getFullYear();
+  
+    // Determine suffix
+    let suffix = "th";
+    if (day % 10 === 1 && day !== 11) suffix = "st";
+    else if (day % 10 === 2 && day !== 12) suffix = "nd";
+    else if (day % 10 === 3 && day !== 13) suffix = "rd";
+  
+    return `${day}${suffix} ${month} ${year}`;
   }
 
   return (

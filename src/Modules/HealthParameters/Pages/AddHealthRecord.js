@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -49,6 +49,44 @@ function AddHealthRecord() {
       return () => sub.remove();
     }, [navigation])
   );
+
+  // Calculate BMI when height and weight values are present
+  const calculateBMI = () => {
+    const mOrFt = parseFloat(heightM || '0');
+    const cmOrIn = parseFloat(heightCm || '0');
+    const kgOrLb = parseFloat(weightKg || '0');
+    const gOrOz = parseFloat(weightG || '0');
+
+    // Check if we have valid height and weight values
+    if ((mOrFt > 0 || cmOrIn > 0) && (kgOrLb > 0 || gOrOz > 0)) {
+      let heightInMeters, weightInKg;
+
+      if (isMetric) {
+        // Convert height to meters
+        heightInMeters = mOrFt + cmOrIn / 100;
+        // Convert weight to kg
+        weightInKg = kgOrLb + gOrOz / 1000;
+      } else {
+        // Convert feet and inches to meters (1 ft = 0.3048 m, 1 in = 0.0254 m)
+        heightInMeters = mOrFt * 0.3048 + cmOrIn * 0.0254;
+        // Convert pounds and ounces to kg (1 lb = 0.453592 kg, 1 oz = 0.0283495 kg)
+        weightInKg = kgOrLb * 0.453592 + gOrOz * 0.0283495;
+      }
+
+      // Calculate BMI: weight (kg) / height² (m²)
+      if (heightInMeters > 0) {
+        const bmiValue = weightInKg / (heightInMeters * heightInMeters);
+        setBmi(bmiValue.toFixed(2));
+      }
+    } else if (!heightM && !heightCm && !weightKg && !weightG) {
+      // Clear BMI if both height and weight are empty
+      setBmi('');
+    }
+  };
+  
+  useEffect(() => {
+    calculateBMI();
+  }, [heightM, heightCm, weightKg, weightG, isMetric]);
 
   const resetForm = () => {
     setHeightM('');

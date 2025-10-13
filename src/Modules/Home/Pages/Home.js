@@ -205,7 +205,7 @@ function Home({ props }) {
     }
 
     return (
-        <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
+        <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right', 'bottom']}>
             <View style={styles.container}>
                 <Loader style={styles.loadingCss} loading={pageLoading} />
                 {
@@ -216,12 +216,13 @@ function Home({ props }) {
                                 hideBookAppointmentScreen={hideBookAppointmentScreen}
                             />
                             <WebView
-                                source={{ uri: `${Config.bookingUrl}?data=${webViewData}` }}
+                                source={{ uri: `${Config.bookingUrl}?data=${webViewData}`  }}
                                 mediaPlaybackRequiresUserAction={false}
                                 allowsInlineMediaPlayback={true}
                                 javaScriptEnabled={true}
                                 domStorageEnabled={true}
                                 onMessage={handleMessage}
+                                style={{ flex: 1 }}
                             />
                         </> :
                         <>
@@ -239,7 +240,7 @@ function Home({ props }) {
                                 <View style={styles.topPanelTaxtBox}>
                                     <Text style={styles.topPanelTaxt}>Welcome to Oaktree Connect</Text>
                                 </View>
-                                <ScrollView>
+                                <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
                                     {/* <TouchableOpacity style={[styles.panelBox, styles.appointmentBox]} onPress={openWebsite}>
                                     <Text style={styles.panelBoxText}>Book an {'\n'} Appointment </Text>
                                 </TouchableOpacity> */}
@@ -325,11 +326,14 @@ function Home({ props }) {
 export default Home;
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#dff7f8',
+    },
     container: {
+        flex: 1,
         backgroundColor: '#dff7f8',
         position: 'relative',
-        width: screenWidth,
-        height: screenheight,
     },
     loadingCss: {
         display: 'flex',
@@ -365,13 +369,12 @@ const styles = StyleSheet.create({
         objectFit: 'contain',
     },
     panel: {
-        width: screenWidth,
-        height: screenheight,
+        flex: 1,
+        width: '100%',
         paddingHorizontal: 25,
         paddingVertical: 0,
         paddingTop: welcomeLogoheight,
         // backgroundColor:'blue'
-
     },
     topPanelTaxtBox: {
         margin: 0,

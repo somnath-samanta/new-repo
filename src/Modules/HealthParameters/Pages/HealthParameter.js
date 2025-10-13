@@ -209,8 +209,7 @@ function HealthParameter() {
                     refreshing={refreshing}
                     onRefresh={() => fetchVitals(true)}
                 />
-            </View>
-            {/* Footer */}
+                {/* Footer */}
             <View style={styles.footerBtns}>
                 <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onViewMonitoring}>
                     <Text style={styles.ctaText}>View Health Monitoring</Text>
@@ -219,6 +218,8 @@ function HealthParameter() {
                     <Text style={styles.ctaText}>Add New Record</Text>
                 </TouchableOpacity>
             </View>
+            </View>
+            
         </SafeAreaView>
     );
 }
@@ -228,7 +229,7 @@ export default HealthParameter;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#dff7f8',
-        //backgroundColor: 'red',
+    backgroundColor: 'red',
         position: 'relative',
         width: screenWidth,
         height: screenHeight,
@@ -242,11 +243,12 @@ const styles = StyleSheet.create({
         top: 0,
     },
     content: {
-        flex: 1,
+       flex: 1,
         paddingHorizontal: 15,
         paddingTop: 0,
         paddingBottom: 0,
-        // backgroundColor: 'blue',
+       //backgroundColor: 'blue',
+       //height: screenHeight - 170
     },
     gridContent: {
         paddingBottom: 10,
@@ -320,10 +322,10 @@ const styles = StyleSheet.create({
     //     backgroundColor: 'red'
     // },
     footerBtns: {
-        position: 'absolute',
-        left: 15,
-        right: 15,
-        bottom: Platform.OS === 'ios' ? 15 : 15,
+        // position: 'absolute',
+        // left: 15,
+        // right: 15,
+        // bottom: Platform.OS === 'ios' ? 15 : 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -334,7 +336,7 @@ const styles = StyleSheet.create({
 
     ctaBtn: {
         flex: 1, // 👈 ensures equal width for both buttons
-        borderRadius: 8,
+        borderRadius: 10,
         paddingVertical: 12,
         alignItems: 'center',
         justifyContent: 'center',
@@ -343,6 +345,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 2,
+        //paddingHorizontal:5,
     },
 
     ctaSecondary: {

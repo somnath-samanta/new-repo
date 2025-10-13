@@ -1109,10 +1109,21 @@ function AppointmentScreen(props) {
 
                         }
                         <View style={styles.searchBoxes}>
-                            <TouchableOpacity style={styles.searchBoX} onPress={() => handleFilter()}>
-                                <Image source={require('../../../Utility/Public/images/filter.png')} style={styles.filtericon} />
-                                <Text style={styles.searchBoXTxt}>Filter</Text>
-                            </TouchableOpacity>
+                            <View style={styles.searchBoxesLeft}>
+
+                                {
+                                    nextAppointment == null &&  nextAppointment == undefined &&
+                                    <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
+                                        onPress={handleGoBack}
+                                    >
+                                        <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
+                                    </TouchableOpacity>
+                                }
+                                <TouchableOpacity style={styles.searchBoX} onPress={() => handleFilter()}>
+                                    <Image source={require('../../../Utility/Public/images/filter.png')} style={styles.filtericon} />
+                                    <Text style={styles.searchBoXTxt}>Filter</Text>
+                                </TouchableOpacity>
+                            </View>
                             <TouchableOpacity style={styles.refreshBtn}
                                 onPress={refreshBtnFn}
                             >
@@ -1417,6 +1428,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: screenWidth,
+        //backgroundColor: 'red'
+    },
+    searchBoxesLeft: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
     },
     searchBoX: {
         // backgroundColor: 'red',
@@ -1611,7 +1628,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         //backgroundColor: "#24ad91",
-        marginTop: -10
+        marginTop: 10,
+        marginRight: 5,
 
     }
 

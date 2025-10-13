@@ -12,7 +12,8 @@ import Colors from '../Colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import DeviceInfo from 'react-native-device-info';
 import { LogOut } from './LogOut';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 function CustomDrawerContent(props) {
   const { isDarkTheme, toggleTheme } = useTheme();
@@ -31,7 +32,7 @@ function CustomDrawerContent(props) {
   const { clearLocalStorage } = LogOut();
   const DrawerItemWithIcon = ({ label, icon, onPress, isActive }) => (
     <TouchableOpacity
-      style={[theme.drawerItem, isActive && theme.activeDrawerItem, { borderBottomWidth:1, borderBottomColor:'#eee',}]}
+      style={[theme.drawerItem, isActive && theme.activeDrawerItem, { borderBottomWidth: 1, borderBottomColor: '#eee', }]}
       onPress={onPress}
     >
       <Icon name={icon} size={24} color={Colors.green01} />
@@ -43,10 +44,14 @@ function CustomDrawerContent(props) {
 
   const DrawerItemWithIconForSubItem = ({ label, icon, onPress, isActive }) => (
     <TouchableOpacity
-      style={[theme.drawerItem, theme.drawerSubItem, isActive && theme.activeDrawerItem, { borderBottomWidth:1, borderBottomColor:'#eee',}]}
+      style={[theme.drawerItem, theme.drawerSubItem, isActive && theme.activeDrawerItem, { borderBottomWidth: 1, borderBottomColor: '#eee', }]}
       onPress={onPress}
     >
-      <Icon name={icon} size={24} color={Colors.green01} />
+      {icon == 'pulse' &&
+        <Ionicons name={icon} size={24} color={Colors.green01} />}
+      {icon == 'clipboard-list' &&
+        <FontAwesome5 name={icon} size={24} color={Colors.green01} />}
+
       <Text style={[theme.drawerItemText]}>
         {label}
       </Text>
@@ -62,17 +67,17 @@ function CustomDrawerContent(props) {
     { label: 'Home', icon: 'home', route: 'Home' },
     { label: 'Appointment', icon: 'calendar', route: 'Appointment' },
     { label: 'My Therapy Tasks', icon: 'new-message', route: 'Therapy', isDropdown: true, dropdownType: 'therapyTasks' },
-    { label: 'Documents', icon: 'book', route: 'Document', isDropdown: true , dropdownType: 'documents'},
+    { label: 'Documents', icon: 'book', route: 'Document', isDropdown: true, dropdownType: 'documents' },
     { label: 'Profile', icon: 'user', route: 'Profile' },
   ];
 
   const documentSubItems = [
     { label: 'My Document', icon: 'book', route: 'MyDocument' },
-    { label: '3rd Party Document', icon: 'book', route: 'ThirdPartyDocument' }, 
+    { label: '3rd Party Document', icon: 'book', route: 'ThirdPartyDocument' },
   ];
   const therapyTaskSubItems = [
-    { label: 'Questionnaire', icon: 'new-message', route: 'Questionnaire' },
-    // { label: 'Task 2', icon: 'task', route: 'Task2' },
+    { label: 'Physical Parameters', icon: 'pulse', route: 'HealthParameter' },
+    { label: 'Questionnaire', icon: 'clipboard-list', route: 'Questionnaire' },
   ];
 
   const logoutApp = () => {
@@ -165,11 +170,11 @@ function CustomDrawerContent(props) {
   const handleDrawerItemPress = (item) => {
     if (item.isDropdown) {
       if (item.dropdownType === 'therapyTasks') {
-        setTherapyTasksExpanded((prev) => !prev);  
-        setDocumentsExpanded(false);              
+        setTherapyTasksExpanded((prev) => !prev);
+        setDocumentsExpanded(false);
       } else if (item.dropdownType === 'documents') {
-        setDocumentsExpanded((prev) => !prev);    
-        setTherapyTasksExpanded(false);            
+        setDocumentsExpanded((prev) => !prev);
+        setTherapyTasksExpanded(false);
       }
     } else {
       props.navigation.navigate(item.route);
@@ -180,23 +185,23 @@ function CustomDrawerContent(props) {
   useEffect(() => {
     let currentRoute = props.state?.routeNames[props.state.index] || '';
     console.log(">>>>>>>>>>>>>>>>>>>", currentRoute)
-    if(["Home", "Appointment", "Profile",].includes(currentRoute)){
-    setDocumentsExpanded(false);
-    setTherapyTasksExpanded(false); 
-    }      
+    if (["Home", "Appointment", "Profile",].includes(currentRoute)) {
+      setDocumentsExpanded(false);
+      setTherapyTasksExpanded(false);
+    }
   }, [props.state]);
 
   const currentRoute = props.state?.routeNames[props.state.index] || '';
-  
-  
+
+
 
   return (
-    <View style={[theme.drawerContainer, { paddingTop: Platform.OS == 'ios' ? 0: 0 }]}>
+    <View style={[theme.drawerContainer, { paddingTop: Platform.OS == 'ios' ? 0 : 0 }]}>
       <TouchableOpacity onPress={() => {
         props.navigation.closeDrawer();
         setDocumentsExpanded(false);
         setTherapyTasksExpanded(false);
-      }} style={[theme.closeDrawerButton, { marginTop: Platform.OS == 'ios' ? 10 : 10}]}>
+      }} style={[theme.closeDrawerButton, { marginTop: Platform.OS == 'ios' ? 10 : 10 }]}>
         <MaterialIcons name="close" size={20} color={isDarkTheme ? Colors.white : Colors.white} />
       </TouchableOpacity>
       <View style={theme.leftHeader}>
@@ -251,13 +256,13 @@ function CustomDrawerContent(props) {
         )}
         contentContainerStyle={theme.drawerItems}
       />
-      <TouchableOpacity style={[theme.drawerItem, theme.logoutBtn, {borderBottomWidth:1, borderBottomColor:'#eee', borderTopWidth:1, borderTopColor:'#eee',}]} onPress={logoutApp}>
+      <TouchableOpacity style={[theme.drawerItem, theme.logoutBtn, { borderBottomWidth: 1, borderBottomColor: '#eee', borderTopWidth: 1, borderTopColor: '#eee', }]} onPress={logoutApp}>
         <AntDesign name="logout" size={24} color={Colors.green03} />
         <Text style={[theme.drawerItemText]}>
           Logout
         </Text>
       </TouchableOpacity>
-      <Text style={Platform.OS === 'ios' ? [theme.versionColor, {borderBottomWidth:1, borderBottomColor:'#eee', height:50}]: [theme.versionColor, {borderBottomWidth:1, borderBottomColor:'#eee'}]}>App Version: {appVersion}</Text>
+      <Text style={Platform.OS === 'ios' ? [theme.versionColor, { borderBottomWidth: 1, borderBottomColor: '#eee', height: 50 }] : [theme.versionColor, { borderBottomWidth: 1, borderBottomColor: '#eee' }]}>App Version: {appVersion}</Text>
       {/* <View style={{ marginBottom: 30 }}></View> */}
     </View>
   );

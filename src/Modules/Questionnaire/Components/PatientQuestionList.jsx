@@ -445,8 +445,8 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
             <View style={styles.footer}>
                 <View style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.actionRowBoxs] : [styles.actionRowBoxsPart]}>
                     <Text style={styles.mainViewTxtTotal}>Total Score: {sumofData}</Text>
-                    <View 
-                     style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.actionRow] : [styles.actionRowBox]}
+                    <View
+                        style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.actionRow] : [styles.actionRowBox]}
                     >
                         {
                             (selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ?
@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
     },
     footer: {
         //padding: 16,
-        backgroundColor: '#fff',
+        //backgroundColor: '#fff',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     saveExitButtonTxt: {
-        color: '#000',
+        color: '#219880',
         fontSize: 16,
         fontWeight: 'bold',
     },
@@ -541,9 +541,12 @@ const styles = StyleSheet.create({
         paddingTop: 0,
         //paddingBottom:  Platform.OS == "ios" ? 170 : 160,
         paddingBottom: Platform.OS == "ios" ? 20 : 10,
+        //backgroundColor:'red',
+        paddingBottom: 60,
     },
     mainViewBoxx: {
-        paddingBottom: Platform.OS == "ios" ? 20 : 10,
+        paddingBottom: Platform.OS == "ios" ? 20 : 60,
+        // backgroundColor:'red'
     },
 
     mainViewTxt: {
@@ -556,7 +559,7 @@ const styles = StyleSheet.create({
     },
     mainViewTxtTotal: {
         color: '#333', fontSize: 14, lineHeight: 18, marginTop: 5, marginBottom: 10, fontFamily: 'Arimo-Bold',
-        paddingHorizontal: 0, height: Platform.OS == "ios" && 40, 
+        paddingHorizontal: 0, height: Platform.OS == "ios" && 40,
     },
     containers: {
         backgroundColor: '#fff',
@@ -678,44 +681,50 @@ const styles = StyleSheet.create({
         // backgroundColor: 'white', // Input background for light theme
     },
     actionRowBoxs: {
-        backgroundColor: '#fff',
+        backgroundColor: '#dff7f8',
+        //backgroundColor: 'blue',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        width: '100%',
+        width: screenWidth - 25,
         padding: 5,
-        paddingHorizontal: 15,
+        paddingHorizontal:0,
         borderColor: '#ddd',
         borderTopWidth: 0.5,
         paddingBottom: 15,
         borderWidth: 1,
-        borderColor: '#000'
+        borderColor: '#dff7f8',
+        flexWrap:'wrap'
 
     },
     actionRowBoxsPart: {
-       // backgroundColor: 'red',
+        backgroundColor: '#dff7f8',
         width: '100%',
         padding: 5,
-        paddingHorizontal:15,
+        paddingHorizontal: 15,
         textAlign: 'center',
         display: 'flex',
-        flexDirection:'row',
-        justifyContent:'space-between'
-       
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+
 
     },
     actionRow: {
-        flexDirection: 'row', // Align children in a row
-        alignItems: 'center',  // Center items vertically
+        display:'flex',
+        flexDirection: 'row',
+        alignItems: 'center',  
         justifyContent: 'space-between',
         marginTop: 0,
-        //flexWrap: 'wrap',
+        flexWrap: 'wrap',
         //bottom: Platform.OS == 'ios' ? 20 : 0,
-        // backgroundColor: 'yellow',
+      // backgroundColor: 'yellow',
         padding: 0,
-        display: 'flex',
-        width: '100%',
+        width: screenWidth -25,
+       // height:50,
+        
+       // paddingRight:20,
+       // width: screenWidth -25,
         // borderWidth: 1,
         // borderColor: '#000'
     },
@@ -724,10 +733,10 @@ const styles = StyleSheet.create({
         // bottom: 0,
     },
     cancelButton: {
-        backgroundColor: Colors.gray99,   // Replace Colors.green01 with actual color
+        backgroundColor: '#7f7f7f',   // Replace Colors.green01 with actual color
     },
     SendButton: {
-        backgroundColor: '#007b80',
+        backgroundColor: '#229980',
         marginLeft: 10,
     },
     saveExitButton: {
@@ -736,8 +745,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     buttonRowBoxs: {
-        //backgroundColor:'red',
-        width: '100%',
+       // backgroundColor:'red',
+        //width: '100%',
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'row'
@@ -747,7 +756,7 @@ const styles = StyleSheet.create({
         padding: 0,
         paddingTop: 10,
         paddingBottom: 10,            // Add padding for better spacing
-        borderRadius: 3,             // Optional: Rounded corners
+        borderRadius: 10,             // Optional: Rounded corners
         alignItems: 'center',
         //flex: 1,        // Center the text
         // width: '48.5%',
@@ -800,7 +809,7 @@ const pickerStyle = {
         padding: 5,
         paddingVertical: 10,
         margin: 0,
-         fontFamily: 'Arimo-Regular',
+        fontFamily: 'Arimo-Regular',
     },
     placeholder: {
         color: '#000',
@@ -813,7 +822,7 @@ const pickerStyle = {
         fontWeight: 'bold',
         padding: 0,
         margin: 0,
-         fontFamily: 'Arimo-Regular',
+        fontFamily: 'Arimo-Regular',
     },
 };
 

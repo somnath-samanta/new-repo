@@ -37,7 +37,7 @@ import { LogOut } from '../../../Utility/Components/LogOut';
 import { WebView } from 'react-native-webview';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { StatusBar } from 'react-native';
 function Home({ props }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -205,7 +205,14 @@ function Home({ props }) {
     }
 
     return (
-        <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right', 'bottom']}>
+        <SafeAreaView
+            style={{
+                flex: 1,
+                paddingTop: Platform.OS === 'ios' ? StatusBar.currentHeight : 0,
+                paddingBottom: 0,
+            }}
+            edges={['left', 'right']}   // remove top & bottom safe padding
+        >
             <View style={styles.container}>
                 <Loader style={styles.loadingCss} loading={pageLoading} />
                 {
@@ -216,19 +223,18 @@ function Home({ props }) {
                                 hideBookAppointmentScreen={hideBookAppointmentScreen}
                             />
                             <WebView
-                                source={{ uri: `${Config.bookingUrl}?data=${webViewData}`  }}
+                                source={{ uri: `${Config.bookingUrl}?data=${webViewData}` }}
                                 mediaPlaybackRequiresUserAction={false}
                                 allowsInlineMediaPlayback={true}
                                 javaScriptEnabled={true}
                                 domStorageEnabled={true}
                                 onMessage={handleMessage}
-                                style={{ flex: 1 }}
                             />
                         </> :
                         <>
                             <Image source={require('../../../Utility/Public/images/oaktreeLogo.png')} style={styles.oaktreeLogo} />
                             <TouchableOpacity
-                                style={[styles.signout]} // Temporary background for testing
+                                style={[styles.signout]}
                                 onPress={() => logoutApp()}
                             >
                                 <Image
@@ -236,24 +242,14 @@ function Home({ props }) {
                                     style={{ width: 24, height: 24 }}
                                 />
                             </TouchableOpacity>
-                            <View style={[styles.panel]}>
+
+                            <View style={styles.panel}>
                                 <View style={styles.topPanelTaxtBox}>
                                     <Text style={styles.topPanelTaxt}>Welcome to Oaktree Connect</Text>
                                 </View>
-                                <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
-                                    {/* <TouchableOpacity style={[styles.panelBox, styles.appointmentBox]} onPress={openWebsite}>
-                                    <Text style={styles.panelBoxText}>Book an {'\n'} Appointment </Text>
-                                </TouchableOpacity> */}
-                                    {/* <TouchableOpacity style={[styles.panelBox, styles.panelBoxDocument]} onPress={myDocumentLink}>
-                                    <Text style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>My Documents</Text>
-                                    <Image
-                                        source={require('../../../Utility/Public/images/idCard.png')}
-                                        style={[styles.calenderImage, styles.calenderImagedocument]}
-                                    />
-                                    <Text style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>Upload Your Photo ID</Text>
-                                </TouchableOpacity> */}
+
+                                <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
                                     <TouchableOpacity style={[styles.panelBox, styles.panelBoxDocument]} onPress={appointmentLink}>
-                                        {/* <Text style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>My Documents</Text> */}
                                         <View style={styles.innerPanelBoxDocument}>
                                             <Image
                                                 source={require('../../../Utility/Public/images/clock.png')}
@@ -279,7 +275,6 @@ function Home({ props }) {
                                             <Text style={styles.panelBoxRightMainTextDown}>View / Upload{'\n'}3rd Party Documents</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={styles.middlePanelBox} onPress={myDocumentLink}>
-
                                             <Image
                                                 source={require('../../../Utility/Public/images/icon2.png')}
                                                 style={[styles.calenderImage, styles.appointmentsIcon]}
@@ -287,6 +282,7 @@ function Home({ props }) {
                                             <Text style={styles.panelBoxRightMainTextDown}>Upload ID</Text>
                                         </TouchableOpacity>
                                     </View>
+
                                     <View style={styles.middlePanelBoxRight}>
                                         <Text style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
                                         <View style={styles.myTherapyTasks}>
@@ -310,17 +306,14 @@ function Home({ props }) {
                                             </TouchableOpacity>
                                         </View>
                                     </View>
-                                    {/* <TouchableOpacity style={[styles.panelBox, styles.appointmentBox]} onPress={goToAppointmentScreen}>
-                                    <Text style={styles.panelBoxText}>Book an {'\n'} Appointment </Text>
-                                </TouchableOpacity> */}
-
                                 </ScrollView>
                             </View>
                         </>
                 }
-            </View >
+            </View>
         </SafeAreaView>
     );
+
 }
 
 export default Home;
@@ -328,12 +321,20 @@ export default Home;
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#dff7f8',
+        paddingTop: 0,  // removes extra space at top
     },
     container: {
-        flex: 1,
         backgroundColor: '#dff7f8',
         position: 'relative',
+        width: screenWidth,
+        flex: 1, // instead of height: screenheight
+    },
+    panel: {
+        width: screenWidth,
+        flex: 1, // instead of height: screenheight
+        paddingHorizontal: 25,
+        paddingVertical: 0,
+        paddingTop: welcomeLogoheight,
     },
     loadingCss: {
         display: 'flex',
@@ -368,14 +369,16 @@ const styles = StyleSheet.create({
         width: 40,
         objectFit: 'contain',
     },
-    panel: {
-        flex: 1,
-        width: '100%',
-        paddingHorizontal: 25,
-        paddingVertical: 0,
-        paddingTop: welcomeLogoheight,
-        // backgroundColor:'blue'
-    },
+    // panel: {
+    //     width: screenWidth,
+    //     height: screenheight,
+    //     paddingHorizontal: 25,
+    //     paddingVertical: 0,
+    //     paddingTop: welcomeLogoheight,
+    //     // backgroundColor:'blue'
+
+
+    // },
     topPanelTaxtBox: {
         margin: 0,
         padding: 0,

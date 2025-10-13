@@ -186,8 +186,8 @@ function HealthParameter() {
     };
     return (
         // <View style={styles.container}>
-        // <SafeAreaView style={{ flex: 1, backgroundColor: '#E6F6F3' }}>
-        <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right', 'bottom']}>
+        <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
+
             <Loader style={styles.loadingCss} loading={pageLoading} />
             <CustomHeader
                 pageName="Health Parameters"
@@ -230,12 +230,13 @@ export default HealthParameter;
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-       // backgroundColor: 'red',
-        padding:0,
+        backgroundColor: '#E6F6F3',
+        marginTop: Platform.OS === 'android' ? 0 : -StatusBar.currentHeight || 0,
+        paddingTop: 0,
     },
     container: {
         backgroundColor: '#dff7f8',
-       // backgroundColor: 'red',
+        // backgroundColor: 'red',
         position: 'relative',
         width: screenWidth,
         height: screenHeight,

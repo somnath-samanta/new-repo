@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, BackHandler, FlatList, TouchableOpacity, Image, SafeAreaView, Platform } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, BackHandler, FlatList, TouchableOpacity, Image, Platform } from 'react-native';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import Loader from '../../../Utility/Components/Loader';
 import Colors from '../../../Utility/Colors';
@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getPatientHealthProfile } from '../Controller/HealthParametersController';
 import { useSelector } from 'react-redux';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const screen = Dimensions.get("window");
 const screenWidth = screen.width;
@@ -185,7 +186,8 @@ function HealthParameter() {
     };
     return (
         // <View style={styles.container}>
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#E6F6F3' }}>
+        // <SafeAreaView style={{ flex: 1, backgroundColor: '#E6F6F3' }}>
+        <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right', 'bottom']}>
             <Loader style={styles.loadingCss} loading={pageLoading} />
             <CustomHeader
                 pageName="Health Parameters"
@@ -193,11 +195,10 @@ function HealthParameter() {
             />
 
             <View style={styles.content}>
-                <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
-                    onPress={handleGoBack}
-                >
+                <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]} onPress={handleGoBack}>
                     <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
                 </TouchableOpacity>
+
                 <FlatList
                     contentContainerStyle={styles.gridContent}
                     data={metrics}
@@ -209,27 +210,32 @@ function HealthParameter() {
                     refreshing={refreshing}
                     onRefresh={() => fetchVitals(true)}
                 />
-                {/* Footer */}
-            <View style={styles.footerBtns}>
-                <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onViewMonitoring}>
-                    <Text style={styles.ctaText}>View Health Monitoring</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.ctaBtn, styles.ctaSecondary]} onPress={onAddNewRecord}>
-                    <Text style={styles.ctaText}>Add New Record</Text>
-                </TouchableOpacity>
+
+                <View style={styles.footerBtns}>
+                    <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onViewMonitoring}>
+                        <Text style={styles.ctaText}>View Health Monitoring</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.ctaBtn, styles.ctaSecondary]} onPress={onAddNewRecord}>
+                        <Text style={styles.ctaText}>Add New Record</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            </View>
-            
         </SafeAreaView>
+
     );
 }
 
 export default HealthParameter;
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+       // backgroundColor: 'red',
+        padding:0,
+    },
     container: {
         backgroundColor: '#dff7f8',
-    backgroundColor: 'red',
+       // backgroundColor: 'red',
         position: 'relative',
         width: screenWidth,
         height: screenHeight,
@@ -243,12 +249,12 @@ const styles = StyleSheet.create({
         top: 0,
     },
     content: {
-       flex: 1,
+        flex: 1,
         paddingHorizontal: 15,
         paddingTop: 0,
         paddingBottom: 0,
-       //backgroundColor: 'blue',
-       //height: screenHeight - 170
+        //backgroundColor: 'blue',
+        //height: screenHeight - 170
     },
     gridContent: {
         paddingBottom: 10,

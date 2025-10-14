@@ -47,9 +47,7 @@ const Drawer = createDrawerNavigator();
 const DefaultLayout = createStackNavigator();
 LogBox.ignoreAllLogs();
 
-
-//export const navigationRef = createNavigationContainerRef();
-
+//export const navigationRef = createNavigationContainerRef(+++++++++++++++++);
 
 const DefaultLayoutScreen = ({ navigation }) => (
   <DefaultLayout.Navigator>
@@ -361,8 +359,7 @@ function App() {
     //   </MenuProvider>
     // </SafeAreaProvider>
     // </Provider>
-<Provider store={store}>
-  <SafeAreaProvider>
+    <SafeAreaProvider>
         {/* <GestureRecognizerView
           detectSwipeUp={false}
           detectSwipeDown={false}
@@ -476,11 +473,8 @@ function App() {
       </ThemeProvider>
     </MenuProvider>
         {/* </GestureRecognizerView> */}
-          </SwipeWrapper>
-  </SafeAreaProvider>
-</Provider>
-
-
+      </SwipeWrapper>
+    </SafeAreaProvider>
   );
 }
 

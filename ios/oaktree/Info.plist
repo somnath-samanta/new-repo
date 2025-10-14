@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>oaktree</string>
+	<string>Oaktree</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,16 +26,59 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-	  <!-- Do not change NSAllowsArbitraryLoads to true, or you will risk app rejection! -->
 		<key>NSAllowsArbitraryLoads</key>
 		<false/>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Oaktree requires camera access to take photos for document uploads and for video calls.</string>
+	<key>NSDocumentDirectoryUsageDescription</key>
+	<string>Oaktree requires access to save and manage your documents securely within the app.</string>
+	<key>NSFileProtectionKey</key>
+	<string>NSFileProtectionCompleteUntilFirstUserAuthentication</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Oaktree requires microphone access to record audio for communication purposes.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Oaktree requires permission to save edited or captured photos to your library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Oaktree requires access to your photo library to select photos or documents for upload.</string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>fonts/Roboto-Regular.ttf</string>
+		<string>fonts/Roboto-Black.ttf</string>
+		<string>fonts/Roboto-Bold.ttf</string>
+		<string>fonts/Roboto-Thin.ttf</string>
+		<string>fonts/Roboto-Medium.ttf</string>
+		<string>fonts/Roboto-Light.ttf</string>
+		<string>fonts/AntDesign.ttf</string>
+		<string>fonts/Entypo.ttf</string>
+		<string>fonts/EvilIcons.ttf</string>
+		<string>fonts/Feather.ttf</string>
+		<string>fonts/FontAwesome.ttf</string>
+		<string>fonts/Fontisto.ttf</string>
+		<string>fonts/Foundation.ttf</string>
+		<string>fonts/Ionicons.ttf</string>
+		<string>fonts/MaterialIcons.ttf</string>
+		<string>fonts/MaterialCommunityIcons.ttf</string>
+		<string>fonts/Octicons.ttf</string>
+		<string>fonts/Zocial.ttf</string>
+		<string>fonts/SimpleLineIcons.ttf</string>
+		<string>fonts/Montserrat-Black.ttf</string>
+		<string>fonts/Montserrat-Bold.ttf</string>
+		<string>fonts/Montserrat-SemiBold.ttf</string>
+		<string>fonts/Montserrat-ExtraBold.ttf</string>
+		<string>fonts/Montserrat-Thin.ttf</string>
+		<string>fonts/Montserrat-Medium.ttf</string>
+		<string>fonts/Montserrat-Light.ttf</string>
+		<string>fonts/Montserrat-Regular.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>arm64</string>

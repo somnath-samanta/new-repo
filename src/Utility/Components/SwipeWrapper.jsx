@@ -4,26 +4,26 @@ import { View, Text, StyleSheet } from 'react-native';
 
 export default SwipeWrapper = ({ children, onSwipeLeft, onSwipeRight }) => {
     return (
-        <GestureHandlerRootView >
-        <FlingGestureHandler
-            direction={Directions.LEFT}
-            onHandlerStateChange={({ nativeEvent }) => {
-                if (nativeEvent.state === State.END) {
-                    onSwipeLeft && onSwipeLeft();
-                }
-            }}
-        >
+        <GestureHandlerRootView style={{ flex: 1 }}>
             <FlingGestureHandler
-                direction={Directions.RIGHT}
+                direction={Directions.LEFT}
                 onHandlerStateChange={({ nativeEvent }) => {
                     if (nativeEvent.state === State.END) {
-                        onSwipeRight && onSwipeRight();
+                        onSwipeLeft && onSwipeLeft();
                     }
                 }}
             >
-                <View style={{ flex: 1 }}>{children}</View>
+                <FlingGestureHandler
+                    direction={Directions.RIGHT}
+                    onHandlerStateChange={({ nativeEvent }) => {
+                        if (nativeEvent.state === State.END) {
+                            onSwipeRight && onSwipeRight();
+                        }
+                    }}
+                >
+                    <View style={{ flex: 1 }}>{children}</View>
+                </FlingGestureHandler>
             </FlingGestureHandler>
-        </FlingGestureHandler>
         </GestureHandlerRootView>
     );
 };

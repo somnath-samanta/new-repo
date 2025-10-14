@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, Text, View, TouchableOpacity, Dimensions } from "react-native";
-import { ModalView } from 'react-native-multiple-modals';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CommonStyle from '../Public/css/CommonStyle';
 import Colors from '../Colors';
@@ -26,17 +25,24 @@ const GlobalModal = ({
     return (
         <View>
             {visible && (
-            <ModalView
-                key={visible ? "visible" : "hidden"} 
+            <Modal
+                key={visible ? "visible" : "hidden"}
                 animationType="slide"
                 transparent={true}
                 visible={visible}
+                onRequestClose={onCancel}
             >
                 <View style={CommonStyle.modalDialog}>
-                    <View style={[CommonStyle.modalContent, style = { width: modalContentWidth }]}>
+                    <View style={[CommonStyle.modalContent, { width: modalContentWidth }]}>
                         {header ? (
                             <View style={CommonStyle.modalHeader}>
-                                {showHeaderTitle && <Text style={CommonStyle.modalHeading}>{headerTitle}</Text>}
+                                {showHeaderTitle && (
+                                    typeof headerTitle === 'string' ? (
+                                        <Text style={CommonStyle.modalHeading}>{headerTitle}</Text>
+                                    ) : (
+                                        <View style={CommonStyle.modalHeading}>{headerTitle}</View>
+                                    )
+                                )}
                                 {showHeaderCrossBtn && (
                                     <TouchableOpacity activeOpacity={1} style={CommonStyle.modalCancelCrossBtn} onPress={onCancel}>
                                         <AntDesign name="close" size={16} color={Colors.white} />
@@ -65,7 +71,7 @@ const GlobalModal = ({
                         ) : null}
                     </View>
                 </View>
-            </ModalView>)}
+            </Modal>)}
         </View>
     );
 };

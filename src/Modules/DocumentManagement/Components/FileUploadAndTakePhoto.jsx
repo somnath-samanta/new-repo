@@ -14,6 +14,8 @@ import RNFS from 'react-native-fs';
 import { savePatientDocumentsMutation } from "../Controller/DocumentManagementController"
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
+import DatePicker from "react-native-date-picker";
+
 const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientName }) => {
   const [documentObj, setDocumentObj] = useState({});
   const [selectedDocument, setSelectedDocument] = useState("");
@@ -29,6 +31,8 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
   const [documentNameError, setdocumentNameError] = useState(false);
   const [documentAutherError, setdocumentAutherError] = useState(false);
   const [organisationNameError, setorganisationNameError] = useState(false);
+  const [openDateofReport, setOpenDateofReport] = useState(false);
+  const [dateOfReport, setDateOfReport] = useState(new Date());
 
   const [SelectOptionForDocument, setselectOptionForDocument] = useState([
     { label: 'Passport', value: 'Current_signed_passport' },
@@ -301,79 +305,79 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
   //   };
   const selectFile = async () => {
     //console.log("selectedDocument========", selectedDocument)
-   /* if (selectedDocument == null || selectedDocument == "") {
-      Toast.show("Please select a document type");
-    } else {
-      if (Object.keys(documentObj).length < 3) {
-        try {
-          const response = await DocumentPicker.pick({
-            type: [
-              DocumentPicker.types.images,
-              DocumentPicker.types.pdf,
-              DocumentPicker.types.doc,
-              DocumentPicker.types.docx,
-            ],
-          });
-
-          // console.log("response---------------", response[0]);
-
-          // Correct file size calculation
-          const fileSize = response[0].size / (1024 * 1024); // Convert bytes to MB
-          if (fileSize > 5) {
-            Toast.show("Please ensure that the document you upload is no more than 5 MB");
-            return false;
-          }
-
-          // Validate file extension
-          let fileName = response[0].name.split(".");
-          let fileExtension = fileName[fileName.length - 1].toLowerCase();
-
-          if (["jpg", "jpeg", "png", "pdf", "doc", "docx"].includes(fileExtension)) {
-            const fileType = response[0].type;
-            const fileUri =
-              Platform.OS === "android"
-                ? response[0].uri
-                : response[0]?.uri?.startsWith("file://")
-                  ? response[0]?.uri.replace("file://", "")
-                  : response[0]?.uri;
-
-            let base64String = await RNFS.readFile(fileUri, "base64");
-            let mimeType = response[0].type || "application/octet-stream";
-            let base64WithPrefix = `data:${mimeType};base64,${base64String}`;
-
-            if (["jpg", "jpeg", "png"].includes(fileExtension)) {
-              // Handle cropping or other processing for images if required
-              base64String = await cropImage(fileUri, fileExtension);
-            }
-
-            // Update document object
-            setDocumentObj((prevImageUri) => ({
-              ...prevImageUri,
-              [selectedDocument]: {
-                uri: base64WithPrefix,
-                type: fileType,
-                name: response[0].name,
-              },
-            }));
-
-            setSelectedDocument(""); // Reset document type selection
-          } else {
-            Toast.show(
-              "Please upload files in one of the following formats: PNG, JPEG, JPG, or PDF."
-            );
-          }
-        } catch (err) {
-          if (DocumentPicker.isCancel(err)) {
-            console.log("User cancelled file picker");
-          } else {
-            console.error("DocumentPicker Error:", err);
-            Toast.show("An error occurred while selecting the file.");
-          }
-        }
-      } else {
-        Toast.show("Maximum upload up to 3 documents.");
-      }
-    }*/
+    /* if (selectedDocument == null || selectedDocument == "") {
+       Toast.show("Please select a document type");
+     } else {
+       if (Object.keys(documentObj).length < 3) {
+         try {
+           const response = await DocumentPicker.pick({
+             type: [
+               DocumentPicker.types.images,
+               DocumentPicker.types.pdf,
+               DocumentPicker.types.doc,
+               DocumentPicker.types.docx,
+             ],
+           });
+ 
+           // console.log("response---------------", response[0]);
+ 
+           // Correct file size calculation
+           const fileSize = response[0].size / (1024 * 1024); // Convert bytes to MB
+           if (fileSize > 5) {
+             Toast.show("Please ensure that the document you upload is no more than 5 MB");
+             return false;
+           }
+ 
+           // Validate file extension
+           let fileName = response[0].name.split(".");
+           let fileExtension = fileName[fileName.length - 1].toLowerCase();
+ 
+           if (["jpg", "jpeg", "png", "pdf", "doc", "docx"].includes(fileExtension)) {
+             const fileType = response[0].type;
+             const fileUri =
+               Platform.OS === "android"
+                 ? response[0].uri
+                 : response[0]?.uri?.startsWith("file://")
+                   ? response[0]?.uri.replace("file://", "")
+                   : response[0]?.uri;
+ 
+             let base64String = await RNFS.readFile(fileUri, "base64");
+             let mimeType = response[0].type || "application/octet-stream";
+             let base64WithPrefix = `data:${mimeType};base64,${base64String}`;
+ 
+             if (["jpg", "jpeg", "png"].includes(fileExtension)) {
+               // Handle cropping or other processing for images if required
+               base64String = await cropImage(fileUri, fileExtension);
+             }
+ 
+             // Update document object
+             setDocumentObj((prevImageUri) => ({
+               ...prevImageUri,
+               [selectedDocument]: {
+                 uri: base64WithPrefix,
+                 type: fileType,
+                 name: response[0].name,
+               },
+             }));
+ 
+             setSelectedDocument(""); // Reset document type selection
+           } else {
+             Toast.show(
+               "Please upload files in one of the following formats: PNG, JPEG, JPG, or PDF."
+             );
+           }
+         } catch (err) {
+           if (DocumentPicker.isCancel(err)) {
+             console.log("User cancelled file picker");
+           } else {
+             console.error("DocumentPicker Error:", err);
+             Toast.show("An error occurred while selecting the file.");
+           }
+         }
+       } else {
+         Toast.show("Maximum upload up to 3 documents.");
+       }
+     }*/
   };
 
 
@@ -485,6 +489,20 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     });
   }
 
+  function formatDateWithSuffix(date) {
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "short" }); // "Apr"
+    const year = date.getFullYear();
+  
+    // Determine suffix
+    let suffix = "th";
+    if (day % 10 === 1 && day !== 11) suffix = "st";
+    else if (day % 10 === 2 && day !== 12) suffix = "nd";
+    else if (day % 10 === 3 && day !== 13) suffix = "rd";
+  
+    return `${day}${suffix} ${month} ${year}`;
+  }
+
   return (
     // <View style={styles.photoModalcontainer}>
     //   <Loader style={styles.loadingCss} loading={pageLoading} />
@@ -570,6 +588,18 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                   placeholderTextColor="#000"
                 />
               </View>
+              <View style={[documentNameError ? styles.inputContainermandatory : styles.inputContainer]}>
+                <TextInput
+                  style={styles.input}
+                  value={documentName}
+                  onChangeText={(text) => {
+                    setDocumentName(text),
+                      setdocumentNameError(false)
+                  }}
+                  placeholder="Date of Report"
+                  placeholderTextColor="#000"
+                />
+              </View>
 
               {/* <View style={[documentAutherError ? styles.inputContainermandatory : styles.inputContainer]}>
                 <TextInput
@@ -583,6 +613,19 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                   placeholderTextColor="#000"
                 />
               </View> */}
+
+              <View style={[organisationNameError ? styles.inputContainermandatory : styles.inputContainer]}>
+                <TextInput
+                  style={styles.input}
+                  value={organisationName}
+                  onChangeText={(text) => {
+                    setOrganisationName(text),
+                      setorganisationNameError(false)
+                  }}
+                  placeholder="Organisation Name"
+                  placeholderTextColor="#000"
+                />
+              </View>
 
               <View style={[styles.tagInputContainer]}>
                 <TextInput
@@ -616,19 +659,6 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     </View>
                   ))}
                 </View>
-              </View>
-
-              <View style={[organisationNameError ? styles.inputContainermandatory : styles.inputContainer]}>
-                <TextInput
-                  style={styles.input}
-                  value={organisationName}
-                  onChangeText={(text) => {
-                    setOrganisationName(text),
-                      setorganisationNameError(false)
-                  }}
-                  placeholder="Organisation Name"
-                  placeholderTextColor="#000"
-                />
               </View>
               {/* <View style={styles.documentTypeSecBox}>
             <View style={styles.documentTypeSec}>
@@ -664,7 +694,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           </TouchableOpacity>
         </View>
         <Text></Text>
-        <Text style={styles.hintTxt}>* Camera Permission is required to take photo.</Text>
+        <Text style={styles.hintTxt}>Camera Permission is required to take photo</Text>
         {useFor === "ThirdPartyDocument" && (
           <>
             <Text style={styles.hintTxt}>You can upload PDF/Word documents or PNG/JPEG files with max 5MB. </Text>
@@ -757,7 +787,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 0,
     margin: 0,
-    fontFamily: 'Montserrat-Medium',
+    fontFamily: 'Arimo-Regular',
   },
   photoModalcontainerRow: {
     display: 'flex',
@@ -807,6 +837,8 @@ const styles = StyleSheet.create({
   tagInputContainer: {
     width: '100%',
     marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#000',
   },
   tagsContainer: {
     flexDirection: 'row',
@@ -931,7 +963,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     fontWeight: 'bold',
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Arimo-Bold',
   },
   loadingCss: {
     display: 'flex',
@@ -953,12 +985,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     //marginBottom: 20,
-    borderBottomColor: '#333',
-    borderBottomWidth: 1,
     borderRadius: 0,
     position: 'relative',
     marginTop: 5,
     width: '100%',
+    borderBottomWidth: 1,
+    borderBottomColor: '#000',
   },
   inputContainermandatory: {
 
@@ -966,12 +998,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     //marginBottom: 20,
-    borderBottomColor: 'red',
+    //borderBottomColor: 'red',
     borderBottomWidth: 1,
     borderRadius: 0,
     position: 'relative',
     marginTop: 5,
     width: '100%',
+    
   },
   input: {
     //flex: 1,
@@ -981,16 +1014,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 0,
     backgroundColor: '#fff',
-    fontFamily: 'Montserrat-Medium',
+    fontFamily: 'Arimo-Regular',
     width: '100%',
   },
   hintTxt: {
     color: '#000',
-    fontFamily: 'Montserrat-Regular',
-    fontSize: 12,
+    fontFamily: 'Arimo-Regular',
+    fontSize: 13,
     paddingHorizontal: 15,
     textAlign: 'center',
-    // paddingTop: 10,
+    paddingTop: 5,
   }
 
 });
@@ -1003,7 +1036,7 @@ const pickerStyle = {
     padding: 0,
     paddingVertical: 10,
     margin: 0,
-    fontFamily: 'Montserrat-Medium',
+    fontFamily: 'Arimo-Regular',
   },
   placeholder: {
     color: '#000',
@@ -1016,7 +1049,7 @@ const pickerStyle = {
     fontWeight: 'bold',
     padding: 0,
     margin: 0,
-    fontFamily: 'Montserrat-Medium',
+    fontFamily: 'Arimo-Regular',
   },
 }
 

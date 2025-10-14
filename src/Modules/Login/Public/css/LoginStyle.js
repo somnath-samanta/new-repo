@@ -247,7 +247,7 @@ const LoginStyle = StyleSheet.create({
     },
     signUpLink: {
         color: Colors.green01,
-        fontWeight: 'bold',
+        fontFamily: 'Arimo-Regular',
 
     },
     signUpUnderline: {

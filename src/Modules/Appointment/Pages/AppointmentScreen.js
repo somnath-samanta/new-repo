@@ -2,7 +2,7 @@ const screen = Dimensions.get("window");
 const screenWidth = screen.width;
 const screenheight = screen.height;
 const nextAppointmentBoxheight = screenheight * 0.25;
-const nextAppointmentBoxInnheight = Platform.OS == 'ios' ? screenheight * 0.18 : screenheight * 0.22;
+const nextAppointmentBoxInnheight = Platform.OS == 'ios' ? screenheight * 0.18 : screenheight * 0.18;
 const filterheight = screenheight * 0.06;
 const flatListHeight = Platform.OS == "ios" ? screenheight * 0.57 : screenheight * 0.60;
 const flatListHeightFull = Platform.OS == "ios" ? screenheight * 0.80 : screenheight * 0.85;
@@ -688,19 +688,22 @@ function AppointmentScreen(props) {
                                     <View style={styles.appointmentCardRow}>
                                         <View style={[styles.leftView, styles.leftViewFlatListBox]}>
                                             <Text style={[styles.nextAppointmentBoxTxt, styles.smalltxt]}>{getStatusName(obj?.item?.appointmentStatus)}</Text>
-                                            <Text style={styles.practitionerName}>{obj?.item?.practitionerName}</Text>
+                                            <Text style={styles.practitionerName}>{obj?.item?.appointmentType},
+                                                {obj?.item?.appointmentMode === "Video Consultation" ? "Online" : ""}
+                                            </Text>
+                                            <Text style={[styles.practitionerName, styles.marginMore]}>{obj?.item?.practitionerName}</Text>
                                             <Text style={styles.practitionerSpeciality}>
                                                 {/* {moment(item.appointmentDate, 'DD-MM-YYYY').format('DD-MM-YYYY')} */}
                                                 {moment(obj?.item?.appointmentDate, "DD-MM-YYYY").format("DD MMM. YY")}, {" "}
                                                 {obj?.item?.appointmentTime.toUpperCase()}
                                             </Text>
 
-                                            <TouchableOpacity onPress={() => handalBookFollowUp(obj.item)} style={styles.rightViewFlatList}>
+                                            {/* <TouchableOpacity onPress={() => handalBookFollowUp(obj.item)} style={styles.rightViewFlatList}>
                                                 <Text style={styles.statusBoxTxt}>Book Follow-up</Text>
-                                            </TouchableOpacity>
+                                            </TouchableOpacity> */}
 
                                         </View>
-                                        <View style={styles.rightView}>
+                                        {/* <View style={styles.rightView}>
                                             {(() => {
                                                 const appointmentDate1 = obj?.item?.appointmentDate.split("-");
                                                 const todayDate = moment().format('DD-MM-YYYY').split("-");
@@ -737,7 +740,7 @@ function AppointmentScreen(props) {
                                                         );
                                                 }
                                             })()}
-                                        </View>
+                                        </View> */}
                                     </View>
                                 </View>
                             </View>
@@ -972,8 +975,13 @@ function AppointmentScreen(props) {
     };
 
     const handleGoBack = () => {
-        navigation.goBack();
-
+        // Check if navigation can go back to avoid errors
+        if (navigation.canGoBack()) {
+            navigation.goBack();
+        } else {
+            // Optional fallback if this is the first screen
+            console.log("No screen to go back to");
+        }
     };
 
     return (
@@ -1019,17 +1027,18 @@ function AppointmentScreen(props) {
                                             <View style={styles.appointmentScreenView}>
                                                 <View style={[styles.appointmentCard]}>
                                                     <View style={styles.appointmentCardRow}>
-                                                        <View style={[styles.leftView, styles.leftViewFlatListBox]}>
+                                                        <View style={[styles.leftView, styles.leftViewListBoxNext]}>
                                                             <Text style={styles.nextAppointmentBoxTxt}>Next Appointment</Text>
-                                                            <Text style={styles.practitionerName}>
+                                                            <Text style={styles.practitionerName}>{nextAppointment["appointmentType"]}, {nextAppointment["appointmentMode"] === "Video Consultation" ? "Online" : ""}</Text>
+                                                            <Text style={[styles.practitionerName, styles.marginMore]}>
                                                                 {nextAppointment["practitionerName"]}</Text>
                                                             <Text style={styles.practitionerSpeciality}>
                                                                 {moment(nextAppointment["appointmentDate"], "DD-MM-YYYY").format("DD MMM. YY")}, {" "}
                                                                 {moment(nextAppointment["appointmentTime"], "hh:mm a").format("hh.mm a")}
                                                             </Text>
-                                                            <TouchableOpacity onPress={() => handalBookFollowUp(nextAppointment)} style={styles.rightViewFlatList}>
+                                                            {/* <TouchableOpacity onPress={() => handalBookFollowUp(nextAppointment)} style={styles.rightViewFlatList}>
                                                                 <Text style={styles.statusBoxTxt}>Book Follow-up</Text>
-                                                            </TouchableOpacity>
+                                                            </TouchableOpacity> */}
                                                         </View>
                                                         <View style={styles.rightView}>
                                                             {(() => {
@@ -1100,10 +1109,21 @@ function AppointmentScreen(props) {
 
                         }
                         <View style={styles.searchBoxes}>
-                            <TouchableOpacity style={styles.searchBoX} onPress={() => handleFilter()}>
-                                <Image source={require('../../../Utility/Public/images/filter.png')} style={styles.filtericon} />
-                                <Text style={styles.searchBoXTxt}>Filter</Text>
-                            </TouchableOpacity>
+                            <View style={styles.searchBoxesLeft}>
+
+                                {
+                                    nextAppointment == null &&  nextAppointment == undefined &&
+                                    <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
+                                        onPress={handleGoBack}
+                                    >
+                                        <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
+                                    </TouchableOpacity>
+                                }
+                                <TouchableOpacity style={styles.searchBoX} onPress={() => handleFilter()}>
+                                    <Image source={require('../../../Utility/Public/images/filter.png')} style={styles.filtericon} />
+                                    <Text style={styles.searchBoXTxt}>Filter</Text>
+                                </TouchableOpacity>
+                            </View>
                             <TouchableOpacity style={styles.refreshBtn}
                                 onPress={refreshBtnFn}
                             >
@@ -1296,7 +1316,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // backgroundColor: 'red',
         height: nextAppointmentBoxInnheight,
-        borderRadius: 5,
+        borderRadius: 10,
         shadowColor: Platform.OS == 'ios' ? '#666' : '#000',
         shadowOffset: { width: Platform.OS == 'ios' ? .8 : 1 },
         shadowOpacity: Platform.OS == 'ios' ? 0.3 : 0.5,
@@ -1362,8 +1382,12 @@ const styles = StyleSheet.create({
         width: "80%",
         //backgroundColor: 'red',
     },
+    leftViewListBoxNext: {
+        paddingLeft: 15,
+    },
     leftViewFlatListBox: {
         paddingLeft: 15,
+        width: "100%",
     },
 
     rightView: {
@@ -1371,19 +1395,22 @@ const styles = StyleSheet.create({
         padding: 0,
         borderRadius: 0,
         alignItems: 'center',
-        //backgroundColor: 'blue'
+        // backgroundColor: 'blue'
     },
     practitionerName: {
         fontSize: 14,
         fontFamily: 'Arimo-Regular',
         color: Colors.black
     },
+    marginMore: {
+        marginTop: 10,
+    },
     practitionerSpeciality: {
         fontSize: 14,
         fontFamily: 'Arimo-Regular',
         color: Colors.black,
         lineHeight: 20,
-        marginTop: 5,
+        marginTop: 0,
     },
     iconBox: {
         backgroundColor: '#24ad91',
@@ -1401,6 +1428,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: screenWidth,
+        //backgroundColor: 'red'
+    },
+    searchBoxesLeft: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
     },
     searchBoX: {
         // backgroundColor: 'red',
@@ -1595,7 +1628,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         //backgroundColor: "#24ad91",
-        marginTop: -10
+        marginTop: 10,
+        marginRight: 5,
 
     }
 

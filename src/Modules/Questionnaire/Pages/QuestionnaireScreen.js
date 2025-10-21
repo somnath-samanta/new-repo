@@ -241,11 +241,12 @@ function QuestionnaireScreen(props) {
             }
             getQuestionnaireList({ id: loginUserId }).then(async (response) => {
 
-                setLoading(false);
-
                 setQuestionnaireDataAfterFilter(response.PatientQuestionnaireList);
                 setQuestionnaireData(response.PatientQuestionnaireList);
                 setRefreshing(false)
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
 
                 // Get unique assigned name
                 const uniqueAssignedNames = [...new Set(response.PatientQuestionnaireList.map(item => item.assignedName))];

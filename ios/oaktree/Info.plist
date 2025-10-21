@@ -38,7 +38,7 @@
 	<key>NSFileProtectionKey</key>
 	<string>NSFileProtectionCompleteUntilFirstUserAuthentication</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Oaktree requires microphone access to record audio for communication purposes.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -49,33 +49,48 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>fonts/Roboto-Regular.ttf</string>
-		<string>fonts/Roboto-Black.ttf</string>
-		<string>fonts/Roboto-Bold.ttf</string>
-		<string>fonts/Roboto-Thin.ttf</string>
-		<string>fonts/Roboto-Medium.ttf</string>
-		<string>fonts/Roboto-Light.ttf</string>
-		<string>fonts/AntDesign.ttf</string>
-		<string>fonts/Entypo.ttf</string>
-		<string>fonts/EvilIcons.ttf</string>
-		<string>fonts/Feather.ttf</string>
-		<string>fonts/FontAwesome.ttf</string>
-		<string>fonts/Fontisto.ttf</string>
-		<string>fonts/Foundation.ttf</string>
-		<string>fonts/Ionicons.ttf</string>
-		<string>fonts/MaterialIcons.ttf</string>
-		<string>fonts/MaterialCommunityIcons.ttf</string>
-		<string>fonts/Octicons.ttf</string>
-		<string>fonts/Zocial.ttf</string>
-		<string>fonts/SimpleLineIcons.ttf</string>
-		<string>fonts/Montserrat-Black.ttf</string>
-		<string>fonts/Montserrat-Bold.ttf</string>
-		<string>fonts/Montserrat-SemiBold.ttf</string>
-		<string>fonts/Montserrat-ExtraBold.ttf</string>
-		<string>fonts/Montserrat-Thin.ttf</string>
-		<string>fonts/Montserrat-Medium.ttf</string>
-		<string>fonts/Montserrat-Light.ttf</string>
-		<string>fonts/Montserrat-Regular.ttf</string>
+		<string>AntDesign.ttf</string>
+		<string>Arimo-Bold.ttf</string>
+		<string>Arimo-Regular.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>FontAwesome6_Brands.ttf</string>
+		<string>FontAwesome6_Regular.ttf</string>
+		<string>FontAwesome6_Solid.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>Montserrat-Black.ttf</string>
+		<string>Montserrat-Bold.ttf</string>
+		<string>Montserrat-ExtraBold.ttf</string>
+		<string>Montserrat-Light.ttf</string>
+		<string>Montserrat-Medium.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
+		<string>Montserrat-SemiBold.ttf</string>
+		<string>Montserrat-Thin.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>Poppins-Bold.ttf</string>
+		<string>Poppins-Italic.ttf</string>
+		<string>Poppins-Light.ttf</string>
+		<string>Poppins-Medium.ttf</string>
+		<string>Poppins-Regular.ttf</string>
+		<string>Poppins-SemiBold.ttf</string>
+		<string>Poppins-Thin.ttf</string>
+		<string>Roboto-Black.ttf</string>
+		<string>Roboto-Bold.ttf</string>
+		<string>Roboto-Light.ttf</string>
+		<string>Roboto-Medium.ttf</string>
+		<string>Roboto-Regular.ttf</string>
+		<string>Roboto-Thin.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Zocial.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>

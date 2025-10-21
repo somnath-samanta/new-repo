@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import { savePatientHealthParameters } from '../Controller/HealthParametersController';
+import { KeyboardAvoidingView } from 'react-native';
 
 function AddHealthRecord() {
   const [pageLoading, setPageLoading] = useState(false);
@@ -214,8 +215,9 @@ function AddHealthRecord() {
       const res = await savePatientHealthParameters({
         variables: { id: patientId, vitals: vitalsdata },
       });
-
-      setPageLoading(false);
+      setTimeout(() => {
+        setPageLoading(false);
+      }, 500);
       if (res?.data?.PatientUpdate?.id) {
         Toast.show('Record saved successfully');
         resetForm();
@@ -240,7 +242,6 @@ function AddHealthRecord() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
       <Loader style={styles.loadingCss} loading={pageLoading} />
-      {/* Remove extra top padding */}
       <CustomHeader pageName="Health Parameters" />
 
       <View style={styles.subHeaderRow}>
@@ -249,151 +250,164 @@ function AddHealthRecord() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView
-        contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 120 }]}
-        showsVerticalScrollIndicator={false}
+      {/* 👇 KeyboardAvoidingView wraps content and footer */}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0} // Adjust if header overlaps
       >
-        <Text style={styles.formTitle}>Record your physical health parameters here</Text>
+        <ScrollView
+          contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 120 }]}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Text style={styles.formTitle}>Record your physical health parameters here</Text>
 
-        <View style={styles.unitToggleRow}>
-          <Text style={styles.unitLabel}>Imperial</Text>
-          <Switch
-            value={isMetric}
-            onValueChange={setIsMetric}
-            trackColor={{ true: '#3bbfb5' }}
-            thumbColor="#fff"
-          />
-          <Text style={[styles.unitLabel, styles.unitActive]}>Metric</Text>
-        </View>
-
-        {/* Height */}
-        <View style={styles.rowBox}>
-          <SectionHeader
-            title="Height"
-            image={require('../../../Utility/Public/images/healthIcon1.png')}
-          />
-          <View style={styles.twoColRow}>
-            <TextInput
-              style={styles.input}
-              placeholder={isMetric ? 'M' : 'Ft'}
-              placeholderTextColor="#666"
-              keyboardType="numeric"
-              value={heightM}
-              onChangeText={setHeightM}
+          <View style={styles.unitToggleRow}>
+            <Text style={styles.unitLabel}>Imperial</Text>
+            <Switch
+              value={isMetric}
+              onValueChange={setIsMetric}
+              trackColor={{ true: '#3bbfb5' }}
+              thumbColor="#fff"
             />
-            <TextInput
-              style={styles.input}
-              placeholder={isMetric ? 'Cm' : 'In'}
-              placeholderTextColor="#666"
-              keyboardType="numeric"
-              value={heightCm}
-              onChangeText={setHeightCm}
-            />
+            <Text style={[styles.unitLabel, styles.unitActive]}>Metric</Text>
           </View>
-        </View>
 
-        {/* Weight */}
-        <View style={styles.rowBox}>
-          <SectionHeader
-            image={require('../../../Utility/Public/images/healthIcon2.png')}
-            title="Weight"
-          />
-          <View style={styles.twoColRow}>
-            <TextInput
-              style={styles.input}
-              placeholder={isMetric ? 'Kg' : 'Lb'}
-              placeholderTextColor="#666"
-              keyboardType="numeric"
-              value={weightKg}
-              onChangeText={setWeightKg}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder={isMetric ? 'G' : 'Oz'}
-              placeholderTextColor="#666"
-              keyboardType="numeric"
-              value={weightG}
-              onChangeText={setWeightG}
-            />
-          </View>
-        </View>
-
-        {/* BMI */}
-        <View style={styles.rowBox}>
-          <SectionHeader
-            image={require('../../../Utility/Public/images/healthIcon7.png')}
-            title="BMI"
-          />
-          <TextInput
-            style={styles.inputFull}
-            placeholder="BMI"
-            placeholderTextColor="#666"
-            keyboardType="numeric"
-            value={bmi}
-            onChangeText={setBmi}
-          />
-        </View>
-
-        {/* Waist */}
-        <View style={styles.rowBox}>
-          <SectionHeader
-            image={require('../../../Utility/Public/images/healthIcon8.png')}
-            title="Waist Circumference"
-          />
-          <TextInput
-            style={styles.inputFull}
-            placeholder={isMetric ? 'cm' : 'inch'}
-            placeholderTextColor="#666"
-            keyboardType="numeric"
-            value={waist}
-            onChangeText={setWaist}
-          />
-        </View>
-
-        {/* Pulse & BP */}
-        <View style={styles.rowBox}>
-          <View style={styles.rowHeaderWrap}>
+          {/* Height */}
+          <View style={styles.rowBox}>
             <SectionHeader
-              image={require('../../../Utility/Public/images/healthIcon5.png')}
-              title="Pulse Rate"
+              title="Height"
+              image={require('../../../Utility/Public/images/healthIcon1.png')}
             />
-            <SectionHeader
-              image={require('../../../Utility/Public/images/healthIcon6.png')}
-              title="Blood Pressure"
-            />
+            <View style={styles.twoColRow}>
+              <TextInput
+                style={styles.input}
+                placeholder={isMetric ? 'M' : 'Ft'}
+                placeholderTextColor="#666"
+                keyboardType="numeric"
+                value={heightM}
+                onChangeText={setHeightM}
+                returnKeyType="next"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder={isMetric ? 'Cm' : 'In'}
+                placeholderTextColor="#666"
+                keyboardType="numeric"
+                value={heightCm}
+                onChangeText={setHeightCm}
+                returnKeyType="next"
+              />
+            </View>
           </View>
-          <View style={styles.twoColRow}>
+
+          {/* Weight */}
+          <View style={styles.rowBox}>
+            <SectionHeader
+              image={require('../../../Utility/Public/images/healthIcon2.png')}
+              title="Weight"
+            />
+            <View style={styles.twoColRow}>
+              <TextInput
+                style={styles.input}
+                placeholder={isMetric ? 'Kg' : 'Lb'}
+                placeholderTextColor="#666"
+                keyboardType="numeric"
+                value={weightKg}
+                onChangeText={setWeightKg}
+                returnKeyType="next"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder={isMetric ? 'G' : 'Oz'}
+                placeholderTextColor="#666"
+                keyboardType="numeric"
+                value={weightG}
+                onChangeText={setWeightG}
+                returnKeyType="next"
+              />
+            </View>
+          </View>
+
+          {/* BMI */}
+          <View style={styles.rowBox}>
+            <SectionHeader
+              image={require('../../../Utility/Public/images/healthIcon7.png')}
+              title="BMI"
+            />
             <TextInput
-              style={styles.input}
-              placeholder="Per minute"
+              style={styles.inputFull}
+              placeholder="BMI"
               placeholderTextColor="#666"
               keyboardType="numeric"
-              value={pulse}
-              onChangeText={setPulse}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Dia/ Sys mmHg"
-              placeholderTextColor="#666"
-              keyboardType="default"
-              value={bp}
-              onChangeText={setBp}
+              value={bmi}
+              onChangeText={setBmi}
             />
           </View>
-        </View>
-      </ScrollView>
 
-      {/* Footer */}
-      <View style={[styles.footerBtns, { paddingBottom: insets.bottom + 10 }]}>
-        <TouchableOpacity style={[styles.ctaBtn, styles.ctaSecondary]} onPress={handleGoBack}>
-          <Text style={styles.ctaText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onSave}>
-          <Text style={styles.ctaText}>Save New Record</Text>
-        </TouchableOpacity>
-      </View>
+          {/* Waist */}
+          <View style={styles.rowBox}>
+            <SectionHeader
+              image={require('../../../Utility/Public/images/healthIcon8.png')}
+              title="Waist Circumference"
+            />
+            <TextInput
+              style={styles.inputFull}
+              placeholder={isMetric ? 'cm' : 'inch'}
+              placeholderTextColor="#666"
+              keyboardType="numeric"
+              value={waist}
+              onChangeText={setWaist}
+            />
+          </View>
+
+          {/* Pulse & BP */}
+          <View style={styles.rowBox}>
+            <View style={styles.rowHeaderWrap}>
+              <SectionHeader
+                image={require('../../../Utility/Public/images/healthIcon5.png')}
+                title="Pulse Rate"
+              />
+              <SectionHeader
+                image={require('../../../Utility/Public/images/healthIcon6.png')}
+                title="Blood Pressure"
+              />
+            </View>
+            <View style={styles.twoColRow}>
+              <TextInput
+                style={styles.input}
+                placeholder="Per minute"
+                placeholderTextColor="#666"
+                keyboardType="numeric"
+                value={pulse}
+                onChangeText={setPulse}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Dia/ Sys mmHg"
+                placeholderTextColor="#666"
+                keyboardType="default"
+                value={bp}
+                onChangeText={setBp}
+              />
+            </View>
+          </View>
+        </ScrollView>
+
+        {/* Footer */}
+        <View style={[styles.footerBtns, { paddingBottom: insets.bottom + 10 }]}>
+          <TouchableOpacity style={[styles.ctaBtn, styles.ctaSecondary]} onPress={handleGoBack}>
+            <Text style={styles.ctaText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onSave}>
+            <Text style={styles.ctaText}>Save New Record</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
+  
 }
 
 export default AddHealthRecord;

@@ -9,7 +9,6 @@ const bottomscreenheight = Platform.OS === 'ios' ? screenheight * 0.60 : screenh
 
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import {
-    SafeAreaView,
     FlatList,
     Text,
     useColorScheme,
@@ -143,8 +142,10 @@ function ThirdPartyDocument({ props }) {
                 // console.log("response>>>>>>>>>>>>>>>>>", response);
                 setAppointmentsDataAfterFilter(response.PomsPatientDocumentList);
                 setAppointmentsData(response.PomsPatientDocumentList);
-                setLoading(false);
                 setRefreshing(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
             })
 
         } catch (error) {

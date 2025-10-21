@@ -175,8 +175,11 @@ function MyDocument({ props }) {
             getMyDocumentList({ id: reduxAuthJson.token.loginUserId, documentType: 'GovtId' }).then(async (response) => {
                 setAppointmentsDataAfterFilter(response.PomsPatientDocumentList);
                 setAppointmentsData(response.PomsPatientDocumentList);
-                setLoading(false);
+                // setLoading(false);
                 setRefreshing(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
             })
 
         } catch (error) {

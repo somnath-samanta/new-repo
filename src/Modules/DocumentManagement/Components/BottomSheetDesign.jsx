@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, SafeAreaView, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const BottomSheetDesign = ({ handalContactUs, handalFeedback, handalPrescription, handalSupport }) => {
 
     return (

@@ -3,11 +3,11 @@ const screenWidth = screen.width;
 const screenheight = screen.height;
 const filterContainerheight = screenheight * 0.65;
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, SafeAreaView, StyleSheet, FlatList, TouchableOpacity, Dimensions, Alert, Platform } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Dimensions, Alert, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import CheckBox from '@react-native-community/checkbox';
 import { Dropdown } from 'react-native-element-dropdown';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPaymentStatus, setSelectedPaymentMode, applyFilters, selectOptionForSendBy, setSelectedSendBy, clearFilterFn, forceClearFilterFlag, selectedTimeLine, selectedPaymentStatus, selectedPaymentMode, selectedSendBy, filterFor, refreshBtnFnFlag }) => {
 

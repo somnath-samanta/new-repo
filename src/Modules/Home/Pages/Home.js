@@ -18,7 +18,8 @@ import {
     Easing,
     ScrollView,
     Alert,
-    BackHandler
+    BackHandler,
+    StatusBar
 } from 'react-native';
 const screenWidth = screen.width;
 const screenheight = screen.height;
@@ -37,7 +38,7 @@ import { LogOut } from '../../../Utility/Components/LogOut';
 import { WebView } from 'react-native-webview';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'react-native';
+
 function Home({ props }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -208,7 +209,7 @@ function Home({ props }) {
         <SafeAreaView
             style={{
                 flex: 1,
-                paddingTop: Platform.OS === 'ios' ? StatusBar.currentHeight : 0,
+                paddingTop: 0,
                 paddingBottom: 0,
             }}
             edges={['left', 'right']}   // remove top & bottom safe padding

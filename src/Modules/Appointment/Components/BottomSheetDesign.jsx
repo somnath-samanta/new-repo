@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, SafeAreaView, StyleSheet, FlatList, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Platform } from 'react-native';
 import moment from 'moment';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BottomSheetDesign = ({ handalContactUs, handalFeedback, handalPrescription, handalSupport, handalCancelAppointment, appointmentCancelObj }) => {
 

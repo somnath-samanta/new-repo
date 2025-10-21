@@ -1,14 +1,5 @@
-const screen = Dimensions.get("window");
-const screenWidth = screen.width;
-const screenheight = screen.height;
-const nextAppointmentBoxheight = screenheight * 0.25;
-const nextAppointmentBoxInnheight = Platform.OS == 'ios' ? screenheight * 0.18 : screenheight * 0.18;
-const filterheight = screenheight * 0.06;
-const flatListHeight = Platform.OS == "ios" ? screenheight * 0.57 : screenheight * 0.60;
-const flatListHeightFull = Platform.OS == "ios" ? screenheight * 0.80 : screenheight * 0.85;
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import {
-    SafeAreaView,
     FlatList,
     Text,
     useColorScheme,
@@ -25,8 +16,13 @@ import {
     ScrollView,
     BackHandler,
     StatusBar,
-    Alert
+    Alert,
+    Platform,
+    LogBox
 } from 'react-native';
+
+// Suppress orientation change warning (app uses static dimensions)
+LogBox.ignoreLogs(['instanceHandle is null']);
 import { useSelector, useDispatch } from 'react-redux';
 import { SelectList } from 'react-native-dropdown-select-list';
 import moment from 'moment';
@@ -38,7 +34,6 @@ import Colors from '../../../Utility/Colors';
 import GlobalBottomSheet from '../../../Utility/Components/GlobalBottomSheet';
 import BottomSheetDesign from '../Components/BottomSheetDesign';
 import SearchBottomSheetDesign from '../../../Utility/Components/SearchBottomSheetDesign';
-import { Platform } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { WebView } from 'react-native-webview';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -52,6 +47,15 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
+const screen = Dimensions.get("window");
+const screenWidth = screen.width;
+const screenheight = screen.height;
+const nextAppointmentBoxheight = screenheight * 0.25;
+const nextAppointmentBoxInnheight = Platform.OS == 'ios' ? screenheight * 0.18 : screenheight * 0.18;
+const filterheight = screenheight * 0.06;
+const flatListHeight = Platform.OS == "ios" ? screenheight * 0.57 : screenheight * 0.60;
+const flatListHeightFull = Platform.OS == "ios" ? screenheight * 0.80 : screenheight * 0.85;
 
 
 const renderEmptyComponent = () => {
@@ -160,9 +164,6 @@ function AppointmentScreen(props) {
             if (!state.isConnected) {
                 setLoading(false);
                 setRefreshing(false);
-
-            } else {
-
             }
         });
         return () => {
@@ -400,9 +401,11 @@ function AppointmentScreen(props) {
             getAppointmentList({ id: reduxAuthJson.token.loginUserId }).then(async (response) => {
                 setAppointmentsDataAfterFilter(response.PomsAppointmentList);
                 setAppointmentsData(response.PomsAppointmentList);
-                setLoading(false);
                 setRefreshBtnFnFlag(false);
                 setRefreshing(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
 
             }).catch((error) => {
                 console.error("Error in getAppointmentList:", error);
@@ -670,7 +673,7 @@ function AppointmentScreen(props) {
         }*/
     }
 
-    onRefresh = () => {
+    const onRefresh = () => {
         setRefreshing(true)
         setRefreshBtnFnFlag(true);
         getAppointmentListFn("refresh");
@@ -984,16 +987,19 @@ function AppointmentScreen(props) {
         }
     };
 
+    useEffect(() => {
+    
+        // console.log("loading--------------------", loading);
+    }, [loading]);
+
     return (
-        // console.log("videoCallLink--------------------",videoCallLink),
+        <>
         <View style={styles.container}>
-            <View>
-                <CustomHeader pageName={webViewFlag ? "Video Consultation" : webViewFlagForBookFollowUp ? "Book Follow-up" : routeName}
-                    refreshBtnFn={refreshBtnFn}
-                    hideAllWebView={hideAllWebView}
-                />
-            </View>
-            <Loader style={styles.loadingCss} loading={loading} />
+            <CustomHeader pageName={webViewFlag ? "Video Consultation" : webViewFlagForBookFollowUp ? "Book Follow-up" : routeName}
+                refreshBtnFn={refreshBtnFn}
+                hideAllWebView={hideAllWebView}
+            />
+                <Loader loading={loading} />
 
 
 
@@ -1263,7 +1269,7 @@ function AppointmentScreen(props) {
             }
 
         </View >
-
+    </>
 
     );
 }
@@ -1276,6 +1282,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#dff7f8',
     },
+
     nextAppointmentBoxMain: {
         paddingHorizontal: 15,
     },

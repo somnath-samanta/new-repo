@@ -3,10 +3,11 @@ const screenWidth = screen.width;
 const screenheight = screen.height;
 
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
-import { View, Text, Image, SafeAreaView, StyleSheet, FlatList, TouchableOpacity, Dimensions, Alert, Linking } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Dimensions, Alert, Linking } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const HelpDesk = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPaymentStatus, setSelectedPaymentMode, applyFilters, selectOptionForSendBy, setSelectedSendBy }) => {
     const openWhatsApp = () => {
         const whatsappUrl = 'https://wa.me/447511546374';

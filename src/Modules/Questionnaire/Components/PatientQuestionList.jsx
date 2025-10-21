@@ -2,7 +2,7 @@ const screen = Dimensions.get("window");
 const screenWidth = screen.width;
 const screenheight = screen.height;
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, Button, FlatList, TouchableOpacity, Dimensions, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, Button, FlatList, TouchableOpacity, Dimensions, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import moment from "moment";
 import Colors from '../../../Utility/Colors';
@@ -11,7 +11,7 @@ import Toast from 'react-native-simple-toast';
 import Loader from '../../../Utility/Components/Loader';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'react-native';
+
 const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaireList }) => {
     var [selectedDocadmintype, setSelectedDocadmintype] = useState(questionObj?.questionnaire?.administeredType)
     var [selectedDocStatus, setSelectedDocStatus] = useState(questionObj?.status);
@@ -239,14 +239,13 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
 
     return (
         <SafeAreaView style={styles.safeArea}>
+            <Loader style={styles.loadingCss} loading={pageLoading} />
             <KeyboardAvoidingView
                 style={styles.container}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
                 {/* Main Content */}
-                <View style={styles.content}>
-                    <Loader style={styles.loadingCss} loading={pageLoading} />
-
+                <View style={styles.content} pointerEvents="box-none">
                     <View style={styles.mainViewBoxContainer}>
 
                         <View style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.mainViews] : [styles.mainViews, styles.mainViewBox]}>
@@ -488,7 +487,8 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: '#E6F6F3',
-        paddingTop: Platform.OS === 'ios' ? StatusBar.currentHeight : -20,
+        paddingTop: Platform.OS === 'ios' ? -40 : -20,
+        //backgroundColor:'red'
     },
     container: {
         flex: 1,

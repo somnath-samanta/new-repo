@@ -253,8 +253,8 @@ function AddHealthRecord() {
       {/* 👇 KeyboardAvoidingView wraps content and footer */}
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0} // Adjust if header overlaps
+        behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 80} // Adjust if header overlaps
       >
         <ScrollView
           contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 120 }]}

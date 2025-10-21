@@ -433,9 +433,9 @@ function App() {
             >
               <Drawer.Screen name="Home">
                 {(props) => (
-                  <ScreenWrapper>
+                  // <ScreenWrapper>
                     <Home {...props} />
-                  </ScreenWrapper>
+                  // </ScreenWrapper>
                 )}
               </Drawer.Screen>
               <Drawer.Screen name="Appointment">

@@ -2,7 +2,7 @@ const screen = Dimensions.get("window");
 const screenWidth = screen.width;
 const screenheight = screen.height;
 import React, { useEffect, useState } from 'react';
-import { View, Button, Image, Alert, Platform, PermissionsAndroid, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView, Dimensions, SafeAreaView } from 'react-native';
+import { View, Button, Image, Alert, Platform, PermissionsAndroid, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView, Dimensions } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 // import DocumentPicker from 'react-native-document-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -20,6 +20,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import Utility from '../../../Utility/Utility';
 import LoginStyle from '../../../Modules/Login/Public/css/LoginStyle';
 
+// import DatePicker from "react-native-date-picker";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientName }) => {
   const [documentObj, setDocumentObj] = useState({});

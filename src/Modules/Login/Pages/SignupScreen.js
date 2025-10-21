@@ -24,7 +24,7 @@ import EventEmitter from '../../../Contexts/EventEmitter';
 import { setSignUpEmail } from '../Actions/LoginAction'
 import { connect } from 'react-redux';
 import NetInfo from "@react-native-community/netinfo";
-import CommonDatePicker from '../../../Utility/Components/CommonDatePicker';
+// import CommonDatePicker from '../../../Utility/Components/CommonDatePicker';
 import Utility from '../../../Utility/Utility';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import GlobalModal from '../../../Utility/Components/GlobalModal';
@@ -409,14 +409,14 @@ function SignupScreen(props) {
                                                     :
                                                     <Text style={{ color: Colors.gray99 }}>Date of birth</Text>
                                                 }</TouchableOpacity>
-                                            <CommonDatePicker
+                                            {/* <CommonDatePicker
                                                 open={isDatePickerOpen}
                                                 date={selectedDate}
                                                 onDateChange={handleDateChange}
                                                 closeDatePicker={closeDatePicker}
                                                 type="Filter"
                                                 locale="en"
-                                            />
+                                            /> */}
                                             <TouchableOpacity onPress={openDatePicker} style={LoginStyle.dateFieldicon}>
                                                 <Feather
                                                     name="calendar"

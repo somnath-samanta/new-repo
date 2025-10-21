@@ -5,6 +5,8 @@ import CommonStyle from '../Public/css/CommonStyle';
 import Colors from '../Colors';
 
 const Loader = ({ loading }) => {
+  if (!loading) return null;
+  
   return (
     <Modal
       transparent={true}

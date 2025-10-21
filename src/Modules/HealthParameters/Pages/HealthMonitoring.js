@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl, BackHandler, Image } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl, BackHandler, Image, Platform } from 'react-native';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import Loader from '../../../Utility/Components/Loader';
 import Colors from '../../../Utility/Colors';
@@ -118,7 +118,10 @@ export default function HealthMonitoring() {
     } catch (e) {
       // no-op
     } finally {
-      if (isManual) setRefreshing(false); else setPageLoading(false);
+      if (isManual) setRefreshing(false); else 
+      setTimeout(() => {
+        setPageLoading(false);
+      }, 500);
     }
   };
 
@@ -492,7 +495,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Medium',
     fontSize: 12,
     paddingHorizontal: 5,
-    paddingVertical: 8,
+    paddingVertical: Platform.OS === 'ios' ? 10 : 8,
   },
   subHeaderRow: {
     flexDirection: 'row',

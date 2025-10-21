@@ -136,7 +136,10 @@ function HealthParameter() {
         } catch (e) {
             // no-op
         } finally {
-            if (isManual) setRefreshing(false); else setPageLoading(false);
+            if (isManual) setRefreshing(false); else 
+            setTimeout(() => {
+                setPageLoading(false);
+            }, 500);
         }
     };
 
@@ -231,7 +234,7 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: '#E6F6F3',
-        marginTop: Platform.OS === 'android' ? 0 : -StatusBar.currentHeight || 0,
+        marginTop: 0,
         paddingTop: 0,
     },
     container: {

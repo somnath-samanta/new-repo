@@ -14,7 +14,8 @@ import {
     TouchableOpacity,
     Dimensions,
     BackHandler,
-    StatusBar
+    StatusBar,
+    LogBox
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
@@ -33,6 +34,10 @@ import Toast from 'react-native-simple-toast';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import EventEmitter from '../../../Contexts/EventEmitter';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
+// Suppress VirtualizedList warning - FlatList is the main scrollable content
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+
 const getTotalScore = (doc) => {
     if (doc) {
         let questionslistData = doc;
@@ -101,7 +106,8 @@ function QuestionnaireScreen(props) {
     const [issearchSheetVisible, setSearchSheetVisible] = useState(false);
     const hidesearchSheet = () => setSearchSheetVisible(false);
     const dispatch = useDispatch();
-    const reduxAuthJson = useSelector((state) => state);
+    const loginUserId = useSelector((state) => state.token?.loginUserId);
+    const currentUserDetails = useSelector((state) => state.currentUserDetails);
     const [questionnaireData, setQuestionnaireData] = useState([]);
     const [questionnaireDataAfterFilter, setQuestionnaireDataAfterFilter] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -233,13 +239,14 @@ function QuestionnaireScreen(props) {
             if (type == "") {
                 setLoading(true);
             }
-            getQuestionnaireList({ id: reduxAuthJson.token.loginUserId }).then(async (response) => {
-
-                setLoading(false);
+            getQuestionnaireList({ id: loginUserId }).then(async (response) => {
 
                 setQuestionnaireDataAfterFilter(response.PatientQuestionnaireList);
                 setQuestionnaireData(response.PatientQuestionnaireList);
                 setRefreshing(false)
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
 
                 // Get unique assigned name
                 const uniqueAssignedNames = [...new Set(response.PatientQuestionnaireList.map(item => item.assignedName))];
@@ -465,7 +472,6 @@ function QuestionnaireScreen(props) {
                         <FlatList
                             data={questionnaireDataAfterFilter}
                             renderItem={renderItem}
-                            // keyExtractor={(item) => item.appointmentBookedId + item.id + "-" + generateUniqueId().toString()}
                             keyExtractor={(item) => item.appointmentBookedId + item.id}
                             ListFooterComponent={renderFooter}
                             contentContainerStyle={{ paddingBottom: 10 }}
@@ -473,7 +479,9 @@ function QuestionnaireScreen(props) {
                             onRefresh={onRefresh}
                             refreshing={refreshing}
                             initialNumToRender={10}
-                            ListEmptyComponent={!loading ? renderEmptyComponent : null} // This will show when the list is empty
+                            ListEmptyComponent={!loading ? renderEmptyComponent : null}
+                            showsVerticalScrollIndicator={true}
+                            nestedScrollEnabled={true}
                         />
                     </View>
                     :

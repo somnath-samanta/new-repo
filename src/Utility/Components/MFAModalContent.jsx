@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, TouchableOpacity, StatusBar, Platform } from 'react-native';
 import Colors from '../Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CommonStyle from '../Public/css/CommonStyle';
@@ -70,7 +70,7 @@ const MFAModalContent = ({ enablePopupFlag, accountName, userIsSubscribe, mfaAct
             showMessage({
                 message: "Please enter your verification code.",
                 type: "warning",
-                style: { marginTop: StatusBar.currentHeight, fontSize: 16 }
+                style: { marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, fontSize: 16 }
             });
         }
     }
@@ -132,13 +132,13 @@ const MFAModalContent = ({ enablePopupFlag, accountName, userIsSubscribe, mfaAct
                     showMessage({
                         message: "MFA is enabled",
                         type: "info",
-                        style: { marginTop: StatusBar.currentHeight, fontSize: 16 }
+                        style: { marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, fontSize: 16 }
                     });
                 } else {
                     showMessage({
                         message: "MFA is disabled",
                         type: "info",
-                        style: { marginTop: StatusBar.currentHeight, fontSize: 16 }
+                        style: { marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, fontSize: 16 }
                     });
                 }
 

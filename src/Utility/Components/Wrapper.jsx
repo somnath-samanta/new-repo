@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { View, StyleSheet, StatusBar, Platform } from 'react-native';
 import CustomHeader from './CustomHeader';
 import CustomFooter from './CustomFooter';
 import { useNavigationState } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import CommonStyle from '../Public/css/CommonStyle';
 import { useNavigation } from '@react-navigation/native';
 import EventEmitter from '../../Contexts/EventEmitter';
 import HelpDesk from './HelpDesk';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const ScreenWrapper = ({ children }) => {
     const routeName = useNavigationState(state => state.routeNames[state.index]);
     const showHeader = routeName !== 'Login' && routeName !== 'Forgot' && routeName !== 'Verification' && routeName !== 'Home';

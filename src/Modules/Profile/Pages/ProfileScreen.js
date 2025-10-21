@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, Image, ScrollView, Linking } from 'react-native';
+import { View, Text, Image, ScrollView, Linking } from 'react-native';
 import Colors from '../../../Utility/Colors';
 import Icon from 'react-native-vector-icons/Feather';
 import ProfileStyle from '../Public/css/ProfileStyle';
 import { useTheme } from '../../../Contexts/ThemeContext';
 import Loader from '../../../Utility/Components/Loader'
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector, useDispatch } from 'react-redux';
 
 

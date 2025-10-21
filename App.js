@@ -5,7 +5,7 @@ import { NavigationContainer, useNavigationContainerRef } from '@react-navigatio
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 import {
-  StatusBar, AppState, LogBox, BackHandler, ToastAndroid, Alert
+  StatusBar, AppState, LogBox, BackHandler, ToastAndroid, Alert, Platform
   } from 'react-native';
 import { ThemeProvider } from './src/Contexts/ThemeContext';
 import { MenuProvider } from 'react-native-popup-menu';
@@ -50,9 +50,7 @@ const Drawer = createDrawerNavigator();
 const DefaultLayout = createStackNavigator();
 LogBox.ignoreAllLogs();
 
-
-//export const navigationRef = createNavigationContainerRef();
-
+//export const navigationRef = createNavigationContainerRef(+++++++++++++++++);
 
 const DefaultLayoutScreen = ({ navigation }) => (
   <DefaultLayout.Navigator>
@@ -102,6 +100,7 @@ function App() {
   const [screens, setScreens] = useState([]);
   const [hasAdditionalView, setHasAdditionalView] = useState(false);
   const [exitApp, setExitApp] = useState(false);
+  const [loading, setLoading] = useState(false);
   const tokenData = useSelector((state) => {
     // console.log("===========",state);
     return state.token?.accesToken || "";
@@ -176,13 +175,13 @@ function App() {
           message: "You are offline",
           autoHide: false,
           type: 'danger',
-          style: { marginTop: StatusBar.currentHeight }
+          style: { marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }
         });
       } else {
         showMessage({
           message: "You are online",
           type: "info",
-          style: { marginTop: StatusBar.currentHeight }
+          style: { marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }
         });
       }
     });
@@ -363,8 +362,7 @@ function App() {
     //   </MenuProvider>
     // </SafeAreaProvider>
     // </Provider>
-<Provider store={store}>
-  <SafeAreaProvider>
+    <SafeAreaProvider>
         {/* <GestureRecognizerView
           detectSwipeUp={false}
           detectSwipeDown={false}
@@ -499,11 +497,8 @@ function App() {
       </ThemeProvider>
     </MenuProvider>
         {/* </GestureRecognizerView> */}
-          </SwipeWrapper>
-  </SafeAreaProvider>
-</Provider>
-
-
+      </SwipeWrapper>
+    </SafeAreaProvider>
   );
 }
 

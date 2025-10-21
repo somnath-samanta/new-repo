@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../Colors'
 import { getCurrentUser } from '../../Controller/CommonController'
 import CommonStyle from '../Public/css/CommonStyle';
 import Loader from './Loader';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SwitchOrganizationModalContent = ({ organizationChangeSuccess }) => {
     const [selectedOrganization, setSelectedOrganization] = useState("");

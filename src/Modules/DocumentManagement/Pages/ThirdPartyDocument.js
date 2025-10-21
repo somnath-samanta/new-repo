@@ -102,6 +102,9 @@ function ThirdPartyDocument({ props }) {
     const [refreshing, setRefreshing] = useState(false);
     const [internetIsconnected, setInternetIsconnected] = useState(false);
 
+    const [selectedTimeLine, setSelectedTimeLine] = useState("");
+    const [selectedDocumentType, setSelectedDocumentType] = useState("");
+
 
     useFocusEffect(
         useCallback(() => {
@@ -452,6 +455,25 @@ function ThirdPartyDocument({ props }) {
         setSearchSheetVisible(true);
     }
 
+    const clearFilterFn = () => {
+        setSelectedTimeLine("");
+        setSelectedDocumentType("");
+    }
+
+    const applyFilters = (obj) => {
+        if (isconnected) {
+            // Apply timeline filter
+            if (obj['Timeline'] !== null && obj['Timeline'] !== "") {
+                let timeLine = obj['Timeline']
+                const pastDate = moment().subtract(timeLine, 'days').format('YYYY-MM-DD');
+                console.log("pastDate-------------", pastDate);
+                
+            }
+        } else {
+            Toast.show("No internet connection");
+        }
+    };
+
     return (
 
         <View style={styles.container}>
@@ -630,14 +652,22 @@ function ThirdPartyDocument({ props }) {
                             useFor="thirdPartyDocument"
                             // selectOptionForSendBy={selectOptionForSendBy}
                             // setSelectedSendBy={setSelectedSendBy}
-                            // applyFilters={applyFilters}
-                            // setSelectedTimeLine={setSelectedTimeLine}
-                            // clearFilterFn={clearFilterFn}
+                            applyFilters={applyFilters}
+                            setSelectedTimeLine={setSelectedTimeLine}
+                            setSelectedDocumentType={setSelectedDocumentType}
+                            clearFilterFn={clearFilterFn}
                             // forceClearFilterFlag={forceClearFilterFlag}
                             // selectedSendBy={selectedSendBy}
-                            // selectedTimeLine={selectedTimeLine}
+                            selectedTimeLine={selectedTimeLine}
+                            selectedDocumentType={selectedDocumentType}
                             filterFor="thirdPartyDocument"
                             // refreshBtnFnFlag={refreshBtnFnFlag}
+                            timeLineFilter={true}
+                            paymentStatusFilter={false}
+                            paymentModeFilter={false}
+                            keywordSearchFilter={false}
+                            sentByFilter={false}
+                            documentTypeFilter={true}
 
                         />
                     </>

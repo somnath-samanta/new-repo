@@ -12,7 +12,16 @@ import { useSelector } from 'react-redux';
 import Loader from './Loader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPaymentStatus, setSelectedPaymentMode, applyFilters, selectOptionForSentBy, setSelectedSendBy, clearFilterFn, forceClearFilterFlag, selectedTimeLine, selectedPaymentStatus, selectedPaymentMode, selectedSendBy, filterFor, refreshBtnFnFlag, timeLineFilter, paymentStatusFilter, paymentModeFilter, keywordSearchFilter, sentByFilter }) => {
+const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPaymentStatus, setSelectedPaymentMode, applyFilters, selectOptionForSentBy, setSelectedSendBy, clearFilterFn, forceClearFilterFlag, selectedTimeLine, selectedPaymentStatus, selectedPaymentMode, selectedSendBy, filterFor, refreshBtnFnFlag, timeLineFilter, paymentStatusFilter, paymentModeFilter, keywordSearchFilter, sentByFilter, documentTypeFilter = false, setSelectedDocumentType, selectedDocumentType }) => {
+
+
+    console.log("selectOptionForSentBy=============================", selectOptionForSentBy)
+
+    const documentTypeFilterOption = [
+        {label: "Any", value: ""},
+        {label: "Investigations", value: "investigations"},
+        {label: "Other", value: "other"}
+    ]
 
     const reduxAuthJson = useSelector((state) => state);
     const [activeTab, setActiveTab] = useState(0); // track the active tab
@@ -25,6 +34,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
     const [selectedSentBy, setSelectedSentBy] = useState(''); // default = Anytime
     const [isFocusForKeyword, setIsFocusForKeyword] = useState(false);
     const [isFocusForSentBy, setIsFocusForSentBy] = useState(false);
+    const [isFocusForDocumentType, setIsFocusForDocumentType] = useState(false);
     const [keywordOptionData, setKeywordOptionData] = useState([]);
     const [keywordSearchText, setKeywordSearchText] = useState('');
     const [isLoadingKeywords, setIsLoadingKeywords] = useState(false);
@@ -146,11 +156,11 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
         // Clear previous timer before setting a new one
         const delayTimer = setTimeout(() => {
             if (keywordSearchText.trim().length > 2) {
-                console.log("Fetching for:-------------------", keywordSearchText);
+                // console.log("Fetching for:-------------------", keywordSearchText);
                 setIsLoadingKeywords(true);
                 fetchQuestionnaireNames(keywordSearchText);
             } else {
-                console.log("Fetching for:-------------------Else");
+                // console.log("Fetching for:-------------------Else");
                 // setKeywordOptionData([]);
                 setIsLoadingKeywords(false);
             }
@@ -194,11 +204,18 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                 "PaymentMode": selectedPaymentModeOption,
             });
             hidesearchSheet();
-        } else {
+        } else if (filterFor === "questionnaire") {
             setSelectedSendBy(selectedSendByOption);
             applyFilters({
                 "Timeline": selectedTimelineOption,
                 "SendBy": selectedSendByOption
+            });
+            hidesearchSheet();
+        }else if (filterFor === "thirdPartyDocument") {
+            setSelectedDocumentType(selectedDocumentType);
+            applyFilters({
+                "Timeline": selectedTimelineOption,
+                "DocumentType": selectedDocumentType
             });
             hidesearchSheet();
         }
@@ -256,6 +273,9 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
         }
         if (sentByFilter) {
             setSelectedSentBy("");
+        }
+        if (documentTypeFilter) {
+            setSelectedDocumentType("");
         }
 
         // if (filterFor === "appointment") {
@@ -469,6 +489,41 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                             onChange={item => {
                                                 setSelectedSentBy(item.value);
                                                 setIsFocusForSentBy(false);
+                                            }}
+                                        />
+                                    </View>
+                                </View>
+                            </View>
+                        }
+                        {
+                            documentTypeFilter &&
+                            <View style={styles.searchBoxPanel}>
+                                <View style={styles.searchBoxPanelSelectRow}>
+                                    {/* Column 1 */}
+                                    <View style={styles.column}>
+                                        <Text style={styles.searchBoxPanelTitle}>Sent By</Text>
+                                    </View>
+                                    {/* Column 2 */}
+                                    <View style={styles.column2}>
+                                        <Dropdown
+                                            style={[styles.dropdown, isFocusForDocumentType && { borderColor: 'blue' }]}
+                                            placeholderStyle={styles.placeholderStyle}
+                                            selectedTextStyle={styles.selectedTextStyle}
+                                            inputSearchStyle={styles.inputSearchStyle}
+                                            iconStyle={styles.iconStyle}
+                                            data={documentTypeFilterOption}
+                                            search
+                                            maxHeight={300}
+                                            labelField="label"
+                                            valueField="value"
+                                            placeholder={!isFocusForDocumentType ? 'Select item' : '...'}
+                                            searchPlaceholder="Search..."
+                                            value={selectedDocumentType}
+                                            onFocus={() => setIsFocusForDocumentType(true)}
+                                            onBlur={() => setIsFocusForDocumentType(false)}
+                                            onChange={item => {
+                                                setSelectedDocumentType(item.value);
+                                                setIsFocusForDocumentType(false);
                                             }}
                                         />
                                     </View>

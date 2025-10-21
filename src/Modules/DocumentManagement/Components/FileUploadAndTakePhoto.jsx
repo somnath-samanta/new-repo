@@ -14,7 +14,12 @@ import RNFS from 'react-native-fs';
 import { savePatientDocumentsMutation } from "../Controller/DocumentManagementController"
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import DatePicker from "react-native-date-picker";
+import CommonDatePicker from '../../../Utility/Components/CommonDatePicker';
+import Colors from '../../../Utility/Colors';
+import Feather from 'react-native-vector-icons/Feather';
+import Utility from '../../../Utility/Utility';
+import LoginStyle from '../../../Modules/Login/Public/css/LoginStyle';
+
 
 const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientName }) => {
   const [documentObj, setDocumentObj] = useState({});
@@ -32,7 +37,10 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
   const [documentAutherError, setdocumentAutherError] = useState(false);
   const [organisationNameError, setorganisationNameError] = useState(false);
   const [openDateofReport, setOpenDateofReport] = useState(false);
-  const [dateOfReport, setDateOfReport] = useState(new Date());
+  const [dateOfReport, setDateOfReport] = useState("");
+  const [isDateOfReportPickerOpen, setIsDateOfReportPickerOpen] = useState(false);
+  const [selectedDateError, setSelectedDateError] = useState("");
+  const [dobError, setDobError] = useState("");
 
   const [SelectOptionForDocument, setselectOptionForDocument] = useState([
     { label: 'Passport', value: 'Current_signed_passport' },
@@ -166,7 +174,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
   //   }
   // };
   const takePhoto = async () => {
-    console.log("selectedDocument======", selectedDocument)
+    // console.log("selectedDocument======", selectedDocument)
     if (selectedDocument == null || selectedDocument == "") {
       Toast.show("Please select a document type.");
     } else {
@@ -191,7 +199,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           // Extract file name from path
           const fileNameArray = image.path.split("/");
           const fileName = fileNameArray[fileNameArray.length - 1];
-          console.log("fileType---------------", fileType);
+          // console.log("fileType---------------", fileType);
           // Update document object
           setDocumentObj((prevImageUri) => ({
             ...prevImageUri,
@@ -217,9 +225,9 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     }
   };
 
-  useEffect(() => {
+  // useEffect(() => {
     // console.log("documentObj==========", documentObj)
-  }, [documentObj])
+  // }, [documentObj])
   // Function to select a file from the gallery (Image or PDF)
 
   //   const selectFile = async () => {
@@ -445,12 +453,12 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
 
 
         for (const key in documentObj) {
-          console.log(key);
+          // console.log(key);
           uploadArrayOfHash[key] = documentObj[key].uri;
         }
 
-        const result = await savePatientDocumentsMutation({
-          variables: {
+
+        const variables = {
             documents: JSON.stringify(uploadArrayOfHash),
             documentName: documentName,
             practitionerId: "",
@@ -460,7 +468,12 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
             organizationName: organisationName,
             id: patientId,
             fetchingFrom: "APP"
-          },
+          }
+          // console.log("variables", variables)
+        return
+
+        const result = await savePatientDocumentsMutation({
+          variables: variables,
         });
         setPageLoading(false);
         if (result.data.PomsPatientDocumentCreate.id !== "") {
@@ -493,15 +506,32 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     const day = date.getDate();
     const month = date.toLocaleString("default", { month: "short" }); // "Apr"
     const year = date.getFullYear();
-  
+
     // Determine suffix
     let suffix = "th";
     if (day % 10 === 1 && day !== 11) suffix = "st";
     else if (day % 10 === 2 && day !== 12) suffix = "nd";
     else if (day % 10 === 3 && day !== 13) suffix = "rd";
-  
+
     return `${day}${suffix} ${month} ${year}`;
   }
+
+  const openDatePicker = () => {
+    setIsDateOfReportPickerOpen(true);
+  };
+
+  const closeDatePicker = () => {
+    setIsDateOfReportPickerOpen(false);
+  };
+
+  const clearDate = () => {
+    setDateOfReport("");
+  };
+
+  const handleDateChange = (dateOfReport) => {
+    setDateOfReport(dateOfReport);
+    setIsDateOfReportPickerOpen(false);
+  };
 
   return (
     // <View style={styles.photoModalcontainer}>
@@ -588,17 +618,40 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                   placeholderTextColor="#000"
                 />
               </View>
-              <View style={[documentNameError ? styles.inputContainermandatory : styles.inputContainer]}>
-                <TextInput
-                  style={styles.input}
-                  value={documentName}
-                  onChangeText={(text) => {
-                    setDocumentName(text),
-                      setdocumentNameError(false)
-                  }}
-                  placeholder="Date of Report"
-                  placeholderTextColor="#000"
+
+              <View style={styles.dateFieldBox}>
+                <TouchableOpacity onPress={openDatePicker} style={LoginStyle.dateField}>
+                  {dateOfReport ?
+                    <>
+                      <Text style={LoginStyle.dateFieldSec}>
+                        {Utility.formatDate(dateOfReport)} </Text>
+                      <TouchableOpacity onPress={clearDate} style={LoginStyle.dateClear}>
+                        <AntDesign
+                          name="closecircle"
+                          size={16}
+                          color={Colors.secondary}
+                        />
+                      </TouchableOpacity>
+                    </>
+                    :
+                    <Text style={{ color: Colors.black }}>Date of Report</Text>
+                  }
+                </TouchableOpacity>
+                <CommonDatePicker
+                  open={isDateOfReportPickerOpen}
+                  date={dateOfReport}
+                  onDateChange={handleDateChange}
+                  closeDatePicker={closeDatePicker}
+                  type="Filter"
+                  locale="en"
                 />
+                <TouchableOpacity onPress={openDatePicker} style={LoginStyle.dateFieldicon}>
+                  <Feather
+                    name="calendar"
+                    size={22}
+                    color={Colors.secondary}
+                  /></TouchableOpacity>
+                {dateOfReport == "" ? <Text style={LoginStyle.errorMsg}>{selectedDateError}</Text> : null}
               </View>
 
               {/* <View style={[documentAutherError ? styles.inputContainermandatory : styles.inputContainer]}>
@@ -1004,7 +1057,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginTop: 5,
     width: '100%',
-    
+
   },
   input: {
     //flex: 1,
@@ -1050,6 +1103,12 @@ const pickerStyle = {
     padding: 0,
     margin: 0,
     fontFamily: 'Arimo-Regular',
+  },
+  dateFieldBox: {
+    flexDirection: "row", 
+    alignItems: "center", 
+    justifyContent: "center", 
+    height: 100
   },
 }
 

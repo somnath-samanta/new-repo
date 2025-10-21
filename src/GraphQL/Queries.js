@@ -135,3 +135,52 @@ export const QUERY_GET_PATIENT_HEALTH_PROFILE = gql`
     }
   }
 `;
+
+export const QUERY_GET_PATIENT_QUESTIONNAIRE = gql`
+  query getPatientQuestionnaire(
+    $id: String
+    $timeline: String
+    $fetchingFrom: String
+    $assignedBy: String
+    $questionnaireName: String
+  ) {
+    PatientQuestionnaireList(
+      patientId: $id
+      timeline: $timeline
+      fetchingFrom: $fetchingFrom
+      assignedBy: $assignedBy
+      questionnaireName: $questionnaireName
+    ) {
+      id
+      resourceType
+      patientId
+      assignedId
+      assignedName
+      assignedType
+      assignedSpeciality
+      status
+      assignedOn
+      questionnaire {
+        id
+        questionnaireName
+        questionnaireDescription
+        administeredType
+        totalScore
+        questions {
+          question
+          selectedOptionId
+          selectedOptionText
+          comments
+          options {
+            option
+            optionId
+            optionScore
+          }
+          optionType
+          showCommentBox
+          isCommentBoxRequired
+        }
+      }
+    }
+  }
+`;

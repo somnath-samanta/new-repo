@@ -1,5 +1,6 @@
 import { questionnaireListData } from '../Model/QuestionnaireModel';
 import { Questionnaire, PatientQuestionnaireUpdate } from "../../../GraphQL/Mutation"
+import { QUERY_GET_PATIENT_QUESTIONNAIRE } from "../../../GraphQL/Queries"
 import { ApolloClient, InMemoryCache, createHttpLink, gql } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import Config from '../../../Utility/Config';
@@ -133,7 +134,7 @@ const refreshTokenFn = async() =>{
 
 //Questionnaire Screen function
 export const getQuestionnaireList = async (data) => {
-    console.log("getQuestionnaireList", data);
+    // console.log("getQuestionnaireList", data);
     let response = {}
     try {
         const result = await clientAuth
@@ -166,6 +167,30 @@ export const updatePatientQuestionnaireUpdate = async (data) => {
   } catch (err) {
         console.log('updatePatientQuestionnaireUpdate Error==>>>>>', err)
         return err;
+  }
+  return response;
+};
+
+// Fetch Patient Questionnaire with filters
+export const getPatientQuestionnaireName = async (data) => {
+  // console.log("getPatientQuestionnaire", data);
+  let response = {}
+  try {
+    const result = await clientAuth.query({
+      query: QUERY_GET_PATIENT_QUESTIONNAIRE,
+      variables: {
+        id: data.id,
+        timeline: data.timeline || null,
+        fetchingFrom: data.fetchingFrom || null,
+        assignedBy: data.assignedBy || null,
+        questionnaireName: data.questionnaireName || null,
+      },
+      fetchPolicy: 'network-only', // Ensures fresh data from server
+    });
+    response = result;
+  } catch (err) {
+    console.log('getPatientQuestionnaire Error==>>>>>', err);
+    return err;
   }
   return response;
 };

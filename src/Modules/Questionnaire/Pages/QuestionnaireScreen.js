@@ -117,7 +117,7 @@ function QuestionnaireScreen(props) {
     const [selectedTimeLine, setSelectedTimeLine] = React.useState("");
 
     const [selectedSendBy, setSelectedSendBy] = React.useState("");
-    const [selectOptionForSendBy, setSelectOptionForSendBy] = useState([
+    const [selectOptionForSentBy, setSelectOptionForSentBy] = useState([
         { label: 'All', value: '', disable: true },
         // { label: '', value: 'All' }
     ]);
@@ -125,10 +125,10 @@ function QuestionnaireScreen(props) {
     const [isConnected, setIsConnected] = useState(false);
     const navigation = useNavigation();
 
-    console.log("navigation=======", props)
+    // console.log("navigation=======", props)
     const { questionnairereload } = props.route.params || {};
 
-    console.log("reload==============", questionnairereload)
+    // console.log("reload==============", questionnairereload)
 
     useFocusEffect(
         React.useCallback(() => {
@@ -229,7 +229,7 @@ function QuestionnaireScreen(props) {
 
     const getQuestionnaireListFn = (type = "") => {
         try {
-            console.log("refreshing===========", refreshing)
+            // console.log("refreshing===========", refreshing)
             if (type == "") {
                 setLoading(true);
             }
@@ -244,7 +244,7 @@ function QuestionnaireScreen(props) {
                 // Get unique assigned name
                 const uniqueAssignedNames = [...new Set(response.PatientQuestionnaireList.map(item => item.assignedName))];
                 const transformedArray = [
-                    { label: 'All', value: '', disable: true },
+                    // { label: 'All', value: '', disable: true },
                     // { label: '', value: 'All' }
                 ];
                 const nameObjects = uniqueAssignedNames.map(name => ({
@@ -254,7 +254,7 @@ function QuestionnaireScreen(props) {
 
                 transformedArray.push(...nameObjects);
 
-                setSelectOptionForSendBy(transformedArray);
+                setSelectOptionForSentBy(transformedArray);
                 setRefreshBtnFnFlag(false);
             })
         } catch (error) {
@@ -310,7 +310,7 @@ function QuestionnaireScreen(props) {
 
 
     const handleFilter = () => {
-        console.log("********")
+        // console.log("********")
         setSearchSheetVisible(true);
     }
 
@@ -402,7 +402,7 @@ function QuestionnaireScreen(props) {
     //     navigation.goBack();
     // }
     const handleGoBack = () => {
-        console.log("handleGoBack:>>>>>>>>>> ", routeName);
+        // console.log("handleGoBack:>>>>>>>>>> ", routeName);
         if (routeName == 'MyDocument') {
             // console.log("----------my document----viewDocumentFlag--------",viewDocumentFlag)
             if (viewDocumentFlag) {
@@ -446,7 +446,7 @@ function QuestionnaireScreen(props) {
                         <View style={styles.searchBoxes}>
                             <View style={styles.leftGroup}>
                                 <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
-                                    onPress={()=>handleGoBack()}
+                                    onPress={() => handleGoBack()}
                                 >
                                     <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
                                 </TouchableOpacity>
@@ -495,7 +495,7 @@ function QuestionnaireScreen(props) {
                     <SearchBottomSheetDesign
                         hidesearchSheet={hidesearchSheet}
                         useFor="questionnaire"
-                        selectOptionForSendBy={selectOptionForSendBy}
+                        selectOptionForSentBy={selectOptionForSentBy}
                         setSelectedSendBy={setSelectedSendBy}
                         applyFilters={applyFilters}
                         setSelectedTimeLine={setSelectedTimeLine}
@@ -505,6 +505,11 @@ function QuestionnaireScreen(props) {
                         selectedTimeLine={selectedTimeLine}
                         filterFor="questionnaire"
                         refreshBtnFnFlag={refreshBtnFnFlag}
+                        timeLineFilter={true}
+                        paymentStatusFilter={false}
+                        paymentModeFilter={false}
+                        keywordSearchFilter={true}
+                        sentByFilter={true}
 
                     />
 

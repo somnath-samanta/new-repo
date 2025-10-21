@@ -83,6 +83,7 @@ function MyDocument({ props }) {
     const routeName = useNavigationState(state => state.routeNames[state.index]);
     const insets = useSafeAreaInsets();
     const statusBarHeight = Platform.OS === 'android' ? StatusBar.currentHeight : insets.top;
+    const [imageLoading, setImageLoading] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
@@ -236,11 +237,10 @@ function MyDocument({ props }) {
     };
 
     const handalShowDocument = (obj) => {
-        //console.log("obj>>>>>>>>>>>>>>>>", obj.documentUrl)
         setErrorFlag(false)
+        setImageLoading(false)
         if (isconnected) {
-            let documentExt = obj.documentUrl.split(".")
-            setdocumentUrl(obj.documentUrl);
+            setdocumentUrl(obj.documentUrl); // ✅ Set the full URL, not just the extension
 
             setImageShowFlag(true);
         } else {
@@ -573,6 +573,12 @@ function MyDocument({ props }) {
                 headerTitle=''
                 body={
                     <View style={styles.modalImageViewContainer}>
+                        {imageLoading && !errorFlag && (
+                            <View style={styles.noImageContainer}>
+                                <ActivityIndicator size="large" color="#24ad91" />
+                                <Text style={styles.messageTxt}>Loading image...</Text>
+                            </View>
+                        )}
                         {errorFlag ?
                             <View style={styles.noImageContainer}>
                                 <Text style={styles.messageTxt}>Image not found or cannot be loaded.</Text>
@@ -581,10 +587,20 @@ function MyDocument({ props }) {
                             <Image
                                 source={{ uri: documentUrl }}
                                 style={styles.imageShowBox}
-                                onLoadStart={() => setLoading(true)} // Trigger loader when the image starts loading
-                                onLoadEnd={() => setLoading(false)} // Hide loader when the image finishes loading
-                                resizeMode="contain" // Optional: adjust image scaling
-                                onError={(error) => { setErrorFlag(true), setLoading(false) }}
+                                onLoadStart={() => {
+                                    // console.log("Image loading started")
+                                    setImageLoading(true)
+                                }}
+                                onLoadEnd={() => {
+                                    // console.log("Image loading completed")
+                                    setImageLoading(false)
+                                }}
+                                resizeMode="contain"
+                                onError={(error) => {
+                                    console.log("Image loading error:", error.nativeEvent.error)
+                                    setErrorFlag(true)
+                                    setImageLoading(false)
+                                }}
                             />}
                     </View>
                 }
@@ -630,7 +646,7 @@ function MyDocument({ props }) {
                                         style={styles.webview}
                                         onError={(error) => console.log('WebView error:', error)}
                                         onHttpError={(error) => console.error('HTTP Error:', error)}
-                                        onLoad={() => console.log('Web view start======')}
+                                        onLoad={() => console.log('Web view start')}
                                         onLoadEnd={() => webViewLoadFinish()}
                                         cacheEnabled={false}
                                         domStorageEnabled={true}
@@ -983,17 +999,21 @@ const styles = StyleSheet.create({
         flex: 1,
 
         width: '100%',
-        marginTop: -50,
+        // marginTop: -50,
         height: 450,
-        zIndex: -9,
+        // zIndex: -9,
+        justifyContent: 'center',
+        alignItems: 'center',
 
         // padding:10,
     },
     imageShowBox: {
-        width: 'auto',
-        maxWidth: '100%',
+        // width: 'auto',
+        // maxWidth: '100%',
+        width: '100%',
         height: '100%',
-        objectFit: 'cover',
+        // objectFit: 'cover',
+        resizeMode: 'contain',
 
         // objectFit:'cover',
     },

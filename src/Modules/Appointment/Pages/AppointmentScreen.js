@@ -442,7 +442,7 @@ function AppointmentScreen(props) {
                 // }
                 // console.log("TimeLine", timeLine);
                 const pastDate = moment().subtract(timeLine, 'days').format('YYYY-MM-DD');
-                // console.log("pastDate",selectedTimeLine, pastDate);
+                // console.log("pastDate------------------",selectedTimeLine, pastDate);
                 filteredData = filteredData.filter(appointment =>
                     moment(appointment.appointmentDate, 'DD-MM-YYYY').format('YYYY-MM-DD') >= pastDate
                 );
@@ -1195,6 +1195,11 @@ function AppointmentScreen(props) {
                                         selectedPaymentMode={selectedPaymentMode}
                                         filterFor="appointment"
                                         refreshBtnFnFlag={refreshBtnFnFlag}
+                                        timeLineFilter={true}
+                                        paymentStatusFilter={true}
+                                        paymentModeFilter={true}
+                                        keywordSearchFilter={false}
+                                        sentByFilter={false}
                                     />
 
                                 }

@@ -89,6 +89,7 @@ function ThirdPartyDocument({ props }) {
     const [fileUploadFlag, setFileUploadFlag] = useState(false);
     const [imageShowFlag, setImageShowFlag] = useState(false);
     const [errorFlag, setErrorFlag] = useState(false);
+    const [imageLoading, setImageLoading] = useState(false);
     const [documentUrl, setdocumentUrl] = useState("");
     const [documentExtension, setDocumentExtension] = useState("");
     const hideBottomSheet = () => setSheetVisible(false);
@@ -238,11 +239,14 @@ function ThirdPartyDocument({ props }) {
     };
 
     const handalShowDocument = (obj) => {
-        //console.log("handalShowDocument === isconnected======", internetIsconnected)
+        // console.log("handalShowDocument === isconnected======", internetIsconnected)
+        // console.log("Document URL:", obj.documentUrl)
         setErrorFlag(false)
+        setImageLoading(false)
         if (internetIsconnected) {
-            //console.log("documentUrl>>>>>>>>>>>>>>>", obj.documentUrl)
-            setDocumentExtension(obj.documentUrl.split(".")[1])
+            const extension = obj.documentUrl.split(".").pop().toLowerCase();
+            // console.log("Document Extension:", extension)
+            setDocumentExtension(extension)
             setdocumentUrl(obj.documentUrl);
             setImageShowFlag(true);
 
@@ -443,7 +447,7 @@ function ThirdPartyDocument({ props }) {
     };
 
     const handleFilter = () => {
-        console.log("********")
+        // console.log("********")
         setSearchSheetVisible(true);
     }
 
@@ -533,6 +537,12 @@ function ThirdPartyDocument({ props }) {
                 headerTitle=''
                 body={
                     <View style={styles.modalImageViewContainer}>
+                        {imageLoading && !errorFlag && (
+                            <View style={styles.noImageContainer}>
+                                <ActivityIndicator size="large" color="#24ad91" />
+                                <Text style={styles.messageTxt}>Loading image...</Text>
+                            </View>
+                        )}
                         {errorFlag ?
                             <View style={styles.noImageContainer}>
                                 <Text style={styles.messageTxt}>Image not found or cannot be loaded.</Text>
@@ -541,10 +551,20 @@ function ThirdPartyDocument({ props }) {
                             <Image
                                 source={{ uri: documentUrl }}
                                 style={styles.imageShowBox}
-                                onLoadStart={() => setLoading(true)} // Trigger loader when the image starts loading
-                                onLoadEnd={() => setLoading(false)} // Hide loader when the image finishes loading
-                                resizeMode="contain" // Optional: adjust image scaling
-                                onError={(error) => { setErrorFlag(true), setLoading(false) }}
+                                onLoadStart={() => {
+                                    // console.log("Image loading started")
+                                    setImageLoading(true)
+                                }}
+                                onLoadEnd={() => {
+                                    // console.log("Image loading completed")
+                                    setImageLoading(false)
+                                }}
+                                resizeMode="contain"
+                                onError={(error) => {
+                                    // console.log("Image loading error:", error.nativeEvent.error)
+                                    setErrorFlag(true)
+                                    setImageLoading(false)
+                                }}
                             />}
                     </View>
                 }
@@ -572,7 +592,7 @@ function ThirdPartyDocument({ props }) {
                                         style={styles.webview}
                                         onError={(error) => console.log('WebView error:', error)}
                                         onHttpError={(error) => console.error('HTTP Error:', error)}
-                                        onLoadStart={() => console.log('Web view start======')}
+                                        onLoadStart={() => console.log('Web view start')}
                                         onLoadEnd={() => webViewLoadFinish()}
                                         cacheEnabled={false}
                                         domStorageEnabled={true}
@@ -973,21 +993,16 @@ const styles = StyleSheet.create({
     },
     modalImageViewContainer: {
         flex: 1,
-
         width: '100%',
-        marginTop: -50,
         height: 450,
-        zIndex: -9,
-
+        justifyContent: 'center',
+        alignItems: 'center',
         // padding:10,
     },
     imageShowBox: {
-        width: 'auto',
-        maxWidth: '100%',
+        width: '100%',
         height: '100%',
-        objectFit: 'cover',
-
-        // objectFit:'cover',
+        resizeMode: 'contain',
     },
 
     pdfmodalContainer: {

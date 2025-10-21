@@ -20,7 +20,7 @@ const ProfileScreen = ({ }) => {
   return (
     // <SafeAreaView style={theme.profileContainer}>
     <SafeAreaView
-      style={{ flex: 1}}
+      style={{ flex: 1, backgroundColor: '#dff7f8', }}
     >
       <Loader loading={loading} />
       <ScrollView>

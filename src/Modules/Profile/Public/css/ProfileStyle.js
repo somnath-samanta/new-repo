@@ -11,11 +11,11 @@ const lightTheme = {
     profileContainer: {
         flex: 1,
         backgroundColor: '#dff7f8',
-        backgroundColor:'red'
     },
     backContainer: {
-        paddingTop: 5,
-        paddingHorizontal: 15 
+        //paddingTop: 5,
+        paddingHorizontal: 15 ,
+         marginTop: 0,
     },
     contentContainer: {
         paddingHorizontal: 15,
@@ -89,13 +89,11 @@ const darkTheme = {
     profileContainer: {
         flex: 1,
         backgroundColor: '#dff7f8',
-        backgroundColor:'red',
-        borderColor:'black',
-        borderWidth:1
     },
     backContainer: {
-        paddingTop: 5,
-        paddingHorizontal: 15
+        //paddingTop: 5,
+        paddingHorizontal: 15,
+         marginTop: 0,
     },
     contentContainer: {
         paddingHorizontal: 15,

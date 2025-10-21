@@ -445,9 +445,9 @@ function App() {
               </Drawer.Screen>
               <Drawer.Screen name="Profile">
                 {(props) => (
-                  <ScreenWrapper>
+                  // <ScreenWrapper>
                     <ProfileScreen {...props} />
-                  </ScreenWrapper>
+                  // </ScreenWrapper>
                 )}
               </Drawer.Screen>
               <Drawer.Screen name="Questionnaire">

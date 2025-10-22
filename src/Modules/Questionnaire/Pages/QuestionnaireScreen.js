@@ -118,11 +118,12 @@ function QuestionnaireScreen(props) {
     const insets = useSafeAreaInsets();
     const statusBarHeight = Platform.OS === 'android' ? StatusBar.currentHeight : insets.top;
     const [refreshBtnFnFlag, setRefreshBtnFnFlag] = useState(false);
+    const [selectedKeywordText, setSelectedKeywordText] = useState("");
 
 
-    const [selectedTimeLine, setSelectedTimeLine] = React.useState("");
+    const [selectedTimeLine, setSelectedTimeLine] = useState("");
 
-    const [selectedSendBy, setSelectedSendBy] = React.useState("");
+    const [selectedSendBy, setSelectedSendBy] = useState("");
     const [selectOptionForSentBy, setSelectOptionForSentBy] = useState([
         { label: 'All', value: '', disable: true },
         // { label: '', value: 'All' }
@@ -147,6 +148,7 @@ function QuestionnaireScreen(props) {
             // setQuestionnaireDataAfterFilter([]);
             // setQuestionnaireData([]);
             getQuestionnaireListFn();
+            getassignedNameListFn();
             // setOpenQuestionList(false);
             //}
 
@@ -177,6 +179,7 @@ function QuestionnaireScreen(props) {
             setQuestionnaireDataAfterFilter([]);
             setQuestionnaireData([]);
             getQuestionnaireListFn();
+            getassignedNameListFn();
             setOpenQuestionList(false);
         }
     }, [questionnairereload])
@@ -233,21 +236,14 @@ function QuestionnaireScreen(props) {
         return () => backHandler.remove(); // cleanup listener
     }, [openQuestionList]);
 
-    const getQuestionnaireListFn = (type = "") => {
+
+    const getassignedNameListFn = () => {
         try {
-            // console.log("refreshing===========", refreshing)
-            if (type == "") {
-                setLoading(true);
-            }
-            getQuestionnaireList({ id: loginUserId }).then(async (response) => {
+            let filterObj = {
+                id: loginUserId
+            };
 
-                setQuestionnaireDataAfterFilter(response.PatientQuestionnaireList);
-                setQuestionnaireData(response.PatientQuestionnaireList);
-                setRefreshing(false)
-                setTimeout(() => {
-                    setLoading(false);
-                }, 500);
-
+            getQuestionnaireList(filterObj).then(async (response) => {
                 // Get unique assigned name
                 const uniqueAssignedNames = [...new Set(response.PatientQuestionnaireList.map(item => item.assignedName))];
                 const transformedArray = [
@@ -262,6 +258,61 @@ function QuestionnaireScreen(props) {
                 transformedArray.push(...nameObjects);
 
                 setSelectOptionForSentBy(transformedArray);
+            })
+        } catch (error) {
+            console.error("Error fetching questionnaire list:", error);
+            // Handle error here (e.g., show a toast or alert)
+        } finally {
+            // setLoading(false); // Ensure loading state is reset
+        }
+    }
+
+    const getQuestionnaireListFn = (type = "", timeline = "", sendBy = "", keyword = "") => {
+        try {
+            // console.log("refreshing===========", refreshing)
+            if (type == "") {
+                setLoading(true);
+            }
+            let filterObj = {
+                id: loginUserId
+            };
+
+            let limelineHash = {
+                '7': '1week',
+                '30': '1month',
+                '90': '3months',
+                '180': '6months',
+                '365': '1year',
+            }
+
+            let timelineText = timeline && timeline != "" ? timeline : selectedTimeLine;
+            filterObj['timeline'] = timelineText && timelineText != "" ? limelineHash[timelineText] : "";
+            filterObj['keyword'] = keyword && keyword != "" ? keyword : selectedKeywordText;
+
+            filterObj['sendBy'] = sendBy && sendBy != "" ? sendBy : selectedSendBy;
+            getQuestionnaireList(filterObj).then(async (response) => {
+
+                setQuestionnaireDataAfterFilter(response.PatientQuestionnaireList);
+                setQuestionnaireData(response.PatientQuestionnaireList);
+                setRefreshing(false)
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
+
+                // Get unique assigned name
+                /* const uniqueAssignedNames = [...new Set(response.PatientQuestionnaireList.map(item => item.assignedName))];
+                 const transformedArray = [
+                     // { label: 'All', value: '', disable: true },
+                     // { label: '', value: 'All' }
+                 ];
+                 const nameObjects = uniqueAssignedNames.map(name => ({
+                     label: name,
+                     value: name
+                 }));
+ 
+                 transformedArray.push(...nameObjects);
+ 
+                 setSelectOptionForSentBy(transformedArray);*/
                 setRefreshBtnFnFlag(false);
             })
         } catch (error) {
@@ -284,31 +335,32 @@ function QuestionnaireScreen(props) {
 
     const applyFilters = (obj) => {
         if (isConnected) {
+            getQuestionnaireListFn("", obj.Timeline, obj.SendBy, obj.Keyword)
             // Make a copy of questionnaireData so that all filters can be applied sequentially
-            let filteredData = [...questionnaireData]; // Ensure it's a new reference
-
-            // Apply timeline filter
-            if (obj['Timeline'] !== null && obj['Timeline'] !== "") {
-                // console.log("------------------------------selectedTimeLine", filteredData);
-                let timeLine = obj['Timeline']
-                const pastDate = moment().subtract(timeLine, 'days').format('YYYY-MM-DD');
-                // console.log("pastDate",selectedTimeLine, pastDate);
-                filteredData = filteredData.filter(questionnaire =>
-                    moment(questionnaire.assignedOn, 'YYYY-MM-DD').format('YYYY-MM-DD') >= pastDate
-                );
-            }
-
-            // Filter by appointmentStatus
-            if (obj['SendBy'] !== null && obj['SendBy'] !== "") {
-                let SendBy = obj['SendBy']
-                filteredData = filteredData.filter(questionnaire => {
-                    //console.log("==============", questionnaire);
-                    return questionnaire.assignedName.toLowerCase() === SendBy.toLowerCase();
-                });
-            }
-
-            // Only now update the state after all filtering is complete
-            setQuestionnaireDataAfterFilter(filteredData);
+            /* let filteredData = [...questionnaireData]; // Ensure it's a new reference
+ 
+             // Apply timeline filter
+             if (obj['Timeline'] !== null && obj['Timeline'] !== "") {
+                 // console.log("------------------------------selectedTimeLine", filteredData);
+                 let timeLine = obj['Timeline']
+                 const pastDate = moment().subtract(timeLine, 'days').format('YYYY-MM-DD');
+                 // console.log("pastDate",selectedTimeLine, pastDate);
+                 filteredData = filteredData.filter(questionnaire =>
+                     moment(questionnaire.assignedOn, 'YYYY-MM-DD').format('YYYY-MM-DD') >= pastDate
+                 );
+             }
+ 
+             // Filter by appointmentStatus
+             if (obj['SendBy'] !== null && obj['SendBy'] !== "") {
+                 let SendBy = obj['SendBy']
+                 filteredData = filteredData.filter(questionnaire => {
+                     //console.log("==============", questionnaire);
+                     return questionnaire.assignedName.toLowerCase() === SendBy.toLowerCase();
+                 });
+             }
+ 
+             // Only now update the state after all filtering is complete
+             setQuestionnaireDataAfterFilter(filteredData);*/
         } else {
             Toast.show("No internet connection");
         }
@@ -335,6 +387,7 @@ function QuestionnaireScreen(props) {
         setQuestionnaireData([]);
         setRefreshBtnFnFlag(true);
         getQuestionnaireListFn(type);
+        getassignedNameListFn();
 
 
     }
@@ -343,6 +396,7 @@ function QuestionnaireScreen(props) {
         setRefreshing(true)
         setRefreshBtnFnFlag(true);
         getQuestionnaireListFn("refreshQuestion");
+        getassignedNameListFn();
     }
 
 
@@ -401,6 +455,7 @@ function QuestionnaireScreen(props) {
         setLoading(false);
         setRefreshBtnFnFlag(true);
         getQuestionnaireListFn()
+        getassignedNameListFn();
     }
     const callbackhandler = () => {
         setOpenQuestionList(false);
@@ -518,6 +573,8 @@ function QuestionnaireScreen(props) {
                         paymentModeFilter={false}
                         keywordSearchFilter={true}
                         sentByFilter={true}
+                        setSelectedKeywordText={setSelectedKeywordText}
+                        selectedKeywordText={selectedKeywordText}
 
                     />
 

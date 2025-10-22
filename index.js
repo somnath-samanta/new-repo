@@ -18,6 +18,8 @@ import {
     ReanimatedLogLevel,
   } from 'react-native-reanimated';
 
+import { setupGlobalErrorHandlers } from './src/Utility/GlobalErrorHandler';
+
 
 
 // This is the default configuration
@@ -25,6 +27,8 @@ configureReanimatedLogger({
     level: ReanimatedLogLevel.warn,
     strict: true, // Reanimated runs in strict mode by default
   });
+
+setupGlobalErrorHandlers();
 
 //console.log("store===", store)
 const RNRedux = () => (

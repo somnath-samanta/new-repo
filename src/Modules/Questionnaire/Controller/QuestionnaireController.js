@@ -137,10 +137,24 @@ export const getQuestionnaireList = async (data) => {
     // console.log("getQuestionnaireList", data);
     let response = {}
     try {
+      let variables = {
+        id: data.id,
+        fetchingFrom: 'APP',
+      };
+      if(data.timeline){
+        variables.timeline = data.timeline;
+      }
+      if(data.sendBy){
+        variables.assignedBy = data.sendBy;
+      }
+      if(data.keyword){
+        variables.questionnaireName = data.keyword;
+      }
+      console.log("variables============", variables);
         const result = await clientAuth
         .query({
             query: Questionnaire,
-            variables: { id: data.id}, 
+            variables: variables, 
         })
         response = result;          
     } catch (err) {

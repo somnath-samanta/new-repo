@@ -2,8 +2,8 @@
 import { gql } from '@apollo/client';
 
 export const MY_DOCUMENT_QUERY = gql`
-    query getPomsPatientDocumentList($id: token, $documentType: String) {
-        PomsPatientDocumentList(_id: $id, documentType: $documentType) {
+    query getPomsPatientDocumentList($id: token, $documentType: String, $timeline: String, $fetchingFrom: String) {
+        PomsPatientDocumentList(_id: $id, documentType: $documentType, timeline: $timeline, fetchingFrom: $fetchingFrom) {
             documentUrl
             documentName
             practitionerId

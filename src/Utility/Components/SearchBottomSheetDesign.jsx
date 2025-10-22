@@ -12,15 +12,12 @@ import { useSelector } from 'react-redux';
 import Loader from './Loader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPaymentStatus, setSelectedPaymentMode, applyFilters, selectOptionForSentBy, setSelectedSendBy, clearFilterFn, forceClearFilterFlag, selectedTimeLine, selectedPaymentStatus, selectedPaymentMode, selectedSendBy, filterFor, refreshBtnFnFlag, timeLineFilter, paymentStatusFilter, paymentModeFilter, keywordSearchFilter, sentByFilter, documentTypeFilter = false, setSelectedDocumentType, selectedDocumentType }) => {
-
-
-    console.log("selectOptionForSentBy=============================", selectOptionForSentBy)
+const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPaymentStatus, setSelectedPaymentMode, applyFilters, selectOptionForSentBy, setSelectedSendBy, clearFilterFn, forceClearFilterFlag, selectedTimeLine, selectedPaymentStatus, selectedPaymentMode, selectedSendBy, filterFor, refreshBtnFnFlag, timeLineFilter, paymentStatusFilter, paymentModeFilter, keywordSearchFilter, sentByFilter, documentTypeFilter = false, setSelectedDocumentType, selectedDocumentType, setSelectedKeywordText, selectedKeywordText }) => {
 
     const documentTypeFilterOption = [
         {label: "Any", value: ""},
-        {label: "Investigations", value: "investigations"},
-        {label: "Other", value: "other"}
+        {label: "Investigations", value: "Investigations"},
+        {label: "Others", value: "Other"}
     ]
 
     const reduxAuthJson = useSelector((state) => state);
@@ -171,7 +168,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
     }, [keywordSearchText]);
 
     const handleSelect = (value, type) => {
-        console.log("handleSelect", value, type);
+        // console.log("handleSelect", value, type);
         if (type == "Timeline") {
             setSelectedTimelineOption(value);
             //setSelectedTimeLine(value)
@@ -205,10 +202,12 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
             });
             hidesearchSheet();
         } else if (filterFor === "questionnaire") {
-            setSelectedSendBy(selectedSendByOption);
+            setSelectedSendBy(selectedSentBy);
+            setSelectedKeywordText(selectedKeyword);
             applyFilters({
                 "Timeline": selectedTimelineOption,
-                "SendBy": selectedSendByOption
+                "SendBy": selectedSentBy,
+                "Keyword": selectedKeyword
             });
             hidesearchSheet();
         }else if (filterFor === "thirdPartyDocument") {
@@ -241,14 +240,15 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
 
     const hidesearchSheetPanel = () => {
         hidesearchSheet();
-        console.log("---", selectedTimeLine, selectedPaymentStatus, selectedPaymentMode);
-        // console.log("===",selectedTimelineOption, selectedPaymentStatusOption, selectedPaymentModeOption);
         setSelectedTimelineOption(selectedTimeLine);
         if (filterFor === "appointment") {
             setSelectedPaymentStatusOption(selectedPaymentStatus);
             setSelectedPaymentModeOption(selectedPaymentMode);
-        } else {
+        } else if (filterFor === "questionnaire") {
             setSelectedSendByFilter(selectedSendBy);
+            setSelectedKeyword(selectedKeywordText);
+        }else{
+            setSelectedDocumentType(selectedDocumentType);
         }
     };
     const clearFilters = () => {
@@ -273,9 +273,14 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
         }
         if (sentByFilter) {
             setSelectedSentBy("");
+             setSelectedSendBy("")
         }
         if (documentTypeFilter) {
             setSelectedDocumentType("");
+        }
+
+        if(keywordSearchFilter){
+            setSelectedKeywordText("");
         }
 
         // if (filterFor === "appointment") {

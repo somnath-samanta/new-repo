@@ -104,6 +104,21 @@ function ThirdPartyDocument({ props }) {
 
     const [selectedTimeLine, setSelectedTimeLine] = useState("");
     const [selectedDocumentType, setSelectedDocumentType] = useState("");
+    const [isconnected, setIsconnected] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            setIsconnected(state.isConnected)
+            if (!state.isConnected) {
+                setLoading(false);
+                setRefreshing(false);
+            }
+        });
+        return () => {
+            unsubscribe();
+        };
+    }, []);
+
 
 
     useFocusEffect(
@@ -136,14 +151,31 @@ function ThirdPartyDocument({ props }) {
         //console.log("internetIsconnected==========", internetIsconnected)
     }, [internetIsconnected])
 
-    const getAppointmentListFn = (type = "") => {
+    const getAppointmentListFn = (type = "", timeline = "", documentType = "") => {
         try {
 
             if (type == "") {
                 setLoading(true);
             }
-            getMyDocumentList({ id: reduxAuthJson.token.loginUserId, documentType: '' }).then(async (response) => {
-                // console.log("response>>>>>>>>>>>>>>>>>", response);
+            let searchHash = {
+                id: reduxAuthJson.token.loginUserId,
+                fetchingFrom: 'APP'
+            }
+            
+            let timelineHash = {
+                '7': '1week',
+                '30': '1month',
+                '90': '3months',
+                '180': '6months',
+                '365': '1year',
+            }
+            let timeLineText = timeline && timeline != "" ? timeline : selectedTimeLine;
+            searchHash.timeline = timelineHash[timeLineText];
+            
+            searchHash.documentType = documentType && documentType != "" ? documentType : selectedDocumentType;
+            
+            getMyDocumentList(searchHash).then(async (response) => {
+                // console.log("response>>>>>>>>>>>>>>>>>", response.PomsPatientDocumentList);
                 setAppointmentsDataAfterFilter(response.PomsPatientDocumentList);
                 setAppointmentsData(response.PomsPatientDocumentList);
                 setRefreshing(false);
@@ -178,31 +210,6 @@ function ThirdPartyDocument({ props }) {
             <></>
         ) : null;
     };
-
-    const handleBottomSheetShow = (item) => {
-        // console.log("handleBottomSheetShow", item);
-        setSheetVisible(true);
-    }
-
-    const goToVideoScreen = async () => {
-        try {
-            if (await InAppBrowser.isAvailable()) {
-                await InAppBrowser.open('https://stag-patient.oaktreeconnect.co.uk/appointment/video-consultation', {
-                    // Optional settings
-                    toolbarColor: '#6200EE',
-                    secondaryToolbarColor: 'black',
-                    enableUrlBarHiding: true,
-                    enableDefaultShare: true,
-                    showInRecents: true,
-                    forceCloseOnRedirection: false,
-                });
-            } else {
-                Alert.alert('InAppBrowser is not available');
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     const renderItem = (item) => {
         return <>
@@ -462,13 +469,7 @@ function ThirdPartyDocument({ props }) {
 
     const applyFilters = (obj) => {
         if (isconnected) {
-            // Apply timeline filter
-            if (obj['Timeline'] !== null && obj['Timeline'] !== "") {
-                let timeLine = obj['Timeline']
-                const pastDate = moment().subtract(timeLine, 'days').format('YYYY-MM-DD');
-                console.log("pastDate-------------", pastDate);
-                
-            }
+            getAppointmentListFn("filter", obj.Timeline, obj.DocumentType);
         } else {
             Toast.show("No internet connection");
         }

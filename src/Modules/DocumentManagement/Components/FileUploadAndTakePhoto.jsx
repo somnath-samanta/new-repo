@@ -7,6 +7,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 // import DocumentPicker from 'react-native-document-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toast from 'react-native-simple-toast';
+import CrashLogger from '../../../Utility/CrashLogger';
 import Loader from '../../../Utility/Components/Loader';
 import { Picker } from '@react-native-picker/picker';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -186,6 +187,9 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           height: 400,
           cropping: true,
           includeBase64: true,
+          compressImageQuality: 0.7,
+          compressImageMaxWidth: 1024,
+          compressImageMaxHeight: 1024,
         }).then((image) => {
           // Convert file size from bytes to MB
           const fileSize = image.size / (1024 * 1024); // Size in MB
@@ -211,10 +215,14 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
               name: fileName,
             },
           }));
-          setSelectedDocument(""); // Reset document type selection
+          if(useFor !== "ThirdPartyDocument"){
+            setSelectedDocument(""); // Reset document type selection
+          }
         }).catch((err) => {
           // Handle errors from the image picker
           console.error("Error opening camera:", err.code);
+          CrashLogger.logCrash(err, 'Camera - takePhoto');
+
           if (err.code === "E_NO_CAMERA_PERMISSION") {
             Toast.show("Please grant camera and photo library permissions.");
           } else {
@@ -227,167 +235,67 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     }
   };
 
-  // useEffect(() => {
-    // console.log("documentObj==========", documentObj)
-  // }, [documentObj])
-  // Function to select a file from the gallery (Image or PDF)
-
-  //   const selectFile = async () => {
-  //     if (selectedDocument === "") {
-  //       Toast.show("Please select document type");
-  //     } else {
-  //       if (Object.keys(documentObj).length < 3) {
-  //         try {
-
-
-
-  //           const response = await DocumentPicker.pick({
-  //             type: [DocumentPicker.types.images, DocumentPicker.types.pdf, DocumentPicker.types.doc],
-  //           });
-
-  // console.log("response---------------", response[0])
-  //           const fileSize = (response[0].size / (1024 * 1024)) * 5; // Convert file size to MB
-  //           if (fileSize > 5) {
-  //             Toast.show("Please make sure your document is not more than 5 MB.");
-  //             return false;
-  //           }
-
-  //           let fileName = response[0].name.split(".");
-  //           let fileExtension = fileName[fileName.length - 1].toLowerCase();
-  //           if (['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'].includes(fileExtension)) {
-
-  //             const fileNameArray = response[0].name.split(".");
-  //             const fileType = fileNameArray[fileNameArray.length - 1];
-  //             const fileUri = Platform.OS === 'android' ? response[0].uri : response[0]?.uri?.startsWith('file://')
-  //               ? response[0]?.uri.replace('file://', '')
-  //               : response[0]?.uri;
-  //             let base64String = await RNFS.readFile(fileUri, 'base64');
-
-
-  //             if (['jpg', 'jpeg', 'png'].includes(fileExtension)) {
-  //               // Image file (JPEG, PNG, etc.)
-  //               // console.log('===========')
-  //               base64String = await cropImage(fileUri, fileExtension);
-
-  //             } else if (fileExtension === 'pdf' || fileExtension === 'doc' || fileExtension === 'docx') {
-  //               // PDF file
-  //               mimeType = 'application/pdf';
-  //               base64WithPrefix = `data:${mimeType};base64,${base64String}`;
-
-  //               setDocumentObj((prevImageUri) => ({
-  //                 ...prevImageUri,
-  //                 [selectedDocument]: { uri: base64WithPrefix, type: fileType, name: response[0].name },
-  //               }));
-
-  //               setSelectedDocument("");
-  //             } else {
-  //               // Handle other file types if necessary
-  //               mimeType = 'application/octet-stream';  // Default MIME type for unknown files
-  //               base64WithPrefix = `data:${mimeType};base64,${base64String}`;
-
-  //               setDocumentObj((prevImageUri) => ({
-  //                 ...prevImageUri,
-  //                 [selectedDocument]: { uri: base64WithPrefix, type: fileType, name: response[0].name },
-  //               }));
-
-  //               setSelectedDocument("");
-  //             }
-
-
-  //             //return false;
-
-
-  //           } else {
-  //             Toast.show("Please upload files in one of the following formats: PNG, JPEG, JPG, or PDF.");
-  //           }
-  //         } catch (err) {
-  //           if (DocumentPicker.isCancel(err)) {
-  //             console.log('User cancelled file picker');
-  //           } else {
-  //             console.error("DocumentPicker Error:", err);
-  //             Toast.show("An error occurred while selecting the file.");
-  //           }
-  //         }
-  //       } else {
-  //         Toast.show("Maximum upload limit reached. You can only upload up to 3 documents.")
-  //       }
-  //     }
-  //   };
   const selectFile = async () => {
     //console.log("selectedDocument========", selectedDocument)
-    /* if (selectedDocument == null || selectedDocument == "") {
-       Toast.show("Please select a document type");
-     } else {
-       if (Object.keys(documentObj).length < 3) {
-         try {
-           const response = await DocumentPicker.pick({
-             type: [
-               DocumentPicker.types.images,
-               DocumentPicker.types.pdf,
-               DocumentPicker.types.doc,
-               DocumentPicker.types.docx,
-             ],
-           });
- 
-           // console.log("response---------------", response[0]);
- 
-           // Correct file size calculation
-           const fileSize = response[0].size / (1024 * 1024); // Convert bytes to MB
-           if (fileSize > 5) {
-             Toast.show("Please ensure that the document you upload is no more than 5 MB");
-             return false;
-           }
- 
-           // Validate file extension
-           let fileName = response[0].name.split(".");
-           let fileExtension = fileName[fileName.length - 1].toLowerCase();
- 
-           if (["jpg", "jpeg", "png", "pdf", "doc", "docx"].includes(fileExtension)) {
-             const fileType = response[0].type;
-             const fileUri =
-               Platform.OS === "android"
-                 ? response[0].uri
-                 : response[0]?.uri?.startsWith("file://")
-                   ? response[0]?.uri.replace("file://", "")
-                   : response[0]?.uri;
- 
-             let base64String = await RNFS.readFile(fileUri, "base64");
-             let mimeType = response[0].type || "application/octet-stream";
-             let base64WithPrefix = `data:${mimeType};base64,${base64String}`;
- 
-             if (["jpg", "jpeg", "png"].includes(fileExtension)) {
-               // Handle cropping or other processing for images if required
-               base64String = await cropImage(fileUri, fileExtension);
-             }
- 
-             // Update document object
-             setDocumentObj((prevImageUri) => ({
-               ...prevImageUri,
-               [selectedDocument]: {
-                 uri: base64WithPrefix,
-                 type: fileType,
-                 name: response[0].name,
-               },
-             }));
- 
-             setSelectedDocument(""); // Reset document type selection
-           } else {
-             Toast.show(
-               "Please upload files in one of the following formats: PNG, JPEG, JPG, or PDF."
-             );
-           }
-         } catch (err) {
-           if (DocumentPicker.isCancel(err)) {
-             console.log("User cancelled file picker");
-           } else {
-             console.error("DocumentPicker Error:", err);
-             Toast.show("An error occurred while selecting the file.");
-           }
-         }
-       } else {
-         Toast.show("Maximum upload up to 3 documents.");
-       }
-     }*/
+    if (selectedDocument == null || selectedDocument == "") {
+      Toast.show("Please select a document type");
+    } else {
+      if (Object.keys(documentObj).length < 3) {
+        try {
+          // Use ImagePicker to select from gallery
+          const image = await ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true,
+            includeBase64: true,
+            mediaType: 'photo',
+            compressImageQuality: 0.7, // Compress to 70% quality
+            compressImageMaxWidth: 1024,
+            compressImageMaxHeight: 1024,
+          });
+
+          // Convert file size from bytes to MB
+          const fileSize = image.size / (1024 * 1024);
+
+          if (fileSize > 5) {
+            Toast.show("Please ensure that the document you upload is no more than 5 MB");
+            return false;
+          }
+
+          const fileType = image.mime; // MIME type of the image
+          const imageBase64 = `data:${fileType};base64,${image.data}`; // Convert to Base64
+
+          // Extract file name from path
+          const fileNameArray = image.path.split("/");
+          const fileName = fileNameArray[fileNameArray.length - 1];
+
+          // Update document object
+          setDocumentObj((prevImageUri) => ({
+            ...prevImageUri,
+            [selectedDocument]: {
+              uri: imageBase64,
+              type: fileType,
+              name: fileName,
+            },
+          }));
+
+          if(useFor !== "ThirdPartyDocument"){
+            setSelectedDocument(""); // Reset document type selection
+          }
+          Toast.show("Image selected successfully!");
+        } catch (err) {
+          if (err.code === 'E_PICKER_CANCELLED') {
+            console.log('User cancelled image picker');
+          } else {
+            console.error("ImagePicker Error:", err);
+            CrashLogger.logCrash(err, 'Gallery - selectFile');
+            Toast.show("An error occurred while selecting the file.");
+          }
+        }
+      } else {
+        Toast.show("Maximum upload up to 3 documents.");
+      }
+    }
   };
 
 
@@ -402,7 +310,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
       });
       // console.log("croppedImage", croppedImage)
       // console.log("croppedImage path", croppedImage.path)
-      mimeType = `image/${fileExtension}`;
+      let mimeType = `image/${fileExtension}`;
 
 
       const fileUri = Platform.OS === 'android' ? croppedImage.path : croppedImage.path.replace('file://', '');
@@ -410,7 +318,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
       const base64String = await RNFS.readFile(fileUri, 'base64');
       // console.log("-----------", base64String)
 
-      base64WithPrefix = `data:${mimeType};base64,${base64String}`;
+      let base64WithPrefix = `data:${mimeType};base64,${base64String}`;
       const fileNameArray = croppedImage.path.split("/")
 
       setDocumentObj((prevImageUri) => ({
@@ -429,23 +337,38 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
 
   // Upload file function
   const uploadFile = async () => {
+    // Format date to DD/MM/YYYY
+    const formatDateToDDMMYYYY = (date) => {
+      if (!date) return "";
+      const d = new Date(date);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    };
+
+    const reportedFormattedDate = formatDateToDDMMYYYY(dateOfReport);
     try {
       let submitdataFlag = true;
-      if (useFor === "ThirdPartyDocument") {
+      if (useFor === "ThirdPartyDocument" && selectedDocument !== 'Others') {
         if (documentName == "" || documentName == null || documentName == undefined) {
           setdocumentNameError(true)
-          //Toast.show("Please enter document name");
+          Toast.show("Please enter document name");
           submitdataFlag = false;
+          return
         }
-        // if (documentAuther == "" || documentAuther == null || documentAuther == undefined) {
-        //   //Toast.show("Please enter auther");
-        //   setdocumentAutherError(true)
-        //   submitdataFlag = false;
-        // }
+
+        if (reportedFormattedDate == "" || reportedFormattedDate == null || reportedFormattedDate == undefined) {
+          setorganisationNameError(true)
+          Toast.show("Please select Date of Report");
+          submitdataFlag = false;
+          return
+        }
         if (organisationName == "" || organisationName == null || organisationName == undefined) {
           setorganisationNameError(true)
-          //Toast.show("Please enter organisation Name");
+          Toast.show("Please enter organisation Name");
           submitdataFlag = false;
+          return
         }
       }
       if (submitdataFlag) {
@@ -461,18 +384,18 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
 
 
         const variables = {
-            documents: JSON.stringify(uploadArrayOfHash),
-            documentName: documentName,
-            practitionerId: "",
-            practitionerName: "",
-            documentType: useFor === "ThirdPartyDocument" ? documentType : "GovtId",
-            author: documentAuther,
-            organizationName: organisationName,
-            id: patientId,
-            fetchingFrom: "APP"
-          }
-          // console.log("variables", variables)
-        return
+          documents: JSON.stringify(uploadArrayOfHash),
+          documentName: documentName || "",
+          practitionerId: "",
+          practitionerName: "",
+          documentType: useFor === "ThirdPartyDocument" ? documentType : "GovtId",
+          author: documentAuther || "",
+          organizationName: organisationName || "",
+          id: patientId,
+          fetchingFrom: "APP",
+          report_date: reportedFormattedDate || "",
+          tags: tags || []
+        }
 
         const result = await savePatientDocumentsMutation({
           variables: variables,
@@ -616,7 +539,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     setDocumentName(text),
                       setdocumentNameError(false)
                   }}
-                  placeholder="Document Name"
+                  placeholder="Document Name *"
                   placeholderTextColor="#000"
                 />
               </View>
@@ -636,7 +559,9 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                       </TouchableOpacity>
                     </>
                     :
-                    <Text style={{ color: Colors.black }}>Date of Report</Text>
+                    // <Text style={{ color: Colors.black }}>Date of Report <Text style={{ color: Colors.red }}>*</Text></Text>
+                    <Text style={{ color: Colors.black }}>Date of Report *</Text>
+
                   }
                 </TouchableOpacity>
                 <CommonDatePicker
@@ -677,7 +602,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     setOrganisationName(text),
                       setorganisationNameError(false)
                   }}
-                  placeholder="Organisation Name"
+                  placeholder="Organisation Name *"
                   placeholderTextColor="#000"
                 />
               </View>
@@ -1107,9 +1032,9 @@ const pickerStyle = {
     fontFamily: 'Arimo-Regular',
   },
   dateFieldBox: {
-    flexDirection: "row", 
-    alignItems: "center", 
-    justifyContent: "center", 
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     height: 100
   },
 }

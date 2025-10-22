@@ -116,8 +116,8 @@ export const APPOINTMENT_LIST = gql`
 `;
 
 export const Questionnaire = gql`
-  query getPatientQuestionnaire($id: String) {
-    PatientQuestionnaireList(patientId: $id) {
+  query getPatientQuestionnaire($id: String, $timeline: String, $fetchingFrom: String, $assignedBy: String, $questionnaireName: String) {
+    PatientQuestionnaireList(patientId: $id, timeline: $timeline, fetchingFrom: $fetchingFrom, assignedBy: $assignedBy, questionnaireName: $questionnaireName) {
       id
       resourceType
       patientId
@@ -163,10 +163,10 @@ export const PatientQuestionnaireUpdate = gql`
 }`
 
 export const SAVE_PATIENT_DOCUMENT = gql`
-    mutation savePatientDocuments($id: String, $tags: [String], $documentUrl: String, $documentType: String, $author: String, $documentName: String, $organizationName: String, $practitionerId: String, $practitionerName: String, $documents: String, $fetchingFrom: String
+    mutation savePatientDocuments($id: String, $tags: [String], $documentUrl: String, $documentType: String, $author: String, $documentName: String, $organizationName: String, $practitionerId: String, $practitionerName: String, $documents: String, $fetchingFrom: String, $report_date: String
     ) {
   PomsPatientDocumentCreate(
-    resource: {resourceType: PomsPatientDocuments, tags: $tags, patientId: $id, documentUrl: $documentUrl, documentType: $documentType, documentName: $documentName, author: $author, organizationName: $organizationName, practitionerId: $practitionerId, practitionerName: $practitionerName, documents: $documents, fetchingFrom: $fetchingFrom}
+    resource: {resourceType: PomsPatientDocuments, tags: $tags, patientId: $id, documentUrl: $documentUrl, documentType: $documentType, documentName: $documentName, author: $author, organizationName: $organizationName, practitionerId: $practitionerId, practitionerName: $practitionerName, documents: $documents, fetchingFrom: $fetchingFrom, report_date: $report_date}
   ) {
     id
   }

@@ -123,9 +123,20 @@ export const getMyDocumentList = async (data) => {
     // console.log("getAppointmentList", data);
     let response = {}
     try {
+        let variables = {
+            id: data.id,
+            fetchingFrom: 'APP'
+        }
+        if(data.timeline && data.timeline != ""){
+            variables.timeline = data.timeline;
+        }
+        if(data.documentType && data.documentType != ""){
+            variables.documentType = data.documentType;
+        }
+        console.log("variables", variables);
         const result = await clientAuth.query({
             query: MY_DOCUMENT_QUERY,
-            variables: { id: data.id, documentType: data.documentType },
+            variables: variables,
             fetchPolicy: 'no-cache',
         });
         response = result;

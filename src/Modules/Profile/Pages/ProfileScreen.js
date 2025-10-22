@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, Linking } from 'react-native';
+import { View, Text, Image, ScrollView, Linking, SafeAreaView } from 'react-native';
 import Colors from '../../../Utility/Colors';
 import Icon from 'react-native-vector-icons/Feather';
 import ProfileStyle from '../Public/css/ProfileStyle';
 import { useTheme } from '../../../Contexts/ThemeContext';
 import Loader from '../../../Utility/Components/Loader'
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSelector, useDispatch } from 'react-redux';
 
+import { useSelector, useDispatch } from 'react-redux';
 
 const ProfileScreen = ({ }) => {
   const { isDarkTheme, toggleTheme } = useTheme();
@@ -19,7 +18,10 @@ const ProfileScreen = ({ }) => {
   const reduxAuthJson = useSelector((state) => state);
 
   return (
-    <SafeAreaView style={theme.profileContainer}>
+    // <SafeAreaView style={theme.profileContainer}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: '#dff7f8', }}
+    >
       <Loader loading={loading} />
       <ScrollView>
         <View style={theme.contentContainer}>
@@ -46,7 +48,7 @@ const ProfileScreen = ({ }) => {
         </View>
       </ScrollView>
 
-      
+
     </SafeAreaView>
   );
 };

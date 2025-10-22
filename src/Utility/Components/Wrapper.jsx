@@ -45,7 +45,7 @@ const ScreenWrapper = ({ children }) => {
   
 
     return (
-        <SafeAreaView style={{ flex: 1, }}>
+        <SafeAreaView style={{ flex: 1 }} edges={['left', 'right', 'bottom']}>
             <View style={CommonStyle.screenWrapperContainer}>
                 {showHeader && <CustomHeader pageName={routeName} switchOrganizationSheet={switchOrganizationSheet} 
                // refreshBtnFn={refreshBtnFn}

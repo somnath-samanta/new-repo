@@ -6,7 +6,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 import {
   StatusBar, AppState, LogBox, BackHandler, ToastAndroid, Alert, Platform
-  } from 'react-native';
+} from 'react-native';
 import { ThemeProvider } from './src/Contexts/ThemeContext';
 import { MenuProvider } from 'react-native-popup-menu';
 // import HomeScreen from './src/Modules/Booking/Pages/HomeScreen';
@@ -74,7 +74,7 @@ const DefaultLayoutScreen = ({ navigation }) => (
       options={{
         headerShown: false
       }}
-    /> 
+    />
     <DefaultLayout.Screen
       name="ForgotPassword"
       component={ForgotPassword}
@@ -105,7 +105,7 @@ function App() {
     // console.log("===========",state);
     return state.token?.accesToken || "";
   });
-  
+
   /*useEffect(() => {
     const backAction = () => {
       // Prevent back action if we are on the root screen
@@ -141,7 +141,7 @@ function App() {
         navigationRef.current.goBack();
         return true; // handled, prevent default
       }
-  
+
       // Show confirmation dialog before exiting
       Alert.alert("Exit App", "Are you sure you want to exit?", [
         {
@@ -154,15 +154,15 @@ function App() {
           onPress: () => BackHandler.exitApp(),
         },
       ]);
-  
+
       return true; // prevent default exit
     };
-  
+
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
     );
-  
+
     return () => backHandler.remove(); // cleanup
   }, []);
 
@@ -223,7 +223,7 @@ function App() {
     return screens; // If "Home" isn't found, return the original array
   };
 
-  
+
   const getNextScreen = (currentScreen) => {
     const updatedScreens = [...screens];
     const currentIndex = updatedScreens.indexOf(currentScreen);
@@ -243,11 +243,11 @@ function App() {
       console.log('No forward navigation possible');
     }
   };
-  const onSwipeRight = (gestureState)=> {
+  const onSwipeRight = (gestureState) => {
     const currentScreen = navigationRef.getCurrentRoute()?.name;
     if (navigationRef.canGoBack() && !hasAdditionalView) {
       navigationRef.goBack();
-    }else{
+    } else {
       setHasAdditionalView(false)
       EventEmitter.emit("broadcustMessage", { "close_additional_view": true });
     }
@@ -283,7 +283,7 @@ function App() {
   useEffect(() => {
     const listener = EventEmitter.addListener("broadcustMessage", async (message) => {
       console.log("EventEmitter message===", message);
-      if (message.has_additional_view){
+      if (message.has_additional_view) {
         setHasAdditionalView(true);
       }
       if (message.loginSuccess === true) {
@@ -363,7 +363,7 @@ function App() {
     // </SafeAreaProvider>
     // </Provider>
     <SafeAreaProvider>
-        {/* <GestureRecognizerView
+      {/* <GestureRecognizerView
           detectSwipeUp={false}
           detectSwipeDown={false}
           onSwipeLeft={onSwipeLeft}
@@ -373,13 +373,13 @@ function App() {
             flex: 1,
           }}
         > */}
-          <SwipeWrapper
-            onSwipeLeft={onSwipeLeft}
-            onSwipeRight={onSwipeRight}
-            >
-    <MenuProvider>
-      <ThemeProvider>
-        {/* <StatusBar
+      <SwipeWrapper
+        onSwipeLeft={onSwipeLeft}
+        onSwipeRight={onSwipeRight}
+      >
+        <MenuProvider>
+          <ThemeProvider>
+            {/* <StatusBar
           barStyle='default'
           backgroundColor={Colors.primary}
           hidden={false}
@@ -387,7 +387,7 @@ function App() {
         /> */}
             <GeneralStatusBarColor backgroundColor="#000"
               barStyle="light-content" />
-        <NavigationContainer 
+            <NavigationContainer
               // onStateChange={() => {
               //    const route = navigationRef.getCurrentRoute();
               //     const currentIndex = screens.indexOf(route?.name);
@@ -399,103 +399,103 @@ function App() {
               //       ]);
               //     }
               // }}
-                onStateChange={() => {
-                  const route = navigationRef.getCurrentRoute();
-                  const currentScreen = route?.name;
+              onStateChange={() => {
+                const route = navigationRef.getCurrentRoute();
+                const currentScreen = route?.name;
 
-                  if (!currentScreen || currentScreen === "Login") {
-                    return; // Do nothing if the current screen is invalid or "Login"
+                if (!currentScreen || currentScreen === "Login") {
+                  return; // Do nothing if the current screen is invalid or "Login"
+                }
+
+                setScreens((prev) => {
+                  // Always keep "Home" and the current screen
+                  if (currentScreen === "Home") {
+                    return prev; // If "Home" is the current screen, only keep "Home"
                   }
-
-                  setScreens((prev) => {
-                    // Always keep "Home" and the current screen
-                    if (currentScreen === "Home") {
-                      return prev; // If "Home" is the current screen, only keep "Home"
-                    }
-                    return ["Home", currentScreen]; // Otherwise, keep "Home" and the current screen
-                  });
-                }}
-
-        ref={navigationRef}>
-          {tokenData == null || tokenData === "" ? (
-            <DefaultLayoutScreen />
-          ) : (
-            <Drawer.Navigator
-              initialRouteName="Home"
-              drawerContent={(props) => <CustomDrawerContent {...props} />}
-              screenOptions={{
-                headerShown: false, // Hide default header
-                swipeEnabled: true, // Disable swipe gesture for drawer
-                drawerPosition: "right",
-                edgeWidth: 100,
-                gestureEnabled: true
+                  return ["Home", currentScreen]; // Otherwise, keep "Home" and the current screen
+                });
               }}
-            >
-              <Drawer.Screen name="Home">
-                {(props) => (
-                  // <ScreenWrapper>
-                    <Home {...props} />
-                  // </ScreenWrapper>
-                )}
-              </Drawer.Screen>
-              <Drawer.Screen name="Appointment">
-                {(props) => (
-                    <AppointmentScreen {...props} />
-                )}
-              </Drawer.Screen>
-              <Drawer.Screen name="Profile">
+
+              ref={navigationRef}>
+              {tokenData == null || tokenData === "" ? (
+                <DefaultLayoutScreen />
+              ) : (
+                <Drawer.Navigator
+                  initialRouteName="Home"
+                  drawerContent={(props) => <CustomDrawerContent {...props} />}
+                  screenOptions={{
+                    headerShown: false, // Hide default header
+                    swipeEnabled: true, // Disable swipe gesture for drawer
+                    drawerPosition: "right",
+                    edgeWidth: 100,
+                    gestureEnabled: true
+                  }}
+                >
+                  <Drawer.Screen name="Home">
+                    {(props) => (
+                      // <ScreenWrapper>
+                      <Home {...props} />
+                      // </ScreenWrapper>
+                    )}
+                  </Drawer.Screen>
+                  <Drawer.Screen name="Appointment">
+                    {(props) => (
+                      <AppointmentScreen {...props} />
+                    )}
+                  </Drawer.Screen>
+                  <Drawer.Screen name="Profile">
                 {(props) => (
                   <ScreenWrapper>
                     <ProfileScreen {...props} />
                   </ScreenWrapper>
                 )}
               </Drawer.Screen>
-              <Drawer.Screen name="Questionnaire">
-                {(props) => (
-                    <QuestionnaireScreen {...props} />
-                )}
-              </Drawer.Screen>
-              <Drawer.Screen name="MyDocument">
-                {(props) => (
-                  // <ScreenWrapper>
-                    <MyDocument {...props} />
-                  // </ScreenWrapper>
-                )}
-              </Drawer.Screen>
-              <Drawer.Screen name="ThirdPartyDocument">
-                {(props) => (
-                  // <ScreenWrapper>
-                    <ThirdPartyDocument {...props} />
-                  // </ScreenWrapper>
-                )}
-              </Drawer.Screen>
-              <Drawer.Screen name="HealthParameter">
-                {(props) => (
-                  // <ScreenWrapper>
-                    <HealthParameter {...props} />
-                  // </ScreenWrapper>
-                )}
-              </Drawer.Screen>
-              <Drawer.Screen name="AddHealthRecord">
-                {(props) => (
-                  // <ScreenWrapper>
-                    <AddHealthRecord {...props} />
-                  // </ScreenWrapper>
-                )}
-              </Drawer.Screen>
-              <Drawer.Screen name="HealthMonitoring">
-                {(props) => (
-                  // <ScreenWrapper>
-                    <HealthMonitoring {...props} />
-                  // </ScreenWrapper>
-                )}
-              </Drawer.Screen>
-            </Drawer.Navigator>
-            
-          )}
-        </NavigationContainer>
-      </ThemeProvider>
-    </MenuProvider>
+                  <Drawer.Screen name="Questionnaire">
+                    {(props) => (
+                      <QuestionnaireScreen {...props} />
+                    )}
+                  </Drawer.Screen>
+                  <Drawer.Screen name="MyDocument">
+                    {(props) => (
+                      // <ScreenWrapper>
+                      <MyDocument {...props} />
+                      // </ScreenWrapper>
+                    )}
+                  </Drawer.Screen>
+                  <Drawer.Screen name="ThirdPartyDocument">
+                    {(props) => (
+                      // <ScreenWrapper>
+                      <ThirdPartyDocument {...props} />
+                      // </ScreenWrapper>
+                    )}
+                  </Drawer.Screen>
+                  <Drawer.Screen name="HealthParameter">
+                    {(props) => (
+                      // <ScreenWrapper>
+                      <HealthParameter {...props} />
+                      // </ScreenWrapper>
+                    )}
+                  </Drawer.Screen>
+                  <Drawer.Screen name="AddHealthRecord">
+                    {(props) => (
+                      // <ScreenWrapper>
+                      <AddHealthRecord {...props} />
+                      // </ScreenWrapper>
+                    )}
+                  </Drawer.Screen>
+                  <Drawer.Screen name="HealthMonitoring">
+                    {(props) => (
+                      // <ScreenWrapper>
+                      <HealthMonitoring {...props} />
+                      // </ScreenWrapper>
+                    )}
+                  </Drawer.Screen>
+                </Drawer.Navigator>
+
+              )}
+            </NavigationContainer>
+          </ThemeProvider>
+        </MenuProvider>
         {/* </GestureRecognizerView> */}
       </SwipeWrapper>
     </SafeAreaProvider>

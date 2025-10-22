@@ -10,14 +10,14 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { getPatientQuestionnaireName } from '../../Modules/Questionnaire/Controller/QuestionnaireController';
 import { useSelector } from 'react-redux';
 import Loader from './Loader';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPaymentStatus, setSelectedPaymentMode, applyFilters, selectOptionForSentBy, setSelectedSendBy, clearFilterFn, forceClearFilterFlag, selectedTimeLine, selectedPaymentStatus, selectedPaymentMode, selectedSendBy, filterFor, refreshBtnFnFlag, timeLineFilter, paymentStatusFilter, paymentModeFilter, keywordSearchFilter, sentByFilter, documentTypeFilter = false, setSelectedDocumentType, selectedDocumentType, setSelectedKeywordText, selectedKeywordText }) => {
 
     const documentTypeFilterOption = [
-        {label: "Any", value: ""},
-        {label: "Investigations", value: "Investigations"},
-        {label: "Others", value: "Other"}
+        { label: "Any", value: "" },
+        { label: "Investigations", value: "Investigations" },
+        { label: "Others", value: "Other" }
     ]
 
     const reduxAuthJson = useSelector((state) => state);
@@ -210,7 +210,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                 "Keyword": selectedKeyword
             });
             hidesearchSheet();
-        }else if (filterFor === "thirdPartyDocument") {
+        } else if (filterFor === "thirdPartyDocument") {
             setSelectedDocumentType(selectedDocumentType);
             applyFilters({
                 "Timeline": selectedTimelineOption,
@@ -296,6 +296,13 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
     };
 
 
+    const insets = useSafeAreaInsets();
+    const containerTopBoxHeight = 50; // approximate height of top box
+    const containerBottomHeight = 30; // approximate height of bottom buttons
+    const availableHeight = filterContainerheight - containerTopBoxHeight - containerBottomHeight - insets.top - insets.bottom;
+
+
+
     return (
         <SafeAreaView style={styles.Container}>
             <Loader loading={isLoadingKeywords} />
@@ -321,7 +328,11 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                     />
                 </View> */}
                 <View style={styles.containerRight}>
-                    <ScrollView style={styles.inncontainerRight}>
+                    <ScrollView
+                        style={{ height: availableHeight }}
+                        contentContainerStyle={{ paddingBottom: 5 }}
+                        showsVerticalScrollIndicator={true}
+                    >
                         {
                             timeLineFilter &&
 
@@ -539,7 +550,10 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                 </View>
             </View>
 
-            <View style={styles.containerBottom}>
+            <View style={[
+                styles.containerBottom,
+                { paddingBottom: insets.bottom + 5 } // ensures spacing even with gesture bar
+            ]}>
                 <TouchableOpacity
                     style={[styles.filterbutton, styles.filterCancelbutton]}
                     onPress={() => hidesearchSheetPanel()}
@@ -567,7 +581,7 @@ const styles = StyleSheet.create({
     Container: {
         paddingLeft: 10,
         paddingRight: 10,
-        //backgroundColor: 'pink',
+        // backgroundColor: 'pink',
         // display: 'flex',
         // flexDirection: 'row',
         // justifyContent: "flex-start",
@@ -589,6 +603,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         top: 0,
+        // backgroundColor: 'red'
+
 
     },
     containerTopBoxTxt: {
@@ -605,12 +621,12 @@ const styles = StyleSheet.create({
     containerTop: {
         width: "100%",
         //height: "52%",
-        //backgroundColor: 'pink',
+        // backgroundColor: 'pink',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: "flex-start",
-        marginTop: 50,
-        height: filterContainerheight - 110,
+        marginTop: 20,
+        // height: filterContainerheight - 110,
     },
     containerBottom: {
         width: screenWidth,
@@ -632,20 +648,18 @@ const styles = StyleSheet.create({
     containerRight: {
         width: "100%",
         // height: "100%",
-        //flex: 1,
+        flex: 1,
         // padding: 0,
-        backgroundColor: "#fff",
+        // backgroundColor: "pink",
         // borderTopRightRadius: 15,
         // borderBottomRightRadius: 15,
         //height: filterContainerheight,
     },
     inncontainerRight: {
-        // backgroundColor: 'red',
+        //backgroundColor: 'red',
         display: 'flex',
         flexDirection: 'column',
         flexWrap: 'wrap',
-        // height: 300,
-        // overflow: 'scroll',
     },
     // tab: {
     //     paddingVertical: 15,

@@ -155,7 +155,12 @@ function LoginScreen(props) {
                     setLoading(true);
                     loginGetApi(data).then(async (response) => {
                         console.log("response>>>>>>>>>>", response)
+                        console.log("response>>>>>>>>>>", response.data.loginUserDetails)
                         setLoading(false);
+                        if(response.data.loginUserDetails.accountStatus === 0){
+                            Toast.show("Your Account is Deactivated. Please contact Administrator");
+                            return;
+                        }
                         if (response.status === 1) {
                             // setLoginAnimationFlag(true)
                             // setTimeout(async() => {

@@ -428,3 +428,19 @@ export const QUERY_UPDATE_PATIENT_VITALS = gql`
   }
 `;
 
+export const DEACTIVATE_PATIENT = gql`
+  mutation deactivatePatient($id: id) {
+    PatientUpdate(
+      resource: {
+        resourceType: Patient
+        patientExtension: { operationType: "DEACTIVATE" }
+        id: $id
+      }
+    ) {
+      id
+      accountStatus
+      fullName
+    }
+  }
+`;
+

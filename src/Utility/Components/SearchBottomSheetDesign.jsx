@@ -517,7 +517,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                 <View style={styles.searchBoxPanelSelectRow}>
                                     {/* Column 1 */}
                                     <View style={styles.column}>
-                                        <Text style={styles.searchBoxPanelTitle}>Sent By</Text>
+                                        <Text style={styles.searchBoxPanelTitle}>Document type</Text>
                                     </View>
                                     {/* Column 2 */}
                                     <View style={styles.column2}>

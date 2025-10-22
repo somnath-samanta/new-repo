@@ -84,7 +84,7 @@ function AddHealthRecord() {
       setBmi('');
     }
   };
-  
+
   useEffect(() => {
     calculateBMI();
   }, [heightM, heightCm, weightKg, weightG, isMetric]);
@@ -128,6 +128,11 @@ function AddHealthRecord() {
           valueString: heightString,
           valueInteger: 1,
           valueQuantity: { value: Number(totalCmOrIn), unit: heightDim },
+          code: {
+            coding: {
+              code: ""
+            }
+          }
         });
       }
 
@@ -143,6 +148,11 @@ function AddHealthRecord() {
           valueString: weightString,
           valueInteger: 2,
           valueQuantity: { value: Number(total), unit: weightDim },
+          code: {
+            coding: {
+              system: "1"
+            }
+          }
         });
       }
 
@@ -155,6 +165,11 @@ function AddHealthRecord() {
             status: '1',
             valueString: bmiNum.toString(),
             valueInteger: 3,
+            code: {
+              coding: {
+                system: ""
+              }
+            }
           });
         }
       }
@@ -170,6 +185,11 @@ function AddHealthRecord() {
             valueString: `${waistNum} ${waistUnits}`,
             status: '1',
             valueQuantity: { value: Number(waistNum), unit: waistUnits },
+            code: {
+              coding: {
+                system: ""
+              }
+            }
           });
         }
       }
@@ -183,6 +203,11 @@ function AddHealthRecord() {
           valueInteger: 5,
           status: '1',
           valueQuantity: { value: isNaN(sys) ? undefined : Number(sys), unit: 'mmHg' },
+          code: {
+            coding: {
+              system: ""
+            }
+          }
         });
       }
 
@@ -196,6 +221,11 @@ function AddHealthRecord() {
             valueInteger: 6,
             status: '1',
             valueQuantity: { value: Number(pulseNum), unit: 'bpm' },
+            code: {
+              coding: {
+                system: ""
+              }
+            }
           });
         }
       }
@@ -407,7 +437,7 @@ function AddHealthRecord() {
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
-  
+
 }
 
 export default AddHealthRecord;

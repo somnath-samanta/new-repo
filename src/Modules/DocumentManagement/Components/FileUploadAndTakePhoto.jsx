@@ -681,7 +681,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           </>
         )}
       </View>
-      <View><Text>{Object.keys(documentObj).length}</Text></View>
+      <View><Text>{Object.keys(documentObj).length > 0 ? Object.keys(documentObj).length: ""}</Text></View>
       {Object.keys(documentObj).length > 0 && (
         <View style={styles.photoModalimageBoxess}>
           <SafeAreaView style={styles.scrollViewcontainer} edges={['top']}>

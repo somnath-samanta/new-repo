@@ -446,9 +446,16 @@ function AppointmentScreen(props) {
                 // console.log("TimeLine", timeLine);
                 const pastDate = moment().subtract(timeLine, 'days').format('YYYY-MM-DD');
                 // console.log("pastDate------------------",selectedTimeLine, pastDate);
-                filteredData = filteredData.filter(appointment =>
-                    moment(appointment.appointmentDate, 'DD-MM-YYYY').format('YYYY-MM-DD') >= pastDate
-                );
+                // filteredData = filteredData.filter(appointment =>
+                //     moment(appointment.appointmentDate, 'DD-MM-YYYY').format('YYYY-MM-DD') >= pastDate
+                // );
+
+                const today = moment().format('YYYY-MM-DD');
+
+                filteredData = filteredData.filter(appointment => {
+                    const appointmentDate = moment(appointment.appointmentDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
+                    return appointmentDate >= pastDate && appointmentDate <= today;
+                });
             }
 
             // Filter by appointmentStatus

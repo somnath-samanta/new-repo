@@ -124,8 +124,9 @@ export const savePatientHealthParameters = async (data) => {
             })
         response = result;
     } catch (err) {
-        return err;
         console.error("Mutation error:", err);
+        return err;
+        
     }
     return response;
 };

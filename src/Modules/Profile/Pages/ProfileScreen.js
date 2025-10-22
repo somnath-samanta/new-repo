@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, Linking, SafeAreaView } from 'react-native';
+import { View, Text, Image, ScrollView, Linking, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
 import Colors from '../../../Utility/Colors';
 import Icon from 'react-native-vector-icons/Feather';
 import ProfileStyle from '../Public/css/ProfileStyle';
 import { useTheme } from '../../../Contexts/ThemeContext';
 import Loader from '../../../Utility/Components/Loader'
-
+import { deactivatePatient } from '../Controller/ProfileController';
+import { LogOut } from '../../../Utility/Components/LogOut';
 import { useSelector, useDispatch } from 'react-redux';
+import Toast from 'react-native-simple-toast';
+// import { useMutation } from '@apollo/client';
+// import { DEACTIVATE_PATIENT } from '../../../GraphQL/Mutation';
 
 const ProfileScreen = ({ }) => {
   const { isDarkTheme, toggleTheme } = useTheme();
@@ -16,6 +20,48 @@ const ProfileScreen = ({ }) => {
   const [loading, setLoading] = useState(false);
 
   const reduxAuthJson = useSelector((state) => state);
+
+  const patientId = reduxAuthJson?.token?.loginUserId;
+  const { clearLocalStorage } = LogOut();
+
+  // const [deactivatePatient] = useMutation(DEACTIVATE_PATIENT);
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete your Account?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              setLoading(true);
+              const response = await deactivatePatient({
+                variables: {
+                  id: patientId,
+                },
+              });
+              console.log("response------------", response);
+              setLoading(false);
+              // Clear local storage and logout (this will navigate away)
+              Toast.show('Your account has been deactivated successfully.');
+              clearLocalStorage(true);
+            } catch (error) {
+              setLoading(false);
+              Alert.alert('Error', 'Failed to deactivate account. Please try again.');
+              console.error('Deactivate account error:', error);
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
   return (
     // <SafeAreaView style={theme.profileContainer}>
@@ -45,6 +91,23 @@ const ProfileScreen = ({ }) => {
               <Text style={theme.otherDetailsRow}>{reduxAuthJson.currentUserDetails.phoneNumber}</Text>
             </View>
           </View>
+          
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#ff4444',
+              paddingVertical: 12,
+              paddingHorizontal: 30,
+              borderRadius: 8,
+              marginTop: 30,
+              marginHorizontal: 20,
+              alignItems: 'center',
+            }}
+            onPress={handleDeleteAccount}
+          >
+            <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>
+              Delete Account
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
 

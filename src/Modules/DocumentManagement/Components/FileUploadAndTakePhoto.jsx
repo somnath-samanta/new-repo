@@ -539,10 +539,14 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     setDocumentName(text),
                       setdocumentNameError(false)
                   }}
-                  placeholder="Document Name *"
+                  placeholder="Document Name "
                   placeholderTextColor="#000"
                 />
+                {!documentName && (
+                  <Text style={styles.redAsterisk}>*</Text>
+                )}
               </View>
+
 
               <View style={styles.dateFieldBoxx}>
                 <TouchableOpacity onPress={openDatePicker} style={styles.dateFieldd}>
@@ -561,7 +565,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     </>
                     :
                     // <Text style={{ color: Colors.black }}>Date of Report <Text style={{ color: Colors.red }}>*</Text></Text>
-                    <Text style={{ color: Colors.black }}>Date of Report *</Text>
+                    <Text style={{ color: Colors.black }}> Date of Report <Text style={{ color: 'red', fontSize:16 }}>*</Text></Text>
 
                   }
                 </TouchableOpacity>
@@ -573,7 +577,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                   type="Filter"
                   locale="en"
                 />
-                <TouchableOpacity onPress={openDatePicker} style={LoginStyle.dateFieldicon}>
+                <TouchableOpacity onPress={openDatePicker} style={styles.dateFieldicon}>
                   <Feather
                     name="calendar"
                     size={22}
@@ -603,9 +607,12 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     setOrganisationName(text),
                       setorganisationNameError(false)
                   }}
-                  placeholder="Organisation Name *"
+                  placeholder="Organisation Name "
                   placeholderTextColor="#000"
                 />
+                 {!organisationName && (
+                  <Text style={[styles.redAsterisk, styles.redAsteriskOrgName]}>*</Text>
+                )}
               </View>
 
               <View style={[styles.tagInputContainer]}>
@@ -1015,13 +1022,13 @@ const styles = StyleSheet.create({
   },
   dateFieldBoxx: {
     width: '100%',
-    marginTop: 10,
+    marginTop: 5,
   },
   dateFieldd: {
     width: '100%',
     backgroundColor: '#fff',
     padding: 10,
-    paddingHorizontal:5,
+    paddingHorizontal: 5,
     borderColor: '#000',
     borderBottomWidth: 1,
   },
@@ -1032,10 +1039,21 @@ const styles = StyleSheet.create({
     fontSize: 13,
     padding: 0,
   },
-  dateClear:{
-    marginLeft:50,
-    paddingLeft:5,
-  }
+  dateClear: {
+    marginLeft: 50,
+    paddingLeft: 5,
+  },
+  redAsterisk: {
+    position: 'absolute',
+    left: '37%',
+    top: 5,
+    color: 'red',
+    fontSize: 16,
+  },
+  redAsteriskOrgName:{
+    left: '41%',
+  },
+  dateFieldicon: { position: 'absolute', right: 10, top:7, },
 
 
 });
@@ -1062,12 +1080,6 @@ const pickerStyle = {
     padding: 0,
     margin: 0,
     fontFamily: 'Arimo-Regular',
-  },
-  dateFieldBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 100
   },
 }
 

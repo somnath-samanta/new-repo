@@ -30,15 +30,39 @@ function CustomDrawerContent(props) {
   const [isTherapyTasksExpanded, setTherapyTasksExpanded] = useState(false);
   const appVersion = DeviceInfo.getVersion();
   const { clearLocalStorage } = LogOut();
-  const DrawerItemWithIcon = ({ label, icon, onPress, isActive }) => (
+  // const DrawerItemWithIcon = ({ label, icon, onPress, isActive }) => (
+  //   <TouchableOpacity
+  //     style={[theme.drawerItem, isActive && theme.activeDrawerItem, { borderBottomWidth: 1, borderBottomColor: '#eee', }]}
+  //     onPress={onPress}
+  //   >
+  //     <Icon name={icon} size={24} color={Colors.green01} />
+  //     <Text style={[theme.drawerItemText]}>
+  //       {label}
+  //     </Text>
+  //   </TouchableOpacity>
+  // );
+
+  const DrawerItemWithIcon = ({ label, icon, onPress, isActive, isDropdown, isExpanded }) => (
     <TouchableOpacity
-      style={[theme.drawerItem, isActive && theme.activeDrawerItem, { borderBottomWidth: 1, borderBottomColor: '#eee', }]}
+      style={[
+        theme.drawerItem,
+        isActive && theme.activeDrawerItem,
+        { borderBottomWidth: 1, borderBottomColor: '#eee', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }
+      ]}
       onPress={onPress}
     >
-      <Icon name={icon} size={24} color={Colors.green01} />
-      <Text style={[theme.drawerItemText]}>
-        {label}
-      </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Icon name={icon} size={24} color={Colors.green01} />
+        <Text style={[theme.drawerItemText, { marginLeft: 10 }]}>{label}</Text>
+      </View>
+
+      {isDropdown && (
+        <MaterialIcons
+          name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+          size={24}
+          color={Colors.green01}
+        />
+      )}
     </TouchableOpacity>
   );
 
@@ -47,11 +71,10 @@ function CustomDrawerContent(props) {
       style={[theme.drawerItem, theme.drawerSubItem, isActive && theme.activeDrawerItem, { borderBottomWidth: 1, borderBottomColor: '#eee', }]}
       onPress={onPress}
     >
-      {icon == 'pulse' &&
-        <Ionicons name={icon} size={24} color={Colors.green01} />}
-      {icon == 'clipboard-list' &&
-        <FontAwesome5 name={icon} size={24} color={Colors.green01} />}
-
+      {icon == 'pulse' ?
+        <Ionicons name={icon} size={24} color={Colors.green01} /> : icon == 'clipboard-list' ?
+          <FontAwesome5 name={icon} size={24} color={Colors.green01} /> :
+          <Ionicons name={icon} size={24} color={Colors.green01} />}
       <Text style={[theme.drawerItemText]}>
         {label}
       </Text>
@@ -218,11 +241,22 @@ function CustomDrawerContent(props) {
         keyExtractor={(item) => item.label}
         renderItem={({ item }) => (
           <>
+            {/* <DrawerItemWithIcon
+              label={item.label}
+              icon={item.icon}
+              onPress={() => handleDrawerItemPress(item)}
+              isActive={item.route === currentRoute}
+            /> */}
             <DrawerItemWithIcon
               label={item.label}
               icon={item.icon}
               onPress={() => handleDrawerItemPress(item)}
               isActive={item.route === currentRoute}
+              isDropdown={item.isDropdown}
+              isExpanded={
+                (item.dropdownType === 'therapyTasks' && isTherapyTasksExpanded) ||
+                (item.dropdownType === 'documents' && isDocumentsExpanded)
+              }
             />
             {item.isDropdown && item.dropdownType === 'documents' && isDocumentsExpanded && (
               <FlatList

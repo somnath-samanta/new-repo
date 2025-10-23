@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getPatientHealthProfile } from '../Controller/HealthParametersController';
 import { useSelector } from 'react-redux';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const screen = Dimensions.get("window");
@@ -136,10 +137,10 @@ function HealthParameter() {
         } catch (e) {
             // no-op
         } finally {
-            if (isManual) setRefreshing(false); else 
-            setTimeout(() => {
-                setPageLoading(false);
-            }, 500);
+            if (isManual) setRefreshing(false); else
+                setTimeout(() => {
+                    setPageLoading(false);
+                }, 500);
         }
     };
 
@@ -187,6 +188,14 @@ function HealthParameter() {
             console.log("No screen to go back to");
         }
     };
+
+    const refreshBtnFn = () => {
+        hasFetchedVitalsRef.current = false; // reset cache when user changes
+        fetchVitals(false);
+    }
+
+
+
     return (
         // <View style={styles.container}>
         <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
@@ -198,10 +207,16 @@ function HealthParameter() {
             />
 
             <View style={styles.content}>
-                <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]} onPress={handleGoBack}>
-                    <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
-                </TouchableOpacity>
-
+                <View style={styles.topContent}>
+                    <TouchableOpacity style={styles.backbtnTop} onPress={handleGoBack}>
+                        <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.refreshBtn}
+                        onPress={() => refreshBtnFn()}
+                    >
+                        <FontAwesome name="refresh" size={26} color="#000" />
+                    </TouchableOpacity>
+                </View>
                 <FlatList
                     contentContainerStyle={styles.gridContent}
                     data={metrics}
@@ -259,6 +274,14 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         //backgroundColor: 'blue',
         //height: screenHeight - 170
+    },
+    topContent: {
+        width: '100%',
+        //backgroundColor: 'red',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row'
     },
     gridContent: {
         paddingBottom: 10,

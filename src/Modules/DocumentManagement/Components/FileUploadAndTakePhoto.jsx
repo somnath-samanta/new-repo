@@ -215,7 +215,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
               name: fileName,
             },
           }));
-          if(useFor !== "ThirdPartyDocument"){
+          if (useFor !== "ThirdPartyDocument") {
             setSelectedDocument(""); // Reset document type selection
           }
         }).catch((err) => {
@@ -279,7 +279,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
             },
           }));
 
-          if(useFor !== "ThirdPartyDocument"){
+          if (useFor !== "ThirdPartyDocument") {
             setSelectedDocument(""); // Reset document type selection
           }
           Toast.show("Image selected successfully!");
@@ -529,7 +529,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         {
           useFor === "ThirdPartyDocument" && selectedDocument === "Investigations" &&
           <View style={styles.documentTypeSecBox}>
-            <Text>Blood tests, X-rays / MRI / other imaging reports, lab tests done by your GP or hospital</Text>
+            <Text style={styles.documentTypeSecTxtBox}>Blood tests, X-rays / MRI / other imaging reports, lab tests done by your GP or hospital</Text>
             <View style={styles.documentTypeSec}>
               <View style={[documentNameError ? styles.inputContainermandatory : styles.inputContainer]}>
                 <TextInput
@@ -544,19 +544,20 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                 />
               </View>
 
-              <View style={styles.dateFieldBox}>
-                <TouchableOpacity onPress={openDatePicker} style={LoginStyle.dateField}>
+              <View style={styles.dateFieldBoxx}>
+                <TouchableOpacity onPress={openDatePicker} style={styles.dateFieldd}>
                   {dateOfReport ?
                     <>
-                      <Text style={LoginStyle.dateFieldSec}>
-                        {Utility.formatDate(dateOfReport)} </Text>
-                      <TouchableOpacity onPress={clearDate} style={LoginStyle.dateClear}>
-                        <AntDesign
-                          name="closecircle"
-                          size={16}
-                          color={Colors.secondary}
-                        />
-                      </TouchableOpacity>
+                      <Text style={styles.dateFieldSec}>
+                        {Utility.formatDate(dateOfReport)}
+                        <TouchableOpacity onPress={clearDate} style={styles.dateClear}>
+                          <AntDesign
+                            name="closecircle"
+                            size={16}
+                            color={Colors.secondary}
+                          />
+                        </TouchableOpacity>
+                      </Text>
                     </>
                     :
                     // <Text style={{ color: Colors.black }}>Date of Report <Text style={{ color: Colors.red }}>*</Text></Text>
@@ -681,7 +682,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           </>
         )}
       </View>
-      <View><Text>{Object.keys(documentObj).length > 0 ? Object.keys(documentObj).length: ""}</Text></View>
+      <View><Text>{Object.keys(documentObj).length > 0 ? Object.keys(documentObj).length : ""}</Text></View>
       {Object.keys(documentObj).length > 0 && (
         <View style={styles.photoModalimageBoxess}>
           <SafeAreaView style={styles.scrollViewcontainer} edges={['top']}>
@@ -735,12 +736,19 @@ const styles = StyleSheet.create({
   },
   documentTypeSecBox: {
     // paddingHorizontal: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     // width:'100%',
-    //backgroundColor: 'yellow',
+    //padding:30,
+    // backgroundColor: 'yellow',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  documentTypeSecTxtBox: {
+    // backgroundColor: 'yellow',
+    // borderColor:'red',
+    // borderWidth:1,
+    fontSize: 12,
   },
   documentTypeSec: {
     borderRadius: 0,
@@ -752,7 +760,7 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 1,
     // borderBottomColor: '#000',
     color: '#000',
-    width: '96%',
+    width: '100%',
     //backgroundColor: 'pink',
     padding: 0,
   },
@@ -1004,7 +1012,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     textAlign: 'center',
     paddingTop: 5,
+  },
+  dateFieldBoxx: {
+    width: '100%',
+    marginTop: 10,
+  },
+  dateFieldd: {
+    width: '100%',
+    backgroundColor: '#fff',
+    padding: 10,
+    paddingHorizontal:5,
+    borderColor: '#000',
+    borderBottomWidth: 1,
+  },
+  dateFieldSec: {
+    //backgroundColor: 'red',
+    width: '100%',
+    color: '#333',
+    fontSize: 13,
+    padding: 0,
+  },
+  dateClear:{
+    marginLeft:50,
+    paddingLeft:5,
   }
+
 
 });
 

@@ -8,6 +8,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector } from 'react-redux';
 import { getPatientHealthProfile } from '../Controller/HealthParametersController';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -118,10 +119,10 @@ export default function HealthMonitoring() {
     } catch (e) {
       // no-op
     } finally {
-      if (isManual) setRefreshing(false); else 
-      setTimeout(() => {
-        setPageLoading(false);
-      }, 500);
+      if (isManual) setRefreshing(false); else
+        setTimeout(() => {
+          setPageLoading(false);
+        }, 500);
     }
   };
 
@@ -230,6 +231,20 @@ export default function HealthMonitoring() {
     navigation.navigate('HealthParameter');
   };
 
+  const refreshBtnFn = async () => {
+    try {
+      setPageLoading(true);        // show loader
+      hasFetchedVitalsRef.current = false; // reset fetch flag
+      await fetchVitals(true);     // force refresh data
+      Toast.show('Refreshed successfully');
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+      Toast.show('Failed to refresh data');
+    } finally {
+      setPageLoading(false);       // hide loader
+    }
+  };
+
   return (
 
     <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
@@ -238,10 +253,17 @@ export default function HealthMonitoring() {
         <CustomHeader pageName={'Health Parameters'} />
 
         <View style={styles.subHeaderRow}>
-          <TouchableOpacity style={styles.subHeaderBackBtn} onPress={handleGoBack}>
-            <FontAwesome6 name="arrow-left-long" size={20} color={Colors.black} />
+          <View style={styles.subHeaderRowLeft}>
+            <TouchableOpacity style={styles.subHeaderBackBtn} onPress={handleGoBack}>
+              <FontAwesome6 name="arrow-left-long" size={20} color={Colors.black} />
+            </TouchableOpacity>
+            <Text style={styles.subHeaderTitle}>Previous Records</Text>
+          </View>
+          <TouchableOpacity style={styles.refreshBtn}
+            onPress={() => refreshBtnFn()}
+          >
+            <FontAwesome name="refresh" size={26} color="#000" />
           </TouchableOpacity>
-          <Text style={styles.subHeaderTitle}>Previous Records</Text>
         </View>
 
         <ScrollView
@@ -498,12 +520,20 @@ const styles = StyleSheet.create({
     paddingVertical: Platform.OS === 'ios' ? 10 : 8,
   },
   subHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
     gap: 10,
     paddingHorizontal: 12,
     paddingTop: 8,
     marginBottom: 6,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  subHeaderRowLeft: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   subHeaderBackBtn: {
     padding: 6,

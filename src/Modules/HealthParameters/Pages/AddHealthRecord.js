@@ -21,7 +21,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import { savePatientHealthParameters } from '../Controller/HealthParametersController';
 import { KeyboardAvoidingView } from 'react-native';
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 function AddHealthRecord() {
   const [pageLoading, setPageLoading] = useState(false);
   const [isMetric, setIsMetric] = useState(true);
@@ -269,14 +269,36 @@ function AddHealthRecord() {
     </View>
   );
 
+  const refreshBtnFn = async () => {
+    try {
+      navigation.navigate('AddHealthRecord');
+      setPageLoading(true); // show loader
+      resetForm(); // clear all input fields
+      Toast.show('Refreshed successfully');
+    } catch (error) {
+      console.error('Refresh error:', error);
+      Toast.show('Failed to refresh data');
+    } finally {
+      setPageLoading(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
       <Loader style={styles.loadingCss} loading={pageLoading} />
       <CustomHeader pageName="Health Parameters" />
 
       <View style={styles.subHeaderRow}>
-        <TouchableOpacity style={styles.subHeaderBackBtn} onPress={handleGoBack}>
-          <FontAwesome6 name="arrow-left-long" size={20} color={Colors.black} />
+        <View style={styles.subHeaderRowLeft}>
+          <TouchableOpacity style={styles.subHeaderBackBtn} onPress={handleGoBack}>
+            <FontAwesome6 name="arrow-left-long" size={20} color={Colors.black} />
+          </TouchableOpacity>
+          <Text style={styles.subHeaderTitle}>Previous Records</Text>
+        </View>
+        <TouchableOpacity style={styles.refreshBtn}
+          onPress={() => refreshBtnFn()}
+        >
+          <FontAwesome name="refresh" size={26} color="#000" />
         </TouchableOpacity>
       </View>
 
@@ -449,13 +471,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#E6F6F3',
   },
   subHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
     gap: 10,
     paddingHorizontal: 12,
-    // 👇 remove top padding and margin to eliminate header gap
-    paddingTop: 0,
+    paddingTop: 8,
     marginBottom: 6,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  subHeaderRowLeft: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  subHeaderBackBtn: {
+    padding: 6,
+  },
+  subHeaderTitle: {
+    color: '#000',
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 16,
   },
   content: {
     paddingHorizontal: 15,
@@ -561,12 +598,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Arimo-Bold',
   },
-  subHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingHorizontal: 12,
-    paddingTop: 8,
-    marginBottom: 6,
-  },
+  // subHeaderRow: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   gap: 10,
+  //   paddingHorizontal: 12,
+  //   paddingTop: 8,
+  //   marginBottom: 6,
+  // },
 });

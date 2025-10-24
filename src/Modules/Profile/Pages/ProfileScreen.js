@@ -116,7 +116,7 @@ const ProfileScreen = () => {
                 fontWeight: 'bold',
               }}
             >
-              Deactivate Account
+              Delete Account
             </Text>
           </TouchableOpacity>
         </View>
@@ -240,7 +240,7 @@ const ProfileScreen = () => {
                     fontWeight: '600',
                   }}
                 >
-                  Deactivate
+                  Delete
                 </Text>
               </TouchableOpacity>
             </View>

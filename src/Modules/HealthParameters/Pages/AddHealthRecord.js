@@ -309,7 +309,7 @@ function AddHealthRecord() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 80} // Adjust if header overlaps
       >
         <ScrollView
-          contentContainerStyle={[styles.content, { paddingBottom: insets.bottom}]}
+          contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 40 }]}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
@@ -421,10 +421,31 @@ function AddHealthRecord() {
                 image={require('../../../Utility/Public/images/healthIcon5.png')}
                 title="Pulse Rate"
               />
-              <SectionHeader
+              {/* <SectionHeader
                 image={require('../../../Utility/Public/images/healthIcon6.png')}
                 title="Blood Pressure"
-              />
+              /> */}
+              <View style={styles.sectionHeader}>
+                <Image
+                  source={require('../../../Utility/Public/images/healthIcon6.png')}
+                  style={{ width: 40, height: 40, resizeMode: 'contain' }}
+                />
+                <Text style={styles.sectionTitle}>Blood Pressure</Text>
+
+                <TouchableOpacity
+                  style={{ marginLeft: 5 }}
+                  onPress={() =>
+                    Toast.show(
+                      'Enter your blood pressure in mmHg (e.g., 120/80)',
+                      Toast.LONG,           // make it stay longer
+                      Toast.TOP,            // show near the top
+                      { yOffset: 20 }       // move a bit down from top
+                    )
+                  }
+                >
+                  <FontAwesome name="info-circle" size={14} color="#333" />
+                </TouchableOpacity>
+              </View>
             </View>
             <View style={styles.twoColRow}>
               <TextInput
@@ -443,7 +464,6 @@ function AddHealthRecord() {
                 value={bp}
                 onChangeText={setBp}
               />
-              <Text style={styles.hint}>* 120/80 mmHg</Text>
             </View>
           </View>
         </ScrollView>
@@ -600,11 +620,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Arimo-Bold',
   },
-  hint:{
-    fontSize:10,
-    color:'red',
-    position:'absolute',
-    right:5,
-    bottom:-15,
+  hint: {
+    fontSize: 10,
+    color: 'red',
+    position: 'absolute',
+    right: 5,
+    bottom: -15,
   }
 });

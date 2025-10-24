@@ -196,7 +196,7 @@ export default function HealthMonitoring() {
       const [db, mb, yb] = b.split('.');
       const dateA = new Date(`${ya}-${ma}-${da}T00:00:00Z`).getTime();
       const dateB = new Date(`${yb}-${mb}-${db}T00:00:00Z`).getTime();
-      return dateA - dateB; // ascending order
+      return dateB - dateA; // descending order (newest first)
     });
 
     const labelByInt = {
@@ -208,10 +208,26 @@ export default function HealthMonitoring() {
       6: { key: 'pulse', label: 'Pulse Rate' },
     };
 
+    // Sort idWiseDate keys by date in descending order
+    const sortedIdWiseDate = Object.keys(idWiseDate)
+      .sort((a, b) => {
+        const dateA = idWiseDate[a];
+        const dateB = idWiseDate[b];
+        const [da, ma, ya] = dateA.split('.');
+        const [db, mb, yb] = dateB.split('.');
+        const timeA = new Date(`${ya}-${ma}-${da}T00:00:00Z`).getTime();
+        const timeB = new Date(`${yb}-${mb}-${db}T00:00:00Z`).getTime();
+        return timeB - timeA; // descending order (newest first)
+      })
+      .reduce((acc, key) => {
+        acc[key] = idWiseDate[key];
+        return acc;
+      }, {});
+
     const rowsBuilt = [6, 5, 1, 2, 3, 4] // order similar to mock
       .map((vi) => {
         const meta = labelByInt[vi];
-        const values = Object.keys(idWiseDate).map((dstr) => {
+        const values = Object.keys(sortedIdWiseDate).map((dstr) => {
           const matches = filtered.filter((v) => v.id.toString() === dstr.toString() && v.valueInteger === vi);
           if (!matches.length) return '';
           const latest = matches.reduce((acc, cur) => (
@@ -223,7 +239,7 @@ export default function HealthMonitoring() {
       });
 
     // setDates(sortedDates);
-    setDates(idWiseDate || {});
+    setDates(sortedIdWiseDate || {});
     setRows(rowsBuilt);
   }, [vitals, activeYear, activeMonth]);
 
@@ -272,7 +288,7 @@ export default function HealthMonitoring() {
         <ScrollView
           contentContainerStyle={styles.content}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={() => fetchVitals(true)} />
+            <RefreshControl refreshing={refreshing} onRefresh={() => refreshBtnFn()} />
           }
         >
           {/* Filters */}
@@ -371,6 +387,13 @@ export default function HealthMonitoring() {
                     ))}
                   </View>
                 ))}
+                {
+                  Object.keys(dates).length === 0 && (
+                    <View style={styles.noDataContainer}>
+                      <Text style={styles.noDataText}>No data available for selected month</Text>
+                    </View>
+                  )
+                }
               </View>
             </ScrollView>
           </View>
@@ -565,5 +588,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#2aa394',
     borderRightWidth: 1,
     borderColor: BORDER,
+  },
+  noDataContainer: {
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noDataText: {
+    color: '#666',
+    fontFamily: 'Arimo-Regular',
+    fontSize: 14,
+    textAlign: 'center',
   },
 });

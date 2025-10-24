@@ -490,24 +490,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         <Loader style={styles.loadingCss} loading={pageLoading} />
         <View style={styles.documentTypeSecBox}>
           <View style={[styles.documentTypeSec, styles.documentTypeSecPicker]}>
-            {/* <Picker
-              selectedValue={selectedDocument}
-              onValueChange={(itemValue) => {
-                setSelectedDocument(itemValue);
-                setDocumentType(itemValue);
-              }}
-              style={[styles.picker, { width: "100%", paddingRight: 0, }]}
-              dropdownIconColor="#000" // Custom icon color for iOS
-              themeVariant="light"
-            >
-              <Picker.Item label="Select Document Type" value={""} color="#999" style={{
-                width: "100%", fontSize: 14,
-              }} />
-              {SelectOptionForDocument.map((option) => (
-                <Picker.Item key={option.value} label={option.label} value={option.value} />
-              ))}
-            </Picker> */}
-            <RNPickerSelect
+            {/* <RNPickerSelect
               onValueChange={(itemValue) => {
                 setSelectedDocument(itemValue);
                 setDocumentType(itemValue);
@@ -522,7 +505,42 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
               placeholderTextColor="#999"
               pickerProps={{ numberOfLines: 2 }}
               style={pickerStyle}
-            />
+            /> */}
+            <View style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, marginVertical: 10 }}>
+  <RNPickerSelect
+    onValueChange={(itemValue) => {
+      setSelectedDocument(itemValue);
+      setDocumentType(itemValue);
+    }}
+    value={selectedDocument}
+    items={SelectOptionForDocument}
+    placeholder={{
+      label: 'Select Document Type',
+      value: null,
+    }}
+    style={{
+      inputIOS: {
+        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        color: '#000',
+        paddingRight: 30, // to ensure text is not hidden by icon
+      },
+      inputAndroid: {
+        fontSize: 16,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        color: '#000',
+      },
+      placeholder: {
+        color: '#999',
+      },
+    }}
+    useNativeAndroidPickerStyle={false}
+  />
+</View>
+
           </View>
         </View>
 

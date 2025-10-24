@@ -445,6 +445,7 @@ function AddHealthRecord() {
                 >
                   <FontAwesome name="info-circle" size={14} color="#333" />
                 </TouchableOpacity>
+                
               </View>
             </View>
             <View style={styles.twoColRow}>

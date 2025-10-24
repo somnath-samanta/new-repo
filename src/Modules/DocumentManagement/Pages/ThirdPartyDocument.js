@@ -105,6 +105,7 @@ function ThirdPartyDocument({ props }) {
     const [selectedTimeLine, setSelectedTimeLine] = useState("");
     const [selectedDocumentType, setSelectedDocumentType] = useState("");
     const [isconnected, setIsconnected] = useState(false);
+    const [refreshBtnFnFlag, setRefreshBtnFnFlag] = useState(false);
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
@@ -151,7 +152,9 @@ function ThirdPartyDocument({ props }) {
         //console.log("internetIsconnected==========", internetIsconnected)
     }, [internetIsconnected])
 
-    const getAppointmentListFn = (type = "", timeline = "", documentType = "") => {
+    const getThirdPartyDocsFn = (type = "", timeline = "", documentType = "") => {
+
+        console.log("type-------------", type)
         try {
 
             if (type == "") {
@@ -161,21 +164,24 @@ function ThirdPartyDocument({ props }) {
                 id: reduxAuthJson.token.loginUserId,
                 fetchingFrom: 'APP'
             }
-            
-            let timelineHash = {
-                '7': '1week',
-                '30': '1month',
-                '90': '3months',
-                '180': '6months',
-                '365': '1year',
+
+            if (!["refresh", "reload"].includes(type)) {
+                let timelineHash = {
+                    '7': '1week',
+                    '30': '1month',
+                    '90': '3months',
+                    '180': '6months',
+                    '365': '1year',
+                }
+                let timeLineText = timeline && timeline != "" ? timeline : selectedTimeLine;
+                searchHash.timeline = timeLineText !== "" ? timelineHash[timeLineText] : "";
+
+                searchHash.documentType = documentType && documentType != "" ? documentType : selectedDocumentType;
             }
-            let timeLineText = timeline && timeline != "" ? timeline : selectedTimeLine;
-            searchHash.timeline = timelineHash[timeLineText];
-            
-            searchHash.documentType = documentType && documentType != "" ? documentType : selectedDocumentType;
-            
+
             getMyDocumentList(searchHash).then(async (response) => {
                 // console.log("response>>>>>>>>>>>>>>>>>", response.PomsPatientDocumentList);
+                setRefreshBtnFnFlag(false);
                 setAppointmentsDataAfterFilter(response.PomsPatientDocumentList);
                 setAppointmentsData(response.PomsPatientDocumentList);
                 setRefreshing(false);
@@ -186,6 +192,7 @@ function ThirdPartyDocument({ props }) {
 
         } catch (error) {
             console.error("Error fetching questionnaire list:", error);
+            setRefreshBtnFnFlag(false);
             setLoading(false);
             // Handle error here (e.g., show a toast or alert)
         } finally {
@@ -433,7 +440,7 @@ function ThirdPartyDocument({ props }) {
         setData([])
         setAppointmentsDataAfterFilter([]);
         setAppointmentsData([]);
-        getAppointmentListFn(type)
+        getThirdPartyDocsFn(type)
     }
 
     const refreshBtnFn = () => {
@@ -441,7 +448,8 @@ function ThirdPartyDocument({ props }) {
         // refreshBtnFn();
         // setRefreshBtnFnFlag
         setLoading(false);
-        getAppointmentListFn()
+        setRefreshBtnFnFlag(true);
+        getThirdPartyDocsFn("reload")
     }
 
     const webViewLoadFinish = () => {
@@ -451,7 +459,10 @@ function ThirdPartyDocument({ props }) {
 
     onRefresh = () => {
         setRefreshing(true)
-        getAppointmentListFn("refresh");
+        setSelectedTimeLine("")
+        setSelectedDocumentType("")
+        setRefreshBtnFnFlag(true);
+        getThirdPartyDocsFn("refresh");
     }
     const handleGoBack = () => {
         navigation.goBack();
@@ -469,7 +480,7 @@ function ThirdPartyDocument({ props }) {
 
     const applyFilters = (obj) => {
         if (isconnected) {
-            getAppointmentListFn("filter", obj.Timeline, obj.DocumentType);
+            getThirdPartyDocsFn("filter", obj.Timeline, obj.DocumentType);
         } else {
             Toast.show("No internet connection");
         }
@@ -662,7 +673,7 @@ function ThirdPartyDocument({ props }) {
                             selectedTimeLine={selectedTimeLine}
                             selectedDocumentType={selectedDocumentType}
                             filterFor="thirdPartyDocument"
-                            // refreshBtnFnFlag={refreshBtnFnFlag}
+                            refreshBtnFnFlag={refreshBtnFnFlag}
                             timeLineFilter={true}
                             paymentStatusFilter={false}
                             paymentModeFilter={false}

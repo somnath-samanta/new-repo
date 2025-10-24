@@ -120,7 +120,7 @@ const refreshTokenFn = async() =>{
 
 //Appointment Screen function
 export const getMyDocumentList = async (data) => {
-    // console.log("getAppointmentList", data);
+    console.log("getAppointmentList", data);
     let response = {}
     try {
         let variables = {

@@ -84,8 +84,8 @@ function IconCell({ iconKey }) {
 
 export default function HealthMonitoring() {
   const [pageLoading, setPageLoading] = useState(false);
-  const [activeYear, setActiveYear] = useState(2025);
-  const [activeMonth, setActiveMonth] = useState(0);
+  const [activeYear, setActiveYear] = useState(currentYear);
+  const [activeMonth, setActiveMonth] = useState(new Date().getMonth());
   const [vitals, setVitals] = useState([]);
   const [dates, setDates] = useState([]);
   const [rows, setRows] = useState([]);
@@ -233,6 +233,9 @@ export default function HealthMonitoring() {
 
   const refreshBtnFn = async () => {
     try {
+      // Set current month and year
+      setActiveYear(new Date().getFullYear());
+      setActiveMonth(new Date().getMonth());
       setPageLoading(true);        // show loader
       hasFetchedVitalsRef.current = false; // reset fetch flag
       await fetchVitals(true);     // force refresh data

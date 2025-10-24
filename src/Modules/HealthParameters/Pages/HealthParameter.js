@@ -5,7 +5,7 @@ import Loader from '../../../Utility/Components/Loader';
 import Colors from '../../../Utility/Colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { getPatientHealthProfile } from '../Controller/HealthParametersController';
 import { useSelector } from 'react-redux';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -149,6 +149,15 @@ function HealthParameter() {
         hasFetchedVitalsRef.current = false; // reset cache when user changes
         fetchVitals(false);
     }, [userId]);
+
+    // Refresh data when screen comes into focus (e.g., after saving from AddHealthRecord)
+    useFocusEffect(
+        React.useCallback(() => {
+            // Reset the ref and fetch vitals when screen is focused
+            hasFetchedVitalsRef.current = false;
+            fetchVitals(false);
+        }, [])
+    );
 
     const hideBookAppointmentScreen = () => {
         // setWebViewFlag(false);

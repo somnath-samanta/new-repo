@@ -38,6 +38,7 @@ function AddHealthRecord() {
   const [waist, setWaist] = useState('');
   const [pulse, setPulse] = useState('');
   const [bp, setBp] = useState('');
+  const [bpError, setBpError] = useState('');
 
   // Handle hardware back button
   useFocusEffect(
@@ -98,6 +99,67 @@ function AddHealthRecord() {
     setWaist('');
     setPulse('');
     setBp('');
+    setBpError('');
+  };
+
+  // Handle blood pressure input with auto-formatting
+  const handleBpChange = (text) => {
+    // Remove all non-numeric characters except slash
+    let cleaned = text.replace(/[^0-9/]/g, '');
+    
+    // Prevent multiple slashes
+    const slashCount = (cleaned.match(/\//g) || []).length;
+    if (slashCount > 1) {
+      cleaned = cleaned.replace(/\/+/g, '/');
+      const parts = cleaned.split('/');
+      cleaned = parts[0] + '/' + parts.slice(1).join('');
+    }
+    
+    // Auto-add slash after systolic (first 2-3 digits) only when typing forward
+    // Don't auto-add if user is deleting (text is shorter than current bp)
+    if (cleaned.length > bp.length && cleaned.length >= 3 && !cleaned.includes('/')) {
+      cleaned = cleaned.slice(0, 3) + '/' + cleaned.slice(3);
+    }
+    
+    setBp(cleaned);
+    setBpError('');
+  };
+
+  // Validate blood pressure format
+  const validateBp = () => {
+    if (!bp) {
+      setBpError('');
+      return true;
+    }
+    
+    const bpPattern = /^(\d{2,3})\/(\d{2,3})$/;
+    const match = bp.match(bpPattern);
+    
+    if (!match) {
+      setBpError('Invalid format. Use format: 120/80');
+      return false;
+    }
+    
+    const systolic = parseInt(match[1]);
+    const diastolic = parseInt(match[2]);
+    
+    if (systolic < 70 || systolic > 250) {
+      setBpError('Systolic should be between 70-250');
+      return false;
+    }
+    
+    if (diastolic < 40 || diastolic > 150) {
+      setBpError('Diastolic should be between 40-150');
+      return false;
+    }
+    
+    if (systolic <= diastolic) {
+      setBpError('Systolic must be greater than diastolic');
+      return false;
+    }
+    
+    setBpError('');
+    return true;
   };
 
   const handleGoBack = () => {
@@ -235,6 +297,11 @@ function AddHealthRecord() {
         return;
       }
 
+      // Validate blood pressure format before saving
+      if (bp && !validateBp()) {
+        return;
+      }
+
       const patientId = reduxAuthJson?.token?.loginUserId;
       if (!patientId) {
         Toast.show('User not identified. Please re-login.');
@@ -251,7 +318,8 @@ function AddHealthRecord() {
       if (res?.data?.PatientUpdate?.id) {
         Toast.show('Record saved successfully');
         resetForm();
-        navigation.goBack();
+        // navigation.goBack();
+        navigation.navigate('HealthParameter');
       } else {
         Toast.show('Unable to save record.');
       }
@@ -435,15 +503,23 @@ function AddHealthRecord() {
                 value={pulse}
                 onChangeText={setPulse}
               />
-              <TextInput
-                style={styles.input}
-                placeholder="Dia/ Sys mmHg"
-                placeholderTextColor="#666"
-                keyboardType="default"
-                value={bp}
-                onChangeText={setBp}
-              />
-              <Text style={styles.hint}>* 120/80 mmHg</Text>
+              <View style={{ flex: 1, position: 'relative' }}>
+                <TextInput
+                  style={[styles.input, bpError && styles.inputError]}
+                  placeholder="Sys/Dia (e.g., 120/80)"
+                  placeholderTextColor="#666"
+                  keyboardType="numeric"
+                  value={bp}
+                  onChangeText={handleBpChange}
+                  onBlur={validateBp}
+                  maxLength={7}
+                />
+                {bpError ? (
+                  <Text style={styles.errorText}>{bpError}</Text>
+                ) : (
+                  <Text style={styles.hint}>* 120/80 mmHg</Text>
+                )}
+              </View>
             </View>
           </View>
         </ScrollView>
@@ -606,5 +682,16 @@ const styles = StyleSheet.create({
     position:'absolute',
     right:5,
     bottom:-15,
-  }
+  },
+  inputError: {
+    borderColor: 'red',
+    borderWidth: 1,
+  },
+  errorText: {
+    fontSize: 10,
+    color: 'red',
+    position: 'absolute',
+    right: 5,
+    bottom: -15,
+  },
 });

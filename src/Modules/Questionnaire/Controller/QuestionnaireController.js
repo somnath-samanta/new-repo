@@ -134,7 +134,7 @@ const refreshTokenFn = async() =>{
 
 //Questionnaire Screen function
 export const getQuestionnaireList = async (data) => {
-    // console.log("getQuestionnaireList", data);
+    console.log("getQuestionnaireList-----", data);
     let response = {}
     try {
       let variables = {
@@ -150,7 +150,7 @@ export const getQuestionnaireList = async (data) => {
       if(data.keyword){
         variables.questionnaireName = data.keyword;
       }
-      console.log("variables============", variables);
+      // console.log("variables============", variables);
         const result = await clientAuth
         .query({
             query: Questionnaire,

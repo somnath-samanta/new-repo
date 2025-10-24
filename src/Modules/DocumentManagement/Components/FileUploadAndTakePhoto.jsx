@@ -507,32 +507,40 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
               pickerProps={{ numberOfLines: 2 }}
               style={pickerStyle}
             /> */}
-            {Platform.OS === 'ios' ? (
-              <Picker
-                selectedValue={selectedDocument}
-                onValueChange={(itemValue) => {
-                  setSelectedDocument(itemValue);
-                  setDocumentType(itemValue);
-                }}
-                style={{ backgroundColor: '#fff', borderRadius: 8 }}
-              >
-                <Picker.Item label="Select Document Type" value={null} />
-                {SelectOptionForDocument.map((opt) => (
-                  <Picker.Item key={opt.value} label={opt.label} value={opt.value} />
-                ))}
-              </Picker>
-            ) : (
-              <RNPickerSelect
-                onValueChange={(itemValue) => {
-                  setSelectedDocument(itemValue);
-                  setDocumentType(itemValue);
-                }}
-                value={selectedDocument}
-                items={SelectOptionForDocument}
-                placeholder={{ label: 'Select Document Type', value: null }}
-                style={pickerStyle}
-              />
-            )}
+            <View style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, marginVertical: 10 }}>
+  <RNPickerSelect
+    onValueChange={(itemValue) => {
+      setSelectedDocument(itemValue);
+      setDocumentType(itemValue);
+    }}
+    value={selectedDocument}
+    items={SelectOptionForDocument}
+    placeholder={{
+      label: 'Select Document Type',
+      value: null,
+    }}
+    style={{
+      inputIOS: {
+        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        color: '#000',
+        paddingRight: 30, // to ensure text is not hidden by icon
+      },
+      inputAndroid: {
+        fontSize: 16,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        color: '#000',
+      },
+      placeholder: {
+        color: '#999',
+      },
+    }}
+    useNativeAndroidPickerStyle={false}
+  />
+</View>
 
           </View>
         </View>
@@ -576,7 +584,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     </>
                     :
                     // <Text style={{ color: Colors.black }}>Date of Report <Text style={{ color: Colors.red }}>*</Text></Text>
-                    <Text style={{ color: Colors.black }}> Date of Report <Text style={{ color: 'red', fontSize: 16 }}>*</Text></Text>
+                    <Text style={{ color: Colors.black }}> Date of Report <Text style={{ color: 'red', fontSize:16 }}>*</Text></Text>
 
                   }
                 </TouchableOpacity>
@@ -621,7 +629,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                   placeholder="Organisation Name "
                   placeholderTextColor="#000"
                 />
-                {!organisationName && (
+                 {!organisationName && (
                   <Text style={[styles.redAsterisk, styles.redAsteriskOrgName]}>*</Text>
                 )}
               </View>
@@ -1061,10 +1069,10 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
   },
-  redAsteriskOrgName: {
+  redAsteriskOrgName:{
     left: '41%',
   },
-  dateFieldicon: { position: 'absolute', right: 10, top: 7, },
+  dateFieldicon: { position: 'absolute', right: 10, top:7, },
 
 
 });

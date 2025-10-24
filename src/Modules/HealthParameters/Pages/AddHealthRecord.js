@@ -309,7 +309,7 @@ function AddHealthRecord() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 80} // Adjust if header overlaps
       >
         <ScrollView
-          contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 120 }]}
+          contentContainerStyle={[styles.content, { paddingBottom: insets.bottom}]}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
@@ -443,12 +443,13 @@ function AddHealthRecord() {
                 value={bp}
                 onChangeText={setBp}
               />
+              <Text style={styles.hint}>* 120/80 mmHg</Text>
             </View>
           </View>
         </ScrollView>
 
         {/* Footer */}
-        <View style={[styles.footerBtns, { paddingBottom: insets.bottom + 10 }]}>
+        <View style={[styles.footerBtns, { paddingBottom: insets.bottom + 15 }]}>
           <TouchableOpacity style={[styles.ctaBtn, styles.ctaSecondary]} onPress={handleGoBack}>
             <Text style={styles.ctaText}>Cancel</Text>
           </TouchableOpacity>
@@ -531,6 +532,7 @@ const styles = StyleSheet.create({
   },
   rowBox: {
     marginBottom: 8,
+    //backgroundColor:'pink'
   },
   twoColRow: {
     flexDirection: 'row',
@@ -598,12 +600,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Arimo-Bold',
   },
-  // subHeaderRow: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   gap: 10,
-  //   paddingHorizontal: 12,
-  //   paddingTop: 8,
-  //   marginBottom: 6,
-  // },
+  hint:{
+    fontSize:10,
+    color:'red',
+    position:'absolute',
+    right:5,
+    bottom:-15,
+  }
 });

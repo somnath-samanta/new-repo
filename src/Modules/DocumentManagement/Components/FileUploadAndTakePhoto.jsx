@@ -21,6 +21,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Utility from '../../../Utility/Utility';
 import LoginStyle from '../../../Modules/Login/Public/css/LoginStyle';
 import { Dropdown } from 'react-native-element-dropdown';
+import { pick } from '@react-native-documents/picker'
 
 // import DatePicker from "react-native-date-picker";
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -236,67 +237,134 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     }
   };
 
-  const selectFile = async () => {
-    //console.log("selectedDocument========", selectedDocument)
-    if (selectedDocument == null || selectedDocument == "") {
-      Toast.show("Please select a document type");
-    } else {
-      if (Object.keys(documentObj).length < 3) {
-        try {
-          // Use ImagePicker to select from gallery
-          const image = await ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true,
-            includeBase64: true,
-            mediaType: 'photo',
-            compressImageQuality: 0.7, // Compress to 70% quality
-            compressImageMaxWidth: 1024,
-            compressImageMaxHeight: 1024,
-          });
+  const selectDocument = async () => {
+    try {
+      const [result] = await pick({
+        mode: 'open',
+        type: [
+          'application/pdf',           // PDF files
+          'image/*',                   // Images (jpg, png, etc.)
+          'application/msword',        // .doc
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+        ], // allow both
 
-          // Convert file size from bytes to MB
-          const fileSize = image.size / (1024 * 1024);
+      });
 
-          if (fileSize > 5) {
-            Toast.show("Please ensure that the document you upload is no more than 5 MB");
-            return false;
-          }
+      if (!result) return;
 
-          const fileType = image.mime; // MIME type of the image
-          const imageBase64 = `data:${fileType};base64,${image.data}`; // Convert to Base64
+      console.log('Document selected:', result);
 
-          // Extract file name from path
-          const fileNameArray = image.path.split("/");
-          const fileName = fileNameArray[fileNameArray.length - 1];
+      const fileType = result.mimeType || result.type || '';
+      const fileName = result.name || 'file';
+      const uri = result.fileCopyUri || result.uri;
 
-          // Update document object
-          setDocumentObj((prevImageUri) => ({
-            ...prevImageUri,
-            [selectedDocument]: {
-              uri: imageBase64,
-              type: fileType,
-              name: fileName,
-            },
-          }));
+      // If it's an image, convert to Base64
+      //  if (fileType.startsWith('image/')) {
+      // Fetch and convert image to base64
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const reader = new FileReader();
 
-          if (useFor !== "ThirdPartyDocument") {
-            setSelectedDocument(""); // Reset document type selection
-          }
-          Toast.show("Image selected successfully!");
-        } catch (err) {
-          if (err.code === 'E_PICKER_CANCELLED') {
-            console.log('User cancelled image picker');
-          } else {
-            console.error("ImagePicker Error:", err);
-            CrashLogger.logCrash(err, 'Gallery - selectFile');
-            Toast.show("An error occurred while selecting the file.");
-          }
+      reader.onloadend = () => {
+        const base64data = reader.result;
+
+        // Convert file size from bytes to MB
+        const fileSize = blob.size / (1024 * 1024);
+        if (fileSize > 5) {
+          Toast.show('Please ensure that the document you upload is no more than 5 MB');
+          return;
         }
-      } else {
-        Toast.show("Maximum upload up to 3 documents.");
-      }
+
+        // Update state
+        setDocumentObj(prev => ({
+          ...prev,
+          [selectedDocument]: {
+            uri: base64data,
+            type: fileType,
+            name: fileName,
+          },
+        }));
+      };
+      reader.readAsDataURL(blob);
+      /* } else if (fileType === 'application/pdf') {
+         // For PDF, we don’t convert to Base64 (optional)
+         setDocumentObj(prev => ({
+           ...prev,
+           [selectedDocument]: {
+             uri,
+             type: fileType,
+             name: fileName,
+           },
+         }));
+       }*/
+    } catch (error) {
+      console.error('Document picker error:', error);
+      Toast.show('Failed to pick document');
     }
+  };
+
+  const selectFile = async () => {
+    selectDocument()
+    return
+    /* if (selectedDocument == null || selectedDocument == "") {
+       Toast.show("Please select a document type");
+     } else {
+       if (Object.keys(documentObj).length < 3) {
+         try {
+           // Use ImagePicker to select from gallery
+           const image = await ImagePicker.openPicker({
+             width: 300,
+             height: 400,
+             cropping: true,
+             includeBase64: true,
+             mediaType: 'photo',
+             compressImageQuality: 0.7, // Compress to 70% quality
+             compressImageMaxWidth: 1024,
+             compressImageMaxHeight: 1024,
+           });
+ 
+           // Convert file size from bytes to MB
+           const fileSize = image.size / (1024 * 1024);
+ 
+           if (fileSize > 5) {
+             Toast.show("Please ensure that the document you upload is no more than 5 MB");
+             return false;
+           }
+ 
+           const fileType = image.mime; // MIME type of the image
+           const imageBase64 = `data:${fileType};base64,${image.data}`; // Convert to Base64
+ 
+           // Extract file name from path
+           const fileNameArray = image.path.split("/");
+           const fileName = fileNameArray[fileNameArray.length - 1];
+ 
+           // Update document object
+           setDocumentObj((prevImageUri) => ({
+             ...prevImageUri,
+             [selectedDocument]: {
+               uri: imageBase64,
+               type: fileType,
+               name: fileName,
+             },
+           }));
+ 
+           if (useFor !== "ThirdPartyDocument") {
+             setSelectedDocument(""); // Reset document type selection
+           }
+           Toast.show("Image selected successfully!");
+         } catch (err) {
+           if (err.code === 'E_PICKER_CANCELLED') {
+             console.log('User cancelled image picker');
+           } else {
+             console.error("ImagePicker Error:", err);
+             CrashLogger.logCrash(err, 'Gallery - selectFile');
+             Toast.show("An error occurred while selecting the file.");
+           }
+         }
+       } else {
+         Toast.show("Maximum upload up to 3 documents.");
+       }
+     }*/
   };
 
 
@@ -1030,8 +1098,8 @@ const styles = StyleSheet.create({
     //backgroundColor: 'red',
     fontFamily: 'Arimo-Regular',
     width: '100%',
-    opacity:1,
-     borderBottomWidth: 1,
+    opacity: 1,
+    borderBottomWidth: 1,
     borderColor: '#666',
   },
   hintTxt: {

@@ -269,7 +269,7 @@ function QuestionnaireScreen(props) {
 
     const getQuestionnaireListFn = (type = "", timeline = "", sendBy = "", keyword = "") => {
         try {
-            if (type == "") {
+            if (type !== "refreshQuestion") {
                 setLoading(true);
             }
             let filterObj = {
@@ -393,7 +393,7 @@ function QuestionnaireScreen(props) {
 
     }
 
-    onRefresh = () => {
+    const onRefresh = () => {
         setRefreshing(true)
         setRefreshBtnFnFlag(true);
         getQuestionnaireListFn("refreshQuestion");

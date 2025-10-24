@@ -153,11 +153,9 @@ function ThirdPartyDocument({ props }) {
     }, [internetIsconnected])
 
     const getThirdPartyDocsFn = (type = "", timeline = "", documentType = "") => {
-
-        console.log("type-------------", type)
         try {
 
-            if (type == "") {
+            if (type !== "refresh") {
                 setLoading(true);
             }
             let searchHash = {

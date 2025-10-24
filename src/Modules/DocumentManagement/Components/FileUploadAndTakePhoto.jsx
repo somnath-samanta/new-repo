@@ -538,8 +538,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                 setDocumentType(item.value);
               }}
               maxHeight={200} // adjust based on modal size
-            // optional: add search
-            // search
+              placeholderTextColor="#333"
             />
           </View>
         </View>
@@ -558,7 +557,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                       setdocumentNameError(false)
                   }}
                   placeholder="Document Name "
-                  placeholderTextColor="#000"
+                  placeholderTextColor="#333"
                 />
                 {!documentName && (
                   <Text style={styles.redAsterisk}>*</Text>
@@ -583,7 +582,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     </>
                     :
                     // <Text style={{ color: Colors.black }}>Date of Report <Text style={{ color: Colors.red }}>*</Text></Text>
-                    <Text style={{ color: Colors.black }}> Date of Report <Text style={{ color: 'red', fontSize: 16 }}>*</Text></Text>
+                    <Text style={{ color: '#333', }}> Date of Report <Text style={{ color: 'red', fontSize: 16 }}>*</Text></Text>
 
                   }
                 </TouchableOpacity>
@@ -626,7 +625,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                       setorganisationNameError(false)
                   }}
                   placeholder="Organisation Name "
-                  placeholderTextColor="#000"
+                  placeholderTextColor="#333"
                 />
                 {!organisationName && (
                   <Text style={[styles.redAsterisk, styles.redAsteriskOrgName]}>*</Text>
@@ -639,7 +638,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                   value={tagInput}
                   onChangeText={setTagInput}
                   placeholder="Add tags (press Enter to add)"
-                  placeholderTextColor="#666"
+                  placeholderTextColor="#333"
                   onSubmitEditing={() => {
                     if (tagInput.trim() !== '' && !tags.includes(tagInput.trim())) {
                       setTags([...tags, tagInput.trim()]);
@@ -849,9 +848,10 @@ const styles = StyleSheet.create({
   },
   tagInputContainer: {
     width: '100%',
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    marginBottom: 5,
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#000',
+    marginTop: 5,
   },
   tagsContainer: {
     flexDirection: 'row',
@@ -997,13 +997,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    //marginBottom: 20,
+    marginBottom: 5,
     borderRadius: 0,
     position: 'relative',
     marginTop: 5,
     width: '100%',
     borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    borderBottomColor: '#666',
   },
   inputContainermandatory: {
 
@@ -1017,18 +1017,22 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginTop: 5,
     width: '100%',
+    borderColor: '#666',
 
   },
   input: {
     //flex: 1,
-    height: 35,
-    fontSize: 13,
-    color: '#595959',
-    paddingHorizontal: 5,
+    height: 40,
+    fontSize: 14,
+    color: '#000',
+    paddingHorizontal: 4,
     paddingVertical: 0,
-    backgroundColor: '#fff',
+    //backgroundColor: 'red',
     fontFamily: 'Arimo-Regular',
     width: '100%',
+    opacity:1,
+     borderBottomWidth: 1,
+    borderColor: '#666',
   },
   hintTxt: {
     color: '#000',
@@ -1046,15 +1050,16 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#fff',
     padding: 10,
-    paddingHorizontal: 5,
-    borderColor: '#000',
+    paddingHorizontal: 0,
+    borderColor: '#666',
     borderBottomWidth: 1,
+    margin: 0
   },
   dateFieldSec: {
     //backgroundColor: 'red',
     width: '100%',
-    color: '#333',
-    fontSize: 13,
+    color: '#000',
+    fontSize: 14,
     padding: 0,
   },
   dateClear: {
@@ -1072,33 +1077,24 @@ const styles = StyleSheet.create({
     left: '41%',
   },
   dateFieldicon: { position: 'absolute', right: 10, top: 7, },
-
+  dropdown: {
+    height: 40,
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    marginTop: 5,
+    width: '100%',
+    paddingHorizontal: 5,
+  },
+  placeholderStyle: {
+    fontSize: 14,
+    color: '#000',
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    color: '#000',
+  },
 
 });
 
-const pickerStyle = {
-  inputIOS: {
-    width: '100%',              // Set the width of the picker
-    color: '#000',
-    fontSize: 16,
-    padding: 0,
-    paddingVertical: 10,
-    margin: 0,
-    fontFamily: 'Arimo-Regular',
-  },
-  placeholder: {
-    color: '#000',
-    fontSize: 16,
-  },
-  inputAndroid: {
-    width: '100%',              // Set the width of the picker
-    color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
-    padding: 0,
-    margin: 0,
-    fontFamily: 'Arimo-Regular',
-  },
-}
 
 export default FileUploadAndTakePhoto;

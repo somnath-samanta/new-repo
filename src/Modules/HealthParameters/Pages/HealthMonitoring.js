@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10
   },
   cellMetric: {
-    width: 140,
+    width: 150,
     backgroundColor: '#eaf8f6',
     borderWidth: 1,
     borderColor: BORDER,
@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
     minWidth: 130,
     borderWidth: 1,
     borderColor: BORDER,
-    padding: 10,
+    padding: 11.05,
     alignItems: 'center',
     justifyContent: 'center',
   },

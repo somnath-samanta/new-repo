@@ -20,7 +20,6 @@ import Colors from '../../../Utility/Colors';
 import Feather from 'react-native-vector-icons/Feather';
 import Utility from '../../../Utility/Utility';
 import LoginStyle from '../../../Modules/Login/Public/css/LoginStyle';
-import { Picker } from '@react-native-picker/picker';
 
 // import DatePicker from "react-native-date-picker";
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -491,23 +490,21 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         <Loader style={styles.loadingCss} loading={pageLoading} />
         <View style={styles.documentTypeSecBox}>
           <View style={[styles.documentTypeSec, styles.documentTypeSecPicker]}>
-            {/* <RNPickerSelect
-              onValueChange={(itemValue) => {
-                setSelectedDocument(itemValue);
-                setDocumentType(itemValue);
-              }}
-              value={selectedDocument}
-              items={SelectOptionForDocument}
-              //textInputProps={{multiline: true}} 
-              placeholder={{
-                label: 'Select Document Type',
-                value: null,
-              }}
-              placeholderTextColor="#999"
-              pickerProps={{ numberOfLines: 2 }}
-              style={pickerStyle}
-            /> */}
-            <View style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, marginVertical: 10 }}>
+            {Platform.OS === 'ios' ? (
+  <Picker
+    selectedValue={selectedDocument}
+    onValueChange={(itemValue) => {
+      setSelectedDocument(itemValue);
+      setDocumentType(itemValue);
+    }}
+    style={{ backgroundColor: '#fff', borderRadius: 8 }}
+  >
+    <Picker.Item label="Select Document Type" value={null} />
+    {SelectOptionForDocument.map((opt) => (
+      <Picker.Item key={opt.value} label={opt.label} value={opt.value} />
+    ))}
+  </Picker>
+) : (
   <RNPickerSelect
     onValueChange={(itemValue) => {
       setSelectedDocument(itemValue);
@@ -515,33 +512,10 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     }}
     value={selectedDocument}
     items={SelectOptionForDocument}
-    placeholder={{
-      label: 'Select Document Type',
-      value: null,
-    }}
-    style={{
-      inputIOS: {
-        fontSize: 16,
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderRadius: 8,
-        color: '#000',
-        paddingRight: 30, // to ensure text is not hidden by icon
-      },
-      inputAndroid: {
-        fontSize: 16,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        color: '#000',
-      },
-      placeholder: {
-        color: '#999',
-      },
-    }}
-    useNativeAndroidPickerStyle={false}
+    placeholder={{ label: 'Select Document Type', value: null }}
+    style={pickerStyle}
   />
-</View>
-
+)}
           </View>
         </View>
 

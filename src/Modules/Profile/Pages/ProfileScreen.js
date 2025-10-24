@@ -40,7 +40,7 @@ const ProfileScreen = () => {
       setShowModal(false);
       setLoading(true);
       const response = await deactivatePatient({
-        variables: { id: patientId },
+        variables: { id: patientId, fetchingFrom: 'APP' },
       });
       console.log('response:', response);
       Toast.show('Your account has been deactivated successfully.');

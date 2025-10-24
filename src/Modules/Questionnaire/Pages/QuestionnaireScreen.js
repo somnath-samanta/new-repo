@@ -269,7 +269,6 @@ function QuestionnaireScreen(props) {
 
     const getQuestionnaireListFn = (type = "", timeline = "", sendBy = "", keyword = "") => {
         try {
-            // console.log("refreshing===========", refreshing)
             if (type == "") {
                 setLoading(true);
             }
@@ -277,19 +276,21 @@ function QuestionnaireScreen(props) {
                 id: loginUserId
             };
 
-            let limelineHash = {
-                '7': '1week',
-                '30': '1month',
-                '90': '3months',
-                '180': '6months',
-                '365': '1year',
+            if (!["reload", "refreshQuestion"].includes(type)) {
+                let limelineHash = {
+                    '7': '1week',
+                    '30': '1month',
+                    '90': '3months',
+                    '180': '6months',
+                    '365': '1year',
+                }
+
+                let timelineText = timeline && timeline != "" ? timeline : selectedTimeLine;
+                filterObj['timeline'] = timelineText && timelineText != "" ? limelineHash[timelineText] : "";
+                filterObj['keyword'] = keyword && keyword != "" ? keyword : selectedKeywordText;
+
+                filterObj['sendBy'] = sendBy && sendBy != "" ? sendBy : selectedSendBy;
             }
-
-            let timelineText = timeline && timeline != "" ? timeline : selectedTimeLine;
-            filterObj['timeline'] = timelineText && timelineText != "" ? limelineHash[timelineText] : "";
-            filterObj['keyword'] = keyword && keyword != "" ? keyword : selectedKeywordText;
-
-            filterObj['sendBy'] = sendBy && sendBy != "" ? sendBy : selectedSendBy;
             getQuestionnaireList(filterObj).then(async (response) => {
 
                 setQuestionnaireDataAfterFilter(response.PatientQuestionnaireList);
@@ -454,7 +455,7 @@ function QuestionnaireScreen(props) {
         // console.log("***********yes********Qu*********")
         setLoading(false);
         setRefreshBtnFnFlag(true);
-        getQuestionnaireListFn()
+        getQuestionnaireListFn('reload')
         getassignedNameListFn();
     }
     const callbackhandler = () => {

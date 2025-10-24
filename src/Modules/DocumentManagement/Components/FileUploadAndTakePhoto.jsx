@@ -20,7 +20,6 @@ import Colors from '../../../Utility/Colors';
 import Feather from 'react-native-vector-icons/Feather';
 import Utility from '../../../Utility/Utility';
 import LoginStyle from '../../../Modules/Login/Public/css/LoginStyle';
-import { Picker } from '@react-native-picker/picker';
 
 // import DatePicker from "react-native-date-picker";
 import { SafeAreaView } from 'react-native-safe-area-context';

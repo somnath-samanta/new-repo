@@ -304,7 +304,9 @@ function MyDocument({ props }) {
     }
 
     const getDocumentList = (type = "") => {
-        setFileUploadFlag(false)
+        setTimeout(() => {
+            setFileUploadFlag(false)
+        }, 1000);
         setAppointmentsDataAfterFilter([]);
         setAppointmentsData([]);
         getAppointmentListFn(type)

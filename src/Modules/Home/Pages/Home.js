@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
         color: '#000',
         lineHeight: 16,
         fontFamily: 'Arimo-Bold',
-        fontWeight:'900'
+        fontWeight:'700'
     },
     middlePanelBoxes: {
         width: screenWidth - 50,

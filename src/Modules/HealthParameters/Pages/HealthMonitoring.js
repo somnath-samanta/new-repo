@@ -499,7 +499,7 @@ const styles = StyleSheet.create({
     borderColor: BORDER,
     paddingVertical: 10,
     paddingHorizontal: 10,
-    backgroundColor: '#2aa394',
+   // backgroundColor: 'red',
 
   },
   headerText: {
@@ -507,6 +507,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontSize: 12,
     fontWeight: 700,
+    minWidth:130,
+    maxWidth:130,
+    textAlign:'center'
+   // backgroundColor:'red'
     //paddingLeft:10
   },
   headerTextStart: {
@@ -527,6 +531,9 @@ const styles = StyleSheet.create({
     padding: 11.05,
     alignItems: 'center',
     justifyContent: 'center',
+    maxWidth:130,
+
+
   },
   metricCell: {},
   metricCellInner: {
@@ -561,8 +568,9 @@ const styles = StyleSheet.create({
     color: '#000',
     fontFamily: 'Montserrat-Medium',
     fontSize: 12,
-    paddingHorizontal: 5,
+    paddingHorizontal: 0,
     paddingVertical: Platform.OS === 'ios' ? 10 : 8,
+   // backgroundColor:'red',
   },
   subHeaderRow: {
     gap: 10,

@@ -929,6 +929,7 @@ const styles = StyleSheet.create({
         paddingVertical: 7,
         textAlign: 'center',
         fontFamily: 'Arimo-Bold',
+        fontWeight:700
         //marginTop:-5,
 
     },

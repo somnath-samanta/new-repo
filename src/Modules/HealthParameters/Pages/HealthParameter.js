@@ -211,7 +211,7 @@ function HealthParameter() {
 
             <Loader style={styles.loadingCss} loading={pageLoading} />
             <CustomHeader
-                pageName="Health Parameters"
+                pageName="Physical Parameters"
                 hideBookAppointmentScreen={hideBookAppointmentScreen}
             />
 

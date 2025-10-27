@@ -132,6 +132,14 @@ export default function HealthMonitoring() {
     fetchVitals(false);
   }, [userId]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reset the ref and fetch vitals when screen is focused
+      hasFetchedVitalsRef.current = false;
+      fetchVitals(false);
+    }, [])
+  );
+
   const monthIndex = (name) => {
     const map = {
       Jan: 0, January: 0,
@@ -182,10 +190,15 @@ export default function HealthMonitoring() {
     });
 
 
+    // Store both formatted date and original effectiveDateTime for sorting
     const idWiseDate = filtered.reduce((acc, v) => {
       const date = fmtDate(v.effectiveDateTime); // formatted date
-      if (!acc[v.id]) acc[v.id] = ""; // init array for this id
-      if (!acc[v.id].includes(date)) acc[v.id] = date; // add unique date
+      if (!acc[v.id]) {
+        acc[v.id] = {
+          formattedDate: date,
+          effectiveDateTime: v.effectiveDateTime
+        };
+      }
       return acc;
     }, {});
     // Unique dates
@@ -208,19 +221,17 @@ export default function HealthMonitoring() {
       6: { key: 'pulse', label: 'Pulse Rate' },
     };
 
-    // Sort idWiseDate keys by date in descending order
+    // Sort idWiseDate keys by date AND time in descending order
     const sortedIdWiseDate = Object.keys(idWiseDate)
       .sort((a, b) => {
-        const dateA = idWiseDate[a];
-        const dateB = idWiseDate[b];
-        const [da, ma, ya] = dateA.split('.');
-        const [db, mb, yb] = dateB.split('.');
-        const timeA = new Date(`${ya}-${ma}-${da}T00:00:00Z`).getTime();
-        const timeB = new Date(`${yb}-${mb}-${db}T00:00:00Z`).getTime();
+        const dateTimeA = idWiseDate[a].effectiveDateTime;
+        const dateTimeB = idWiseDate[b].effectiveDateTime;
+        const timeA = new Date(dateTimeA).getTime();
+        const timeB = new Date(dateTimeB).getTime();
         return timeB - timeA; // descending order (newest first)
       })
       .reduce((acc, key) => {
-        acc[key] = idWiseDate[key];
+        acc[key] = idWiseDate[key].formattedDate;
         return acc;
       }, {});
 
@@ -229,6 +240,7 @@ export default function HealthMonitoring() {
         const meta = labelByInt[vi];
         const values = Object.keys(sortedIdWiseDate).map((dstr) => {
           const matches = filtered.filter((v) => v.id.toString() === dstr.toString() && v.valueInteger === vi);
+          console.log("matches------------------", matches);
           if (!matches.length) return '';
           const latest = matches.reduce((acc, cur) => (
             new Date(acc.effectiveDateTime) > new Date(cur.effectiveDateTime) ? acc : cur
@@ -269,7 +281,7 @@ export default function HealthMonitoring() {
     <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
       <View style={styles.container}>
         <Loader style={styles.loadingCss} loading={pageLoading} />
-        <CustomHeader pageName={'Health Parameters'} />
+        <CustomHeader pageName={'Physical Parameters'} />
 
         <View style={styles.subHeaderRow}>
           <View style={styles.subHeaderRowLeft}>
@@ -434,7 +446,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo-Bold',
     fontSize: 14,
     marginBottom: 6,
-    fontWeight:700,
+    fontWeight: 700,
   },
   filterRow: {
     flexDirection: 'row',
@@ -490,12 +502,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Montserrat-Bold',
     fontSize: 12,
-    fontWeight:700,
+    fontWeight: 700,
     //paddingLeft:10
   },
   headerTextStart: {
     paddingLeft: 10,
-    fontWeight:700
+    fontWeight: 700
   },
   cellMetric: {
     width: 150,
@@ -525,7 +537,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexWrap: 'wrap',
     width: 90,
-    fontWeight:700,
+    fontWeight: 700,
   },
   iconCircle: {
     width: 34,
@@ -571,7 +583,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontFamily: 'Montserrat-Bold',
     fontSize: 16,
-    fontWeight:700
+    fontWeight: 700
   },
   tableWrapper: {
     flexDirection: 'row',
@@ -592,7 +604,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2aa394',
     borderRightWidth: 1,
     borderColor: BORDER,
-    fontWeight:700
+    fontWeight: 700
   },
   noDataContainer: {
     padding: 20,

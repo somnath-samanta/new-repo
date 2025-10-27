@@ -95,7 +95,7 @@ function CustomDrawerContent(props) {
   ];
 
   const documentSubItems = [
-    { label: 'My Document', icon: 'book', route: 'MyDocument' },
+    { label: 'My Documents', icon: 'book', route: 'MyDocument' },
     { label: '3rd Party Document', icon: 'book', route: 'ThirdPartyDocument' },
   ];
   const therapyTaskSubItems = [

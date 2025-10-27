@@ -354,7 +354,7 @@ function AddHealthRecord() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
       <Loader style={styles.loadingCss} loading={pageLoading} />
-      <CustomHeader pageName="Health Parameters" />
+      <CustomHeader pageName="Physical Parameters" />
 
       <View style={styles.subHeaderRow}>
         <View style={styles.subHeaderRowLeft}>
@@ -530,7 +530,7 @@ function AddHealthRecord() {
                   style={[styles.input, bpError && styles.inputError]}
                   placeholder="Sys/Dia"
                   placeholderTextColor="#666"
-                  keyboardType="numeric"
+                  keyboardType="default"
                   value={bp}
                   onChangeText={handleBpChange}
                   onBlur={validateBp}

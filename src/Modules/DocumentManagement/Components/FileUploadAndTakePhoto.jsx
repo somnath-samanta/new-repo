@@ -242,6 +242,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
       const [result] = await pick({
         mode: 'open',
         type: [
+          'public.item', // allows all files (works best on iOS)
           'application/pdf',           // PDF files
           'image/*',                   // Images (jpg, png, etc.)
           'application/msword',        // .doc

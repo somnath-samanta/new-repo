@@ -12,6 +12,8 @@
 		74B18A9B800F84A692C2CB48 /* libPods-oaktree.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 856919D926082E6A5D0ADBFE /* libPods-oaktree.a */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		0BF8D4F78168450ABB0EA362 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24DDB83ADFBE461F8B3DBB47 /* BootSplash.storyboard */; };
+		303C61F559404513B47C3730 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8520E869CA2845CD92708F48 /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +69,8 @@
 		F1669E9E5E6348D18A8E7F0B /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "oaktree/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		F1B5E762744A49E4BFD73006 /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome6_Solid.ttf; path = oaktree/fonts/FontAwesome6_Solid.ttf; sourceTree = "<group>"; };
 		F786F1C1049A46D4A66E8592 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "oaktree/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
+		24DDB83ADFBE461F8B3DBB47 /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "oaktree/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8520E869CA2845CD92708F48 /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "oaktree/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				24DDB83ADFBE461F8B3DBB47 /* BootSplash.storyboard */,
+				8520E869CA2845CD92708F48 /* Colors.xcassets */,
 			);
 			name = oaktree;
 			sourceTree = "<group>";
@@ -255,6 +261,8 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				01EA3DB71DB92A49E50F6FFF /* PrivacyInfo.xcprivacy in Resources */,
+				0BF8D4F78168450ABB0EA362 /* BootSplash.storyboard in Resources */,
+				303C61F559404513B47C3730 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

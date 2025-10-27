@@ -38,7 +38,7 @@
 	<key>NSFileProtectionKey</key>
 	<string>NSFileProtectionCompleteUntilFirstUserAuthentication</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Oaktree requires microphone access to record audio for communication purposes.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -95,7 +95,7 @@
 		<string>Zocial.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen.storyboard</string>
+	<string>BootSplash</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>arm64</string>

@@ -155,9 +155,6 @@ function AppointmentScreen(props) {
     const [webViewSourceUrl, setWebViewSourceUrl] = useState({});
 
     const { reload } = props.route.params || {};
-
-    // console.log("reload==============", reload)
-
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
             setIsconnected(state.isConnected)
@@ -220,20 +217,6 @@ function AppointmentScreen(props) {
         return () => backHandler.remove();
     }, [webViewFlag, webViewFlagForBookFollowUp, hideBottomSheet]);
 
-
-
-    // useEffect(() => {
-    //     console.log("entryyyyyyyyyyyyyyyyyyy=============")
-    //     setForceClearFilterFlag(false);
-    //     getAppointmentListFn();
-    //     return () => {
-    //         setAppointmentsDataAfterFilter([]);
-    //         setAppointmentsData([]);
-    //         setWebViewFlag(false);
-    //         clearFilterFn();
-    //         setForceClearFilterFlag(true);
-    //     };
-    // }, [])
     useEffect(() => {
         if (reload && reload == true) {
             navigation.setParams({ reload: undefined });
@@ -294,7 +277,6 @@ function AppointmentScreen(props) {
         const nowUTC = new Date();
 
         // Convert each appointment date and time to UTC
-        console.log("---------------------------appointmentsData:", appointmentsData);
         const upcomingAppointments = appointmentsData
             .map(appointment => {
                 const utcDateTime = convertToUTC(appointment.appointmentDate, appointment.appointmentTime);
@@ -316,7 +298,6 @@ function AppointmentScreen(props) {
 
 
     useEffect(() => {
-        //console.log("appointmentsData=========", appointmentsData)
         if (appointmentsData && appointmentsData != undefined && appointmentsData.length > 0) {
             nextAppointmentData();
         } else {
@@ -393,7 +374,6 @@ function AppointmentScreen(props) {
 
 
     const getAppointmentListFn = (type = "") => {
-        // console.log("---------------------------------------------getAppointmentListFn");
         try {
             if (type == "") {
                 setLoading(true);
@@ -438,14 +418,11 @@ function AppointmentScreen(props) {
 
             // Apply timeline filter
             if (obj['Timeline'] !== null && obj['Timeline'] !== "") {
-                // console.log("Timeline-----------------", obj['Timeline'])
                 let timeLine = obj['Timeline']
                 // if (obj['Timeline'] !== null) {
                 //     timeLine = obj['Timeline']
                 // }
-                // console.log("TimeLine", timeLine);
                 const pastDate = moment().subtract(timeLine, 'days').format('YYYY-MM-DD');
-                // console.log("pastDate------------------",selectedTimeLine, pastDate);
                 // filteredData = filteredData.filter(appointment =>
                 //     moment(appointment.appointmentDate, 'DD-MM-YYYY').format('YYYY-MM-DD') >= pastDate
                 // );
@@ -460,28 +437,22 @@ function AppointmentScreen(props) {
 
             // Filter by appointmentStatus
             if (obj['PaymentStatus'] !== null && obj['PaymentStatus'] !== "") {
-                // console.log("PaymentStatus-----------------", obj['PaymentStatus'])
                 let paymentStatus = obj['PaymentStatus']
                 // if (obj['PaymentStatus'] !== null) {
                 //     paymentStatus = obj['PaymentStatus']
                 // }
-                // console.log("PaymentStatus", paymentStatus);
                 filteredData = filteredData.filter(appointment => {
-                    // console.log(appointment.appointmentStatus.toLowerCase(), "===", paymentStatus.toLowerCase());
                     return appointment.appointmentStatus.toLowerCase() === paymentStatus.toLowerCase();
                 });
             }
 
             // Filter by appointmentPayType
             if (obj['PaymentMode'] !== null && obj['PaymentMode'] !== "") {
-                // console.log("PaymentMode-----------------", obj['PaymentMode'])
                 let paymentMode = obj['PaymentMode']
                 // if (obj['PaymentMode'] !== null) {
                 //     paymentMode = obj['PaymentMode']
                 // }
-                // console.log("PaymentMode", paymentMode);
                 filteredData = filteredData.filter(appointment => {
-                    // console.log(appointment.appointmentPayType.toLowerCase()+" === "+selectedPaymentMode.toLowerCase(), appointment.appointmentStatus.toLowerCase());
                     return appointment.appointmentPayType.toLowerCase() === paymentMode.toLowerCase()
                 });
             }
@@ -494,8 +465,6 @@ function AppointmentScreen(props) {
     };
 
     const handleBottomSheetShow = (item) => {
-        // console.log("handleBottomSheetShow", item);
-        // 
         if (isProcessingTouchableOpacity) return; // Prevent multiple clicks
         setIsProcessingTouchableOpacity(true);
         setAppointmentCancelObj(item);
@@ -647,8 +616,6 @@ function AppointmentScreen(props) {
                 const data = JSON.stringify(dataHash);
                 const encodedData = encodeURIComponent(data);
                 setWebViewSourceUrl({ uri: `${Config.videoCallLink}?data=${encodedData}` })
-                // console.log(encodedData);
-                //console.log(encodedData);
                 //  const url = `${Config.videoCallLink}?data=${encodedData}`;
                 //  const url = `https://73dd-122-160-113-252.ngrok-free.app/appointment/video-consultation?data=${encodedData}`;
                 // Linking.openURL(url);
@@ -687,7 +654,6 @@ function AppointmentScreen(props) {
     }
 
     const renderItem = (obj) => {
-        //console.log("--------------------------------------------------------", obj);
         return <>
             <View style={styles.nextAppointmentBoxMain}>
                 <View style={[styles.nextAppointmentBox, styles.nextAppointmentBoxFlatList]}>
@@ -804,7 +770,6 @@ function AppointmentScreen(props) {
         if (isconnected) {
 
             let appointmentDate = appointmentCancelObj["appointmentDate"];
-            // console.log("appointmentDate::", appointmentDate);
             let appointmentDateArray = appointmentDate.split("-");
             const newStartDate = new Date();
             const newEndDate = new Date(
@@ -815,7 +780,6 @@ function AppointmentScreen(props) {
             dateSpan = Math.ceil(
                 (newEndDate.getTime() - newStartDate.getTime()) / one_day
             );
-            //console.log("dateSpan::", dateSpan);
             getPricingDetails(dateSpan)
         } else {
             Toast.show("No internet connection");
@@ -853,8 +817,6 @@ function AppointmentScreen(props) {
                     setAppointmentPrice(appPrice);
                     setCancellationPrice(refundPrice);
                     setRefundPrice(cancellationPrice);
-                    //console.log("appprice::", appPrice);
-                    // hideBottomSheet();
                     setTimeout(() => {
                         setLoading(false);
                         setCancellationAppointmentFlag(true);
@@ -870,7 +832,6 @@ function AppointmentScreen(props) {
     }
 
     const hideCancellationPopup = () => {
-        // console.log("hideCancellationPopup");
         setCancellationAppointmentFlag(false);
     }
 
@@ -888,7 +849,6 @@ function AppointmentScreen(props) {
                         cancellationType: cancellationType,
                     },
                 }).then((result) => {
-                    // console.log('Updated appointment:', result);
                     if (result) {
 
                         setLoading(false);
@@ -901,8 +861,6 @@ function AppointmentScreen(props) {
                         getAppointmentListFn();
                     }
                 });
-
-                // console.log('Updated appointment:2');
 
             } catch (error) {
                 setLoading(false);
@@ -948,13 +906,9 @@ function AppointmentScreen(props) {
         const encodedData = encodeURIComponent(data);
         setWebViewSourceUrl({ uri: `${Config.bookFollowUpUrl}?data=${encodedData}` })
         setWebViewFlagForBookFollowUp(true)
-
-        // console.log( `${Config.bookFollowUpUrl}?data=${webViewDataForBookFollowUp}`);
-
     };
 
     const refreshBtnFn = () => {
-        // console.log("***********yes********Appo*********")
         setLoading(false);
         setRefreshBtnFnFlag(true);
         getAppointmentListFn()
@@ -965,7 +919,6 @@ function AppointmentScreen(props) {
         hideBottomSheet();
     };
     const hideContactUsFlag = () => {
-        // console.log("***********yes********Appo*********")
         setContactUsFlag(false);
     }
 
@@ -981,7 +934,6 @@ function AppointmentScreen(props) {
         if (data.message === "save successfully") {
             getAppointmentListFn()
         }
-        console.log("Received from WebView:--------------------------------------------", data.message);
     };
 
     const handleGoBack = () => {
@@ -993,11 +945,6 @@ function AppointmentScreen(props) {
             console.log("No screen to go back to");
         }
     };
-
-    useEffect(() => {
-    
-        // console.log("loading--------------------", loading);
-    }, [loading]);
 
     return (
         <>

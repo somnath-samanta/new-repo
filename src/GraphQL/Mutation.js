@@ -429,12 +429,13 @@ export const QUERY_UPDATE_PATIENT_VITALS = gql`
 `;
 
 export const DEACTIVATE_PATIENT = gql`
-  mutation deactivatePatient($id: id) {
+  mutation deactivatePatient($id: id, $fetchingFrom: String) {
     PatientUpdate(
       resource: {
         resourceType: Patient
         patientExtension: { operationType: "DEACTIVATE" }
         id: $id
+        fetchingFrom: $fetchingFrom
       }
     ) {
       id

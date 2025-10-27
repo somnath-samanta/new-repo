@@ -120,7 +120,6 @@ const refreshTokenFn = async() =>{
 
 //Appointment Screen function
 export const getMyDocumentList = async (data) => {
-    console.log("getAppointmentList", data);
     let response = {}
     try {
         let variables = {
@@ -137,7 +136,7 @@ export const getMyDocumentList = async (data) => {
         const result = await clientAuth.query({
             query: MY_DOCUMENT_QUERY,
             variables: variables,
-            fetchPolicy: 'no-cache',
+            fetchPolicy: 'network-only',
         });
         response = result;
     } catch (err) {

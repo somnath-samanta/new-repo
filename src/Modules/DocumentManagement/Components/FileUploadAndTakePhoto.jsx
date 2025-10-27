@@ -47,15 +47,25 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
   const [selectedDateError, setSelectedDateError] = useState("");
   const [dobError, setDobError] = useState("");
 
+  // const [SelectOptionForDocument, setselectOptionForDocument] = useState([
+  //   { label: 'Passport', value: 'Current_signed_passport' },
+  //   { label: 'Residence Permit', value: 'Residence_permit_issued_by_the_Home_Office' },
+  //   { label: 'National Identity', value: 'EU_or_Swiss_national_identity_photo-card' },
+  //   { label: 'Driving Licence', value: 'Valid_UK_photo-card_driving_licence' },
+  //   { label: "Armed or police force's ID", value: "Valid_armed_or_police_force's_photographic_identity_card" },
+  //   { label: 'Disabled blue badge', value: 'Photographic_disabled_blue_badge' },
+  //   { label: 'Citizen card', value: 'Citizen_card' },
+  //   { label: 'Valid student ID', value: 'Valid_student_ID_with_photograph' },
+  // ]);
   const [SelectOptionForDocument, setselectOptionForDocument] = useState([
     { label: 'Passport', value: 'Current_signed_passport' },
     { label: 'Residence Permit', value: 'Residence_permit_issued_by_the_Home_Office' },
-    { label: 'National Identity', value: 'EU_or_Swiss_national_identity_photo-card' },
-    { label: 'Driving Licence', value: 'Valid_UK_photo-card_driving_licence' },
-    { label: "Armed or police force's ID", value: "Valid_armed_or_police_force's_photographic_identity_card" },
-    { label: 'Disabled blue badge', value: 'Photographic_disabled_blue_badge' },
+    { label: 'EU identity photo-card', value: 'EU_or_Swiss_national_identity_photo-card' },
+    { label: 'UK photo-card driving licence', value: 'Valid_UK_photo-card_driving_licence' },
+    { label: "Armed/ police forces photo ID", value: "Valid_armed_or_police_force's_photographic_identity_card" },
+    { label: 'Disabled photo blue badge', value: 'Photographic_disabled_blue_badge' },
     { label: 'Citizen card', value: 'Citizen_card' },
-    { label: 'Valid student ID', value: 'Valid_student_ID_with_photograph' },
+    { label: ' Valid photo student ID', value: 'Valid_student_ID_with_photograph' },
   ]);
 
   const [SelectOptionForTag, setselectOptionForTag] = useState([
@@ -414,6 +424,10 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     // Format date to DD/MM/YYYY
     const formatDateToDDMMYYYY = (date) => {
       if (!date) return "";
+
+      const isoDate = new Date(date).toISOString();
+      return isoDate;
+
       const d = new Date(date);
       const day = String(d.getDate()).padStart(2, '0');
       const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -470,6 +484,8 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           report_date: reportedFormattedDate || "",
           tags: tags || []
         }
+
+        console.log("variables", variables);
 
         const result = await savePatientDocumentsMutation({
           variables: variables,

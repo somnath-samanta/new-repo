@@ -22,6 +22,8 @@ import Toast from 'react-native-simple-toast';
 import { savePatientHealthParameters } from '../Controller/HealthParametersController';
 import { KeyboardAvoidingView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import NetInfo from "@react-native-community/netinfo";
+
 function AddHealthRecord() {
   const [pageLoading, setPageLoading] = useState(false);
   const [isMetric, setIsMetric] = useState(true);
@@ -39,6 +41,19 @@ function AddHealthRecord() {
   const [pulse, setPulse] = useState('');
   const [bp, setBp] = useState('');
   const [bpError, setBpError] = useState('');
+  const [isconnected, setIsconnected] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsconnected(state.isConnected)
+      if (!state.isConnected) {
+        setPageLoading(false);
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   // Handle hardware back button
   useFocusEffect(
@@ -106,7 +121,7 @@ function AddHealthRecord() {
   const handleBpChange = (text) => {
     // Remove all non-numeric characters except slash
     let cleaned = text.replace(/[^0-9/]/g, '');
-    
+
     // Prevent multiple slashes
     const slashCount = (cleaned.match(/\//g) || []).length;
     if (slashCount > 1) {
@@ -114,13 +129,13 @@ function AddHealthRecord() {
       const parts = cleaned.split('/');
       cleaned = parts[0] + '/' + parts.slice(1).join('');
     }
-    
+
     // Auto-add slash after systolic (first 2-3 digits) only when typing forward
     // Don't auto-add if user is deleting (text is shorter than current bp)
     if (cleaned.length > bp.length && cleaned.length >= 3 && !cleaned.includes('/')) {
       cleaned = cleaned.slice(0, 3) + '/' + cleaned.slice(3);
     }
-    
+
     setBp(cleaned);
     setBpError('');
   };
@@ -131,33 +146,33 @@ function AddHealthRecord() {
       setBpError('');
       return true;
     }
-    
+
     const bpPattern = /^(\d{2,3})\/(\d{2,3})$/;
     const match = bp.match(bpPattern);
-    
+
     if (!match) {
       setBpError('Invalid format. Use format: 120/80');
       return false;
     }
-    
+
     const systolic = parseInt(match[1]);
     const diastolic = parseInt(match[2]);
-    
+
     if (systolic < 70 || systolic > 250) {
       setBpError('Systolic should be between 70-250');
       return false;
     }
-    
+
     if (diastolic < 40 || diastolic > 150) {
       setBpError('Diastolic should be between 40-150');
       return false;
     }
-    
+
     if (systolic <= diastolic) {
       setBpError('Systolic must be greater than diastolic');
       return false;
     }
-    
+
     setBpError('');
     return true;
   };
@@ -168,6 +183,10 @@ function AddHealthRecord() {
 
   const onSave = async () => {
     try {
+      if(!isconnected){
+        Toast.show('No internet connection');
+        return;
+      }
       const vitalsdata = [];
       const ftMtInput = isMetric ? 'M' : 'Ft';
       const inCmInput = isMetric ? 'Cm' : 'In';
@@ -354,7 +373,7 @@ function AddHealthRecord() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
       <Loader style={styles.loadingCss} loading={pageLoading} />
-      <CustomHeader pageName="Health Parameters" />
+      <CustomHeader pageName="Physical Parameters" />
 
       <View style={styles.subHeaderRow}>
         <View style={styles.subHeaderRowLeft}>
@@ -513,7 +532,7 @@ function AddHealthRecord() {
                 >
                   <FontAwesome name="info-circle" size={14} color="#333" />
                 </TouchableOpacity>
-                
+
               </View>
             </View>
             <View style={styles.twoColRow}>
@@ -530,7 +549,7 @@ function AddHealthRecord() {
                   style={[styles.input, bpError && styles.inputError]}
                   placeholder="Sys/Dia"
                   placeholderTextColor="#666"
-                  keyboardType="numeric"
+                  keyboardType="default"
                   value={bp}
                   onChangeText={handleBpChange}
                   onBlur={validateBp}
@@ -602,7 +621,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontSize: 16,
     marginBottom: 10,
-    fontWeight:700,
+    fontWeight: 700,
   },
   unitToggleRow: {
     flexDirection: 'row',
@@ -613,7 +632,7 @@ const styles = StyleSheet.create({
   unitLabel: {
     color: '#000',
     fontFamily: 'Arimo-Bold',
-    fontWeight:700
+    fontWeight: 700
   },
   unitActive: {
     fontFamily: 'Arimo-Bold',
@@ -629,7 +648,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo-Bold',
     fontSize: 14,
     marginLeft: 10,
-    fontWeight:700
+    fontWeight: 700
   },
   rowBox: {
     marginBottom: 8,
@@ -708,7 +727,7 @@ const styles = StyleSheet.create({
     right: 5,
     bottom: -15,
   },
-   errorText: {
+  errorText: {
     fontSize: 10,
     color: 'red',
     position: 'absolute',

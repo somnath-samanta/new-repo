@@ -154,6 +154,7 @@ export const getQuestionnaireList = async (data) => {
       .query({
         query: Questionnaire,
         variables: variables,
+        fetchPolicy: 'network-only',
       })
     response = result;
   } catch (err) {

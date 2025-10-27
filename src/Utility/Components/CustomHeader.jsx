@@ -85,38 +85,38 @@ const CustomHeader = ({ pageName, switchOrganizationSheet, refreshBtnFn, viewDoc
 
   const handleGoBack = () => {
     console.log("handleGoBack: ", pageName);
-    if (pageName == 'MyDocument'){
+    if (pageName == 'MyDocument') {
       // console.log("----------my document----viewDocumentFlag--------",viewDocumentFlag)
-      if (viewDocumentFlag){
+      if (viewDocumentFlag) {
         callbackhandler(viewDocumentFlag);
-      }else{
+      } else {
         navigation.goBack();
       }
-    } else if (pageName == 'Questionnaire'){
+    } else if (pageName == 'Questionnaire') {
       //console.log("----------Questionnaire-----openQuestionList--", openQuestionList)
       if (openQuestionList) {
         callbackhandler(openQuestionList);
-      } else if(pageName == 'Home'){
+      } else if (pageName == 'Home') {
         setLoading(true); // Show full-screen loader
         setTimeout(() => {
           setLoading(false); // Hide loader
           navigation.navigate('Home');
         }, 2000); // 10 seconds delay
-      }else{
+      } else {
         navigation.goBack();
       }
-    }else if(pageName == 'Book an Appointment'){
+    } else if (pageName == 'Book an Appointment') {
       hideBookAppointmentScreen();
-    }else if(["Video Consultation", "Book Follow-up"].includes(pageName)){
+    } else if (["Video Consultation", "Book Follow-up"].includes(pageName)) {
       hideAllWebView()
-    }else{
+    } else {
       navigation.goBack();
     }
-    
+
   };
 
   const handleGoHome = () => {
-     navigation.navigate('Home');
+    navigation.navigate('Home');
   }
 
 
@@ -127,9 +127,9 @@ const CustomHeader = ({ pageName, switchOrganizationSheet, refreshBtnFn, viewDoc
         <Image source={require('../Public/images/oaktreeLogo.png')} style={CommonStyle.oaktreeLogos} />
       </TouchableOpacity> */}
 
-      
+
       {/* {Platform.OS == "ios" &&  */}
-      
+
       <TouchableOpacity style={CommonStyle.backbtn} onPress={handleGoHome}>
         <Entypo name="home" size={26} color={Colors.white} />
       </TouchableOpacity>
@@ -149,6 +149,10 @@ const CustomHeader = ({ pageName, switchOrganizationSheet, refreshBtnFn, viewDoc
           ? "My Appointments"
           : formatPageName(pageName) === "Third Party Document"
             ? "3rd Party Docs and Reports"
+            : pageName === "MyDocument" ?
+              "My Documents" 
+            : pageName === "Questionnaire" ?
+              "My Questionnaires"
             : formatPageName(pageName)}
       </Text>
       {/* {formatPageName(pageName) === "Appointment" || formatPageName(pageName) === "Third Party Document" || formatPageName(pageName) === "Questionnaire" || formatPageName(pageName) === "My Document" ? 

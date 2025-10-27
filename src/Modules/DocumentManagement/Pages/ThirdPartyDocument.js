@@ -791,6 +791,7 @@ const styles = StyleSheet.create({
         paddingVertical: 7,
         textAlign: 'center',
         fontFamily: 'Arimo-Bold',
+        fontWeight:700
         //marginTop:-5,
 
     },
@@ -929,10 +930,11 @@ const styles = StyleSheet.create({
         fontSize: 14, // Adjust font size as needed
         color: Colors.black,
         fontFamily: 'Arimo-Bold',
+        fontWeight:'700'
     },
     practitionerSpeciality: {
         fontSize: 14, // Adjust font size as needed
-        color: '#747474', // Change color to differentiate from name if needed
+        color: '#333', // Change color to differentiate from name if needed
         fontFamily: 'Montserrat-Medium',
     },
 
@@ -994,7 +996,8 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         fontFamily: 'Arimo-Bold',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontWeight:'700'
     },
     uploadIconContainer: {
         backgroundColor: '#229980',
@@ -1138,6 +1141,7 @@ const styles = StyleSheet.create({
         color: Colors.black,
         padding: 10,
         paddingVertical: 5,
+        fontWeight:700
     },
 
 });

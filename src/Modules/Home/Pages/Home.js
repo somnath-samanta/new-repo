@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         //paddingVertical:10,
         paddingTop: Platform.OS == 'ios' ? 20 : 0,
-        paddingBottom: Platform.OS == 'ios' ? 15 : 5,
+        paddingBottom: Platform.OS == 'ios' ? 15 : 10,
     },
     topPanelTaxt: {
         fontSize: 19,
@@ -492,6 +492,7 @@ const styles = StyleSheet.create({
         width: "100%",
         lineHeight: 16,
         marginTop: 15,
+        fontWeight:'700'
     },
     panelBoxRightMainTextDownSec: {
         marginTop: 0,
@@ -516,6 +517,7 @@ const styles = StyleSheet.create({
         color: '#000',
         lineHeight: 16,
         fontFamily: 'Arimo-Bold',
+        fontWeight:'900'
     },
     middlePanelBoxes: {
         width: screenWidth - 50,
@@ -619,7 +621,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Bold',
         textAlign: 'center',
         padding: 5,
-        marginBottom: 5,
+        marginBottom: 8,
+        fontWeight:'700'
     }
 });
 

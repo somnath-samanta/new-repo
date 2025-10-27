@@ -328,6 +328,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         textAlign: 'center',
         marginBottom: 0,
+        fontWeight:700
     },
     cardValue: {
         marginBottom: 10,
@@ -337,6 +338,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Arimo-Bold',
         textAlign: 'center',
+        fontWeight:700
     },
     cardValueUnit: {
         color: '#0a978b',
@@ -347,6 +349,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 14,
         fontFamily: 'Arimo-Bold',
+        fontWeight:700
     },
     lastUpdateText: {
         color: '#000',
@@ -403,6 +406,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 13,
         fontFamily: 'Arimo-Bold',
+        fontWeight:700
     },
     backbtnTop: {
         width: 40,

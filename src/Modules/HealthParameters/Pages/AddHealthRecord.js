@@ -361,7 +361,7 @@ function AddHealthRecord() {
           <TouchableOpacity style={styles.subHeaderBackBtn} onPress={handleGoBack}>
             <FontAwesome6 name="arrow-left-long" size={20} color={Colors.black} />
           </TouchableOpacity>
-          <Text style={styles.subHeaderTitle}>Previous Records</Text>
+          {/* <Text style={styles.subHeaderTitle}>Previous Records</Text> */}
         </View>
         <TouchableOpacity style={styles.refreshBtn}
           onPress={() => refreshBtnFn()}
@@ -501,7 +501,7 @@ function AddHealthRecord() {
                 <Text style={styles.sectionTitle}>Blood Pressure</Text>
 
                 <TouchableOpacity
-                  style={{ marginLeft: 5 }}
+                  style={{ marginLeft: 3 }}
                   onPress={() =>
                     Toast.show(
                       'Enter your blood pressure in mmHg (e.g., 120/80)',
@@ -602,6 +602,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontSize: 16,
     marginBottom: 10,
+    fontWeight:700,
   },
   unitToggleRow: {
     flexDirection: 'row',
@@ -612,6 +613,7 @@ const styles = StyleSheet.create({
   unitLabel: {
     color: '#000',
     fontFamily: 'Arimo-Bold',
+    fontWeight:700
   },
   unitActive: {
     fontFamily: 'Arimo-Bold',
@@ -627,6 +629,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo-Bold',
     fontSize: 14,
     marginLeft: 10,
+    fontWeight:700
   },
   rowBox: {
     marginBottom: 8,

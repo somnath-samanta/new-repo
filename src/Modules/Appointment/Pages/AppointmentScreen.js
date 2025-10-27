@@ -1375,6 +1375,7 @@ const styles = StyleSheet.create({
         color: '#000', // White text color
         fontSize: 16,
         fontFamily: 'Montserrat-Bold',
+        fontWeight:'700'
     },
     smalltxt: {
         fontSize: 14,
@@ -1477,6 +1478,7 @@ const styles = StyleSheet.create({
         color: Colors.black,
         padding: 10,
         paddingVertical: 5,
+        fontWeight:700
     },
     appointmentScreenViewBox: {
         //backgroundColor: 'red',

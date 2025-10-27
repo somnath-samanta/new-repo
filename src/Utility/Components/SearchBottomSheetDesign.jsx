@@ -608,9 +608,10 @@ const styles = StyleSheet.create({
 
     },
     containerTopBoxTxt: {
-        color: '#666',
+        color: '#000',
         fontSize: 16,
         fontFamily: 'Montserrat-Bold',
+        fontWeight:'700'
     },
     containerTopBoxTxtRight: {
         fontFamily: 'Montserrat-Bold',
@@ -770,6 +771,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         fontFamily: 'Arimo-Bold',
+        fontWeight:700,
     },
     searchBoxPanelRow: {
         //backgroundColor: '#007AFF',

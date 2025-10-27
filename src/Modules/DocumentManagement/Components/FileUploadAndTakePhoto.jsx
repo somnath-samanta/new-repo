@@ -304,7 +304,11 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
   };
 
   const selectFile = async () => {
-    selectDocument()
+    if (selectedDocument == null || selectedDocument == "") {
+      Toast.show("Please select a document type.");
+    } else {
+      selectDocument()
+    }
     return
     /* if (selectedDocument == null || selectedDocument == "") {
        Toast.show("Please select a document type");
@@ -705,7 +709,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                   style={[styles.input]}
                   value={tagInput}
                   onChangeText={setTagInput}
-                  placeholder="Add tags (press Enter to add)"
+                  placeholder="Tags (press 'Enter' to add)"
                   placeholderTextColor="#333"
                   onSubmitEditing={() => {
                     if (tagInput.trim() !== '' && !tags.includes(tagInput.trim())) {
@@ -755,11 +759,11 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         }
         <View style={styles.photoModalcontainerRow}>
           <TouchableOpacity style={styles.photoModalcustomButton} onPress={takePhoto}>
-            <View style={styles.photoModalbuttonIcon}><Entypo name="camera" size={30} color="#666" /></View>
+            <View style={styles.photoModalbuttonIcon}><Entypo name="camera" size={30} color="#fff" /></View>
             <Text style={styles.photoModalbuttonText}>Take Photo</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.photoModalcustomButton} onPress={selectFile}>
-            <View style={styles.photoModalbuttonIcon}><Entypo name="image" size={30} color="#666" /></View>
+            <View style={styles.photoModalbuttonIcon}><Feather name="upload" size={30} color="#fff" /></View>
             <Text style={styles.photoModalbuttonText}>Select File
               {/* {"\n"}
               <Text style={styles.photoModalbuttonSubText}>(Image/PDF/Doc)</Text> */}
@@ -903,11 +907,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#ddd",
 
   },
+  photoModalbuttonIcon: {
+    backgroundColor: '#428174',
+    width: 60,
+    height: 60,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#fff',
+    borderRadius: 50
+  },
   photoModalbuttonText: {
     color: '#000',
     fontSize: 14,
     textAlign: 'center',
     marginTop: 5,
+    fontVariant: '700',
+    fontFamily: 'Arimo-Bold',
 
   },
   photoModalbuttonSubText: {

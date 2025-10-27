@@ -364,7 +364,7 @@ function LoginScreen(props) {
                                             <View style={LoginStyle.inputContainer}>
                                                 <TextInput
                                                     style={LoginStyle.input}
-                                                    placeholder="Email"
+                                                    placeholder="Username"
                                                     placeholderTextColor={Colors.gray99}
                                                     value={email}
                                                     onChangeText={(text) => { setEmail(text); setEmailError("") }}

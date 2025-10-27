@@ -434,6 +434,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo-Bold',
     fontSize: 14,
     marginBottom: 6,
+    fontWeight:700,
   },
   filterRow: {
     flexDirection: 'row',
@@ -489,10 +490,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Montserrat-Bold',
     fontSize: 12,
+    fontWeight:700,
     //paddingLeft:10
   },
   headerTextStart: {
-    paddingLeft: 10
+    paddingLeft: 10,
+    fontWeight:700
   },
   cellMetric: {
     width: 150,
@@ -522,7 +525,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexWrap: 'wrap',
     width: 90,
-    //backgroundColor:'blue'
+    fontWeight:700,
   },
   iconCircle: {
     width: 34,
@@ -568,6 +571,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontFamily: 'Montserrat-Bold',
     fontSize: 16,
+    fontWeight:700
   },
   tableWrapper: {
     flexDirection: 'row',
@@ -588,6 +592,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2aa394',
     borderRightWidth: 1,
     borderColor: BORDER,
+    fontWeight:700
   },
   noDataContainer: {
     padding: 20,

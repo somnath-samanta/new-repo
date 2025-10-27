@@ -710,6 +710,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Montserrat-Bold',
         marginBottom: 10,
+        fontWeight:700
     },
     listItem: {
         //backgroundColor: 'red',
@@ -797,6 +798,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 18,
         fontFamily: 'Montserrat-Bold',
+        fontWeight:700
     },
     // uploadIcon: {
     //     //marginRight: 8, // Adjust spacing as needed
@@ -837,6 +839,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        fontWeight:700
 
 
 

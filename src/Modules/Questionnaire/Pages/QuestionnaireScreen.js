@@ -632,6 +632,7 @@ const styles = StyleSheet.create({
         color: Colors.black,
         padding: 10,
         paddingVertical: 5,
+        fontWeight:700
     },
     panel: {
         //backgroundColor: 'red', 
@@ -689,6 +690,7 @@ const styles = StyleSheet.create({
         width: '70%',
         display: 'flex',
         flexWrap: 'wrap',
+        fontWeight:700
         // backgroundColor: 'yellow',
 
 
@@ -721,6 +723,7 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingHorizontal: 0,
         fontFamily: 'Arimo-Bold',
+        fontWeight:700
     },
     statusIncomplete: {
         // backgroundColor: '#219197',
@@ -745,6 +748,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#fff',
         fontFamily: 'Arimo-Bold',
+        fontWeight:700
     },
     norecordFound: {
         fontSize: 14,

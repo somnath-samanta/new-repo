@@ -199,6 +199,7 @@ const CommonStyle = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Montserrat-Bold',
         color: Colors.white,
+        fontWeight:700
         //backgroundColor:'yellow',
         //paddingLeft: Platform.OS == "ios" ? 5 : 15,
         //width:250

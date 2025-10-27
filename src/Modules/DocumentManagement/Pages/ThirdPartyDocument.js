@@ -432,7 +432,9 @@ function ThirdPartyDocument({ props }) {
     }
 
     const getDocumentList = (type = "") => {
-        setFileUploadFlag(false)
+        setTimeout(() => {
+            setFileUploadFlag(false)
+        }, 1000);
         setHasMore(true);
         setPage(0);
         setData([])

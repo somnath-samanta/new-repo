@@ -12,6 +12,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-simple-toast';
+
 const screen = Dimensions.get('window');
 const screenWidth = screen.width;
 const screenHeight = screen.height;
@@ -114,6 +116,9 @@ export default function HealthMonitoring() {
     try {
       const res = await getPatientHealthProfile({ id: userId });
       const vitalsList = res?.Patient?.healthProfile?.vitals || [];
+      // Set the last record month as active month
+      setActiveMonth(vitalsList[0]?.effectiveDateTime ? new Date(vitalsList[0].effectiveDateTime).getMonth() + 1 : new Date().getMonth());
+      setActiveYear(vitalsList[0]?.effectiveDateTime ? new Date(vitalsList[0].effectiveDateTime).getFullYear() : currentYear);
       setVitals(vitalsList);
       hasFetchedVitalsRef.current = true;
     } catch (e) {
@@ -240,7 +245,6 @@ export default function HealthMonitoring() {
         const meta = labelByInt[vi];
         const values = Object.keys(sortedIdWiseDate).map((dstr) => {
           const matches = filtered.filter((v) => v.id.toString() === dstr.toString() && v.valueInteger === vi);
-          console.log("matches------------------", matches);
           if (!matches.length) return '';
           const latest = matches.reduce((acc, cur) => (
             new Date(acc.effectiveDateTime) > new Date(cur.effectiveDateTime) ? acc : cur

@@ -127,6 +127,7 @@ export const getAppointmentList = async (data) => {
       .query({
         query: APPOINTMENT_LIST,
         variables: { id: data.id },
+        fetchPolicy: 'network-only', // Bypass cache to get fresh data
       })
     response = result;
   } catch (err) {
@@ -138,8 +139,6 @@ export const getAppointmentList = async (data) => {
 };
 
 export const pomsAppointmentUpdate = async (data) => {
-  console.log("PomsAppointmentUpdate", data, data.id);
-
   let response = {}
   try {
     const result = await clientAuth
@@ -222,6 +221,7 @@ export const getPractitionerList  = async (data) => {
       .query({
         query: GET_PRACTITIONER_LIST,
         variables: { searchText: "" },
+        fetchPolicy: 'network-only', // Bypass cache to get fresh data
       })
     response = result;
   } catch (err) {

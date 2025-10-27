@@ -317,7 +317,7 @@ function MyDocument({ props }) {
         'Residence permit issued by the Home Office',
         'EU identity photo-card',
         'Valid UK photo-card driving licence',
-        'Valid armed or police forces photographic identity card',
+        'Valid armed or police forces photo identity card',
         'Disabled blue badge- with photo',
         'Citizen card',
         'Valid student ID with photograph'

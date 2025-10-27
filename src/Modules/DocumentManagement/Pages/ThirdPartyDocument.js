@@ -503,7 +503,7 @@ function ThirdPartyDocument({ props }) {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.searchBoX} onPress={() => handleFilter()} >
                         <Image source={require('../../../Utility/Public/images/filter.png')} style={styles.filtericon} />
-                        <Text style={styles.searchBoXTxt}>Filter</Text>
+                        <Text style={styles.searchBoXTxt}>Filters</Text>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.refreshBtn}

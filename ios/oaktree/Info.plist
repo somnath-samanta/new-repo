@@ -45,6 +45,8 @@
 	<string>Oaktree requires permission to save edited or captured photos to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Oaktree requires access to your photo library to select photos or documents for upload.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Allow Oaktree to access your documents.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UIAppFonts</key>

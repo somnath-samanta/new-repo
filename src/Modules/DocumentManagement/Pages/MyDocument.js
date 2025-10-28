@@ -1020,25 +1020,23 @@ const styles = StyleSheet.create({
         width: 90,
         //height: 40,
         display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#24ad91',
         borderRadius: 10,
         flexDirection: 'row',
-        position: 'relative'
+        position: 'relative',
+        gap: 5,
+        paddingHorizontal: 8,
+        paddingVertical: 6,
     },
     eyeButtonTxt: {
-
-        fontSize: 16,
+        fontSize: 14,
         color: '#fff',
-        width: '100%',
-        paddingHorizontal: 0,
-        paddingVertical: 7,
         textAlign: 'center',
         fontFamily: 'Arimo-Bold',
-        fontWeight:700
+        fontWeight: 700,
         //marginTop:-5,
-
     },
     videoIcon: {
         height: 30,

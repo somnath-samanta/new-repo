@@ -193,8 +193,7 @@ function ThirdPartyDocument({ props }) {
                 }
                 let timeLineText = timeline && timeline != "" ? timeline : selectedTimeLine;
                 searchHash.timeline = timeLineText !== "" ? timelineHash[timeLineText] : "";
-
-                searchHash.documentFor = documentType && documentType != "" ? documentType : '';
+                searchHash.documentFor = documentType && documentType != "" ? documentType : 'Thirdparty';
             }
 
             // console.log("searchHash-------------------", searchHash);

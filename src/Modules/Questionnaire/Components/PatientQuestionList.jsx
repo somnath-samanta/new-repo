@@ -242,87 +242,76 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
             <Loader style={styles.loadingCss} loading={pageLoading} />
             <KeyboardAvoidingView
                 style={styles.container}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             >
-                {/* Main Content */}
-                <View style={styles.content} pointerEvents="box-none">
-                    <View style={styles.mainViewBoxContainer}>
+                <ScrollView
+                    contentContainerStyle={styles.scrollViewContent}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    {/* Main Content */}
+                    <View style={styles.content} pointerEvents="box-none">
+                        <View style={styles.mainViewBoxContainer}>
 
-                        <View style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.mainViews] : [styles.mainViews, styles.mainViewBox]}>
-                            <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
-                                onPress={handleBackPress}
-                            >
-                                <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
-                            </TouchableOpacity>
+                            <View style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.mainViews] : [styles.mainViews, styles.mainViewBox]}>
+                                <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
+                                    onPress={handleBackPress}
+                                >
+                                    <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
+                                </TouchableOpacity>
 
-                            <ScrollView
-                                contentContainerStyle={styles.scrollViewContent}
-                                keyboardShouldPersistTaps="handled"
-                            >
-                                <View style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.mainView] : [styles.mainView, styles.mainViewBoxx]}>
-                                    <Text style={styles.mainViewTxt}>{questionObj?.questionnaire?.questionnaireName}
-                                    </Text>
-                                    <Text style={styles.mainViewTxt}>Instructions: {" "}
-                                        <Text style={styles.mainViewTxtSpan}>{questionObj?.questionnaire?.questionnaireDescription}</Text>
-                                    </Text>
-                                    <Text style={styles.mainViewTxt}>Date: {" "}
-                                        <Text style={styles.mainViewTxtSpan}>{moment(questionObj?.assignedOn).format("DD-MM-YYYY")}</Text>
-                                    </Text>
-                                    {
-                                        questionsData.map((obj, index) => {
-                                            return (
-                                                <View style={styles.containers}>
-                                                    <Text style={styles.questionBX}>{index + 1}.{" "}{obj.question}</Text>
-                                                    <View style={styles.textAreaBX}>
+                                <ScrollView
+                                    contentContainerStyle={styles.scrollViewContent}
+                                    keyboardShouldPersistTaps="handled"
+                                >
+                                    <View style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.mainView] : [styles.mainView, styles.mainViewBoxx]}>
+                                        <Text style={styles.mainViewTxt}>{questionObj?.questionnaire?.questionnaireName}
+                                        </Text>
+                                        <Text style={styles.mainViewTxt}>Instructions: {" "}
+                                            <Text style={styles.mainViewTxtSpan}>{questionObj?.questionnaire?.questionnaireDescription}</Text>
+                                        </Text>
+                                        <Text style={styles.mainViewTxt}>Date: {" "}
+                                            <Text style={styles.mainViewTxtSpan}>{moment(questionObj?.assignedOn).format("DD-MM-YYYY")}</Text>
+                                        </Text>
+                                        {
+                                            questionsData.map((obj, index) => {
+                                                return (
+                                                    <View style={styles.containers}>
+                                                        <Text style={styles.questionBX}>{index + 1}.{" "}{obj.question}</Text>
+                                                        <View style={styles.textAreaBX}>
+                                                            {
+                                                                obj.optionType == "4" ?
+                                                                    <>
+                                                                        <TextInput
+                                                                            style={styles.textArea}
+                                                                            placeholder=""
+                                                                            multiline={true}
+                                                                            // numberOfLines={4}  // Adjust the number of lines as needed
+                                                                            value={obj.selectedOptionText}
+                                                                            onChangeText={(text) => handleSelectedoptionTextAreaChanges(4, index, text)}
+                                                                            //scrollEnabled={false} // Fixes KeyboardAvoidingView behavior
+                                                                            scrollEnabled={Platform.OS === 'ios' ? isKeyboardVisible : false}
+                                                                            editable={!(selectedDocadmintype == "1"
+                                                                                ||
+                                                                                selectedDocStatus === "Completed")}
+                                                                        />
+                                                                    </>
+                                                                    : ""
+                                                            }
+                                                        </View>
+
+
                                                         {
-                                                            obj.optionType == "4" ?
-                                                                <>
-                                                                    <TextInput
-                                                                        style={styles.textArea}
-                                                                        placeholder=""
-                                                                        multiline={true}
-                                                                        // numberOfLines={4}  // Adjust the number of lines as needed
-                                                                        value={obj.selectedOptionText}
-                                                                        onChangeText={(text) => handleSelectedoptionTextAreaChanges(4, index, text)}
-                                                                        //scrollEnabled={false} // Fixes KeyboardAvoidingView behavior
-                                                                        scrollEnabled={Platform.OS === 'ios' ? isKeyboardVisible : false}
-                                                                        editable={!(selectedDocadmintype == "1"
-                                                                            ||
-                                                                            selectedDocStatus === "Completed")}
-                                                                    />
-                                                                </>
-                                                                : ""
-                                                        }
-                                                    </View>
 
-
-                                                    {
-
-                                                        <>
-                                                            <View style={styles.ansContainerBox}>
-                                                                {obj?.options?.map((optionObj, optionIndex) => {
-                                                                    return (
-                                                                        <View key={optionIndex}>
-                                                                            {/* Radio Buttin */}
-                                                                            {obj.optionType === "1" && (
-                                                                                <View style={styles.radioButtonContainer}>
-                                                                                    <CustomRadioButton
-                                                                                        selected={obj?.selectedOptionId === optionIndex.toString()}
-                                                                                        onPress={() =>
-                                                                                            handleSelectedoptionChanges(1, optionIndex, index, optionObj.option)
-                                                                                        }
-                                                                                        disabled={selectedDocadmintype === 1 || selectedDocStatus === "Completed"}
-                                                                                    />
-                                                                                    <Text style={styles.label}>{optionObj.option}</Text>
-                                                                                </View>
-                                                                            )}
-                                                                            {/** Checkbox */}
-
-                                                                            {
-                                                                                obj.optionType == "2" ? (
-                                                                                    <View style={styles.checkboxContainer}>
-                                                                                        <CustomCheckbox
-                                                                                            value={obj.selectedOptionId == optionIndex}
+                                                            <>
+                                                                <View style={styles.ansContainerBox}>
+                                                                    {obj?.options?.map((optionObj, optionIndex) => {
+                                                                        return (
+                                                                            <View key={optionIndex}>
+                                                                                {/* Radio Buttin */}
+                                                                                {obj.optionType === "1" && (
+                                                                                    <View style={styles.radioButtonContainer}>
+                                                                                        <CustomRadioButton
+                                                                                            selected={obj?.selectedOptionId === optionIndex.toString()}
                                                                                             onPress={() =>
                                                                                                 handleSelectedoptionChanges(1, optionIndex, index, optionObj.option)
                                                                                             }
@@ -330,118 +319,134 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                                         />
                                                                                         <Text style={styles.label}>{optionObj.option}</Text>
                                                                                     </View>
-                                                                                )
-                                                                                    :
-                                                                                    (<></>)
-                                                                            }
-                                                                        </View>
-                                                                    );
-                                                                })}
-                                                            </View>
+                                                                                )}
+                                                                                {/** Checkbox */}
 
-                                                            {/* Select option */}
-                                                            {
-                                                                obj.optionType == "3" ?
-                                                                    (
-                                                                        <>
-
-                                                                            <View style={styles.pickerContainer}>
-                                                                                <RNPickerSelect
-                                                                                    onValueChange={(value) => handleSelectedDropdownChanges(value, index, obj)}
-                                                                                    value={questionsData[index]?.selectedOptionId !== null ? questionsData[index]?.selectedOptionId : ""}
-                                                                                    items={
-                                                                                        [
-
-                                                                                            ...obj?.options.map((optionObj) => ({
-                                                                                                label: optionObj.option,
-                                                                                                value: optionObj.optionId,
-                                                                                            }))
-                                                                                        ]
-                                                                                    }
-                                                                                    //multiline={true}
-                                                                                    //textInputProps={{multiline: true}} 
-                                                                                    pickerProps={{ numberOfLines: 2 }}
-                                                                                    // style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
-                                                                                    style={pickerStyle}
-                                                                                    disabled={selectedDocadmintype === 1 || selectedDocStatus === "Completed"}
-                                                                                />
+                                                                                {
+                                                                                    obj.optionType == "2" ? (
+                                                                                        <View style={styles.checkboxContainer}>
+                                                                                            <CustomCheckbox
+                                                                                                value={obj.selectedOptionId == optionIndex}
+                                                                                                onPress={() =>
+                                                                                                    handleSelectedoptionChanges(1, optionIndex, index, optionObj.option)
+                                                                                                }
+                                                                                                disabled={selectedDocadmintype === 1 || selectedDocStatus === "Completed"}
+                                                                                            />
+                                                                                            <Text style={styles.label}>{optionObj.option}</Text>
+                                                                                        </View>
+                                                                                    )
+                                                                                        :
+                                                                                        (<></>)
+                                                                                }
                                                                             </View>
-                                                                        </>
-                                                                    )
-                                                                    :
-                                                                    ("")
-                                                            }
-                                                            <View style={styles.additionalComments}>
+                                                                        );
+                                                                    })}
+                                                                </View>
+
+                                                                {/* Select option */}
                                                                 {
-                                                                    obj.showCommentBox == "1" ?
+                                                                    obj.optionType == "3" ?
                                                                         (
                                                                             <>
-                                                                                <View>
-                                                                                    <Text style={styles.additionalCommentsLabel}>Additional Comments</Text>
-                                                                                    <TextInput
-                                                                                        style={styles.textAreaAdditionalComments}
-                                                                                        placeholder=""
-                                                                                        multiline={true}
-                                                                                        //numberOfLines={1}  // Adjust the number of lines as needed
-                                                                                        //scrollEnabled={false} // Fixes KeyboardAvoidingView behavior
-                                                                                        scrollEnabled={Platform.OS === 'ios' ? isKeyboardVisible : false}
-                                                                                        value={obj.comments}
-                                                                                        onChangeText={(text) => handleSelectedCommentChanges(text, index)}
-                                                                                        editable={!(selectedDocadmintype === 1
-                                                                                            ||
-                                                                                            selectedDocStatus === "Completed")}
+
+                                                                                <View style={styles.pickerContainer}>
+                                                                                    <RNPickerSelect
+                                                                                        onValueChange={(value) => handleSelectedDropdownChanges(value, index, obj)}
+                                                                                        value={questionsData[index]?.selectedOptionId !== null ? questionsData[index]?.selectedOptionId : ""}
+                                                                                        items={
+                                                                                            [
+
+                                                                                                ...obj?.options.map((optionObj) => ({
+                                                                                                    label: optionObj.option,
+                                                                                                    value: optionObj.optionId,
+                                                                                                }))
+                                                                                            ]
+                                                                                        }
+                                                                                        //multiline={true}
+                                                                                        //textInputProps={{multiline: true}} 
+                                                                                        pickerProps={{ numberOfLines: 2 }}
+                                                                                        // style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
+                                                                                        style={pickerStyle}
+                                                                                        disabled={selectedDocadmintype === 1 || selectedDocStatus === "Completed"}
                                                                                     />
                                                                                 </View>
-                                                                                {obj.isCommentBoxRequired == "1" && selectedDocadmintype === 2 ? (
-                                                                                    <>
-                                                                                        {showErrorMessage &&
-                                                                                            (obj?.comments == "" ||
-                                                                                                obj?.comments == null ||
-                                                                                                obj?.comments == undefined) ? (
-                                                                                            <View>
-                                                                                                <Text style={styles.errorMsg}>Please enter comments</Text>
-                                                                                            </View>
-                                                                                        ) : (
-                                                                                            ""
-                                                                                        )}
-                                                                                    </>
-                                                                                ) : ""}
-                                                                                {selectedDocadmintype == 3 ? (
-                                                                                    <>
-                                                                                        {showErrorMessage &&
-                                                                                            (obj?.comments == "" ||
-                                                                                                obj?.comments == null ||
-                                                                                                obj?.comments == undefined) ? (
-                                                                                            <View>
-                                                                                                <Text style={styles.errorMsg}>Please enter comments</Text>
-                                                                                            </View>
-                                                                                        ) : (
-                                                                                            ""
-                                                                                        )}
-                                                                                    </>
-                                                                                ) : ""}
                                                                             </>
                                                                         )
                                                                         :
                                                                         ("")
                                                                 }
-                                                            </View>
+                                                                <View style={styles.additionalComments}>
+                                                                    {
+                                                                        obj.showCommentBox == "1" ?
+                                                                            (
+                                                                                <>
+                                                                                    <View>
+                                                                                        <Text style={styles.additionalCommentsLabel}>Additional Comments</Text>
+                                                                                        <TextInput
+                                                                                            style={styles.textAreaAdditionalComments}
+                                                                                            placeholder=""
+                                                                                            multiline={true}
+                                                                                            //numberOfLines={1}  // Adjust the number of lines as needed
+                                                                                            //scrollEnabled={false} // Fixes KeyboardAvoidingView behavior
+                                                                                            scrollEnabled={Platform.OS === 'ios' ? isKeyboardVisible : false}
+                                                                                            value={obj.comments}
+                                                                                            onChangeText={(text) => handleSelectedCommentChanges(text, index)}
+                                                                                            editable={!(selectedDocadmintype === 1
+                                                                                                ||
+                                                                                                selectedDocStatus === "Completed")}
+                                                                                        />
+                                                                                    </View>
+                                                                                    {obj.isCommentBoxRequired == "1" && selectedDocadmintype === 2 ? (
+                                                                                        <>
+                                                                                            {showErrorMessage &&
+                                                                                                (obj?.comments == "" ||
+                                                                                                    obj?.comments == null ||
+                                                                                                    obj?.comments == undefined) ? (
+                                                                                                <View>
+                                                                                                    <Text style={styles.errorMsg}>Please enter comments</Text>
+                                                                                                </View>
+                                                                                            ) : (
+                                                                                                ""
+                                                                                            )}
+                                                                                        </>
+                                                                                    ) : ""}
+                                                                                    {selectedDocadmintype == 3 ? (
+                                                                                        <>
+                                                                                            {showErrorMessage &&
+                                                                                                (obj?.comments == "" ||
+                                                                                                    obj?.comments == null ||
+                                                                                                    obj?.comments == undefined) ? (
+                                                                                                <View>
+                                                                                                    <Text style={styles.errorMsg}>Please enter comments</Text>
+                                                                                                </View>
+                                                                                            ) : (
+                                                                                                ""
+                                                                                            )}
+                                                                                        </>
+                                                                                    ) : ""}
+                                                                                </>
+                                                                            )
+                                                                            :
+                                                                            ("")
+                                                                    }
+                                                                </View>
 
 
-                                                        </>
+                                                            </>
 
-                                                    }
+                                                        }
 
 
-                                                </View>
-                                            )
-                                        })
-                                    }
-                                </View>
-                            </ScrollView>
+                                                    </View>
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                </ScrollView>
+                            </View>
                         </View>
                     </View>
-                </View>
+                </ScrollView>
                 {/* style={styles.actionRowBoxs} */}
                 {/* Fixed Submit Button */}
                 <View style={styles.footer}>
@@ -486,21 +491,22 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#E6F6F3',
+        backgroundColor: '#dff7f8',
         paddingTop: Platform.OS === 'ios' ? -40 : -20,
         //backgroundColor:'red'
     },
     container: {
         flex: 1,
         marginTop: 0,
-        // backgroundColor:'red',
+        backgroundColor:'#dff7f8',
         padding: 0,
+        // backgroundColor: '#E6F6F3',
     },
     content: {
         flex: 1,
         justifyContent: 'flex-start',
         paddingHorizontal: 0,
-        backgroundColor: '#dff7f8',
+       // backgroundColor: 'red',
     },
     input: {
         borderWidth: 1,
@@ -809,6 +815,9 @@ const styles = StyleSheet.create({
         marginTop: 0,
         marginLeft: 10,
 
+    },
+    scrollViewContent:{
+       backgroundColor: 'transparent',
     }
 
 });

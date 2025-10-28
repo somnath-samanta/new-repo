@@ -8,7 +8,7 @@ import {
     Alert,
     BackHandler,
     Dimensions,
-    SafeAreaView
+    KeyboardAvoidingView
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Feather from 'react-native-vector-icons/Feather';
@@ -27,7 +27,7 @@ import EventEmitter from '../../../Contexts/EventEmitter';
 import { useNavigation } from '@react-navigation/native';
 import { setToken, setUserDetails } from '../Actions/LoginAction';
 import { loginGetApi } from '../Controller/LoginController';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 // ✅ For responsive scaling
 import {
     responsiveHeight,
@@ -204,97 +204,97 @@ function LoginScreen(props) {
         webViewFlagForForgotPassword
     ) {
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-                <WebView
-                    source={webViewSourceUrl}
-                    mediaPlaybackRequiresUserAction={false}
-                    allowsInlineMediaPlayback
-                    javaScriptEnabled
-                    domStorageEnabled
-                    onMessage={handleMessageReciveFromWebsite}
-                />
-            </SafeAreaView>
+
+            <WebView
+                source={webViewSourceUrl}
+                mediaPlaybackRequiresUserAction={false}
+                allowsInlineMediaPlayback
+                javaScriptEnabled
+                domStorageEnabled
+                onMessage={handleMessageReciveFromWebsite}
+            />
+
         );
     }
 
     // ✅ Main login layout
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.white }}>
-            <KeyboardAwareScrollView
-                style={LoginStyle.container}
-                keyboardShouldPersistTaps="handled"
-            >
-                <Loader loading={loading} />
-                <View style={LoginStyle.logincontainer}>
-                    <Image
-                        source={require('../../../Utility/Public/images/oaktreeLogo.png')}
-                        style={[LoginStyle.oaktreeLogo]}
-                    />
-                    <View style={LoginStyle.loginBox}>
-                        <Text style={LoginStyle.loginTxt}>Login</Text>
-                        <View style={LoginStyle.inputContainerBoxes}>
-                            <View style={LoginStyle.inputContainer}>
-                                <TextInput
-                                    style={LoginStyle.input}
-                                    placeholder="Username"
-                                    placeholderTextColor={Colors.gray99}
-                                    value={email}
-                                    onChangeText={(text) => { setEmail(text); setEmailError("") }}
-                                    returnKeyLabel='Done'
-                                    returnKeyType='done'
-                                    //onSubmitEditing={() => { loginSubmit() }}
-                                    autoCapitalize="none"
-                                />
-                                {emailError != "" ? <Text style={LoginStyle.errorMsg}>{emailError}</Text> : null}
-                            </View>
-                            <View style={LoginStyle.inputContainer}>
-                                <TextInput
-                                    style={[LoginStyle.input, { flex: 1 }]}
-                                    placeholder="Password"
-                                    placeholderTextColor={Colors.gray99}
-                                    secureTextEntry={!isPasswordVisible}
-                                    value={password}
-                                    onChangeText={(text) => { setPassword(text); setPasswordError(""); }}
-                                    returnKeyLabel='Done'
-                                    returnKeyType='done'
+
+        <KeyboardAvoidingView
+            style={LoginStyle.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+            <Loader loading={loading} />
+            <View style={LoginStyle.logincontainer}>
+                <Image
+                    source={require('../../../Utility/Public/images/oaktreeLogo.png')}
+                    style={[LoginStyle.oaktreeLogo]}
+                />
+                <View style={LoginStyle.loginBox}>
+                    <Text style={LoginStyle.loginTxt}>Login</Text>
+                    <View style={LoginStyle.inputContainerBoxes}>
+                        <View style={LoginStyle.inputContainer}>
+                            <TextInput
+                                style={LoginStyle.input}
+                                placeholder="Username"
+                                placeholderTextColor={Colors.gray99}
+                                value={email}
+                                onChangeText={(text) => { setEmail(text); setEmailError("") }}
+                                returnKeyLabel='Done'
+                                returnKeyType='done'
                                 //onSubmitEditing={() => { loginSubmit() }}
+                                autoCapitalize="none"
+                            />
+                            {emailError != "" ? <Text style={LoginStyle.errorMsg}>{emailError}</Text> : null}
+                        </View>
+                        <View style={LoginStyle.inputContainer}>
+                            <TextInput
+                                style={[LoginStyle.input, { flex: 1 }]}
+                                placeholder="Password"
+                                placeholderTextColor={Colors.gray99}
+                                secureTextEntry={!isPasswordVisible}
+                                value={password}
+                                onChangeText={(text) => { setPassword(text); setPasswordError(""); }}
+                                returnKeyLabel='Done'
+                                returnKeyType='done'
+                            //onSubmitEditing={() => { loginSubmit() }}
+                            />
+                            <TouchableOpacity onPress={togglePasswordVisibility}>
+                                <Feather
+                                    name={isPasswordVisible ? 'eye' : 'eye-off'}
+                                    size={22}
+                                    color={Colors.secondary}
                                 />
-                                <TouchableOpacity onPress={togglePasswordVisibility}>
-                                    <Feather
-                                        name={isPasswordVisible ? 'eye' : 'eye-off'}
-                                        size={22}
-                                        color={Colors.secondary}
-                                    />
-                                </TouchableOpacity>
-                                {passwordError != "" ? <Text style={LoginStyle.errorMsg}>{passwordError}</Text> : null}
-                            </View>
-                        </View>
-                        {/* Forgot password */}
-                        <View style={LoginStyle.forgetYourPasswordBox}>
-                            <TouchableOpacity style={LoginStyle.ForgetYourPassword} onPress={ForgetYourPassword}>
-                                <Text style={LoginStyle.ForgetYourPasswordText}>Forgot your password ?</Text>
                             </TouchableOpacity>
-                        </View>
-
-                        <View style={LoginStyle.loginBtnInner}>
-                            <TouchableOpacity style={LoginStyle.loginButton} onPress={loginSubmit}>
-                                <Text style={LoginStyle.loginButtonText}>Log In</Text>
-                            </TouchableOpacity>
-
-                        </View>
-                        <View style={LoginStyle.signUpRow}>
-                            <Text style={LoginStyle.signUpText}>
-                                Don't have an account ?{' '}
-                                <Text style={LoginStyle.signUpLink} onPress={gotoSignUpPage}>
-                                    Sign up
-                                </Text>
-                            </Text>
-                            {/* <View style={LoginStyle.signUpUnderline}></View> */}
+                            {passwordError != "" ? <Text style={LoginStyle.errorMsg}>{passwordError}</Text> : null}
                         </View>
                     </View>
+                    {/* Forgot password */}
+                    <View style={LoginStyle.forgetYourPasswordBox}>
+                        <TouchableOpacity style={LoginStyle.ForgetYourPassword} onPress={ForgetYourPassword}>
+                            <Text style={LoginStyle.ForgetYourPasswordText}>Forgot your password ?</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={LoginStyle.loginBtnInner}>
+                        <TouchableOpacity style={LoginStyle.loginButton} onPress={loginSubmit}>
+                            <Text style={LoginStyle.loginButtonText}>Log In</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                    <View style={LoginStyle.signUpRow}>
+                        <Text style={LoginStyle.signUpText}>
+                            Don't have an account ?{' '}
+                            <Text style={LoginStyle.signUpLink} onPress={gotoSignUpPage}>
+                                Sign up
+                            </Text>
+                        </Text>
+                        {/* <View style={LoginStyle.signUpUnderline}></View> */}
+                    </View>
                 </View>
-            </KeyboardAwareScrollView>
-        </SafeAreaView>
+            </View>
+        </KeyboardAvoidingView>
+
     );
 }
 

@@ -24,7 +24,7 @@ import {
     Image,
     Alert,
     ActivityIndicator,
-    Share
+    Share,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -359,14 +359,14 @@ function MyDocument({ props }) {
     const downloadPDFForIOS = (pdfUrl) => {
         console.log('=== iOS Download/View ===');
         console.log('URL:', pdfUrl);
-        
+
         // Simply open the URL in WebView modal - no download needed
         // WebView will handle the rendering
         setLoading(false);
         setWebViewLoading(true); // Show loading indicator
         setFileUri(pdfUrl);
         setModalVisible(true);
-        
+
         console.log('Opening document in WebView modal');
     };
 
@@ -434,7 +434,7 @@ function MyDocument({ props }) {
 
             const extension = await getFileExtension(fileUrl);
             const fileName = `document_${new Date().getTime()}.${extension}`;
-            const filePath = Platform.OS === 'ios' 
+            const filePath = Platform.OS === 'ios'
                 ? `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`
                 : `${ReactNativeBlobUtil.fs.dirs.DownloadDir}/${fileName}`;
 
@@ -657,40 +657,40 @@ function MyDocument({ props }) {
                 headerTitle='View Document'
                 body={
                     <View style={[styles.modalImageViewContainer]}>
-                        <View style={[styles.modalContent, styles.pdfmodalContent]}>
-                        {errorFlag ?
-                            <View style={styles.noImageContainer}>
-                                <Text style={styles.messageTxt}>Image not found or cannot be loaded.</Text>
-                            </View>
-                            :
-                            <>
-                            {imageLoading && (
-                                <View style={styles.imageLoadingContainer}>
-                                    <ActivityIndicator size="large" color="#24ad91" />
-                                    <Text style={styles.loadingText}>Loading image...</Text>
+                        <View style={[styles.imgmodalContent]}>
+                            {errorFlag ?
+                                <View style={styles.noImageContainer}>
+                                    <Text style={styles.messageTxt}>Document not found or cannot be loaded.</Text>
                                 </View>
-                            )}
-                            <Image
-                                source={{ uri: documentUrl }}
-                                style={styles.imageShowBox}
-                                onLoadStart={() => {
-                                    console.log("Image loading started", new Date().toISOString());
-                                    setImageLoading(true);
-                                }}
-                                onLoadEnd={() => {
-                                    console.log("Image loading completed", new Date().toISOString());
-                                    setTimeout(() => {
-                                        setImageLoading(false);
-                                    }, 100);
-                                }}
-                                resizeMode="contain"
-                                onError={(error) => {
-                                    console.log("Image loading error:", error.nativeEvent.error);
-                                    setErrorFlag(true);
-                                    setImageLoading(false);
-                                }}
-                            />
-                            </>
+                                :
+                                <>
+                                    {imageLoading && (
+                                        <View style={styles.imageLoadingContainer}>
+                                            <ActivityIndicator size="large" color="#24ad91" />
+                                            <Text style={styles.loadingText}>Loading Document...</Text>
+                                        </View>
+                                    )}
+                                    <Image
+                                        source={{ uri: documentUrl }}
+                                        style={styles.imageShowBox}
+                                        onLoadStart={() => {
+                                            console.log("Document loading started", new Date().toISOString());
+                                            setImageLoading(true);
+                                        }}
+                                        onLoadEnd={() => {
+                                            console.log("Document loading completed", new Date().toISOString());
+                                            setTimeout(() => {
+                                                setImageLoading(false);
+                                            }, 100);
+                                        }}
+                                        resizeMode="contain"
+                                        onError={(error) => {
+                                            console.log("Document loading error:", error.nativeEvent.error);
+                                            setErrorFlag(true);
+                                            setImageLoading(false);
+                                        }}
+                                    />
+                                </>
                             }
 
                             <View style={[styles.bottonBoxes]}>
@@ -716,11 +716,14 @@ function MyDocument({ props }) {
                                     </Text>
                                 </TouchableOpacity>
                             </View>
-                    </View>
+                        </View>
                     </View>
                 }
 
             />
+
+
+
 
             {/* {imageShowFlag && documentUrl && documentUrl.trim() !== "" && (
                 <ImageView
@@ -747,8 +750,8 @@ function MyDocument({ props }) {
                 footer={false}
                 body={
                     <>
-                        <View style={[styles.modalContainer, styles.pdfmodalContainer]}>
-                            <View style={[styles.modalContent, styles.pdfmodalContent]}>
+                        <View style={[styles.pdfmodalContainer]}>
+                            <View style={[styles.pdfmodalContent]}>
                                 {fileUri && fileUri != "" &&
                                     <>
                                         <WebView
@@ -787,8 +790,8 @@ function MyDocument({ props }) {
                                 }
                                 {/* Button to close the modal */}
                                 <View style={[styles.bottonBoxes]}>
-                                    <TouchableOpacity 
-                                        style={[styles.bottonBox, styles.closeButtonStyle]} 
+                                    <TouchableOpacity
+                                        style={[styles.bottonBox, styles.closeButtonStyle]}
                                         onPress={() => modalColseWevview()}
                                     >
                                         <Ionicons name="close-circle-outline" size={18} color="#fff" />
@@ -796,7 +799,7 @@ function MyDocument({ props }) {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[
-                                            styles.bottonBox, 
+                                            styles.bottonBox,
                                             styles.downloadButtonStyle,
                                             isDownloading && styles.downloadButtonDisabled
                                         ]}
@@ -851,7 +854,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Montserrat-Bold',
         marginBottom: 10,
-        fontWeight:700
+        fontWeight: 700
     },
     listItem: {
         //backgroundColor: 'red',
@@ -939,7 +942,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 18,
         fontFamily: 'Montserrat-Bold',
-        fontWeight:700
+        fontWeight: 700
     },
     // uploadIcon: {
     //     //marginRight: 8, // Adjust spacing as needed
@@ -952,9 +955,9 @@ const styles = StyleSheet.create({
     allDocumentBox: {
         width: screenWidth,
         paddingHorizontal: 15,
-        display:'flex',
+        display: 'flex',
         //justifyContent:'center',
-        alignItems:'center',
+        alignItems: 'center',
     },
     allDocument: {
         backgroundColor: '#24ad91',
@@ -980,7 +983,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        fontWeight:700
+        fontWeight: 700
 
 
 
@@ -1142,24 +1145,31 @@ const styles = StyleSheet.create({
         borderWidth: 5,
     },
     modalImageViewContainer: {
-        flex: 1,
-
         width: '100%',
         // marginTop: -50,
         justifyContent: 'center',
         alignItems: 'center',
 
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        maxHeight: screenheight - 350,
+        //backgroundColor: 'red',
+        // maxHeight: screenheight - 350,
+        maxHeight: 400
 
         // padding:10,
+    },
+    imgmodalContent: {
+         width: '100%',
+        height: '100%',
+        backgroundColor: 'red',
+        borderRadius: 0,
+        paddingBottom: 0,
+        marginTop: 0
     },
     imageShowBox: {
         // width: 'auto',
         // maxWidth: '100%',
         width: '100%',
         height: '100%',
-        // objectFit: 'cover',
+        objectFit: 'cover',
         resizeMode: 'contain',
 
         // objectFit:'cover',
@@ -1182,15 +1192,16 @@ const styles = StyleSheet.create({
     },
 
     pdfmodalContainer: {
-        flex: 1,
+        width: '100%',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'center',
         alignItems: 'center',
-        maxHeight: screenheight - 300,
+        //maxHeight: screenheight - 300,
+         maxHeight: screenheight - 400
     },
     pdfmodalContent: {
         width: '100%',
-        height: '90%',
+        height: '100%',
         backgroundColor: 'white',
         borderRadius: 0,
         paddingBottom: 0,

@@ -1159,7 +1159,6 @@ const styles = StyleSheet.create({
     imgmodalContent: {
          width: '100%',
         height: '100%',
-        backgroundColor: 'red',
         borderRadius: 0,
         paddingBottom: 0,
         marginTop: 0

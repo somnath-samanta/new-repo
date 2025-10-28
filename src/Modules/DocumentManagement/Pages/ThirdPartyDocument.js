@@ -629,7 +629,7 @@ function ThirdPartyDocument({ props }) {
                 footer={false}
                 body={
                     <View style={styles.modalImageViewContainer}>
-                        <View style={[styles.modalContent, styles.pdfmodalContent]}>
+                        <View style={[styles.imgmodalContent]}>
                         {errorFlag ?
                             <View style={styles.noImageContainer}>
                                 <Text style={styles.messageTxt}>Image not found or cannot be loaded.</Text>
@@ -639,25 +639,25 @@ function ThirdPartyDocument({ props }) {
                             {imageLoading && (
                                 <View style={styles.imageLoadingContainer}>
                                     <ActivityIndicator size="large" color="#24ad91" />
-                                    <Text style={styles.loadingText}>Loading image...</Text>
+                                    <Text style={styles.loadingText}>Loading Document...</Text>
                                 </View>
                             )}
                             <Image
                                 source={{ uri: documentUrl }}
                                 style={styles.imageShowBox}
                                 onLoadStart={() => {
-                                    console.log("Image loading started", new Date().toISOString());
+                                    console.log("Document loading started", new Date().toISOString());
                                     setImageLoading(true);
                                 }}
                                 onLoadEnd={() => {
-                                    console.log("Image loading completed", new Date().toISOString());
+                                    console.log("Document loading completed", new Date().toISOString());
                                     setTimeout(() => {
                                         setImageLoading(false);
                                     }, 100);
                                 }}
                                 resizeMode="contain"
                                 onError={(error) => {
-                                    console.log("Image loading error:", error.nativeEvent.error);
+                                    console.log("Document loading error:", error.nativeEvent.error);
                                     setErrorFlag(true);
                                     setImageLoading(false);
                                 }}
@@ -703,8 +703,8 @@ function ThirdPartyDocument({ props }) {
                 footer={false}
                 body={
                     <>
-                        <View style={[styles.modalContainer, styles.pdfmodalContainer]}>
-                            <View style={[styles.modalContent, styles.pdfmodalContent]}>
+                        <View style={[styles.pdfmodalContainer]}>
+                            <View style={[styles.pdfmodalContent]}>
                                 {fileUri && fileUri != "" &&
                                     <>
                                         <WebView
@@ -1164,38 +1164,49 @@ const styles = StyleSheet.create({
         color: '#000',
     },
     modalImageViewContainer: {
-        flex: 1,
-
-        width: '100%',
+       width: '100%',
         // marginTop: -50,
         justifyContent: 'center',
         alignItems: 'center',
 
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        maxHeight: screenheight - 350,
+        //backgroundColor: 'red',
+        // maxHeight: screenheight - 350,
+        maxHeight: 400
 
         // padding:10,
     },
+     imgmodalContent: {
+         width: '100%',
+        height: '100%',
+        borderRadius: 0,
+        paddingBottom: 0,
+        marginTop: 0
+    },
     imageShowBox: {
+        // width: 'auto',
+        // maxWidth: '100%',
         width: '100%',
         height: '100%',
+        objectFit: 'cover',
         resizeMode: 'contain',
+
+        // objectFit:'cover',
     },
 
     pdfmodalContainer: {
-        flex: 1,
+           width: '100%',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'center',
         alignItems: 'center',
-        maxHeight: screenheight - 300,
+        //maxHeight: screenheight - 300,
+         maxHeight: screenheight - 400
     },
     pdfmodalContent: {
         width: '100%',
-        height: '90%',
+        height: '100%',
         backgroundColor: 'white',
         borderRadius: 0,
         paddingBottom: 0,
-
 
     },
     webview: {

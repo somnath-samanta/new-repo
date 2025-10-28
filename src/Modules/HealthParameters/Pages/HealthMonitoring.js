@@ -115,10 +115,12 @@ export default function HealthMonitoring() {
     if (isManual) setRefreshing(true); else setPageLoading(true);
     try {
       const res = await getPatientHealthProfile({ id: userId });
-      const vitalsList = res?.Patient?.healthProfile?.vitals || [];
+      const vitalsList = res?.Patient?.healthProfile?.vitals || [];     
+
+      let lastRecordIndex = vitalsList.length - 1;
       // Set the last record month as active month
-      setActiveMonth(vitalsList[0]?.effectiveDateTime ? new Date(vitalsList[0].effectiveDateTime).getMonth() + 1 : new Date().getMonth());
-      setActiveYear(vitalsList[0]?.effectiveDateTime ? new Date(vitalsList[0].effectiveDateTime).getFullYear() : currentYear);
+      setActiveMonth(vitalsList[lastRecordIndex]?.effectiveDateTime ? new Date(vitalsList[lastRecordIndex].effectiveDateTime).getMonth() : new Date().getMonth());
+      setActiveYear(vitalsList[lastRecordIndex]?.effectiveDateTime ? new Date(vitalsList[lastRecordIndex].effectiveDateTime).getFullYear() : currentYear);
       setVitals(vitalsList);
       hasFetchedVitalsRef.current = true;
     } catch (e) {

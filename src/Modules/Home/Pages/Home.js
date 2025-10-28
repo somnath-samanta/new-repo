@@ -23,11 +23,14 @@ import {
 } from 'react-native';
 const screenWidth = screen.width;
 const screenheight = screen.height;
-const welcomeLogoheight = screenheight * (Platform.OS == 'ios' ? 0.09 : 0.15);
+const welcomeLogoheight = screenheight * (Platform.OS == 'ios' ? 0.09 : 0.10);
 const welcomeMSGheight = screenheight * 0.1;
 const bookAppointmentheight = screenheight * 0.15;
 const viewbuttonheight = screenheight * 0.20;
 const mydocumentheight = screenheight * (Platform.OS == 'ios' ? 0.22 : 0.26);
+
+
+
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from '../../../Utility/Components/Loader';
 import Config from '../../../Utility/Config';
@@ -249,8 +252,9 @@ function Home({ props }) {
                                     <Text style={styles.topPanelTaxt}>Welcome to Oaktree Connect</Text>
                                 </View>
 
-                                <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-                                    <TouchableOpacity style={[styles.panelBox, styles.panelBoxDocument]} onPress={appointmentLink}>
+                                {/* <ScrollView contentContainerStyle={{ paddingBottom: 40 }}> */}
+                                <View style={styles.section}>
+                                    <TouchableOpacity style={styles.panelBoxDocument} onPress={appointmentLink}>
                                         <View style={styles.innerPanelBoxDocument}>
                                             <Image
                                                 source={require('../../../Utility/Public/images/clock.png')}
@@ -266,48 +270,48 @@ function Home({ props }) {
                                                 View & Start Appointment</Text>
                                         </View>
                                     </TouchableOpacity>
+                                </View>
+                                <View style={styles.middlePanelBoxes}>
+                                    <TouchableOpacity style={styles.middlePanelBox} onPress={thirdPartyDocumentLink}>
+                                        <Image
+                                            source={require('../../../Utility/Public/images/icon1.png')}
+                                            style={[styles.calenderImage, styles.appointmentsIcon]}
+                                        />
+                                        <Text style={styles.panelBoxRightMainTextDown}>View / Upload{'\n'}3rd Party Documents</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.middlePanelBox} onPress={myDocumentLink}>
+                                        <Image
+                                            source={require('../../../Utility/Public/images/icon2.png')}
+                                            style={[styles.calenderImage, styles.appointmentsIcon]}
+                                        />
+                                        <Text style={styles.panelBoxRightMainTextDown}>Upload ID</Text>
+                                    </TouchableOpacity>
+                                </View>
 
-                                    <View style={styles.middlePanelBoxes}>
-                                        <TouchableOpacity style={styles.middlePanelBox} onPress={thirdPartyDocumentLink}>
-                                            <Image
-                                                source={require('../../../Utility/Public/images/icon1.png')}
-                                                style={[styles.calenderImage, styles.appointmentsIcon]}
-                                            />
-                                            <Text style={styles.panelBoxRightMainTextDown}>View / Upload{'\n'}3rd Party Documents</Text>
+                                <View style={styles.middlePanelBoxTherapyTasks}>
+                                    <Text style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
+                                    <View style={styles.myTherapyTasks}>
+                                        <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={healthParameterLink}>
+                                            <View style={styles.roundiconBox}>
+                                                <Image
+                                                    source={require('../Public/images/physicalParametersIcon.png')}
+                                                    style={styles.heartRatingImage}
+                                                />
+                                            </View>
+                                            <Text style={styles.panelBoxRightMainTextDown}>View / Add{'\n'}Physical Parameters</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={styles.middlePanelBox} onPress={myDocumentLink}>
-                                            <Image
-                                                source={require('../../../Utility/Public/images/icon2.png')}
-                                                style={[styles.calenderImage, styles.appointmentsIcon]}
-                                            />
-                                            <Text style={styles.panelBoxRightMainTextDown}>Upload ID</Text>
+                                        <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={questionnaireLink}>
+                                            <View style={styles.roundiconBox}>
+                                                <Image
+                                                    source={require('../Public/images/questionnairesIcon.png')}
+                                                    style={styles.calenderImage}
+                                                />
+                                            </View>
+                                            <Text style={styles.panelBoxRightMainTextDown}> View / Complete{'\n'}Questionnaires</Text>
                                         </TouchableOpacity>
                                     </View>
-
-                                    <View style={styles.middlePanelBoxRight}>
-                                        <Text style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
-                                        <View style={styles.myTherapyTasks}>
-                                            <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={healthParameterLink}>
-                                                <View style={styles.roundiconBox}>
-                                                    <Image
-                                                        source={require('../Public/images/physicalParametersIcon.png')}
-                                                        style={styles.heartRatingImage}
-                                                    />
-                                                </View>
-                                                <Text style={styles.panelBoxRightMainTextDown}>View / Add{'\n'}Physical Parameters</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={questionnaireLink}>
-                                                <View style={styles.roundiconBox}>
-                                                    <Image
-                                                        source={require('../Public/images/questionnairesIcon.png')}
-                                                        style={styles.calenderImage}
-                                                    />
-                                                </View>
-                                                <Text style={styles.panelBoxRightMainTextDown}> View / Complete{'\n'}Questionnaires</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </ScrollView>
+                                </View>
+                                {/* </ScrollView> */}
                             </View>
                         </>
                 }
@@ -336,6 +340,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 25,
         paddingVertical: 0,
         paddingTop: welcomeLogoheight,
+        display: 'flex',
+        flexDirection: 'column',
     },
     loadingCss: {
         display: 'flex',
@@ -343,7 +349,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         left: 0,
-        top: 0
+        top: 0,
+       
     },
     oaktreeLogo: {
         height: 110,
@@ -352,6 +359,7 @@ const styles = StyleSheet.create({
         left: -20,
         top: -10,
         objectFit: 'contain',
+        
     },
     signout: {
         height: 40,
@@ -362,37 +370,27 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 9
-        //backgroundColor:'red',
+        zIndex: 9,
+
     },
     signoutimg: {
         height: 40,
         width: 40,
         objectFit: 'contain',
     },
-    // panel: {
-    //     width: screenWidth,
-    //     height: screenheight,
-    //     paddingHorizontal: 25,
-    //     paddingVertical: 0,
-    //     paddingTop: welcomeLogoheight,
-    //     // backgroundColor:'blue'
-
-
-    // },
     topPanelTaxtBox: {
         margin: 0,
         padding: 0,
         width: "100%",
         textAlign: 'center',
-        //backgroundColor:"red",
         //height: welcomeMSGheight,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         //paddingVertical:10,
-        paddingTop: Platform.OS == 'ios' ? 20 : 0,
-        paddingBottom: Platform.OS == 'ios' ? 15 : 10,
+        paddingTop: Platform.OS == 'ios' ? 20 : 15,
+        paddingBottom: Platform.OS == 'ios' ? 15 : 15,
+        margin:0,
     },
     topPanelTaxt: {
         fontSize: 19,
@@ -400,38 +398,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Medium',
         width: "100%",
         textAlign: 'center',
-    },
-    panelBox: {
-        backgroundColor: '#fff',
-        padding: 0,
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        flexDirection: 'row',
-        borderWidth: 1,
-        borderColor: '#f3f3f3',
-        borderRadius: 0,
-        marginVertical: 10,
-    },
-    panelBoxDocument: {
-        flexDirection: 'column',
-        padding: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
-        borderWidth: 1,
-        borderColor: '#219980',
-        borderRadius: 0,
-        height: mydocumentheight,
-        justifyContent: 'center',
-        // backgroundColor:'red',
-        backgroundColor: '#219980',
-        borderRadius: 10,
-        shadowColor: Platform.OS == 'ios' ? '#666' : '#000',
-        shadowOffset: { width: Platform.OS == 'ios' ? .8 : 1 },
-        shadowOpacity: Platform.OS == 'ios' ? 0.3 : 0.5,
-        shadowRadius: 5,
-        elevation: Platform.OS == 'ios' ? 3 : 5,
-        textAlign: 'center'
     },
     innerPanelBoxDocument: {
         backgroundColor: '#def6f7',
@@ -492,7 +458,7 @@ const styles = StyleSheet.create({
         width: "100%",
         lineHeight: 16,
         marginTop: 15,
-        fontWeight:'700'
+        fontWeight: '700'
     },
     panelBoxRightMainTextDownSec: {
         marginTop: 0,
@@ -517,16 +483,17 @@ const styles = StyleSheet.create({
         color: '#000',
         lineHeight: 16,
         fontFamily: 'Arimo-Bold',
-        fontWeight:'700'
+        fontWeight: '700'
     },
     middlePanelBoxes: {
         width: screenWidth - 50,
         padding: 0,
-        //backgroundColor: 'blue',
+       // backgroundColor: 'blue',
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop:20,
 
     },
     middlePanelBox: {
@@ -550,7 +517,7 @@ const styles = StyleSheet.create({
         borderColor: '#3d3f3f',
         borderWidth: 1,
     },
-    middlePanelBoxRight: {
+    middlePanelBoxTherapyTasks: {
         backgroundColor: '#007b80',
         padding: 6,
         borderRadius: 10,
@@ -561,7 +528,7 @@ const styles = StyleSheet.create({
         elevation: Platform.OS == 'ios' ? 3 : 5,
         borderColor: '#007b80',
         borderWidth: 2,
-        marginTop: 10,
+        marginTop: 20,
     },
     myTherapyTasks: {
         display: 'flex',
@@ -622,7 +589,30 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 5,
         marginBottom: 8,
-        fontWeight:'700'
-    }
+        fontWeight: '700'
+    },
+    section: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#219980',
+        padding: 30,
+        borderRadius: 10,
+        shadowColor: Platform.OS == 'ios' ? '#666' : '#000',
+        shadowOffset: { width: Platform.OS == 'ios' ? .8 : 1 },
+        shadowOpacity: Platform.OS == 'ios' ? 0.3 : 0.5,
+        shadowRadius: 5,
+        elevation: Platform.OS == 'ios' ? 3 : 5,
+        textAlign: 'center',
+        margin: 0,
+    },
+    panelBoxDocument: {
+        flexDirection: 'column',
+        padding: 0,
+        borderRadius: 0,
+        justifyContent: 'center',
+        width: '100%',
+        textAlign: 'center',
+    },
+
 });
 

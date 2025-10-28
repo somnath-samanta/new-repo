@@ -652,38 +652,69 @@ function MyDocument({ props }) {
                 onCancel={() => setImageShowFlag(false)}
                 footer={false}
                 header={true}
-                headerTitle=''
+                headerTitle='View Document'
                 body={
-                    <View style={styles.modalImageViewContainer}>
-                        {imageLoading && !errorFlag && (
-                            <View style={styles.noImageContainer}>
-                                <ActivityIndicator size="large" color="#24ad91" />
-                                <Text style={styles.messageTxt}>Loading image...</Text>
-                            </View>
-                        )}
+                    <View style={[styles.modalImageViewContainer]}>
+                        <View style={[styles.modalContent, styles.pdfmodalContent]}>
                         {errorFlag ?
                             <View style={styles.noImageContainer}>
                                 <Text style={styles.messageTxt}>Image not found or cannot be loaded.</Text>
                             </View>
                             :
+                            <>
+                            {imageLoading && (
+                                <View style={styles.imageLoadingContainer}>
+                                    <ActivityIndicator size="large" color="#24ad91" />
+                                    <Text style={styles.loadingText}>Loading image...</Text>
+                                </View>
+                            )}
                             <Image
                                 source={{ uri: documentUrl }}
                                 style={styles.imageShowBox}
                                 onLoadStart={() => {
-                                    // console.log("Image loading started")
-                                    setImageLoading(true)
+                                    console.log("Image loading started", new Date().toISOString());
+                                    setImageLoading(true);
                                 }}
                                 onLoadEnd={() => {
-                                    // console.log("Image loading completed")
-                                    setImageLoading(false)
+                                    console.log("Image loading completed", new Date().toISOString());
+                                    setTimeout(() => {
+                                        setImageLoading(false);
+                                    }, 100);
                                 }}
                                 resizeMode="contain"
                                 onError={(error) => {
-                                    console.log("Image loading error:", error.nativeEvent.error)
-                                    setErrorFlag(true)
-                                    setImageLoading(false)
+                                    console.log("Image loading error:", error.nativeEvent.error);
+                                    setErrorFlag(true);
+                                    setImageLoading(false);
                                 }}
-                            />}
+                            />
+                            </>
+                            }
+
+                            <View style={[styles.bottonBoxes]}>
+                                <TouchableOpacity
+                                    style={[styles.bottonBox, styles.closeButtonStyle]}
+                                    onPress={() => setImageShowFlag(false)}
+                                >
+                                    <Ionicons name="close-circle-outline" size={18} color="#fff" />
+                                    <Text style={styles.eyeButtonTxt}>Close</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.bottonBox,
+                                        styles.downloadButtonStyle,
+                                        isDownloading && styles.downloadButtonDisabled
+                                    ]}
+                                    onPress={() => handleDownloadToDevice(documentUrl)}
+                                    disabled={isDownloading}
+                                >
+                                    <Ionicons name="download-outline" size={18} color="#fff" />
+                                    <Text style={styles.eyeButtonTxt}>
+                                        {isDownloading ? 'Downloading...' : 'Download'}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                    </View>
                     </View>
                 }
 
@@ -1113,10 +1144,11 @@ const styles = StyleSheet.create({
 
         width: '100%',
         // marginTop: -50,
-        height: 450,
-        // zIndex: -9,
         justifyContent: 'center',
         alignItems: 'center',
+
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        maxHeight: screenheight - 350,
 
         // padding:10,
     },
@@ -1152,7 +1184,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'center',
         alignItems: 'center',
-        maxHeight: screenheight - 100,
+        maxHeight: screenheight - 300,
     },
     pdfmodalContent: {
         width: '100%',
@@ -1174,6 +1206,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    },
+    imageLoadingContainer: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: [{ translateX: -50 }, { translateY: -50 }],
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 999,
     },
     loadingText: {
         marginTop: 10,
@@ -1208,7 +1249,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f44336',
     },
     downloadButtonStyle: {
-        backgroundColor: '#2196F3',
+        backgroundColor: '#24ad91',
     },
     downloadButtonDisabled: {
         backgroundColor: '#9e9e9e',

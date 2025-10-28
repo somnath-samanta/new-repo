@@ -170,7 +170,7 @@ function ThirdPartyDocument({ props }) {
         };
     }, []);
 
-    const getThirdPartyDocsFn = (type = "", timeline = "", documentType = "") => {
+    const getThirdPartyDocsFn = (type = "", timeline = "", documentType = "Thirdparty") => {
         try {
 
             if (type !== "refresh") {
@@ -179,7 +179,8 @@ function ThirdPartyDocument({ props }) {
             let searchHash = {
                 id: reduxAuthJson.token.loginUserId,
                 fetchingFrom: 'APP',
-                documentType: "Thirdparty"
+                documentType: "Thirdparty",
+                documentFor: "Thirdparty"
             }
 
             if (!["refresh", "reload"].includes(type)) {
@@ -193,10 +194,10 @@ function ThirdPartyDocument({ props }) {
                 let timeLineText = timeline && timeline != "" ? timeline : selectedTimeLine;
                 searchHash.timeline = timeLineText !== "" ? timelineHash[timeLineText] : "";
 
-                searchHash.documentType = documentType && documentType != "" ? documentType : selectedDocumentType;
+                searchHash.documentFor = documentType && documentType != "" ? documentType : '';
             }
 
-            console.log("searchHash-------------------", searchHash);
+            // console.log("searchHash-------------------", searchHash);
 
             getMyDocumentList(searchHash).then(async (response) => {
                 // console.log("response>>>>>>>>>>>>>>>>>", response.PomsPatientDocumentList);

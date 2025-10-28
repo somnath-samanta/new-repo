@@ -132,7 +132,10 @@ export const getMyDocumentList = async (data) => {
         if(data.documentType && data.documentType != ""){
             variables.documentType = data.documentType;
         }
-        console.log("variables", variables);
+        if(data.documentFor && data.documentFor != ""){
+            variables.documentFor = data.documentFor;
+        }
+        // console.log("variables----------------", variables);
         const result = await clientAuth.query({
             query: MY_DOCUMENT_QUERY,
             variables: variables,

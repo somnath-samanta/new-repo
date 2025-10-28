@@ -23,7 +23,8 @@ import {
     StatusBar,
     Image,
     Alert,
-    ActivityIndicator
+    ActivityIndicator,
+    Share
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';

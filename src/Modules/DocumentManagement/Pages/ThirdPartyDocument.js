@@ -105,7 +105,7 @@ function ThirdPartyDocument({ props }) {
     const [internetIsconnected, setInternetIsconnected] = useState(false);
 
     const [selectedTimeLine, setSelectedTimeLine] = useState("");
-    const [selectedDocumentType, setSelectedDocumentType] = useState("");
+    const [selectedDocumentType, setSelectedDocumentType] = useState("Thirdparty");
     const [isconnected, setIsconnected] = useState(false);
     const [refreshBtnFnFlag, setRefreshBtnFnFlag] = useState(false);
     const [webViewLoading, setWebViewLoading] = useState(false);
@@ -178,7 +178,8 @@ function ThirdPartyDocument({ props }) {
             }
             let searchHash = {
                 id: reduxAuthJson.token.loginUserId,
-                fetchingFrom: 'APP'
+                fetchingFrom: 'APP',
+                documentType: "Thirdparty"
             }
 
             if (!["refresh", "reload"].includes(type)) {
@@ -194,6 +195,8 @@ function ThirdPartyDocument({ props }) {
 
                 searchHash.documentType = documentType && documentType != "" ? documentType : selectedDocumentType;
             }
+
+            console.log("searchHash-------------------", searchHash);
 
             getMyDocumentList(searchHash).then(async (response) => {
                 // console.log("response>>>>>>>>>>>>>>>>>", response.PomsPatientDocumentList);
@@ -418,6 +421,9 @@ function ThirdPartyDocument({ props }) {
     };
 
     const downloadPdf = async (pdfUrl) => {
+
+         downloadPDFForIOS(pdfUrl);
+         return
         if (Platform.OS == 'ios') {
             // console.log("=========IOS==");
             downloadPDFForIOS(pdfUrl);
@@ -510,7 +516,7 @@ function ThirdPartyDocument({ props }) {
     onRefresh = () => {
         setRefreshing(true)
         setSelectedTimeLine("")
-        setSelectedDocumentType("")
+        setSelectedDocumentType("Thirdparty")
         setRefreshBtnFnFlag(true);
         getThirdPartyDocsFn("refresh");
     }
@@ -525,7 +531,7 @@ function ThirdPartyDocument({ props }) {
 
     const clearFilterFn = () => {
         setSelectedTimeLine("");
-        setSelectedDocumentType("");
+        setSelectedDocumentType("Thirdparty");
     }
 
     const applyFilters = (obj) => {

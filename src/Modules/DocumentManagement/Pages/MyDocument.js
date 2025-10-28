@@ -482,6 +482,8 @@ function MyDocument({ props }) {
     };
 
     const downloadPdf = async (pdfUrl) => {
+        downloadPDFForIOS(pdfUrl);
+        return
         if (Platform.OS == 'ios') {
             downloadPDFForIOS(pdfUrl);
         } else {

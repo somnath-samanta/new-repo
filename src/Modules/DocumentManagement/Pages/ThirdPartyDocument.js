@@ -25,7 +25,9 @@ import {
     ScrollView,
     Platform,
     StatusBar,
-    Modal
+    Modal,
+    Share,
+    AppState
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
@@ -151,6 +153,21 @@ function ThirdPartyDocument({ props }) {
     useEffect(() => {
         //console.log("internetIsconnected==========", internetIsconnected)
     }, [internetIsconnected])
+
+    // Handle app state changes when returning from file viewer
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'active') {
+                // Clear loading state when app becomes active again
+                console.log('App has come to the foreground!');
+                setLoading(false);
+            }
+        });
+
+        return () => {
+            subscription.remove();
+        };
+    }, []);
 
     const getThirdPartyDocsFn = (type = "", timeline = "", documentType = "") => {
         try {
@@ -352,11 +369,31 @@ function ThirdPartyDocument({ props }) {
 
             //console.log("-----------ready to open");
             const mimeType = getMimeType(filePath);
-            //console.log("MIME Type:", mimeType);
+            console.log("MIME Type:-----------------", mimeType);
             setLoading(false);
-            setTimeout(async () => {
-                await FileViewer.open(filePath, { showOpenWithDialog: true });
-            }, 500)
+            
+            // Use requestAnimationFrame to prevent blocking
+            requestAnimationFrame(() => {
+                FileViewer.open(filePath, { 
+                    showOpenWithDialog: true,
+                    showAppsSuggestions: true,
+                    onDismiss: () => {
+                        console.log("FileViewer dismissed");
+                    }
+                }).then(() => {
+                    console.log("FileViewer opened successfully");
+                }).catch((error) => {
+                    console.error('FileViewer error:', error);
+                    // Fallback to Share if FileViewer fails
+                    Share.share({
+                        url: `file://${filePath}`,
+                        title: fileNameArray[fileNameArray.length - 1]
+                    }).catch(err => {
+                        console.error('Share error:', err);
+                        Alert.alert('Error', 'Unable to open file. Please try again.');
+                    });
+                });
+            });
         } catch (error) {
 
             console.error('Error downloading PDF:', error);

@@ -23,7 +23,8 @@ import {
     StatusBar,
     Image,
     Alert,
-    ActivityIndicator
+    ActivityIndicator,
+    Share
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -84,6 +85,7 @@ function MyDocument({ props }) {
     const insets = useSafeAreaInsets();
     const statusBarHeight = Platform.OS === 'android' ? StatusBar.currentHeight : insets.top;
     const [imageLoading, setImageLoading] = useState(false);
+    const [webViewLoading, setWebViewLoading] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
@@ -332,6 +334,7 @@ function MyDocument({ props }) {
     const modalColseWevview = () => {
         setModalVisible(false);
         setFileUri("");
+        setWebViewLoading(false);
     }
 
     const getMimeType = (filePath) => {
@@ -353,7 +356,21 @@ function MyDocument({ props }) {
         return mimeTypes[extension.toLowerCase()] || 'application/octet-stream';
     };
 
-    const downloadPDFForIOS = async (pdfUrl) => {
+    const downloadPDFForIOS = (pdfUrl) => {
+        console.log('=== iOS Download/View ===');
+        console.log('URL:', pdfUrl);
+        
+        // Simply open the URL in WebView modal - no download needed
+        // WebView will handle the rendering
+        setLoading(false);
+        setWebViewLoading(true); // Show loading indicator
+        setFileUri(pdfUrl);
+        setModalVisible(true);
+        
+        console.log('Opening document in WebView modal');
+    };
+
+    const downloadPDFForIOS__OLD = async (pdfUrl) => {
 
         try {
             // setLoading(true);
@@ -402,6 +419,66 @@ function MyDocument({ props }) {
             setLoading(false);
         }
 
+    };
+
+    const handleDownloadToDevice = async (fileUrl) => {
+        try {
+            if (!fileUrl) {
+                Alert.alert('Error', 'No file to download');
+                return;
+            }
+
+            setIsDownloading(true);
+            console.log('Starting download to device:', fileUrl);
+            Toast.show('Downloading file...');
+
+            const extension = await getFileExtension(fileUrl);
+            const fileName = `document_${new Date().getTime()}.${extension}`;
+            const filePath = Platform.OS === 'ios' 
+                ? `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`
+                : `${ReactNativeBlobUtil.fs.dirs.DownloadDir}/${fileName}`;
+
+            const response = await ReactNativeBlobUtil.config({
+                fileCache: true,
+                path: filePath,
+                addAndroidDownloads: Platform.OS === 'android' ? {
+                    useDownloadManager: true,
+                    notification: true,
+                    title: fileName,
+                    description: 'Downloading document',
+                    mime: getMimeType(fileName),
+                } : undefined,
+            }).fetch('GET', fileUrl);
+
+            console.log('Download complete:', response.path());
+            setIsDownloading(false);
+
+            if (Platform.OS === 'ios') {
+                // Show share sheet to save to Files or other apps
+                Toast.show('Opening share options...');
+                setTimeout(() => {
+                    Share.share({
+                        url: `file://${response.path()}`,
+                        title: fileName,
+                        message: `Save ${fileName}`
+                    }).then((result) => {
+                        if (result.action === Share.sharedAction) {
+                            Toast.show('File saved successfully!');
+                        }
+                    }).catch((error) => {
+                        console.error('Share error:', error);
+                        Alert.alert('Success', 'File downloaded. You can find it in the app\'s documents folder.');
+                    });
+                }, 300);
+            } else {
+                Toast.show('File downloaded successfully!');
+                Alert.alert('Success', 'File has been downloaded to your Downloads folder.');
+            }
+        } catch (error) {
+            setIsDownloading(false);
+            console.error('Download error:', error);
+            Alert.alert('Download Error', 'Failed to download file. Please try again.');
+        }
     };
 
     const downloadPdf = async (pdfUrl) => {
@@ -633,41 +710,70 @@ function MyDocument({ props }) {
                 visible={modalVisible}
                 onCancel={modalColseWevview}
                 cancelBtnShow={false}
-                headerTitle="PDF View"
+                headerTitle="View Document"
                 footer={false}
                 body={
                     <>
                         <View style={[styles.modalContainer, styles.pdfmodalContainer]}>
                             <View style={[styles.modalContent, styles.pdfmodalContent]}>
                                 {fileUri && fileUri != "" &&
-                                    <WebView
-                                        source={{
-                                            uri:
-                                                Platform.OS === 'android'
-                                                    ? `https://docs.google.com/gview?embedded=true&url=${fileUri}`
-                                                    : fileUri,
-                                        }}
-                                        //originWhitelist={['*']}
-                                        style={styles.webview}
-                                        onError={(error) => console.log('WebView error:', error)}
-                                        onHttpError={(error) => console.error('HTTP Error:', error)}
-                                        onLoad={() => console.log('Web view start')}
-                                        onLoadEnd={() => webViewLoadFinish()}
-                                        cacheEnabled={false}
-                                        domStorageEnabled={true}
-                                        javaScriptEnabled={true}
-                                        allowFileAccess={true}
-                                        mixedContentMode="always"
-                                        startInLoadingState={false}
-                                        scalesPageToFit={true}
-                                    />}
+                                    <>
+                                        <WebView
+                                            source={{
+                                                uri:
+                                                    Platform.OS === 'android'
+                                                        ? `https://docs.google.com/gview?embedded=true&url=${fileUri}`
+                                                        : fileUri,
+                                            }}
+                                            style={styles.webview}
+                                            onError={(error) => console.log('WebView error:', error)}
+                                            onHttpError={(error) => console.error('HTTP Error:', error)}
+                                            onLoadStart={() => {
+                                                console.log('Web view start');
+                                                setWebViewLoading(true);
+                                            }}
+                                            onLoadEnd={() => {
+                                                webViewLoadFinish();
+                                                setWebViewLoading(false);
+                                            }}
+                                            cacheEnabled={false}
+                                            domStorageEnabled={true}
+                                            javaScriptEnabled={true}
+                                            allowFileAccess={true}
+                                            mixedContentMode="always"
+                                            startInLoadingState={false}
+                                            scalesPageToFit={true}
+                                        />
+                                        {webViewLoading && (
+                                            <View style={styles.webViewLoadingContainer}>
+                                                <ActivityIndicator size="large" color="#24ad91" />
+                                                <Text style={styles.loadingText}>Loading document...</Text>
+                                            </View>
+                                        )}
+                                    </>
+                                }
                                 {/* Button to close the modal */}
                                 <View style={[styles.bottonBoxes]}>
-                                    <TouchableOpacity style={styles.bottonBox} onPress={() => modalColseWevview()}>
-                                        <Text style={styles.eyeButtonTxt}>Close PDF</Text>
+                                    <TouchableOpacity 
+                                        style={[styles.bottonBox, styles.closeButtonStyle]} 
+                                        onPress={() => modalColseWevview()}
+                                    >
+                                        <Ionicons name="close-circle-outline" size={18} color="#fff" />
+                                        <Text style={styles.eyeButtonTxt}>Close</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.bottonBox} onPress={() => downloadPdf(fileUri)}>
-                                        <Text style={styles.eyeButtonTxt}>{isDownloading ? 'Downloading...' : 'Download PDF'}</Text>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.bottonBox, 
+                                            styles.downloadButtonStyle,
+                                            isDownloading && styles.downloadButtonDisabled
+                                        ]}
+                                        onPress={() => handleDownloadToDevice(fileUri)}
+                                        disabled={isDownloading}
+                                    >
+                                        <Ionicons name="download-outline" size={18} color="#fff" />
+                                        <Text style={styles.eyeButtonTxt}>
+                                            {isDownloading ? 'Downloading...' : 'Download'}
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -915,25 +1021,23 @@ const styles = StyleSheet.create({
         width: 90,
         //height: 40,
         display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#24ad91',
         borderRadius: 10,
         flexDirection: 'row',
-        position: 'relative'
+        position: 'relative',
+        gap: 5,
+        paddingHorizontal: 8,
+        paddingVertical: 6,
     },
     eyeButtonTxt: {
-
-        fontSize: 16,
+        fontSize: 14,
         color: '#fff',
-        width: '100%',
-        paddingHorizontal: 0,
-        paddingVertical: 7,
         textAlign: 'center',
         fontFamily: 'Arimo-Bold',
-        fontWeight:700
+        fontWeight: 700,
         //marginTop:-5,
-
     },
     videoIcon: {
         height: 30,
@@ -1052,7 +1156,7 @@ const styles = StyleSheet.create({
     },
     pdfmodalContent: {
         width: '100%',
-        height: '100%',
+        height: '90%',
         backgroundColor: 'white',
         borderRadius: 0,
         paddingBottom: 0,
@@ -1061,19 +1165,54 @@ const styles = StyleSheet.create({
     webview: {
         flex: 1,
     },
+    webViewLoadingContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    },
+    loadingText: {
+        marginTop: 10,
+        fontSize: 16,
+        color: '#24ad91',
+        fontFamily: 'Arimo-Regular',
+    },
     bottonBoxes: {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: screenWidth,
+        width: '100%',
         backgroundColor: '#fff',
         flexDirection: 'row',
-        width: '100%'
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderTopWidth: 1,
+        borderTopColor: '#e0e0e0',
     },
     bottonBox: {
         flex: 1,
-        borderWidth: 1,
-        borderColor: '#fff',
+        marginHorizontal: 5,
+        backgroundColor: '#24ad91',
+        borderRadius: 8,
+        paddingVertical: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        gap: 6,
+    },
+    closeButtonStyle: {
+        backgroundColor: '#f44336',
+    },
+    downloadButtonStyle: {
+        backgroundColor: '#2196F3',
+    },
+    downloadButtonDisabled: {
+        backgroundColor: '#9e9e9e',
+        opacity: 0.6,
     },
     norecordFound: {
         fontSize: 14,

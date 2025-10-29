@@ -1168,6 +1168,7 @@ function AppointmentScreen(props) {
 
                             <GlobalModal
                                 visible={cancellationAppointmentFlag}
+                                animationType="fade"
                                 onCancel={hideCancellationPopup}
                                 cancelBtnShow={false}
                                 saveBtnLabel="Submit"

@@ -65,7 +65,7 @@ function MyDocument({ props }) {
     const dispatch = useDispatch();
     const reduxAuthJson = useSelector((state) => state);
     // console.log("reduxAuthJson", reduxAuthJson);
-    const [appointmentsData, setAppointmentsData] = useState([]);
+    // const [appointmentsData, setAppointmentsData] = useState([]);
     const [appointmentsDataAfterFilter, setAppointmentsDataAfterFilter] = useState([]);
     const [loading, setLoading] = useState(false);
     const [filterFlag, setFilterFlag] = useState(false);
@@ -176,8 +176,25 @@ function MyDocument({ props }) {
             }
 
             getMyDocumentList({ id: reduxAuthJson.token.loginUserId, documentType: 'GovtId' }).then(async (response) => {
-                setAppointmentsDataAfterFilter(response.PomsPatientDocumentList);
-                setAppointmentsData(response.PomsPatientDocumentList);
+
+                let finalDcoumentList = []
+                response.PomsPatientDocumentList?.forEach(element => {
+                    let found = finalDcoumentList?.some(
+                        (el) => el?.documentName === element?.documentName
+                    );
+
+                    if (!found) {
+                        finalDcoumentList.push({
+                            documentName: element?.documentName,
+                            documentUrl: element?.documentUrl,
+                            createdOn: element?.createdOn,
+                            selected: 0
+                        })
+                    }
+                });
+
+                setAppointmentsDataAfterFilter(finalDcoumentList);
+                // setAppointmentsData(response.PomsPatientDocumentList);
                 // setLoading(false);
                 setRefreshing(false);
                 setTimeout(() => {
@@ -310,7 +327,7 @@ function MyDocument({ props }) {
             setFileUploadFlag(false)
         }, 1000);
         setAppointmentsDataAfterFilter([]);
-        setAppointmentsData([]);
+        // setAppointmentsData([]);
         getAppointmentListFn(type)
     }
 

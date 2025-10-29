@@ -438,7 +438,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     const reportedFormattedDate = formatDateToDDMMYYYY(dateOfReport);
     try {
       let submitdataFlag = true;
-      if (useFor === "ThirdPartyDocument" && selectedDocument !== 'Others') {
+      if (useFor === "ThirdPartyDocument" && selectedDocument !== 'Other') {
         if (documentName == "" || documentName == null || documentName == undefined) {
           setdocumentNameError(true)
           Toast.show("Please enter document name");

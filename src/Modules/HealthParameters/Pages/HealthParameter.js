@@ -74,22 +74,6 @@ function HealthParameter() {
             lastUpdate: '22.04.2024, 9.30 am',
             icon: require('../../../Utility/Public/images/healthIcon6.png'),
         },
-        {
-            key: 'pulse1',
-            title: 'Pulse Rate1',
-            value: '-',
-            unit: '',
-            lastUpdate: '22.04.2024, 9.30 am',
-            icon: require('../../../Utility/Public/images/healthIcon5.png'),
-        },
-        {
-            key: 'bp1',
-            title: 'Blood Pressure1',
-            value: '00/00',
-            unit: '',
-            lastUpdate: '22.04.2024, 9.30 am',
-            icon: require('../../../Utility/Public/images/healthIcon6.png'),
-        },
     ]);
 
     // Helpers to transform vitals into metrics

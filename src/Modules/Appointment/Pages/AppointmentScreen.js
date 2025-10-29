@@ -1251,7 +1251,7 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: '#dff7f8',
-        paddingTop: Platform.OS === 'ios' ? -40 : -30,
+        paddingTop: Platform.OS === 'ios' ? -50 : -45,
         //backgroundColor:'red'
     },
     container: {

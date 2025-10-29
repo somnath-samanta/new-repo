@@ -865,10 +865,10 @@ const styles = StyleSheet.create({
 
   },
   documentTypeBoxLeft: {
-    width: '43%',
+    width: '47%',
   },
   documentTypeBoxRight: {
-    width: '57%',
+    width: '52%',
   },
   documentTypeSecPicker: {
     // borderBottomWidth: 1,

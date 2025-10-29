@@ -47,6 +47,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const screen = Dimensions.get("window");
 const screenWidth = screen.width;
@@ -55,7 +57,7 @@ const nextAppointmentBoxheight = screenheight * 0.25;
 const nextAppointmentBoxInnheight = Platform.OS == 'ios' ? screenheight * 0.18 : screenheight * 0.18;
 const filterheight = screenheight * 0.06;
 const flatListHeight = Platform.OS == "ios" ? screenheight * 0.57 : screenheight * 0.60;
-const flatListHeightFull = Platform.OS == "ios" ? screenheight * 0.80 : screenheight * 0.85;
+const flatListHeightFull = Platform.OS == "ios" ? screenheight * 0.80 : screenheight * 0.79;
 
 
 const renderEmptyComponent = () => {
@@ -950,6 +952,7 @@ function AppointmentScreen(props) {
 
     return (
         <>
+        <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
             <CustomHeader pageName={webViewFlag ? "Video Consultation" : webViewFlagForBookFollowUp ? "Book Follow-up" : routeName}
                 refreshBtnFn={refreshBtnFn}
@@ -984,7 +987,7 @@ function AppointmentScreen(props) {
 
                                 <View style={[styles.nextAppointmentBox, styles.nextAppointmentBoxCard]}>
 
-                                    <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
+                                    <TouchableOpacity style={[styles.backbtn, styles.backbtnTopNext]}
                                         onPress={handleGoBack}
                                     >
                                         <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
@@ -1236,6 +1239,7 @@ function AppointmentScreen(props) {
             }
 
         </View >
+        </SafeAreaView>
     </>
 
     );
@@ -1244,7 +1248,12 @@ function AppointmentScreen(props) {
 export default AppointmentScreen;
 
 const styles = StyleSheet.create({
-
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#dff7f8',
+        paddingTop: Platform.OS === 'ios' ? -40 : -30,
+        //backgroundColor:'red'
+    },
     container: {
         flex: 1,
         backgroundColor: '#dff7f8',
@@ -1252,6 +1261,7 @@ const styles = StyleSheet.create({
 
     nextAppointmentBoxMain: {
         paddingHorizontal: 15,
+       // backgroundColor:'pink',
     },
     nextAppointmentBox: {
         // width: screenWidth,
@@ -1263,13 +1273,13 @@ const styles = StyleSheet.create({
         // paddingVertical: 7.5,
     },
     nextAppointmentBoxCard: {
-        //    backgroundColor: 'red',
+        //backgroundColor: 'red',
         //     paddingLeft: 0,
         //     paddingVertical: 0,
         //     // marginBottom: 10,
         //     height: nextAppointmentBoxInnheight,
         // marginTop: 15,
-        paddingTop: 15,
+        paddingTop: 0,
 
     },
     nextAppointmentBoxFlatList: {
@@ -1446,12 +1456,13 @@ const styles = StyleSheet.create({
         // marginBottom:2,
     },
     appointmentScreenViewBoxFull: {
-        //backgroundColor:'blue',
+       // backgroundColor:'blue',
         // marginTop:15,
         padding: 0,
         height: flatListHeightFull,
         paddingBottom: 15,
         paddingTop: 0,
+        overflow:'scroll'
     },
     appointmentCardFlatList: {
         backgroundColor: '#fff',
@@ -1607,6 +1618,16 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginRight: 5,
 
+    },
+    backbtnTopNext:{
+         width: 40,
+        height: 35,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        //backgroundColor: "#24ad91",
+        marginTop: 0,
+        marginRight: 5,
     }
 
 

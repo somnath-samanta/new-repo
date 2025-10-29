@@ -34,7 +34,7 @@ import Toast from 'react-native-simple-toast';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import EventEmitter from '../../../Contexts/EventEmitter';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-
+// import { SafeAreaView } from 'react-native-safe-area-context';
 // Suppress VirtualizedList warning - FlatList is the main scrollable content
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -428,11 +428,11 @@ function QuestionnaireScreen(props) {
                         <View style={[styles.row, styles.timerow]}>
                             {
                                 item?.item?.status === "Incomplete" ?
-                                
+
                                     getTotalScore(item?.item?.questionnaire.questions) > 0 ?
-                                    <Text style={[styles.statusvalue, styles.statusIncomplete]}>Partially Complete</Text>
-                                    :
-                                    <Text style={[styles.statusvalue, styles.statusPending]}>Pending</Text>
+                                        <Text style={[styles.statusvalue, styles.statusIncomplete]}>Partially Complete</Text>
+                                        :
+                                        <Text style={[styles.statusvalue, styles.statusPending]}>Pending</Text>
                                     :
                                     <Text style={[styles.statusvalue, styles.statusComplete]}>{item?.item?.status === "Incomplete" ? "Pending" : item?.item?.status}</Text>
                             }
@@ -497,34 +497,128 @@ function QuestionnaireScreen(props) {
     };
 
     return (
-        <View style={styles.container}>
-            {/* <View style={{ paddingTop: statusBarHeight }}> */}
-            <View>
-                <CustomHeader pageName={routeName}
+        // <View style={styles.container}>
+        //     {/* <View style={{ paddingTop: statusBarHeight }}> */}
+        //     <View>
+        //         <CustomHeader pageName={routeName}
+        //             refreshBtnFn={refreshBtnFn}
+        //             openQuestionList={openQuestionList}
+        //             callbackhandler={callbackhandler}
+        //         />
+        //     </View>
+        //     <Loader style={styles.loadingCss} loading={loading} />
+        //     {
+        //         !openQuestionList ?
+        //             <View style={[styles.panel]}>
+        //                 <View style={styles.searchBoxes}>
+        //                     <View style={styles.leftGroup}>
+        //                         <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
+        //                             onPress={() => handleGoBack()}
+        //                         >
+        //                             <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
+        //                         </TouchableOpacity>
+        //                         <TouchableOpacity style={styles.searchBoX} onPress={() => handleFilter()} >
+        //                             <Image source={require('../../../Utility/Public/images/filter.png')} style={styles.filtericon} />
+        //                             <Text style={styles.searchBoXTxt}>Filters</Text>
+        //                         </TouchableOpacity>
+        //                     </View>
+        //                     <TouchableOpacity style={styles.refreshBtn}
+        //                         onPress={refreshBtnFn}
+        //                     >
+        //                         <FontAwesome name="refresh" size={26} color="#000" />
+        //                     </TouchableOpacity>
+        //                 </View>
+
+        //                 <FlatList
+        //                     data={questionnaireDataAfterFilter}
+        //                     renderItem={renderItem}
+        //                     keyExtractor={(item) => item.appointmentBookedId + item.id}
+        //                     ListFooterComponent={renderFooter}
+        //                     contentContainerStyle={{ paddingBottom: 10 }}
+        //                     onEndReachedThreshold={0.5}
+        //                     onRefresh={onRefresh}
+        //                     refreshing={refreshing}
+        //                     initialNumToRender={10}
+        //                     ListEmptyComponent={!loading ? renderEmptyComponent : null}
+        //                     showsVerticalScrollIndicator={true}
+        //                     nestedScrollEnabled={true}
+        //                 />
+        //             </View>
+        //             :
+        //             <PatientQuestionList
+        //                 questionObj={selectedQuestions}
+        //                 handleBackPress={handleBackPress}
+        //                 reloadQuestionnaireList={reloadQuestionnaireList}
+        //             />
+        //     }
+
+        //     <GlobalBottomSheet
+        //         isVisible={issearchSheetVisible}
+        //         onClose={hidesearchSheet}
+        //         snapPoints={Platform.OS == 'ios' ? ["74%"] : ["70%"]}
+        //         //style={{ backgroundColor: '#f3f3f3' }}
+        //         // backgroundStyle={{ backgroundColor: '#f3f3f3' }} 
+        //         bodyContent={
+
+        //             <SearchBottomSheetDesign
+        //                 hidesearchSheet={hidesearchSheet}
+        //                 useFor="questionnaire"
+        //                 selectOptionForSentBy={selectOptionForSentBy}
+        //                 setSelectedSendBy={setSelectedSendBy}
+        //                 applyFilters={applyFilters}
+        //                 setSelectedTimeLine={setSelectedTimeLine}
+        //                 clearFilterFn={clearFilterFn}
+        //                 forceClearFilterFlag={forceClearFilterFlag}
+        //                 selectedSendBy={selectedSendBy}
+        //                 selectedTimeLine={selectedTimeLine}
+        //                 filterFor="questionnaire"
+        //                 refreshBtnFnFlag={refreshBtnFnFlag}
+        //                 timeLineFilter={true}
+        //                 paymentStatusFilter={false}
+        //                 paymentModeFilter={false}
+        //                 keywordSearchFilter={true}
+        //                 sentByFilter={true}
+        //                 setSelectedKeywordText={setSelectedKeywordText}
+        //                 selectedKeywordText={selectedKeywordText}
+
+        //             />
+
+        //         }
+        //     />
+        // </View >
+        // <SafeAreaView >
+            <View style={styles.container}>
+                <CustomHeader
+                    pageName={routeName}
                     refreshBtnFn={refreshBtnFn}
                     openQuestionList={openQuestionList}
                     callbackhandler={callbackhandler}
                 />
-            </View>
-            <Loader style={styles.loadingCss} loading={loading} />
-            {
-                !openQuestionList ?
-                    <View style={[styles.panel]}>
+
+                <Loader style={styles.loadingCss} loading={loading} />
+
+                {!openQuestionList ? (
+                    <View style={[styles.panel, { paddingBottom: insets.bottom + 10 }]}>
                         <View style={styles.searchBoxes}>
                             <View style={styles.leftGroup}>
-                                <TouchableOpacity style={[styles.backbtn, styles.backbtnTop]}
+                                <TouchableOpacity
+                                    style={[styles.backbtn, styles.backbtnTop]}
                                     onPress={() => handleGoBack()}
                                 >
                                     <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.searchBoX} onPress={() => handleFilter()} >
-                                    <Image source={require('../../../Utility/Public/images/filter.png')} style={styles.filtericon} />
+                                <TouchableOpacity
+                                    style={styles.searchBoX}
+                                    onPress={() => handleFilter()}
+                                >
+                                    <Image
+                                        source={require('../../../Utility/Public/images/filter.png')}
+                                        style={styles.filtericon}
+                                    />
                                     <Text style={styles.searchBoXTxt}>Filters</Text>
                                 </TouchableOpacity>
                             </View>
-                            <TouchableOpacity style={styles.refreshBtn}
-                                onPress={refreshBtnFn}
-                            >
+                            <TouchableOpacity style={styles.refreshBtn} onPress={refreshBtnFn}>
                                 <FontAwesome name="refresh" size={26} color="#000" />
                             </TouchableOpacity>
                         </View>
@@ -534,58 +628,52 @@ function QuestionnaireScreen(props) {
                             renderItem={renderItem}
                             keyExtractor={(item) => item.appointmentBookedId + item.id}
                             ListFooterComponent={renderFooter}
-                            contentContainerStyle={{ paddingBottom: 10 }}
+                            contentContainerStyle={{ paddingBottom: insets.bottom + 30 }}
                             onEndReachedThreshold={0.5}
                             onRefresh={onRefresh}
                             refreshing={refreshing}
                             initialNumToRender={10}
                             ListEmptyComponent={!loading ? renderEmptyComponent : null}
-                            showsVerticalScrollIndicator={true}
-                            nestedScrollEnabled={true}
+                            showsVerticalScrollIndicator={false}
+                            nestedScrollEnabled
                         />
                     </View>
-                    :
+                ) : (
                     <PatientQuestionList
                         questionObj={selectedQuestions}
                         handleBackPress={handleBackPress}
                         reloadQuestionnaireList={reloadQuestionnaireList}
                     />
-            }
+                )}
 
-            <GlobalBottomSheet
-                isVisible={issearchSheetVisible}
-                onClose={hidesearchSheet}
-                snapPoints={Platform.OS == 'ios' ? ["74%"] : ["70%"]}
-                //style={{ backgroundColor: '#f3f3f3' }}
-                // backgroundStyle={{ backgroundColor: '#f3f3f3' }} 
-                bodyContent={
-
-                    <SearchBottomSheetDesign
-                        hidesearchSheet={hidesearchSheet}
-                        useFor="questionnaire"
-                        selectOptionForSentBy={selectOptionForSentBy}
-                        setSelectedSendBy={setSelectedSendBy}
-                        applyFilters={applyFilters}
-                        setSelectedTimeLine={setSelectedTimeLine}
-                        clearFilterFn={clearFilterFn}
-                        forceClearFilterFlag={forceClearFilterFlag}
-                        selectedSendBy={selectedSendBy}
-                        selectedTimeLine={selectedTimeLine}
-                        filterFor="questionnaire"
-                        refreshBtnFnFlag={refreshBtnFnFlag}
-                        timeLineFilter={true}
-                        paymentStatusFilter={false}
-                        paymentModeFilter={false}
-                        keywordSearchFilter={true}
-                        sentByFilter={true}
-                        setSelectedKeywordText={setSelectedKeywordText}
-                        selectedKeywordText={selectedKeywordText}
-
-                    />
-
-                }
-            />
-        </View >
+                <GlobalBottomSheet
+                    isVisible={issearchSheetVisible}
+                    onClose={hidesearchSheet}
+                    snapPoints={Platform.OS === 'ios' ? ['74%'] : ['70%']}
+                    bodyContent={
+                        <SearchBottomSheetDesign
+                            hidesearchSheet={hidesearchSheet}
+                            useFor="questionnaire"
+                            selectOptionForSentBy={selectOptionForSentBy}
+                            setSelectedSendBy={setSelectedSendBy}
+                            applyFilters={applyFilters}
+                            setSelectedTimeLine={setSelectedTimeLine}
+                            clearFilterFn={clearFilterFn}
+                            forceClearFilterFlag={forceClearFilterFlag}
+                            selectedSendBy={selectedSendBy}
+                            selectedTimeLine={selectedTimeLine}
+                            filterFor="questionnaire"
+                            refreshBtnFnFlag={refreshBtnFnFlag}
+                            timeLineFilter
+                            keywordSearchFilter
+                            sentByFilter
+                            setSelectedKeywordText={setSelectedKeywordText}
+                            selectedKeywordText={selectedKeywordText}
+                        />
+                    }
+                />
+            </View>
+        // </SafeAreaView>
     );
 }
 
@@ -593,9 +681,20 @@ export default QuestionnaireScreen;
 
 
 const styles = StyleSheet.create({
+    // safeArea: {
+    //     //flex: 1,
+    //     backgroundColor: '#dff7f8',
+        
+    // },
     container: {
         flex: 1,
         backgroundColor: '#dff7f8',
+    },
+    panel: {
+        //   flex: 1,
+        paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+        height: panelheight,
+        //         paddingBottom: Platform.OS === 'ios' ? 10 : 0,
     },
     searchBoxes: {
         padding: 0,
@@ -636,13 +735,13 @@ const styles = StyleSheet.create({
         color: Colors.black,
         padding: 10,
         paddingVertical: 5,
-        fontWeight:700
+        fontWeight: 700
     },
-    panel: {
-        //backgroundColor: 'red', 
-        height: panelheight,
-        paddingBottom: Platform.OS === 'ios' ? 10 : 0,
-    },
+    // panel: {
+    //     //backgroundColor: 'red', 
+    //     height: panelheight,
+    //     paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+    // },
     appointmentCard: {
         padding: 0,
         paddingHorizontal: 15,
@@ -651,27 +750,21 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         //backgroundColor: '#666',
     },
-    rowPractitioner: {
-        flexDirection: 'row',
-        alignItems: 'flex-start', // Top items vertically
-        marginBottom: 0,
-        backgroundColor: '#fff',
-        padding: 15,
-        paddingVertical: 25,
-        //height: nextAppointmentBoxInnheight,
-        borderRadius: 5,
-        shadowColor: Platform.OS == 'ios' ? '#666' : '#000',
-        shadowOffset: { width: Platform.OS == 'ios' ? .8 : 1 },
-        shadowOpacity: Platform.OS == 'ios' ? 0.3 : 0.5,
-        shadowRadius: 5,
-        elevation: Platform.OS == 'ios' ? 3 : 5,
-        // marginVertical: 1.5,
-        marginBottom: 10,
-        // borderBottomWidth: 2,
-        // borderBottomColor: '#000',
-        //marginVertical:5,
-
-    },
+rowPractitioner: {
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+  backgroundColor: '#fff',
+  padding: 15,
+  paddingVertical: 20,
+  borderRadius: 5,
+  shadowColor: Platform.OS === 'ios' ? '#666' : '#000',
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.3,
+  shadowRadius: 3,
+  elevation: 4,
+  marginBottom: 10,
+  // ❌ height: fixed value (remove this)
+},
     textContainer: {
         flexDirection: 'column', // Stack text vertically
         marginTop: 0,
@@ -694,7 +787,7 @@ const styles = StyleSheet.create({
         width: '70%',
         display: 'flex',
         flexWrap: 'wrap',
-        fontWeight:700
+        fontWeight: 700
         // backgroundColor: 'yellow',
 
 
@@ -727,7 +820,7 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingHorizontal: 0,
         fontFamily: 'Arimo-Bold',
-        fontWeight:700
+        fontWeight: 700
     },
     statusIncomplete: {
         // backgroundColor: '#219197',
@@ -752,7 +845,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#fff',
         fontFamily: 'Arimo-Bold',
-        fontWeight:700
+        fontWeight: 700
     },
     norecordFound: {
         fontSize: 14,

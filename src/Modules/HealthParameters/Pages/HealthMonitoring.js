@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
   },
   filterRow: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 5,
     flexWrap: 'wrap',
   },
   chip: {

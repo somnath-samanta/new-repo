@@ -1147,7 +1147,9 @@ const styles = StyleSheet.create({
         padding: Platform.OS == 'ios' ? 10 : 0,
         color: '#000',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontFamily: 'Arimo-Bold',
+        textAlign: 'center',
+        fontWeight: 700,
     },
     photoModalimage: {
         width: 95,

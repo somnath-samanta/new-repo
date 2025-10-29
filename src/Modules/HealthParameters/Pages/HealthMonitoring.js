@@ -115,7 +115,15 @@ export default function HealthMonitoring() {
     if (isManual) setRefreshing(true); else setPageLoading(true);
     try {
       const res = await getPatientHealthProfile({ id: userId });
-      const vitalsList = res?.Patient?.healthProfile?.vitals || [];     
+      const vitalsList = res?.Patient?.healthProfile?.vitals || [];  
+      
+      console.log("vitalsListvitalsListvitalsList---",vitalsList.length)
+      if(vitalsList.length == 0 ){
+        setTimeout(() => {
+          setPageLoading(false);
+        }, 500);
+        return
+      } 
 
       let lastRecordIndex = vitalsList.length - 1;
       // Set the last record month as active month

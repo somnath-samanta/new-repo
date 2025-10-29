@@ -83,7 +83,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         // { label: 'Investigations', value: 'Investigations' },
         // { label: 'Imaging Report', value: 'Imaging Report' }
         { label: 'Investigations', value: 'Investigations' },
-        { label: 'Others', value: 'Others' },
+        { label: 'Others', value: 'Other' },
       ]);
     } else {
       setDocumentType("GovtId");

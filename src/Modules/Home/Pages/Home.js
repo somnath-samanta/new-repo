@@ -1,5 +1,3 @@
-const screen = Dimensions.get("window");
-
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import {
     FlatList,
@@ -16,18 +14,25 @@ import {
     Platform,
     Animated,
     Easing,
-    ScrollView,
     Alert,
     BackHandler,
     StatusBar
 } from 'react-native';
+
+const screen = Dimensions.get("window");
 const screenWidth = screen.width;
+const screenHeight = screen.height;
+const isSmallDevice = screenHeight < 700;
+const isLargeDevice = screenHeight > 800;
+
+// Responsive height calculations
+const welcomeLogoHeight = isSmallDevice ? screenHeight * 0.08 : screenHeight * 0.1;
+const welcomeMSGHeight = isSmallDevice ? screenHeight * 0.05 : screenHeight * 0.06;
+const viewButtonHeight = isSmallDevice ? screenHeight * 0.16 : screenHeight * 0.18;
+const buttonSpacing = isSmallDevice ? 8 : 12;
 const screenheight = screen.height;
-const welcomeLogoheight = screenheight * (Platform.OS == 'ios' ? 0.09 : 0.15);
-const welcomeMSGheight = screenheight * 0.1;
-const bookAppointmentheight = screenheight * 0.15;
-const viewbuttonheight = screenheight * 0.20;
 const mydocumentheight = screenheight * (Platform.OS == 'ios' ? 0.22 : 0.26);
+
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from '../../../Utility/Components/Loader';
 import Config from '../../../Utility/Config';
@@ -46,10 +51,10 @@ function Home({ props }) {
     // console.log("reduxAuthJson", reduxAuthJson);
     const [pageLoading, setPageLoading] = useState(false);
     const [filterFlag, setFilterFlag] = useState(false);
+    const [webViewFlag, setWebViewFlag] = useState(false);
+    const [webViewData, setWebViewData] = useState('');
     const snapPoints = ['50%'];
     const { clearLocalStorage } = LogOut();
-    const [webViewFlag, setWebViewFlag] = useState(false);
-    const [webViewData, setWebViewData] = useState("");
 
     useFocusEffect(
         useCallback(() => {
@@ -201,117 +206,112 @@ function Home({ props }) {
         console.log("Received from WebView:--------------------------------------------", data.message);
     };
 
-    const hideBookAppointmentScreen = () => {
+    const hideBookAppointmentScreen = useCallback(() => {
         setWebViewFlag(false);
-    }
+    }, []);
+
+    const renderWebView = useCallback(() => (
+        <>
+            <CustomHeader
+                pageName={"Book an Appointment"}
+                hideBookAppointmentScreen={hideBookAppointmentScreen}
+            />
+            <WebView
+                source={{ uri: `${Config.bookingUrl}?data=${webViewData}` }}
+                mediaPlaybackRequiresUserAction={false}
+                allowsInlineMediaPlayback={true}
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                onMessage={handleMessage}
+            />
+        </>
+    ), [webViewData, hideBookAppointmentScreen]);
 
     return (
-        <SafeAreaView
-            style={{
-                flex: 1,
-                paddingTop: 0,
-                paddingBottom: 0,
-            }}
-            edges={['left', 'right']}   // remove top & bottom safe padding
-        >
-            <View style={styles.container}>
-                <Loader style={styles.loadingCss} loading={pageLoading} />
-                {
-                    webViewFlag ?
-                        <>
-                            <CustomHeader
-                                pageName={"Book an Appointment"}
-                                hideBookAppointmentScreen={hideBookAppointmentScreen}
-                            />
-                            <WebView
-                                source={{ uri: `${Config.bookingUrl}?data=${webViewData}` }}
-                                mediaPlaybackRequiresUserAction={false}
-                                allowsInlineMediaPlayback={true}
-                                javaScriptEnabled={true}
-                                domStorageEnabled={true}
-                                onMessage={handleMessage}
-                            />
-                        </> :
-                        <>
-                            <Image source={require('../../../Utility/Public/images/oaktreeLogo.png')} style={styles.oaktreeLogo} />
-                            <TouchableOpacity
-                                style={[styles.signout]}
-                                onPress={() => logoutApp()}
-                            >
-                                <Image
-                                    source={require('../../../Utility/Public/images/signout.png')}
-                                    style={{ width: 24, height: 24 }}
-                                />
+        <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
+            <Loader style={styles.loadingCss} loading={pageLoading} />
+            {webViewFlag ? renderWebView() : (
+                <View style={styles.container}>
+                    <Image source={require('../../../Utility/Public/images/oaktreeLogo.png')} style={styles.oaktreeLogo} />
+                    <TouchableOpacity
+                        style={styles.signout}
+                        onPress={logoutApp}
+                    >
+                        <Image
+                            source={require('../../../Utility/Public/images/signout.png')}
+                            style={{ width: 24, height: 24 }}
+                        />
+                    </TouchableOpacity>
+
+                    <View style={styles.panel}>
+                        <View style={styles.topPanelTaxtBox}>
+                            <Text style={styles.topPanelTaxt}>
+                                Welcome to Oaktree Connect
+                            </Text>
+                        </View>
+
+                        <View style={styles.contentContainer}>
+                            <TouchableOpacity style={[styles.panelBox, styles.panelBoxDocument]} onPress={appointmentLink}>
+                                <View style={styles.innerPanelBoxDocument}>
+                                    <Image
+                                        source={require('../../../Utility/Public/images/clock.png')}
+                                        style={[styles.calenderImage, styles.clockImagedocument]}
+                                    />
+                                    <Image
+                                        source={require('../../../Utility/Public/images/calender.png')}
+                                        style={[styles.calenderImage, styles.calenderImagedocument]}
+                                    />
+                                </View>
+                                <View style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>
+                                    <Text style={[styles.panelBoxRightMainTextDownDocumentText]}>
+                                        View & Start Appointment</Text>
+                                </View>
                             </TouchableOpacity>
 
-                            <View style={styles.panel}>
-                                <View style={styles.topPanelTaxtBox}>
-                                    <Text style={styles.topPanelTaxt}>Welcome to Oaktree Connect</Text>
-                                </View>
-
-                                <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-                                    <TouchableOpacity style={[styles.panelBox, styles.panelBoxDocument]} onPress={appointmentLink}>
-                                        <View style={styles.innerPanelBoxDocument}>
-                                            <Image
-                                                source={require('../../../Utility/Public/images/clock.png')}
-                                                style={[styles.calenderImage, styles.clockImagedocument]}
-                                            />
-                                            <Image
-                                                source={require('../../../Utility/Public/images/calender.png')}
-                                                style={[styles.calenderImage, styles.calenderImagedocument]}
-                                            />
-                                        </View>
-                                        <View style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>
-                                            <Text style={[styles.panelBoxRightMainTextDownDocumentText]}>
-                                                View & Start Appointment</Text>
-                                        </View>
-                                    </TouchableOpacity>
-
-                                    <View style={styles.middlePanelBoxes}>
-                                        <TouchableOpacity style={styles.middlePanelBox} onPress={thirdPartyDocumentLink}>
-                                            <Image
-                                                source={require('../../../Utility/Public/images/icon1.png')}
-                                                style={[styles.calenderImage, styles.appointmentsIcon]}
-                                            />
-                                            <Text style={styles.panelBoxRightMainTextDown}>View / Upload{'\n'}3rd Party Documents</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={styles.middlePanelBox} onPress={myDocumentLink}>
-                                            <Image
-                                                source={require('../../../Utility/Public/images/icon2.png')}
-                                                style={[styles.calenderImage, styles.appointmentsIcon]}
-                                            />
-                                            <Text style={styles.panelBoxRightMainTextDown}>Upload ID</Text>
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    <View style={styles.middlePanelBoxRight}>
-                                        <Text style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
-                                        <View style={styles.myTherapyTasks}>
-                                            <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={healthParameterLink}>
-                                                <View style={styles.roundiconBox}>
-                                                    <Image
-                                                        source={require('../Public/images/physicalParametersIcon.png')}
-                                                        style={styles.heartRatingImage}
-                                                    />
-                                                </View>
-                                                <Text style={styles.panelBoxRightMainTextDown}>View / Add{'\n'}Physical Parameters</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={questionnaireLink}>
-                                                <View style={styles.roundiconBox}>
-                                                    <Image
-                                                        source={require('../Public/images/questionnairesIcon.png')}
-                                                        style={styles.calenderImage}
-                                                    />
-                                                </View>
-                                                <Text style={styles.panelBoxRightMainTextDown}> View / Complete{'\n'}Questionnaires</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </ScrollView>
+                            <View style={styles.middlePanelBoxes}>
+                                <TouchableOpacity style={styles.middlePanelBox} onPress={thirdPartyDocumentLink}>
+                                    <Image
+                                        source={require('../../../Utility/Public/images/icon1.png')}
+                                        style={[styles.calenderImage, styles.appointmentsIcon]}
+                                    />
+                                    <Text style={styles.panelBoxRightMainTextDown}>View / Upload{'\n'}3rd Party Documents</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.middlePanelBox} onPress={myDocumentLink}>
+                                    <Image
+                                        source={require('../../../Utility/Public/images/icon2.png')}
+                                        style={[styles.calenderImage, styles.appointmentsIcon]}
+                                    />
+                                    <Text style={styles.panelBoxRightMainTextDown}>Upload ID</Text>
+                                </TouchableOpacity>
                             </View>
-                        </>
-                }
-            </View>
+
+                            <View style={styles.middlePanelBoxRight}>
+                                <Text style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
+                                <View style={styles.myTherapyTasks}>
+                                    <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={healthParameterLink}>
+                                        <View style={styles.roundiconBox}>
+                                            <Image
+                                                source={require('../Public/images/physicalParametersIcon.png')}
+                                                style={styles.heartRatingImage}
+                                            />
+                                        </View>
+                                        <Text style={styles.panelBoxRightMainTextDown}>View / Add{'\n'}Physical Parameters</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={questionnaireLink}>
+                                        <View style={styles.roundiconBox}>
+                                            <Image
+                                                source={require('../Public/images/questionnairesIcon.png')}
+                                                style={styles.calenderImage}
+                                            />
+                                        </View>
+                                        <Text style={styles.panelBoxRightMainTextDown}> View / Complete{'\n'}Questionnaires</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            )}
         </SafeAreaView>
     );
 
@@ -321,21 +321,25 @@ export default Home;
 
 const styles = StyleSheet.create({
     safeArea: {
+        backgroundColor: '#dff7f8',
         flex: 1,
-        paddingTop: 0,  // removes extra space at top
+        paddingTop: 0,
+        paddingBottom: 0,
     },
     container: {
-        backgroundColor: '#dff7f8',
-        position: 'relative',
-        width: screenWidth,
-        flex: 1, // instead of height: screenheight
+        flex: 1,
+        width: '100%',
     },
     panel: {
-        width: screenWidth,
-        flex: 1, // instead of height: screenheight
-        paddingHorizontal: 25,
-        paddingVertical: 0,
-        paddingTop: welcomeLogoheight,
+        flex: 1,
+        width: '100%',
+        paddingHorizontal: isSmallDevice ? 15 : 20,
+        paddingTop: isSmallDevice ? welcomeLogoHeight * 1.5 : welcomeLogoHeight * 1.2,
+    },
+    contentContainer: {
+        flex: 1,
+        width: '100%',
+        paddingBottom: isSmallDevice ? 10 : 20,
     },
     loadingCss: {
         display: 'flex',
@@ -346,7 +350,7 @@ const styles = StyleSheet.create({
         top: 0
     },
     oaktreeLogo: {
-        height: 110,
+       height: 110,
         width: 110,
         position: 'absolute',
         left: -20,
@@ -354,16 +358,14 @@ const styles = StyleSheet.create({
         objectFit: 'contain',
     },
     signout: {
-        height: 40,
-        width: 40,
+        height: isSmallDevice ? 36 : 40,
+        width: isSmallDevice ? 36 : 40,
         position: 'absolute',
-        right: 15,
-        top: 15,
-        display: 'flex',
+        right: isSmallDevice ? 10 : 15,
+        top: isSmallDevice ? 10 : 15,
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 9
-        //backgroundColor:'red',
+        zIndex: 9,
     },
     signoutimg: {
         height: 40,
@@ -391,8 +393,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         //paddingVertical:10,
-        paddingTop: Platform.OS == 'ios' ? 20 : 0,
-        paddingBottom: Platform.OS == 'ios' ? 15 : 10,
+        paddingTop: Platform.OS == 'ios' ? 20 : 5,
+        paddingBottom: Platform.OS == 'ios' ? 15 : 5,
     },
     topPanelTaxt: {
         fontSize: 19,
@@ -484,15 +486,15 @@ const styles = StyleSheet.create({
         objectFit: 'contain',
     },
     panelBoxRightMainTextDown: {
-        fontSize: Platform.OS == 'ios' ? 14 : 14,
+        fontSize: Platform.OS == 'ios' ? 14 : 13.5,
         color: '#000',
         fontFamily: 'Arimo-Bold',
         textAlign: 'center',
         // backgroundColor:'red',
         width: "100%",
-        lineHeight: 16,
+        lineHeight: Platform.OS == 'ios' ? 16 : 15.5,
         marginTop: 15,
-        fontWeight:'700'
+        fontWeight: '700'
     },
     panelBoxRightMainTextDownSec: {
         marginTop: 0,
@@ -517,38 +519,31 @@ const styles = StyleSheet.create({
         color: '#000',
         lineHeight: 16,
         fontFamily: 'Arimo-Bold',
-        fontWeight:'700'
+        fontWeight: '700'
     },
     middlePanelBoxes: {
-        width: screenWidth - 50,
-        padding: 0,
-        //backgroundColor: 'blue',
-        display: 'flex',
-        justifyContent: 'space-between',
+        width: '100%',
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
-
+        marginVertical: 5,
     },
     middlePanelBox: {
-        width: screenWidth / 2 - 30,
-        padding: 5,
-        paddingVertical: 10,
+        width: '48%',
         backgroundColor: '#fff',
-        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'column',
-        borderRadius: 0,
-        textAlign: 'center',
-        height: viewbuttonheight,
+        padding: isSmallDevice ? 8 : 5,
         borderRadius: 10,
-        shadowColor: Platform.OS == 'ios' ? '#666' : '#000',
-        shadowOffset: { width: Platform.OS == 'ios' ? .8 : 1 },
-        shadowOpacity: Platform.OS == 'ios' ? 0.3 : 0.5,
-        shadowRadius: 5,
-        elevation: Platform.OS == 'ios' ? 3 : 5,
-        borderColor: '#3d3f3f',
+        shadowColor: Platform.OS === 'ios' ? '#666' : '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        height: viewButtonHeight,
         borderWidth: 1,
+        borderColor: '#3d3f3f',
+        //marginBottom: buttonSpacing,
     },
     middlePanelBoxRight: {
         backgroundColor: '#007b80',
@@ -594,25 +589,21 @@ const styles = StyleSheet.create({
     },
 
     myTherapyTasksPanelBox: {
-        width: screenWidth / 2 - 36,
-        padding: 5,
-        paddingVertical: 10,
+        width: '48%',
         backgroundColor: '#fff',
-        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'column',
-        borderRadius: 0,
-        textAlign: 'center',
-        height: viewbuttonheight,
+        padding: isSmallDevice ? 8 : 5,
         borderRadius: 10,
-        shadowColor: Platform.OS == 'ios' ? '#666' : '#000',
-        shadowOffset: { width: Platform.OS == 'ios' ? .8 : 1 },
-        shadowOpacity: Platform.OS == 'ios' ? 0.3 : 0.5,
-        shadowRadius: 5,
-        elevation: Platform.OS == 'ios' ? 3 : 5,
-        borderColor: '#fff',
+        shadowColor: Platform.OS === 'ios' ? '#666' : '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        height: viewButtonHeight,
         borderWidth: 2,
+        borderColor: '#fff',
+        marginBottom: buttonSpacing,
     },
     myTherapyTasksText: {
         fontSize: 16,
@@ -622,7 +613,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 5,
         marginBottom: 8,
-        fontWeight:'700'
+        fontWeight: '700'
     }
 });
-

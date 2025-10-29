@@ -247,8 +247,10 @@ function ThirdPartyDocument({ props }) {
                                 <View style={styles.textContainer}>
                                     <Text style={styles.practitionerName}>Name : {item?.item?.documentName}</Text>
                                     <Text style={[styles.marginLeftClass, styles.showText]}>Upload date : {moment(item?.item?.createdOn, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
-                                    <Text style={[styles.marginLeftClass, styles.showText]}>Reported date : {moment(item?.item?.report_date, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
-                                    <Text style={styles.practitionerSpeciality}>{item?.item?.documentType}</Text>
+                                    {item?.item?.documentType.toString().toLowerCase() !== "other" &&
+                                        <Text style={[styles.marginLeftClass, styles.showText]}>Reported date : {moment(item?.item?.report_date, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
+                                    }
+                                    <Text style={styles.practitionerSpeciality}>{item?.item?.documentType} from</Text>
                                 </View>
                             </View>
                         </View>
@@ -349,14 +351,14 @@ function ThirdPartyDocument({ props }) {
     const downloadPDFForIOS = (pdfUrl) => {
         console.log('=== iOS Download/View ===');
         console.log('URL:', pdfUrl);
-        
+
         // Simply open the URL in WebView modal - no download needed
         // WebView will handle the rendering
         setLoading(false);
         setWebViewLoading(true); // Show loading indicator
         setFileUri(pdfUrl);
         setModalVisible(true);
-        
+
         console.log('Opening document in WebView modal');
     };
 
@@ -373,7 +375,7 @@ function ThirdPartyDocument({ props }) {
 
             const extension = await getFileExtension(fileUrl);
             const fileName = `document_${new Date().getTime()}.${extension}`;
-            const filePath = Platform.OS === 'ios' 
+            const filePath = Platform.OS === 'ios'
                 ? `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`
                 : `${ReactNativeBlobUtil.fs.dirs.DownloadDir}/${fileName}`;
 
@@ -422,8 +424,8 @@ function ThirdPartyDocument({ props }) {
 
     const downloadPdf = async (pdfUrl) => {
 
-         downloadPDFForIOS(pdfUrl);
-         return
+        downloadPDFForIOS(pdfUrl);
+        return
         if (Platform.OS == 'ios') {
             // console.log("=========IOS==");
             downloadPDFForIOS(pdfUrl);
@@ -629,66 +631,66 @@ function ThirdPartyDocument({ props }) {
                 body={
                     <View style={styles.modalImageViewContainer}>
                         <View style={[styles.imgmodalContent]}>
-                        {errorFlag ?
-                            <View style={styles.noImageContainer}>
-                                <Text style={styles.messageTxt}>Image not found or cannot be loaded.</Text>
-                            </View>
-                            :
-                            <>
-                            {imageLoading && (
-                                <View style={styles.imageLoadingContainer}>
-                                    <ActivityIndicator size="large" color="#24ad91" />
-                                    <Text style={styles.loadingText}>Loading Document...</Text>
+                            {errorFlag ?
+                                <View style={styles.noImageContainer}>
+                                    <Text style={styles.messageTxt}>Image not found or cannot be loaded.</Text>
                                 </View>
-                            )}
-                            <Image
-                                source={{ uri: documentUrl }}
-                                style={styles.imageShowBox}
-                                onLoadStart={() => {
-                                    console.log("Document loading started", new Date().toISOString());
-                                    setImageLoading(true);
-                                }}
-                                onLoadEnd={() => {
-                                    console.log("Document loading completed", new Date().toISOString());
-                                    setTimeout(() => {
-                                        setImageLoading(false);
-                                    }, 100);
-                                }}
-                                resizeMode="contain"
-                                onError={(error) => {
-                                    console.log("Document loading error:", error.nativeEvent.error);
-                                    setErrorFlag(true);
-                                    setImageLoading(false);
-                                }}
-                            />
-                            </>
-                            
+                                :
+                                <>
+                                    {imageLoading && (
+                                        <View style={styles.imageLoadingContainer}>
+                                            <ActivityIndicator size="large" color="#24ad91" />
+                                            <Text style={styles.loadingText}>Loading Document...</Text>
+                                        </View>
+                                    )}
+                                    <Image
+                                        source={{ uri: documentUrl }}
+                                        style={styles.imageShowBox}
+                                        onLoadStart={() => {
+                                            console.log("Document loading started", new Date().toISOString());
+                                            setImageLoading(true);
+                                        }}
+                                        onLoadEnd={() => {
+                                            console.log("Document loading completed", new Date().toISOString());
+                                            setTimeout(() => {
+                                                setImageLoading(false);
+                                            }, 100);
+                                        }}
+                                        resizeMode="contain"
+                                        onError={(error) => {
+                                            console.log("Document loading error:", error.nativeEvent.error);
+                                            setErrorFlag(true);
+                                            setImageLoading(false);
+                                        }}
+                                    />
+                                </>
+
                             }
 
-                        <View style={[styles.bottonBoxes]}>
-                            <TouchableOpacity
-                                style={[styles.bottonBox, styles.closeButtonStyle]}
-                                onPress={() => setImageShowFlag(false)}
-                            >
-                                <Ionicons name="close-circle-outline" size={18} color="#fff" />
-                                <Text style={styles.eyeButtonTxt}>Close</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.bottonBox,
-                                    styles.downloadButtonStyle,
-                                    isDownloading && styles.downloadButtonDisabled
-                                ]}
-                                onPress={() => handleDownloadToDevice(documentUrl)}
-                                disabled={isDownloading}
-                            >
-                                <Ionicons name="download-outline" size={18} color="#fff" />
-                                <Text style={styles.eyeButtonTxt}>
-                                    {isDownloading ? 'Downloading...' : 'Download'}
-                                </Text>
-                            </TouchableOpacity>
+                            <View style={[styles.bottonBoxes]}>
+                                <TouchableOpacity
+                                    style={[styles.bottonBox, styles.closeButtonStyle]}
+                                    onPress={() => setImageShowFlag(false)}
+                                >
+                                    <Ionicons name="close-circle-outline" size={18} color="#fff" />
+                                    <Text style={styles.eyeButtonTxt}>Close</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.bottonBox,
+                                        styles.downloadButtonStyle,
+                                        isDownloading && styles.downloadButtonDisabled
+                                    ]}
+                                    onPress={() => handleDownloadToDevice(documentUrl)}
+                                    disabled={isDownloading}
+                                >
+                                    <Ionicons name="download-outline" size={18} color="#fff" />
+                                    <Text style={styles.eyeButtonTxt}>
+                                        {isDownloading ? 'Downloading...' : 'Download'}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
                     </View>
                 }
 
@@ -742,8 +744,8 @@ function ThirdPartyDocument({ props }) {
                                 }
                                 {/* Button to close the modal */}
                                 <View style={[styles.bottonBoxes]}>
-                                    <TouchableOpacity 
-                                        style={[styles.bottonBox, styles.closeButtonStyle]} 
+                                    <TouchableOpacity
+                                        style={[styles.bottonBox, styles.closeButtonStyle]}
                                         onPress={() => modalColseWevview()}
                                     >
                                         <Ionicons name="close-circle-outline" size={18} color="#fff" />
@@ -751,7 +753,7 @@ function ThirdPartyDocument({ props }) {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[
-                                            styles.bottonBox, 
+                                            styles.bottonBox,
                                             styles.downloadButtonStyle,
                                             isDownloading && styles.downloadButtonDisabled
                                         ]}
@@ -1057,7 +1059,7 @@ const styles = StyleSheet.create({
         fontSize: 14, // Adjust font size as needed
         color: Colors.black,
         fontFamily: 'Arimo-Bold',
-        fontWeight:'700'
+        fontWeight: '700'
     },
     practitionerSpeciality: {
         fontSize: 14, // Adjust font size as needed
@@ -1124,7 +1126,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Arimo-Bold',
         textAlign: 'center',
-        fontWeight:'700'
+        fontWeight: '700'
     },
     uploadIconContainer: {
         backgroundColor: '#229980',
@@ -1163,7 +1165,7 @@ const styles = StyleSheet.create({
         color: '#000',
     },
     modalImageViewContainer: {
-       width: '100%',
+        width: '100%',
         // marginTop: -50,
         justifyContent: 'center',
         alignItems: 'center',
@@ -1174,8 +1176,8 @@ const styles = StyleSheet.create({
 
         // padding:10,
     },
-     imgmodalContent: {
-         width: '100%',
+    imgmodalContent: {
+        width: '100%',
         height: '100%',
         borderRadius: 0,
         paddingBottom: 0,
@@ -1193,12 +1195,12 @@ const styles = StyleSheet.create({
     },
 
     pdfmodalContainer: {
-           width: '100%',
+        width: '100%',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'center',
         alignItems: 'center',
         //maxHeight: screenheight - 300,
-         maxHeight: screenheight - 400
+        maxHeight: screenheight - 400
     },
     pdfmodalContent: {
         width: '100%',
@@ -1330,7 +1332,7 @@ const styles = StyleSheet.create({
         color: Colors.black,
         padding: 10,
         paddingVertical: 5,
-        fontWeight:700
+        fontWeight: 700
     },
 
 });

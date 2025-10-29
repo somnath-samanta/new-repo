@@ -15,7 +15,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const screen = Dimensions.get("window");
 const screenWidth = screen.width;
 const screenHeight = screen.height;
-
+const cardHeight = screenHeight * 0.23;
+const cardBoxesHeight = screenHeight * .75;
 function HealthParameter() {
     const [webViewFlag, setWebViewFlag] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
@@ -226,18 +227,19 @@ function HealthParameter() {
                         <FontAwesome name="refresh" size={26} color="#000" />
                     </TouchableOpacity>
                 </View>
-                <FlatList
-                    contentContainerStyle={styles.gridContent}
-                    data={metrics}
-                    renderItem={renderMetric}
-                    keyExtractor={(it) => it.key}
-                    numColumns={2}
-                    columnWrapperStyle={styles.row}
-                    showsVerticalScrollIndicator={false}
-                    refreshing={refreshing}
-                    onRefresh={() => fetchVitals(true)}
-                />
-
+                <View style={styles.flatListContent}>
+                    <FlatList
+                        contentContainerStyle={styles.gridContent}
+                        data={metrics}
+                        renderItem={renderMetric}
+                        keyExtractor={(it) => it.key}
+                        numColumns={2}
+                        columnWrapperStyle={styles.row}
+                        showsVerticalScrollIndicator={false}
+                        refreshing={refreshing}
+                        onRefresh={() => fetchVitals(true)}
+                    />
+                </View>
                 <View style={styles.footerBtns}>
                     <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onViewMonitoring}>
                         <Text style={styles.ctaText}>View Health Monitoring</Text>
@@ -286,75 +288,90 @@ const styles = StyleSheet.create({
     },
     topContent: {
         width: '100%',
-        //backgroundColor: 'red',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row'
     },
+    flatListContent:{
+       // backgroundColor:'blue',
+        height:cardBoxesHeight,
+        overflow:'hidden'
+       // display:'flex',
+       // justifyContent:'space-between',
+   
+    },
     gridContent: {
-        paddingBottom: 10,
+        paddingTop: 10,
+        paddingBottom: 100, // Space for bottom buttons
+        flexGrow: 1,
     },
     row: {
         justifyContent: 'space-between',
-        marginBottom: 12,
+       // marginBottom: 12,
     },
     card: {
         backgroundColor: '#fff',
-        width: (screenWidth - 15 * 2 - 12) / 2,
+        width: (screenWidth - 30 - 12) / 2, // 30 = horizontal padding * 2, 12 = gap between cards
         borderRadius: 10,
-        paddingVertical: 16,
-        paddingHorizontal: 12,
+        padding: 12,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.15,
         shadowRadius: 4,
         elevation: 3,
         alignItems: 'center',
+        justifyContent: 'center',
+        //aspectRatio: .95, // Makes cards square
+        height:cardHeight,
+        marginBottom: 12,
+
     },
     iconCircle: {
-        width: 65,
-        height: 65,
-        borderRadius: 50,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 10,
-
+        marginBottom: 8,
     },
     cardTitle: {
         color: '#222',
-        fontSize: 14,
+        fontSize: 13,
         fontFamily: 'Arimo-Bold',
-        marginBottom: 5,
         textAlign: 'center',
-        marginBottom: 0,
-        fontWeight:700
+        marginBottom: 4,
+        fontWeight: '700',
+        paddingHorizontal: 2,
     },
     cardValue: {
-        marginBottom: 10,
+        marginBottom: 8,
     },
     cardValueNumber: {
         color: '#0a978b',
-        fontSize: 16,
+        fontSize: 15,
         fontFamily: 'Arimo-Bold',
         textAlign: 'center',
-        fontWeight:700
+        fontWeight: '700',
     },
     cardValueUnit: {
         color: '#0a978b',
-        fontSize: 14,
+        fontSize: 13,
         fontFamily: 'Arimo-Bold',
     },
     lastUpdateLabel: {
         color: '#000',
-        fontSize: 14,
+        fontSize: 11,
         fontFamily: 'Arimo-Bold',
-        fontWeight:700
+        fontWeight: '700',
+        textAlign: 'center',
+        marginBottom: 2,
     },
     lastUpdateText: {
         color: '#000',
-        fontSize: 14,
+        fontSize: 11,
         fontFamily: 'Arimo-Regular',
+        textAlign: 'center',
     },
     // footerBtns: {
     //     position: 'absolute',
@@ -377,6 +394,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         zIndex: 999,
         gap: 12,
+        margin:0,
     },
 
     ctaBtn: {
@@ -406,7 +424,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 13,
         fontFamily: 'Arimo-Bold',
-        fontWeight:700
+        fontWeight: 700
     },
     backbtnTop: {
         width: 40,

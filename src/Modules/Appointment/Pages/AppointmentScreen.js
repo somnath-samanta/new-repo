@@ -788,7 +788,7 @@ function AppointmentScreen(props) {
 
     const getPricingDetails = (days) => {
         try {
-            setLoading(true);
+            // setLoading(true);
             let result = get_pricing_details().then(async (response) => {
                 var pricingList = response?.Pricing;
                 let appointmentCancellationPricingObj = []
@@ -817,8 +817,10 @@ function AppointmentScreen(props) {
                     setAppointmentPrice(appPrice);
                     setCancellationPrice(refundPrice);
                     setRefundPrice(cancellationPrice);
+                    // setLoading(false);
                     setTimeout(() => {
-                        setLoading(false);
+                        // setLoading(false);
+                        // hideBottomSheet();
                         setCancellationAppointmentFlag(true);
                     }, 500)
                 }
@@ -916,7 +918,7 @@ function AppointmentScreen(props) {
 
     const handalContactUs = () => {
         setContactUsFlag(true);
-        hideBottomSheet();
+        // hideBottomSheet();
     };
     const hideContactUsFlag = () => {
         setContactUsFlag(false);

@@ -580,63 +580,38 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         <Loader style={styles.loadingCss} loading={pageLoading} />
         <View style={styles.documentTypeSecBox}>
           <View style={[styles.documentTypeSec, styles.documentTypeSecPicker]}>
-            {/* <Picker
-              selectedValue={selectedDocument}
-              onValueChange={(itemValue) => {
-                setSelectedDocument(itemValue);
-                setDocumentType(itemValue);
-              }}
-              style={[styles.picker, { width: "100%", paddingRight: 0, }]}
-              dropdownIconColor="#000" // Custom icon color for iOS
-              themeVariant="light"
-            >
-              <Picker.Item label="Select Document Type" value={""} color="#999" style={{
-                width: "100%", fontSize: 14,
-              }} />
-              {SelectOptionForDocument.map((option) => (
-                <Picker.Item key={option.value} label={option.label} value={option.value} />
-              ))}
-            </Picker> */}
-            {/* <RNPickerSelect
-              onValueChange={(itemValue) => {
-                setSelectedDocument(itemValue);
-                setDocumentType(itemValue);
-              }}
-              value={selectedDocument}
-              items={SelectOptionForDocument}
-              //textInputProps={{multiline: true}} 
-              placeholder={{
-                label: 'Select Document Type',
-                value: null,
-              }}
-              placeholderTextColor="#999"
-              pickerProps={{ numberOfLines: 2 }}
-              style={pickerStyle}
-            /> */}
-            <Dropdown
-              style={[styles.dropdown]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              data={SelectOptionForDocument}
-              labelField="label"
-              valueField="value"
-              placeholder="Select Document Type"
-              value={selectedDocument}
-              onChange={item => {
-                setSelectedDocument(item.value);
-                setDocumentType(item.value);
-              }}
-              maxHeight={200} // adjust based on modal size
-              placeholderTextColor="#333"
-            />
+            <View style={[styles.documentTypeBox, styles.documentTypeBoxLeft]}>
+              <Text>Select Document Type</Text>
+            </View>
+            <View style={[styles.documentTypeBox, styles.documentTypeBoxRight]}>
+              <Dropdown
+                style={[styles.dropdown]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                itemTextStyle={styles.itemTextStyle}
+                itemContainerStyle={styles.itemContainerStyle}
+                data={SelectOptionForDocument}
+                labelField="label"
+                valueField="value"
+                placeholder="Select..."
+                value={selectedDocument}
+                onChange={item => {
+                  setSelectedDocument(item.value);
+                  setDocumentType(item.value);
+                }}
+                maxHeight={200} // adjust based on modal size
+                placeholderTextColor="#333"
+              />
+            </View>
+
           </View>
         </View>
 
         {
           useFor === "ThirdPartyDocument" && selectedDocument === "Investigations" &&
-          <View style={styles.documentTypeSecBox}>
+          <View style={styles.documentTypeSecBoxThirdParty}>
             <Text style={styles.documentTypeSecTxtBox}>Blood tests, X-rays / MRI / other imaging reports, lab tests done by your GP or hospital</Text>
-            <View style={styles.documentTypeSec}>
+            <View style={styles.documentTypeSecc}>
               <View style={[documentNameError ? styles.inputContainermandatory : styles.inputContainer]}>
                 <TextInput
                   style={styles.input}
@@ -857,6 +832,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  documentTypeSecBoxThirdParty:{
+ paddingHorizontal: 20,
+  },
   documentTypeSecTxtBox: {
     // backgroundColor: 'yellow',
     // borderColor:'red',
@@ -876,10 +854,25 @@ const styles = StyleSheet.create({
     width: '100%',
     //backgroundColor: 'pink',
     padding: 0,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  documentTypeBox: {
+    //width:'49%',
+    // backgroundColor:'red'
+
+  },
+  documentTypeBoxLeft: {
+    width: '43%',
+  },
+  documentTypeBoxRight: {
+    width: '57%',
   },
   documentTypeSecPicker: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#000',
   },
   picker: {                // Set the height of the picker
     width: '100%',              // Set the width of the picker
@@ -941,6 +934,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontVariant: '700',
     fontFamily: 'Arimo-Bold',
+    fontWeight:700
 
   },
   photoModalbuttonSubText: {
@@ -1180,7 +1174,7 @@ const styles = StyleSheet.create({
   dateFieldicon: { position: 'absolute', right: 10, top: 7, },
   dropdown: {
     height: 40,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#333',
     borderBottomWidth: 1,
     marginTop: 5,
     width: '100%',
@@ -1194,7 +1188,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
   },
-
+  itemContainerStyle: {
+    paddingVertical: 0,
+    margin: 0,
+    minHeight: 25, // allows text to fit without overlap
+  },
+  itemTextStyle: {
+    fontSize: 14,
+    color: '#000',
+    paddingVertical: 0, // small spacing for readability
+    lineHeight:16,
+  },
 });
 
 

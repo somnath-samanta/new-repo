@@ -959,6 +959,10 @@ function AppointmentScreen(props) {
 
             {
                 webViewFlag || webViewFlagForBookFollowUp ?
+                <>
+                <TouchableOpacity onPress={hideAllWebView} style={[styles.backbtn, {marginLeft: 10}]}>
+                    <FontAwesome6 name="arrow-left-long" size={26} color={Colors.black} />
+                </TouchableOpacity>
                     <WebView
                         source={webViewSourceUrl}
                         mediaPlaybackRequiresUserAction={false}
@@ -967,6 +971,7 @@ function AppointmentScreen(props) {
                         domStorageEnabled={true}
                         onMessage={handleMessage}
                     />
+                </>
                     :
                     <>
 

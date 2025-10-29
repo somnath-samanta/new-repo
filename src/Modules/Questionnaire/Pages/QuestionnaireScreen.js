@@ -60,39 +60,39 @@ const getTotalScore = (doc) => {
     }
 };
 
-const QuestionnaireItem = memo(({ item, index, onSelectDocument }) => {
-    //    console.log(item)
-    return (
-        <View style={[styles.appointmentCard]} key={index}>
+// const QuestionnaireItem = memo(({ item, index, onSelectDocument }) => {
+//     //    console.log(item)
+//     return (
+//         <View style={[styles.appointmentCard]} key={index}>
 
 
-            <View style={styles.rowPractitioner}>
-                <View style={styles.textContainer}>
-                    <View style={styles.textContainerTop}>
-                        <Text style={styles.practitionerName}>
-                            {item.questionnaire.questionnaireName}
-                        </Text>
-                        <Text style={[styles.marginLeftClass, styles.showText]}>
-                            {moment(item.assignedOn, 'YYYY-MM-DD').format('DD MMM. YY')}
-                        </Text>
-                    </View>
-                    <Text style={styles.practitionerSpeciality}>Assigned by : {item.assignedName}</Text>
-                    <View style={[styles.row, styles.timerow]}>
-                        {
-                            item.status === "Incomplete" ?
-                                <Text style={[styles.statusvalue, styles.statusIncomplete]}>{getTotalScore(item.questionnaire.questions) > 0 ? "Partially Complete" : item.status}</Text>
-                                :
-                                <Text style={[styles.statusvalue, styles.statusComplete]}>{item.status}</Text>
-                        }
-                        <TouchableOpacity onPress={() => onSelectDocument(item)} style={styles.questionnaireAction}>
-                            <Text style={styles.questionnaireActionText}>View / Complete</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-        </View>
-    );
-});
+//             <View style={styles.rowPractitioner}>
+//                 <View style={styles.textContainer}>
+//                     <View style={styles.textContainerTop}>
+//                         <Text style={styles.practitionerName}>
+//                             {item.questionnaire.questionnaireName}
+//                         </Text>
+//                         <Text style={[styles.marginLeftClass, styles.showText]}>
+//                             {moment(item.assignedOn, 'YYYY-MM-DD').format('DD MMM. YY')}
+//                         </Text>
+//                     </View>
+//                     <Text style={styles.practitionerSpeciality}>Assigned by : {item.assignedName}</Text>
+//                     <View style={[styles.row, styles.timerow]}>
+//                         {
+//                             item.status === "Incomplete" ?
+//                                 <Text style={[styles.statusvalue, styles.statusIncomplete]}>{getTotalScore(item.questionnaire.questions) > 0 ? "Partially Complete" : item.status}</Text>
+//                                 :
+//                                 <Text style={[styles.statusvalue, styles.statusComplete]}>{item.status}</Text>
+//                         }
+//                         <TouchableOpacity onPress={() => onSelectDocument(item)} style={styles.questionnaireAction}>
+//                             <Text style={styles.questionnaireActionText}>View / Complete</Text>
+//                         </TouchableOpacity>
+//                     </View>
+//                 </View>
+//             </View>
+//         </View>
+//     );
+// });
 
 const renderEmptyComponent = () => {
     return (
@@ -428,9 +428,13 @@ function QuestionnaireScreen(props) {
                         <View style={[styles.row, styles.timerow]}>
                             {
                                 item?.item?.status === "Incomplete" ?
-                                    <Text style={[styles.statusvalue, styles.statusIncomplete]}>{getTotalScore(item?.item?.questionnaire.questions) > 0 ? "Partially Complete" : item?.item?.status}</Text>
+                                
+                                    getTotalScore(item?.item?.questionnaire.questions) > 0 ?
+                                    <Text style={[styles.statusvalue, styles.statusIncomplete]}>Partially Complete</Text>
                                     :
-                                    <Text style={[styles.statusvalue, styles.statusComplete]}>{item?.item?.status}</Text>
+                                    <Text style={[styles.statusvalue, styles.statusPending]}>Pending</Text>
+                                    :
+                                    <Text style={[styles.statusvalue, styles.statusComplete]}>{item?.item?.status === "Incomplete" ? "Pending" : item?.item?.status}</Text>
                             }
                             <TouchableOpacity onPress={() => handleSelectedDocument(item?.item)} style={styles.questionnaireAction}>
                                 <Text style={styles.questionnaireActionText}>View / Complete</Text>

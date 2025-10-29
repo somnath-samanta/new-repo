@@ -865,10 +865,10 @@ const styles = StyleSheet.create({
 
   },
   documentTypeBoxLeft: {
-    width: '47%',
+    width: Platform.OS === 'ios' ? '50%' : '47%',
   },
   documentTypeBoxRight: {
-    width: '52%',
+    width: Platform.OS === 'ios' ? '47%' : '52%',
   },
   documentTypeSecPicker: {
     // borderBottomWidth: 1,

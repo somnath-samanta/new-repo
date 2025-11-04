@@ -323,7 +323,7 @@ function SignupScreen(props) {
             ]}
             onPress={onPress}
         >
-            {value && <Text style={LoginStyle.checkmark}>✓</Text>}
+            {value && <Text allowFontScaling={false} style={LoginStyle.checkmark}>✓</Text>}
         </TouchableOpacity>
     );
 
@@ -360,7 +360,7 @@ function SignupScreen(props) {
                     <View>
                         <Loader loading={loading} /> 
                         <View style={LoginStyle.loginBox}>
-                            <Text style={LoginStyle.loginTxt}>Sign up</Text>
+                            <Text allowFontScaling={false} style={LoginStyle.loginTxt}>Sign up</Text>
                             <View style={LoginStyle.scrollBox}>
                                 <ScrollView ref={scrollViewRef} style={{ flex: 1 }}>
                                     <View style={[LoginStyle.inputContainerBoxesSignUp, LoginStyle.topSpace]}>
@@ -375,7 +375,7 @@ function SignupScreen(props) {
                                                 returnKeyType='done'
                                                 autoCapitalize="none"
                                             />
-                                            {firstnameError != "" ? <Text style={LoginStyle.errorMsg}>{firstnameError}</Text> : null}
+                                            {firstnameError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{firstnameError}</Text> : null}
                                         </View>
                                         <View style={[LoginStyle.inputContainer, LoginStyle.inputContainerSignUp]}>
                                             <TextInput
@@ -388,7 +388,7 @@ function SignupScreen(props) {
                                                 returnKeyType='done'
                                                 autoCapitalize="none"
                                             />
-                                            {surnameError != "" ? <Text style={LoginStyle.errorMsg}>{surnameError}</Text> : null}
+                                            {surnameError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{surnameError}</Text> : null}
                                         </View>
                                     </View>
                                     <View style={LoginStyle.inputContainerBoxesSignUp}>
@@ -396,7 +396,7 @@ function SignupScreen(props) {
                                             <TouchableOpacity onPress={openDatePicker} style={LoginStyle.dateField}>
                                                 {selectedDate ?
                                                     <>
-                                                        <Text style={LoginStyle.dateFieldSec}>
+                                                        <Text allowFontScaling={false} style={LoginStyle.dateFieldSec}>
                                                             {Utility.formatDate(selectedDate)} </Text>
                                                         <TouchableOpacity onPress={clearDate} style={LoginStyle.dateClear}>
                                                             <AntDesign
@@ -407,7 +407,7 @@ function SignupScreen(props) {
                                                         </TouchableOpacity>
                                                     </>
                                                     :
-                                                    <Text style={{ color: Colors.gray99 }}>Date of birth</Text>
+                                                    <Text allowFontScaling={false} style={{ color: Colors.gray99 }}>Date of birth</Text>
                                                 }</TouchableOpacity>
                                             {/* <CommonDatePicker
                                                 open={isDatePickerOpen}
@@ -423,8 +423,8 @@ function SignupScreen(props) {
                                                     size={22}
                                                     color={Colors.secondary}
                                                 /></TouchableOpacity>
-                                            {selectedDate == "" ? <Text style={LoginStyle.errorMsg}>{selectedDateError}</Text> : null}
-                                            {dobError !== "" ? <Text style={LoginStyle.errorMsg}>{dobError}</Text> : null}
+                                            {selectedDate == "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{selectedDateError}</Text> : null}
+                                            {dobError !== "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{dobError}</Text> : null}
                                         </View>
                                         <View style={[LoginStyle.inputContainer, LoginStyle.inputContainerSignUp]}>
                                             <TextInput
@@ -442,7 +442,7 @@ function SignupScreen(props) {
                                                 autoCapitalize="none"
                                                 keyboardType="phone-pad"
                                             />
-                                            {phoneError != "" ? <Text style={LoginStyle.errorMsg}>{phoneError}</Text> : null}
+                                            {phoneError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{phoneError}</Text> : null}
                                         </View>
                                     </View>
                                     <View style={[LoginStyle.inputContainerBoxes, LoginStyle.inputContainerBoxesSignUpDown]}>
@@ -458,11 +458,11 @@ function SignupScreen(props) {
                                                 //onSubmitEditing={() => { loginSubmit() }}
                                                 autoCapitalize="none"
                                             />
-                                            {emailError != "" ? <Text style={LoginStyle.errorMsg}>{emailError}</Text> : null}
+                                            {emailError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{emailError}</Text> : null}
                                         </View>
                                         <View style={[LoginStyle.forgetYourPasswordBox, LoginStyle.PasswordHintBox]}>
                                             <TouchableOpacity style={[LoginStyle.ForgetYourPassword, LoginStyle.HintPassword]} onPress={PasswordHint}>
-                                                <Text style={[LoginStyle.ForgetYourPasswordText, LoginStyle.PasswordHint]}>Password Hints</Text>
+                                                <Text allowFontScaling={false} style={[LoginStyle.ForgetYourPasswordText, LoginStyle.PasswordHint]}>Password Hints</Text>
                                             </TouchableOpacity>
                                         </View>
                                         <View style={LoginStyle.inputContainer}>
@@ -484,7 +484,7 @@ function SignupScreen(props) {
                                                     color={Colors.secondary}
                                                 />
                                             </TouchableOpacity>
-                                            {passwordError != "" ? <Text style={LoginStyle.errorMsg}>{passwordError}</Text> : null}
+                                            {passwordError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{passwordError}</Text> : null}
                                         </View>
                                         <View style={LoginStyle.inputContainer}>
                                             <TextInput
@@ -505,7 +505,7 @@ function SignupScreen(props) {
                                                     color={Colors.secondary}
                                                 />
                                             </TouchableOpacity>
-                                            {confirmpasswordError != "" ? <Text style={LoginStyle.errorMsg}>{confirmpasswordError}</Text> : null}
+                                            {confirmpasswordError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{confirmpasswordError}</Text> : null}
                                         </View>
                                     </View>
                                     {
@@ -514,7 +514,7 @@ function SignupScreen(props) {
                                             const layout = event.nativeEvent.layout;
                                             setAdditionalInfoLayoutY(layout.y);
                                         }}>
-                                            <Text style={LoginStyle.additionalheadingTxt}>Additional Guardian Information</Text>
+                                            <Text allowFontScaling={false} style={LoginStyle.additionalheadingTxt}>Additional Guardian Information</Text>
                                             <View style={[LoginStyle.inputContainerBoxesSignUp]}>
                                                 <View style={[LoginStyle.inputContainer, LoginStyle.inputContainerSignUp]}>
                                                     <TextInput
@@ -527,7 +527,7 @@ function SignupScreen(props) {
                                                         returnKeyType='done'
                                                         autoCapitalize="none"
                                                     />
-                                                    {guardianFirstNameError !== "" ? <Text style={LoginStyle.errorMsg}>{guardianFirstNameError}</Text> : null}
+                                                    {guardianFirstNameError !== "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{guardianFirstNameError}</Text> : null}
                                                 </View>
                                                 <View style={[LoginStyle.inputContainer, LoginStyle.inputContainerSignUp]}>
                                                     <TextInput
@@ -540,7 +540,7 @@ function SignupScreen(props) {
                                                         returnKeyType='done'
                                                         autoCapitalize="none"
                                                     />
-                                                    {guardianSurnameError !== "" ? <Text style={LoginStyle.errorMsg}>{guardianSurnameError}</Text> : null}
+                                                    {guardianSurnameError !== "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{guardianSurnameError}</Text> : null}
                                                 </View>
                                             </View>
                                             <View style={LoginStyle.pickerContainer}
@@ -565,7 +565,7 @@ function SignupScreen(props) {
                                                     pickerProps={{ numberOfLines: 2 }}
                                                     style={pickerStyle}
                                                 />
-                                                {relationtoPatientError !== "" ? <Text style={LoginStyle.errorMsg}>{relationtoPatientError}</Text> : null}
+                                                {relationtoPatientError !== "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{relationtoPatientError}</Text> : null}
                                             </View>
 
                                         </View>
@@ -584,7 +584,7 @@ function SignupScreen(props) {
                                         }
                                         }
                                     />
-                                    <Text style={LoginStyle.checkboxlabel}>Yes, I would like to hear about offer & health news.</Text>
+                                    <Text allowFontScaling={false} style={LoginStyle.checkboxlabel}>Yes, I would like to hear about offer & health news.</Text>
                                 </View>
                                 <View style={LoginStyle.checkboxContainer}>
                                     <CustomCheckbox
@@ -594,19 +594,19 @@ function SignupScreen(props) {
                                         }
                                         }
                                     />
-                                    <Text style={LoginStyle.checkboxlabel}>I acknowledge that I have read and agree to the  Terms & Conditions and the  Privacy Policy .</Text>
+                                    <Text allowFontScaling={false} style={LoginStyle.checkboxlabel}>I acknowledge that I have read and agree to the  Terms & Conditions and the  Privacy Policy .</Text>
                                 </View>
                             </View>
                             <View style={[LoginStyle.loginBtnInner, LoginStyle.loginBtnInnerSignup]}>
                                 <TouchableOpacity style={LoginStyle.loginButton} onPress={signupSubmit}>
-                                    <Text style={LoginStyle.loginButtonText}>Sign up</Text>
+                                    <Text allowFontScaling={false} style={LoginStyle.loginButtonText}>Sign up</Text>
                                 </TouchableOpacity>
 
                             </View>
                             <View style={[LoginStyle.signUpRow, LoginStyle.signUpRowForSignUp]}>
-                                <Text style={LoginStyle.signUpText}>
+                                <Text allowFontScaling={false} style={LoginStyle.signUpText}>
                                     Want to go back?{' '}
-                                    <Text style={LoginStyle.signUpLink} onPress={gotoLoginPage}>
+                                    <Text allowFontScaling={false} style={LoginStyle.signUpLink} onPress={gotoLoginPage}>
                                         Login
                                     </Text>
                                 </Text>
@@ -624,13 +624,13 @@ function SignupScreen(props) {
                         headerTitle='Password Hints'
                         body={
                             <View style={LoginStyle.passwordHintContainer}>
-                                <Text style={LoginStyle.hintTextInn}>* Minimum length, which must be at least 6 characters</Text>
-                                <Text style={LoginStyle.hintTextInn}>* Requires numbers</Text>
-                                <Text style={LoginStyle.hintTextInn}>
+                                <Text allowFontScaling={false} style={LoginStyle.hintTextInn}>* Minimum length, which must be at least 6 characters</Text>
+                                <Text allowFontScaling={false} style={LoginStyle.hintTextInn}>* Requires numbers</Text>
+                                <Text allowFontScaling={false} style={LoginStyle.hintTextInn}>
                                     * Requires a special character from this set: {specialChars}
                                 </Text>
-                                <Text style={LoginStyle.hintTextInn}>* Requires uppercase letters</Text>
-                                <Text style={LoginStyle.hintTextInn}>* Requires lowercase letters</Text>
+                                <Text allowFontScaling={false} style={LoginStyle.hintTextInn}>* Requires uppercase letters</Text>
+                                <Text allowFontScaling={false} style={LoginStyle.hintTextInn}>* Requires lowercase letters</Text>
                             </View>
                         }
 

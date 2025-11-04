@@ -584,7 +584,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
               <Text allowFontScaling={false}>Select Document Type</Text>
             </View>
             <View style={[styles.documentTypeBox, styles.documentTypeBoxRight]}>
-              <Dropdown
+              {/* <Dropdown
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -601,7 +601,60 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                 }}
                 maxHeight={200} // adjust based on modal size
                 placeholderTextColor="#333"
-              />
+              /> */}
+             <Dropdown
+  style={styles.dropdown}
+  data={SelectOptionForDocument}
+  labelField="label"
+  valueField="value"
+  placeholder="Select..."
+  value={selectedDocument}
+  onChange={item => {
+    setSelectedDocument(item.value);
+    setDocumentType(item.value);
+  }}
+  maxHeight={200}
+  placeholderTextColor="#333"
+  itemContainerStyle={styles.itemContainerStyle}
+  
+  renderItem={item => (
+    <View style={{ paddingVertical: 6 }}>
+      <Text
+        allowFontScaling={false}
+        maxFontSizeMultiplier={1}
+        style={styles.itemTextStyle}
+        numberOfLines={1}>
+        {item.label}
+      </Text>
+    </View>
+  )}
+  
+  renderSelectedItem={item => (
+    <View style={{ flex: 1, justifyContent: 'center' }}>
+      <Text
+        allowFontScaling={false}
+        maxFontSizeMultiplier={1}
+        style={styles.selectedTextStyle}
+        numberOfLines={1}>
+        {item.label}
+      </Text>
+    </View>
+  )}
+
+  renderPlaceholder={() => (
+    <View style={{ flex: 1, justifyContent: 'center' }}>
+      <Text
+        allowFontScaling={false}
+        maxFontSizeMultiplier={1}
+        style={styles.placeholderStyle}
+        numberOfLines={1}>
+        Select...
+      </Text>
+    </View>
+  )}
+/>
+
+
             </View>
 
           </View>
@@ -684,6 +737,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
               <View style={[organisationNameError ? styles.inputContainermandatory : styles.inputContainer]}>
                 <TextInput
                   style={styles.input}
+                  allowFontScaling={false}
                   value={organisationName}
                   onChangeText={(text) => {
                     setOrganisationName(text),
@@ -834,8 +888,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  documentTypeSecBoxThirdParty:{
- paddingHorizontal: 20,
+  documentTypeSecBoxThirdParty: {
+    paddingHorizontal: 20,
   },
   documentTypeSecTxtBox: {
     // backgroundColor: 'yellow',
@@ -936,7 +990,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontVariant: '700',
     fontFamily: 'Arimo-Bold',
-    fontWeight:700
+    fontWeight: 700
 
   },
   photoModalbuttonSubText: {
@@ -1194,12 +1248,14 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     margin: 0,
     minHeight: 25, // allows text to fit without overlap
+    padding: 5,
   },
   itemTextStyle: {
     fontSize: 14,
     color: '#000',
-    paddingVertical: 0, // small spacing for readability
-    lineHeight:16,
+    lineHeight: 16,
+    // backgroundColor:'red',
+    padding: 5,
   },
 });
 

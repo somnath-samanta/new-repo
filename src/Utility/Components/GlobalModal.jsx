@@ -38,7 +38,7 @@ const GlobalModal = ({
                             <View style={CommonStyle.modalHeader}>
                                 {showHeaderTitle && (
                                     typeof headerTitle === 'string' ? (
-                                        <Text style={CommonStyle.modalHeading}>{headerTitle}</Text>
+                                        <Text allowFontScaling={false} style={CommonStyle.modalHeading}>{headerTitle}</Text>
                                     ) : (
                                         <View style={CommonStyle.modalHeading}>{headerTitle}</View>
                                     )
@@ -59,12 +59,12 @@ const GlobalModal = ({
                             <View style={CommonStyle.modalFooter}>
                                 {cancelBtnShow && (
                                     <TouchableOpacity activeOpacity={1} style={CommonStyle.modalCancelBox} onPress={onCancel}>
-                                        <Text style={CommonStyle.modalCancelBtn}>{cancelBtnLabel}</Text>
+                                        <Text allowFontScaling={false} style={CommonStyle.modalCancelBtn}>{cancelBtnLabel}</Text>
                                     </TouchableOpacity>
                                 )}
                                 {saveBtnShow && (
                                     <TouchableOpacity activeOpacity={1} style={CommonStyle.modalSaveBox} onPress={onSave}>
-                                        <Text style={CommonStyle.modalOkBtn}>{saveBtnLabel}</Text>
+                                        <Text allowFontScaling={false} style={CommonStyle.modalOkBtn}>{saveBtnLabel}</Text>
                                     </TouchableOpacity>
                                 )}
                             </View>

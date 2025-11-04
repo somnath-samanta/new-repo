@@ -99,10 +99,10 @@ const SwitchOrganizationModalContent = ({ organizationChangeSuccess }) => {
                                     />
                                 </View>
                                 <View style={CommonStyle.orgTextContainer}>
-                                    <Text style={CommonStyle.orgNameText}>{hotel.hotel_name}</Text>
+                                    <Text allowFontScaling={false} style={CommonStyle.orgNameText}>{hotel.hotel_name}</Text>
                                     <View style={CommonStyle.orgLocationContainer}>
                                         <Icon name="map-pin" size={14} color={Colors.gray99} />
-                                        <Text style={CommonStyle.orgLocation}>
+                                        <Text allowFontScaling={false} style={CommonStyle.orgLocation}>
                                             {`${hotel.address1 || ''}${hotel.address1 && hotel.address2 ? ', ' : ''}${hotel.address2 || ''}`}
                                         </Text>
                                     </View>

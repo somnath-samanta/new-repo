@@ -27,9 +27,9 @@ const CustomPopup = ({
                 <View style={[CommonStyle.customPopupBody, style = { width: popupDimensions }]}>
                     <TouchableWithoutFeedback>
                         <View style={CommonStyle.customPopupContainer}>
-                            <Text style={CommonStyle.customPopupContentText}>{firstContentBody}</Text>
+                            <Text allowFontScaling={false} style={CommonStyle.customPopupContentText}>{firstContentBody}</Text>
                             {secondContentShow &&
-                                <Text style={CommonStyle.customPopupSecondContentText}>{secondContentBody}</Text>
+                                <Text allowFontScaling={false} style={CommonStyle.customPopupSecondContentText}>{secondContentBody}</Text>
                             }
                         </View>
                     </TouchableWithoutFeedback>

@@ -171,13 +171,13 @@ function HealthParameter() {
                 source={item.icon}
                 style={styles.iconCircle}
             />
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardValue}>
-                <Text style={styles.cardValueNumber}>{item.value}</Text>
-                {item.unit ? <Text style={styles.cardValueUnit}>{item.unit}</Text> : null}
+            <Text allowFontScaling={false} style={styles.cardTitle}>{item.title}</Text>
+            <Text allowFontScaling={false} style={styles.cardValue}>
+                <Text allowFontScaling={false} style={styles.cardValueNumber}>{item.value}</Text>
+                {item.unit ? <Text allowFontScaling={false} style={styles.cardValueUnit}>{item.unit}</Text> : null}
             </Text>
-            <Text style={styles.lastUpdateLabel}>Last Update:</Text>
-            <Text style={styles.lastUpdateText}>{item.lastUpdate}</Text>
+            <Text allowFontScaling={false} style={styles.lastUpdateLabel}>Last Update:</Text>
+            <Text allowFontScaling={false} style={styles.lastUpdateText}>{item.lastUpdate}</Text>
         </View>
     );
 
@@ -242,10 +242,10 @@ function HealthParameter() {
                 </View>
                 <View style={styles.footerBtns}>
                     <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onViewMonitoring}>
-                        <Text style={styles.ctaText}>View Health Monitoring</Text>
+                        <Text allowFontScaling={false} style={styles.ctaText}>View Health Monitoring</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.ctaBtn, styles.ctaSecondary]} onPress={onAddNewRecord}>
-                        <Text style={styles.ctaText}>Add New Record</Text>
+                        <Text allowFontScaling={false} style={styles.ctaText}>Add New Record</Text>
                     </TouchableOpacity>
                 </View>
             </View>

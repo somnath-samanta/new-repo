@@ -97,7 +97,7 @@ const getTotalScore = (doc) => {
 const renderEmptyComponent = () => {
     return (
         <View style={{ padding: 20, alignItems: 'center' }}>
-            <Text style={styles.norecordFound}>No records found</Text>
+            <Text allowFontScaling={false} style={styles.norecordFound}>No records found</Text>
         </View>
     );
 };
@@ -417,27 +417,27 @@ function QuestionnaireScreen(props) {
                 <View style={styles.rowPractitioner}>
                     <View style={styles.textContainer}>
                         <View style={styles.textContainerTop}>
-                            <Text style={styles.practitionerName}>
+                            <Text allowFontScaling={false} style={styles.practitionerName}>
                                 {item?.item?.questionnaire.questionnaireName}
                             </Text>
-                            <Text style={[styles.marginLeftClass, styles.showText]}>
+                            <Text allowFontScaling={false} style={[styles.marginLeftClass, styles.showText]}>
                                 {moment(item?.item?.assignedOn, 'YYYY-MM-DD').format('DD MMM. YY')}
                             </Text>
                         </View>
-                        <Text style={styles.practitionerSpeciality}>Assigned by : {item?.item?.assignedName}</Text>
+                        <Text allowFontScaling={false} style={styles.practitionerSpeciality}>Assigned by : {item?.item?.assignedName}</Text>
                         <View style={[styles.row, styles.timerow]}>
                             {
                                 item?.item?.status === "Incomplete" ?
 
                                     getTotalScore(item?.item?.questionnaire.questions) > 0 ?
-                                        <Text style={[styles.statusvalue, styles.statusIncomplete]}>Partially Complete</Text>
+                                        <Text allowFontScaling={false} style={[styles.statusvalue, styles.statusIncomplete]}>Partially Complete</Text>
                                         :
-                                        <Text style={[styles.statusvalue, styles.statusPending]}>Pending</Text>
+                                        <Text allowFontScaling={false} style={[styles.statusvalue, styles.statusPending]}>Pending</Text>
                                     :
-                                    <Text style={[styles.statusvalue, styles.statusComplete]}>{item?.item?.status === "Incomplete" ? "Pending" : item?.item?.status}</Text>
+                                    <Text allowFontScaling={false} style={[styles.statusvalue, styles.statusComplete]}>{item?.item?.status === "Incomplete" ? "Pending" : item?.item?.status}</Text>
                             }
                             <TouchableOpacity onPress={() => handleSelectedDocument(item?.item)} style={styles.questionnaireAction}>
-                                <Text style={styles.questionnaireActionText}>View / Complete</Text>
+                                <Text allowFontScaling={false} style={styles.questionnaireActionText}>View / Complete</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -615,7 +615,7 @@ function QuestionnaireScreen(props) {
                                         source={require('../../../Utility/Public/images/filter.png')}
                                         style={styles.filtericon}
                                     />
-                                    <Text style={styles.searchBoXTxt}>Filters</Text>
+                                    <Text allowFontScaling={false} style={styles.searchBoXTxt}>Filters</Text>
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity style={styles.refreshBtn} onPress={refreshBtnFn}>

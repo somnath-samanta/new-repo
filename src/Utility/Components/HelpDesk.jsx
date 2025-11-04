@@ -20,21 +20,21 @@ const HelpDesk = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPay
         <SafeAreaView style={styles.Container}>
             <View style={styles.footerRow}>
                 <View style={styles.footerBox}>
-                    <View style={styles.footerBoxSingle}><Text style={styles.footerBoxSingleTxt}>Admin Contact</Text></View>
+                    <View style={styles.footerBoxSingle}><Text allowFontScaling={false} style={styles.footerBoxSingleTxt}>Admin Contact</Text></View>
                     <View style={styles.footerBoxMultiple}>
                         <TouchableOpacity
                             style={styles.footerBoxMultipleBox}
                             onPress={() => Linking.openURL('tel:+442039277699')}
                         >
                             <View style={styles.iconBox}><Ionicons name="call" size={16} color="#fff" /></View>
-                            <Text style={styles.footerBoxMultipleBoxText}> +44 20 3927 7699</Text>
+                            <Text allowFontScaling={false} style={styles.footerBoxMultipleBoxText}> +44 20 3927 7699</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.footerBoxMultipleBox}
                             onPress={openWhatsApp}
                         >
                             <View style={styles.iconBox}><Ionicons name="logo-whatsapp" size={18} color="#fff" /></View>
-                            <Text style={styles.footerBoxMultipleBoxText}> +44 75115 46374</Text>
+                            <Text allowFontScaling={false} style={styles.footerBoxMultipleBoxText}> +44 75115 46374</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.footerBoxSingles}>
@@ -43,7 +43,7 @@ const HelpDesk = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPay
                             onPress={() => Linking.openURL('mailto:clinicadmin@oaktreeconnect.co.uk')}
                         >
                             <View style={[styles.iconBox, styles.emailiconBox]}><EvilIcons name="envelope" size={24} color="#fff" /></View>
-                            <Text style={styles.footerBoxMultipleBoxText}>clinicadmin@oaktreeconnect.co.uk</Text>
+                            <Text allowFontScaling={false} style={styles.footerBoxMultipleBoxText}>clinicadmin@oaktreeconnect.co.uk</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

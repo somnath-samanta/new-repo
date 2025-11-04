@@ -144,7 +144,7 @@ const CustomHeader = ({ pageName, switchOrganizationSheet, refreshBtnFn, viewDoc
         </Modal>
       )}
       {/* }  */}
-      <Text style={CommonStyle.pageTitle}>
+      <Text allowFontScaling={false} style={CommonStyle.pageTitle}>
         {formatPageName(pageName) === "Appointment"
           ? "My Appointments"
           : formatPageName(pageName) === "Third Party Document"

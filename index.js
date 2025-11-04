@@ -2,35 +2,41 @@
  * @format
  */
 
-import { AppRegistry } from 'react-native';
+import { AppRegistry, Text, TextInput, AccessibilityInfo } from 'react-native';
 import App from './App';
 import { name as appName } from './app.json';
 import { Provider } from 'react-redux';
 import { store, persistor } from './src/Store/configureStore';
-
-import React, { useState, useEffect, useRef, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import 'react-native-url-polyfill/auto';
-import 'whatwg-fetch'; // or: import 'cross-fetch/polyfill';
+import 'whatwg-fetch';
 import FlashMessage from "react-native-flash-message";
 import { PersistGate } from 'redux-persist/integration/react';
 import {
     configureReanimatedLogger,
     ReanimatedLogLevel,
-  } from 'react-native-reanimated';
-
+} from 'react-native-reanimated';
 import { setupGlobalErrorHandlers } from './src/Utility/GlobalErrorHandler';
 
+// Disable unnecessary font scaling globally
+if (Text.defaultProps == null) Text.defaultProps = {};
+if (TextInput.defaultProps == null) TextInput.defaultProps = {};
+Text.defaultProps.allowFontScaling = false;
+TextInput.defaultProps.allowFontScaling = false;
+Text.defaultProps.maxFontSizeMultiplier = 1;
+TextInput.defaultProps.maxFontSizeMultiplier = 1;
 
+// Optional accessibility safeguard
+AccessibilityInfo.setAccessibilityFocus = () => {}; // helps prevent UI scaling issues
 
-// This is the default configuration
+// Optional: configure Reanimated logger
 configureReanimatedLogger({
     level: ReanimatedLogLevel.warn,
-    strict: true, // Reanimated runs in strict mode by default
-  });
+    strict: true,
+});
 
 setupGlobalErrorHandlers();
 
-//console.log("store===", store)
 const RNRedux = () => (
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -40,8 +46,6 @@ const RNRedux = () => (
         </PersistGate>
         <FlashMessage position="top" />
     </Provider>
-)
+);
 
 AppRegistry.registerComponent(appName, () => RNRedux);
-
-

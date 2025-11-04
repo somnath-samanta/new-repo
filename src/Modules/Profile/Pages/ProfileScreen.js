@@ -77,20 +77,20 @@ const ProfileScreen = () => {
                 color={Colors.primary}
                 style={theme.userIcon}
               />
-              <Text style={theme.userNameRow}>
+              <Text allowFontScaling={false} style={theme.userNameRow}>
                 {reduxAuthJson.currentUserDetails.firstName}{' '}
                 {reduxAuthJson.currentUserDetails.lastName}
               </Text>
             </View>
             <View style={theme.contentContainerRow}>
               <Icon name="mail" size={20} color={Colors.primary} />
-              <Text style={theme.otherDetailsRow}>
+              <Text allowFontScaling={false} style={theme.otherDetailsRow}>
                 {reduxAuthJson.currentUserDetails.email}
               </Text>
             </View>
             <View style={theme.contentContainerRow}>
               <Icon name="phone-call" size={20} color={Colors.primary} />
-              <Text style={theme.otherDetailsRow}>
+              <Text allowFontScaling={false} style={theme.otherDetailsRow}>
                 {reduxAuthJson.currentUserDetails.phoneNumber}
               </Text>
             </View>
@@ -115,6 +115,7 @@ const ProfileScreen = () => {
                 fontSize: 16,
                 fontWeight: 'bold',
               }}
+              allowFontScaling={false}
             >
               Delete Account
             </Text>
@@ -158,6 +159,7 @@ const ProfileScreen = () => {
                 marginBottom: 10,
                 color: '#ff4444',
               }}
+              allowFontScaling={false}
             >
               WARNING
             </Text>
@@ -169,6 +171,7 @@ const ProfileScreen = () => {
                 lineHeight: 14,
                 marginBottom: 5,
               }}
+              allowFontScaling={false}
             >
               Please note that deleting your account will deactivate your profile across the entire Oaktree Connect platform. You will lose access to your documents and appointments from any device.
             </Text>
@@ -180,16 +183,18 @@ const ProfileScreen = () => {
                 lineHeight: 14,
                 marginBottom: 25,
               }}
+              allowFontScaling={false}
             >
               Once deactivated you will be required to submit a request to{' '}
               <Text
+              allowFontScaling={false}
                 style={{ color: '#1e90ff' }}
                 onPress={() => Linking.openURL('mailto:clinicadmin@oaktreeconnect.co.uk')}
               >
                 clinicadmin@oaktreeconnect.co.uk
               </Text>{' '}
               if you wish to reactivate your account.{' '}
-              <Text style={{ fontWeight: 'bold' }}>
+              <Text allowFontScaling={false} style={{ fontWeight: 'bold' }}>
                 Processing your reactivation may require a minimum of five working days.
               </Text>
             </Text>
@@ -212,6 +217,7 @@ const ProfileScreen = () => {
                 onPress={() => setShowModal(false)}
               >
                 <Text
+                allowFontScaling={false}
                   style={{
                     color: '#333',
                     fontSize: 15,
@@ -234,6 +240,7 @@ const ProfileScreen = () => {
                 onPress={confirmDeleteAccount}
               >
                 <Text
+                allowFontScaling={false}
                   style={{
                     color: '#fff',
                     fontSize: 15,

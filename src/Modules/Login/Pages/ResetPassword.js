@@ -179,7 +179,7 @@ function ResetPassword(props) {
                     <View>
                         <Loader loading={loading} /> 
                         <View style={LoginStyle.loginBox}>
-                            <Text style={LoginStyle.loginTxt}>Reset Password</Text>
+                            <Text allowFontScaling={false} style={LoginStyle.loginTxt}>Reset Password</Text>
                             <View style={LoginStyle.inputContainerBoxes}>
                                 <View style={LoginStyle.inputContainer}>
                                     <TextInput
@@ -193,11 +193,11 @@ function ResetPassword(props) {
                                         //onSubmitEditing={() => { loginSubmit() }}
                                         autoCapitalize="none"
                                     />
-                                    {activationCodeError != "" ? <Text style={LoginStyle.errorMsg}>{activationCodeError}</Text> : null}
+                                    {activationCodeError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{activationCodeError}</Text> : null}
                                 </View>
                                 <View style={[LoginStyle.forgetYourPasswordBox, LoginStyle.PasswordHintBox]}>
                                     <TouchableOpacity style={[LoginStyle.ForgetYourPassword, LoginStyle.HintPassword]} onPress={PasswordHint}>
-                                        <Text style={[LoginStyle.ForgetYourPasswordText, LoginStyle.PasswordHint]}>Password Hints</Text>
+                                        <Text allowFontScaling={false} style={[LoginStyle.ForgetYourPasswordText, LoginStyle.PasswordHint]}>Password Hints</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={LoginStyle.inputContainer}>
@@ -219,7 +219,7 @@ function ResetPassword(props) {
                                             color={Colors.secondary}
                                         />
                                     </TouchableOpacity>
-                                    {passwordError != "" ? <Text style={LoginStyle.errorMsg}>{passwordError}</Text> : null}
+                                    {passwordError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{passwordError}</Text> : null}
                                 </View>
                                 <View style={LoginStyle.inputContainer}>
                                     <TextInput
@@ -240,12 +240,12 @@ function ResetPassword(props) {
                                             color={Colors.secondary}
                                         />
                                     </TouchableOpacity>
-                                    {confirmpasswordError != "" ? <Text style={LoginStyle.errorMsg}>{confirmpasswordError}</Text> : null}
+                                    {confirmpasswordError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{confirmpasswordError}</Text> : null}
                                 </View>
                             </View>
                             <View style={[LoginStyle.loginBtnInner, LoginStyle.sendLink]}>
                                 <TouchableOpacity style={[LoginStyle.loginButton, LoginStyle.gotologinButton]} onPress={changePasswordFn}>
-                                    <Text style={[LoginStyle.loginButtonText, LoginStyle.gotologinButtonText]}>Change Password</Text>
+                                    <Text allowFontScaling={false} style={[LoginStyle.loginButtonText, LoginStyle.gotologinButtonText]}>Change Password</Text>
                                 </TouchableOpacity>
 
                             </View>
@@ -262,13 +262,13 @@ function ResetPassword(props) {
                     headerTitle='Password Hints'
                     body={
                         <View style={LoginStyle.passwordHintContainer}>
-                            <Text style={LoginStyle.hintTextInn}>* Minimum length, which must be at least 6 characters</Text>
-                            <Text style={LoginStyle.hintTextInn}>* Requires numbers</Text>
-                            <Text style={LoginStyle.hintTextInn}>
+                            <Text allowFontScaling={false} style={LoginStyle.hintTextInn}>* Minimum length, which must be at least 6 characters</Text>
+                            <Text allowFontScaling={false} style={LoginStyle.hintTextInn}>* Requires numbers</Text>
+                            <Text allowFontScaling={false} style={LoginStyle.hintTextInn}>
                                 * Requires a special character from this set: {specialChars}
                             </Text>
-                            <Text style={LoginStyle.hintTextInn}>* Requires uppercase letters</Text>
-                            <Text style={LoginStyle.hintTextInn}>* Requires lowercase letters</Text>
+                            <Text allowFontScaling={false} style={LoginStyle.hintTextInn}>* Requires uppercase letters</Text>
+                            <Text allowFontScaling={false} style={LoginStyle.hintTextInn}>* Requires lowercase letters</Text>
                         </View>
                     }
 

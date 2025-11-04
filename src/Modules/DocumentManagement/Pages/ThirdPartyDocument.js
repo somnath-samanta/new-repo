@@ -65,7 +65,7 @@ import SearchBottomSheetDesign from '../../../Utility/Components/SearchBottomShe
 const renderEmptyComponent = () => {
     return (
         <View style={{ padding: 20, alignItems: 'center' }}>
-            <Text style={styles.norecordFound}>No records found</Text>
+            <Text allowFontScaling={false} style={styles.norecordFound}>No records found</Text>
         </View>
     );
 };
@@ -245,12 +245,12 @@ function ThirdPartyDocument({ props }) {
                         <View style={styles.leftView}>
                             <View style={styles.rowPractitioner}>
                                 <View style={styles.textContainer}>
-                                    <Text style={styles.practitionerName}>Name : {item?.item?.documentName}</Text>
-                                    <Text style={[styles.marginLeftClass, styles.showText]}>Upload date : {moment(item?.item?.createdOn, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
+                                    <Text allowFontScaling={false} style={styles.practitionerName}>Name : {item?.item?.documentName}</Text>
+                                    <Text allowFontScaling={false} style={[styles.marginLeftClass, styles.showText]}>Upload date : {moment(item?.item?.createdOn, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
                                     {item?.item?.documentType.toString().toLowerCase() !== "other" &&
-                                        <Text style={[styles.marginLeftClass, styles.showText]}>Reported date : {moment(item?.item?.report_date, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
+                                        <Text allowFontScaling={false} style={[styles.marginLeftClass, styles.showText]}>Reported date : {moment(item?.item?.report_date, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
                                     }
-                                    <Text style={styles.practitionerSpeciality}>{item?.item?.documentType} from</Text>
+                                    <Text allowFontScaling={false} style={styles.practitionerSpeciality}>{item?.item?.documentType} from</Text>
                                 </View>
                             </View>
                         </View>
@@ -260,12 +260,12 @@ function ThirdPartyDocument({ props }) {
                                     ["jpg", "jpeg", "png"].includes(item?.item?.documentUrl.split(".").pop().toLowerCase()) ?
                                         <TouchableOpacity style={styles.eyeButton} onPress={() => handalShowDocument(item.item)}>
                                             <Ionicons name="eye-outline" size={18} color="#fff" />
-                                            <Text style={styles.eyeButtonTxt}>View</Text>
+                                            <Text allowFontScaling={false} style={styles.eyeButtonTxt}>View</Text>
                                         </TouchableOpacity>
                                         :
                                         <TouchableOpacity style={styles.eyeButton} onPress={() => downloadPDFLink(item.item)}>
                                             <Ionicons name="eye-outline" size={18} color="#fff" />
-                                            <Text style={styles.eyeButtonTxt}>View</Text>
+                                            <Text allowFontScaling={false} style={styles.eyeButtonTxt}>View</Text>
                                         </TouchableOpacity>
                                 }
                                 {/* <TouchableOpacity 
@@ -561,7 +561,7 @@ function ThirdPartyDocument({ props }) {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.searchBoX} onPress={() => handleFilter()} >
                         <Image source={require('../../../Utility/Public/images/filter.png')} style={styles.filtericon} />
-                        <Text style={styles.searchBoXTxt}>Filters</Text>
+                        <Text allowFontScaling={false} style={styles.searchBoXTxt}>Filters</Text>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.refreshBtn}
@@ -573,11 +573,11 @@ function ThirdPartyDocument({ props }) {
             <View style={styles.uploadButtonBox}>
                 <TouchableOpacity style={styles.uploadButton} onPress={() => handleUpload()}>
                     <View style={styles.buttonContent}>
-                        <Text style={styles.buttonInnText}> Upload Your clinical Documents and Reports</Text>
+                        <Text allowFontScaling={false} style={styles.buttonInnText}> Upload Your clinical Documents and Reports</Text>
                         <View style={styles.uploadIconContainer}>
                             <Feather name="upload" size={40} color="#fff" style={styles.uploadIcon} />
                         </View>
-                        <Text style={styles.hintTxt}>You can upload PDF/Word documents or
+                        <Text allowFontScaling={false} style={styles.hintTxt}>You can upload PDF/Word documents or
                             PNG/JPEG files with max 5MB. </Text>
                     </View>
                 </TouchableOpacity>
@@ -607,7 +607,7 @@ function ThirdPartyDocument({ props }) {
                 header={true}
                 headerTitle={
                     <View >
-                        <Text style={styles.uploadDocumentTxt}>Upload Document</Text>
+                        <Text allowFontScaling={false} style={styles.uploadDocumentTxt}>Upload Document</Text>
 
                     </View>
                 }
@@ -633,14 +633,14 @@ function ThirdPartyDocument({ props }) {
                         <View style={[styles.imgmodalContent]}>
                             {errorFlag ?
                                 <View style={styles.noImageContainer}>
-                                    <Text style={styles.messageTxt}>Image not found or cannot be loaded.</Text>
+                                    <Text allowFontScaling={false} style={styles.messageTxt}>Image not found or cannot be loaded.</Text>
                                 </View>
                                 :
                                 <>
                                     {imageLoading && (
                                         <View style={styles.imageLoadingContainer}>
                                             <ActivityIndicator size="large" color="#24ad91" />
-                                            <Text style={styles.loadingText}>Loading Document...</Text>
+                                            <Text allowFontScaling={false} style={styles.loadingText}>Loading Document...</Text>
                                         </View>
                                     )}
                                     <Image
@@ -673,7 +673,7 @@ function ThirdPartyDocument({ props }) {
                                     onPress={() => setImageShowFlag(false)}
                                 >
                                     <Ionicons name="close-circle-outline" size={18} color="#fff" />
-                                    <Text style={styles.eyeButtonTxt}>Close</Text>
+                                    <Text allowFontScaling={false} style={styles.eyeButtonTxt}>Close</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
@@ -685,7 +685,7 @@ function ThirdPartyDocument({ props }) {
                                     disabled={isDownloading}
                                 >
                                     <Ionicons name="download-outline" size={18} color="#fff" />
-                                    <Text style={styles.eyeButtonTxt}>
+                                    <Text allowFontScaling={false} style={styles.eyeButtonTxt}>
                                         {isDownloading ? 'Downloading...' : 'Download'}
                                     </Text>
                                 </TouchableOpacity>
@@ -737,7 +737,7 @@ function ThirdPartyDocument({ props }) {
                                         {webViewLoading && (
                                             <View style={styles.webViewLoadingContainer}>
                                                 <ActivityIndicator size="large" color="#24ad91" />
-                                                <Text style={styles.loadingText}>Loading document...</Text>
+                                                <Text allowFontScaling={false} style={styles.loadingText}>Loading document...</Text>
                                             </View>
                                         )}
                                     </>
@@ -749,7 +749,7 @@ function ThirdPartyDocument({ props }) {
                                         onPress={() => modalColseWevview()}
                                     >
                                         <Ionicons name="close-circle-outline" size={18} color="#fff" />
-                                        <Text style={styles.eyeButtonTxt}>Close</Text>
+                                        <Text allowFontScaling={false} style={styles.eyeButtonTxt}>Close</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[
@@ -761,7 +761,7 @@ function ThirdPartyDocument({ props }) {
                                         disabled={isDownloading}
                                     >
                                         <Ionicons name="download-outline" size={18} color="#fff" />
-                                        <Text style={styles.eyeButtonTxt}>
+                                        <Text allowFontScaling={false} style={styles.eyeButtonTxt}>
                                             {isDownloading ? 'Downloading...' : 'Download'}
                                         </Text>
                                     </TouchableOpacity>

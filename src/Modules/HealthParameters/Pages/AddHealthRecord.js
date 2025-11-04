@@ -352,7 +352,7 @@ function AddHealthRecord() {
   const SectionHeader = ({ title, image }) => (
     <View style={styles.sectionHeader}>
       <Image source={image} style={{ width: 40, height: 40, resizeMode: 'contain' }} />
-      <Text style={styles.sectionTitle}>{title}</Text>
+      <Text allowFontScaling={false} style={styles.sectionTitle}>{title}</Text>
     </View>
   );
 
@@ -400,17 +400,17 @@ function AddHealthRecord() {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.formTitle}>Record your physical health parameters here</Text>
+          <Text allowFontScaling={false} style={styles.formTitle}>Record your physical health parameters here</Text>
 
           <View style={styles.unitToggleRow}>
-            <Text style={styles.unitLabel}>Imperial</Text>
+            <Text allowFontScaling={false} style={styles.unitLabel}>Imperial</Text>
             <Switch
               value={isMetric}
               onValueChange={setIsMetric}
               trackColor={{ true: '#3bbfb5' }}
               thumbColor="#fff"
             />
-            <Text style={[styles.unitLabel, styles.unitActive]}>Metric</Text>
+            <Text allowFontScaling={false} style={[styles.unitLabel, styles.unitActive]}>Metric</Text>
           </View>
 
           {/* Height */}
@@ -517,7 +517,7 @@ function AddHealthRecord() {
                   source={require('../../../Utility/Public/images/healthIcon6.png')}
                   style={{ width: 40, height: 40, resizeMode: 'contain' }}
                 />
-                <Text style={styles.sectionTitle}>Blood Pressure</Text>
+                <Text allowFontScaling={false} style={styles.sectionTitle}>Blood Pressure</Text>
 
                 <TouchableOpacity
                   style={{ marginLeft: 3 }}
@@ -556,9 +556,9 @@ function AddHealthRecord() {
                   maxLength={7}
                 />
                 {bpError ? (
-                  <Text style={styles.errorText}>{bpError}</Text>
+                  <Text allowFontScaling={false} style={styles.errorText}>{bpError}</Text>
                 ) : (
-                  <Text style={styles.hint}>* 120/80 mmHg</Text>
+                  <Text allowFontScaling={false} style={styles.hint}>* 120/80 mmHg</Text>
                 )}
               </View>
             </View>
@@ -568,10 +568,10 @@ function AddHealthRecord() {
         {/* Footer */}
         <View style={[styles.footerBtns, { paddingBottom: insets.bottom + 15 }]}>
           <TouchableOpacity style={[styles.ctaBtn, styles.ctaSecondary]} onPress={handleGoBack}>
-            <Text style={styles.ctaText}>Cancel</Text>
+            <Text allowFontScaling={false} style={styles.ctaText}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onSave}>
-            <Text style={styles.ctaText}>Save New Record</Text>
+            <Text allowFontScaling={false} style={styles.ctaText}>Save New Record</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

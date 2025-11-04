@@ -8,7 +8,7 @@ const NoSubscriptionMessage = () => {
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.message}>No subscription available</Text>
+            <Text allowFontScaling={false} style={styles.message}>No subscription available</Text>
         </View>
     );
 };

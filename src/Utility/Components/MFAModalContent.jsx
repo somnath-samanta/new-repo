@@ -263,11 +263,11 @@ const MFAModalContent = ({ enablePopupFlag, accountName, userIsSubscribe, mfaAct
                                                             <Image source={option.image} style={CommonStyle.authenticatorImgBox} />
                                                         </View>
                                                         <View style={CommonStyle.authenticatorTextContainer}>
-                                                            <Text style={CommonStyle.radioLabel}>{option.label}</Text>
+                                                            <Text allowFontScaling={false} style={CommonStyle.radioLabel}>{option.label}</Text>
                                                             <TouchableOpacity onPress={() => option.value == "Software" ? authenticatorDetailsFn() : null}>
-                                                                <Text style={[CommonStyle.authenticatorTextBox, option.value == "Software" ? CommonStyle.textHighlighter : null]}>{option.description1}</Text>
+                                                                <Text allowFontScaling={false} style={[CommonStyle.authenticatorTextBox, option.value == "Software" ? CommonStyle.textHighlighter : null]}>{option.description1}</Text>
                                                             </TouchableOpacity>
-                                                            <Text style={CommonStyle.authenticatorTextBox}>{option.description2}</Text>
+                                                            <Text allowFontScaling={false} style={CommonStyle.authenticatorTextBox}>{option.description2}</Text>
                                                         </View>
                                                     </View>
                                                     <View></View>
@@ -285,11 +285,11 @@ const MFAModalContent = ({ enablePopupFlag, accountName, userIsSubscribe, mfaAct
                                     }}>
                                         {!isMfaRequiredFlag &&
                                             <TouchableOpacity onPress={() => skipMfaFn()} style={[CommonStyle.enableSkipMfaBtn, style = { width: '50%' }]}>
-                                                <Text style={CommonStyle.enableSkipMfaBtnText}>Skip</Text>
+                                                <Text allowFontScaling={false} style={CommonStyle.enableSkipMfaBtnText}>Skip</Text>
                                             </TouchableOpacity>
                                         }
                                         <TouchableOpacity style={[CommonStyle.enableSubmitMfaBtn, style = { width: isMfaRequiredFlag ? '100%' : '50%' }]} onPress={() => submitMfa()}>
-                                            <Text style={CommonStyle.enableSubmitMfaBtnText}>Submit</Text>
+                                            <Text allowFontScaling={false} style={CommonStyle.enableSubmitMfaBtnText}>Submit</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>

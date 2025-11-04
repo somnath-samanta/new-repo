@@ -14,7 +14,7 @@ const HeaderBar = ({ title, onBackPress, onFilterPress, filterHide, backIconHide
           onPress={onBackPress}
         />
       {/* } */}
-      <Text style={styles.headerText}>{title}</Text>
+      <Text allowFontScaling={false} style={styles.headerText}>{title}</Text>
       {
         !filterHide &&
 

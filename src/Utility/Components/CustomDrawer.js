@@ -53,7 +53,7 @@ function CustomDrawerContent(props) {
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Icon name={icon} size={24} color={Colors.green01} />
-        <Text style={[theme.drawerItemText, { marginLeft: 10 }]}>{label}</Text>
+        <Text allowFontScaling={false} style={[theme.drawerItemText, { marginLeft: 10 }]}>{label}</Text>
       </View>
 
       {isDropdown && (
@@ -75,7 +75,7 @@ function CustomDrawerContent(props) {
         <Ionicons name={icon} size={24} color={Colors.green01} /> : icon == 'clipboard-list' ?
           <FontAwesome5 name={icon} size={24} color={Colors.green01} /> :
           <Ionicons name={icon} size={24} color={Colors.green01} />}
-      <Text style={[theme.drawerItemText]}>
+      <Text allowFontScaling={false} style={[theme.drawerItemText]}>
         {label}
       </Text>
     </TouchableOpacity>
@@ -232,7 +232,7 @@ function CustomDrawerContent(props) {
           source={profilePicture ? { uri: profilePicture } : require('../Public/images/usericon.png')}
           style={theme.leftLogo}
         />
-        <Text style={theme.leftHeaderText}>
+        <Text allowFontScaling={false} style={theme.leftHeaderText}>
           {reduxAuthJson.currentUserDetails.firstName} {reduxAuthJson.currentUserDetails.lastName}
         </Text>
       </View>
@@ -292,11 +292,11 @@ function CustomDrawerContent(props) {
       />
       <TouchableOpacity style={[theme.drawerItem, theme.logoutBtn, { borderBottomWidth: 1, borderBottomColor: '#eee', borderTopWidth: 1, borderTopColor: '#eee', }]} onPress={logoutApp}>
         <AntDesign name="logout" size={24} color={Colors.green03} />
-        <Text style={[theme.drawerItemText]}>
+        <Text allowFontScaling={false} style={[theme.drawerItemText]}>
           Logout
         </Text>
       </TouchableOpacity>
-      <Text style={Platform.OS === 'ios' ? [theme.versionColor, { borderBottomWidth: 1, borderBottomColor: '#eee', height: 50 }] : [theme.versionColor, { borderBottomWidth: 1, borderBottomColor: '#eee' }]}>App Version: {appVersion}</Text>
+      <Text allowFontScaling={false} style={Platform.OS === 'ios' ? [theme.versionColor, { borderBottomWidth: 1, borderBottomColor: '#eee', height: 50 }] : [theme.versionColor, { borderBottomWidth: 1, borderBottomColor: '#eee' }]}>App Version: {appVersion}</Text>
       {/* <View style={{ marginBottom: 30 }}></View> */}
     </View>
   );

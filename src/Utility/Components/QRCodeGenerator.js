@@ -64,9 +64,9 @@ const QRCodeGenerator = ({ secretCode, accountName, setotpParent, verifySoftware
             <View style={CommonStyle.containerTopSection}>
                 {/* <Text style={CommonStyle.qrTitle}>Scan the QR Code with your Authenticator App </Text> */}
                 <View>
-                    <Text style={CommonStyle.qrTitle}>Scan the QR code using
+                    <Text allowFontScaling={false} style={CommonStyle.qrTitle}>Scan the QR code using
                         <View style={CommonStyle.touchableWrapper}>
-                            <TouchableOpacity onPress={() => authenticatorDetailsFn()}><Text style={CommonStyle.authenticatorHighlighterText}>authenticator app</Text>
+                            <TouchableOpacity onPress={() => authenticatorDetailsFn()}><Text allowFontScaling={false} style={CommonStyle.authenticatorHighlighterText}>authenticator app</Text>
                             </TouchableOpacity>
                         </View>
                         to generate a one-time passcode (TOTP). Once generated, enter the code in the input box below to complete the setup</Text>
@@ -91,9 +91,9 @@ const QRCodeGenerator = ({ secretCode, accountName, setotpParent, verifySoftware
                     ))}
                 </View>
                 <View style={CommonStyle.copyTopContainer}>
-                    <Text style={CommonStyle.authenticatorText}>If you are using the same device, manually enter the secret key into your authenticator app: </Text>
+                    <Text allowFontScaling={false} style={CommonStyle.authenticatorText}>If you are using the same device, manually enter the secret key into your authenticator app: </Text>
                     <View style={{ position: 'relative' }}>
-                        <Text selectable style={CommonStyle.secretText}>{secretCode}</Text>
+                        <Text allowFontScaling={false} selectable style={CommonStyle.secretText}>{secretCode}</Text>
                         <TouchableOpacity onPress={() => copySecretCode()} style={CommonStyle.copySecretCodeBtn}>
                             <Ionicons name="copy-outline" size={25} color={Colors.secondary} />
                         </TouchableOpacity>
@@ -102,7 +102,7 @@ const QRCodeGenerator = ({ secretCode, accountName, setotpParent, verifySoftware
             </View>
             <View style={CommonStyle.qrSubmitBtnContainer}>
                 <TouchableOpacity style={CommonStyle.qrSubmitBtn} onPress={() => verifySoftwareTokenFunction()}>
-                    <Text style={CommonStyle.qrSubBtnText}>Submit</Text>
+                    <Text allowFontScaling={false} style={CommonStyle.qrSubBtnText}>Submit</Text>
                 </TouchableOpacity>
             </View>
             <CustomPopup

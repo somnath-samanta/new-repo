@@ -135,8 +135,8 @@ function Verification(props) {
                     <View>
                         {isverified == false ?
                             <View style={LoginStyle.loginBox}>
-                                <Text style={[LoginStyle.loginTxt, LoginStyle.verificationTxt]}>Thank you for Registering with us. A verification code has been sent to the email you provided.</Text>
-                                <View style={[LoginStyle.inputContainerBoxes, LoginStyle.inputContainerBoxesForVerification]}>
+                                <Text allowFontScaling={false} style={[LoginStyle.loginTxt, LoginStyle.verificationTxt]}>Thank you for Registering with us. A verification code has been sent to the email you provided.</Text>
+                                <View allowFontScaling={false} style={[LoginStyle.inputContainerBoxes, LoginStyle.inputContainerBoxesForVerification]}>
                                     <View style={LoginStyle.inputContainer}>
                                         <TextInput
                                             style={LoginStyle.input}
@@ -156,19 +156,19 @@ function Verification(props) {
                                             //onSubmitEditing={() => { loginSubmit() }}
                                             autoCapitalize="none"
                                         />
-                                        {verificationCodeError != "" ? <Text style={LoginStyle.errorMsg}>{verificationCodeError}</Text> : null}
+                                        {verificationCodeError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{verificationCodeError}</Text> : null}
                                     </View>
                                 </View>
                                 <View style={[LoginStyle.loginBtnInner, LoginStyle.varifyBtnInner]}>
                                     <TouchableOpacity style={LoginStyle.loginButton} onPress={varificationCode}>
-                                        <Text style={LoginStyle.loginButtonText}>Varify</Text>
+                                        <Text allowFontScaling={false} style={LoginStyle.loginButtonText}>Varify</Text>
                                     </TouchableOpacity>
 
                                 </View>
                                 <View style={LoginStyle.signUpRow}>
 
-                                    <Text style={LoginStyle.signUpText}> Are you want to {' '}
-                                        <Text style={LoginStyle.signUpLink} onPress={resendVerifyCodeFn}>
+                                    <Text allowFontScaling={false} style={LoginStyle.signUpText}> Are you want to {' '}
+                                        <Text allowFontScaling={false} style={LoginStyle.signUpLink} onPress={resendVerifyCodeFn}>
                                             Resend Varification ?
                                         </Text>
                                     </Text>
@@ -177,10 +177,10 @@ function Verification(props) {
                                 </View>
                             </View > :
                             <View style={LoginStyle.loginBox}>
-                                <Text style={[LoginStyle.loginTxt, LoginStyle.verificationTxt]}>Your email has been verified! You can now login to Oaktree Connect.</Text>
+                                <Text allowFontScaling={false} style={[LoginStyle.loginTxt, LoginStyle.verificationTxt]}>Your email has been verified! You can now login to Oaktree Connect.</Text>
                                 <View style={[LoginStyle.loginBtnInner, LoginStyle.varifyBtnInner]}>
                                     <TouchableOpacity style={[LoginStyle.loginButton, LoginStyle.gotologinButton]} onPress={loginSubmit}>
-                                        <Text style={[LoginStyle.loginButtonText, LoginStyle.gotologinButtonText]}>Go To Login</Text>
+                                        <Text allowFontScaling={false} style={[LoginStyle.loginButtonText, LoginStyle.gotologinButtonText]}>Go To Login</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View >

@@ -130,8 +130,8 @@ function ForgotPassword(props) {
                     <View>
                         <Loader loading={loading} />
                         <View style={LoginStyle.loginBox}>
-                            <Text style={[LoginStyle.loginTxt, LoginStyle.verificationTxt]}>Are you having trouble signing in ?</Text>
-                            <Text style={LoginStyle.resetSubTxt}>Enter your registered Email and we will send you a link to reset the password.</Text>
+                            <Text allowFontScaling={false} style={[LoginStyle.loginTxt, LoginStyle.verificationTxt]}>Are you having trouble signing in ?</Text>
+                            <Text allowFontScaling={false} style={LoginStyle.resetSubTxt}>Enter your registered Email and we will send you a link to reset the password.</Text>
                             <View style={LoginStyle.inputContainerBoxes}>
                                 <View style={LoginStyle.inputContainer}>
                                     <TextInput
@@ -145,12 +145,12 @@ function ForgotPassword(props) {
                                         //onSubmitEditing={() => { loginSubmit() }}
                                         autoCapitalize="none"
                                     />
-                                    {emailError != "" ? <Text style={LoginStyle.errorMsg}>{emailError}</Text> : null}
+                                    {emailError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{emailError}</Text> : null}
                                 </View>
                             </View>
                             <View style={[LoginStyle.loginBtnInner, LoginStyle.sendLink]}>
                                 <TouchableOpacity style={LoginStyle.loginButton} onPress={resetPassword}>
-                                    <Text style={LoginStyle.loginButtonText}>Send Link</Text>
+                                    <Text allowFontScaling={false} style={LoginStyle.loginButtonText}>Send Link</Text>
                                 </TouchableOpacity>
                             </View>
                         </View >

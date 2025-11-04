@@ -59,7 +59,7 @@ const GlobalModalBottomSheet = ({
                         }
                         {header &&
                             <View style={CommonStyle.bottomSheetHeaderContainer}>
-                                <Text style={[CommonStyle.bottomSheetHeaderText, style = { fontSize: headerFontSize, lineHeight: headerFontLineHeight, textAlign: headerTextAlign }]}>{headerTitle}</Text>
+                                <Text allowFontScaling={false} style={[CommonStyle.bottomSheetHeaderText, style = { fontSize: headerFontSize, lineHeight: headerFontLineHeight, textAlign: headerTextAlign }]}>{headerTitle}</Text>
                             </View>
                         }
                         {contentBody}

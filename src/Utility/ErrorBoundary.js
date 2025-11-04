@@ -57,12 +57,12 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <View style={styles.container}>
-          <Text style={styles.title}>Oops! Something went wrong</Text>
-          <Text style={styles.message}>
+          <Text allowFontScaling={false} style={styles.title}>Oops! Something went wrong</Text>
+          <Text allowFontScaling={false} style={styles.message}>
             {this.state.error?.toString() || 'An unexpected error occurred'}
           </Text>
           <TouchableOpacity style={styles.button} onPress={this.handleReset}>
-            <Text style={styles.buttonText}>Try Again</Text>
+            <Text allowFontScaling={false} style={styles.buttonText}>Try Again</Text>
           </TouchableOpacity>
         </View>
       );

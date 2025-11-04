@@ -43,11 +43,11 @@ const CustomFooter = ({ pageName, onHelpPress}) => {
                     style={CommonStyle.oaktreeLogo}
                   />
                 </View>
-                <Text style={CommonStyle.footerBoxMultipleBoxText}>© Oaktree Connect Ltd.</Text>
+                <Text allowFontScaling={false} style={CommonStyle.footerBoxMultipleBoxText}>© Oaktree Connect Ltd.</Text>
               </View>
               <TouchableOpacity style={CommonStyle.footerBoxMultipleBox} onPress={onHelpPressClick}>
                 <View style={CommonStyle.iconBox}><AntDesign name="customerservice" size={16} color="#219197" /></View>
-                <Text style={CommonStyle.footerBoxMultipleBoxText}>Help</Text>
+                <Text allowFontScaling={false} style={CommonStyle.footerBoxMultipleBoxText}>Help</Text>
               </TouchableOpacity>
             </View>
           </View>

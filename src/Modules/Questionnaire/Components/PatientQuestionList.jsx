@@ -165,13 +165,13 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                             Toast.show("Saved successfully");
                             reloadQuestionnaireList();
                         }, 500);
-                        
+
                     } else {
                         Toast.show("An error occurred while saving. Please try again.");
                         setTimeout(() => {
                             setPageLoading(false);
                         }, 500);
-                        
+
                     }
                 } else {
                     Toast.show("Please answer all the questions before submitting");
@@ -184,7 +184,7 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
             setTimeout(() => {
                 setPageLoading(false);
             }, 500);
-            
+
             // Handle error here (e.g., show a toast or alert)
         }
     }
@@ -202,7 +202,7 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
             ]}
             onPress={onPress}
         >
-            {value && <Text style={styles.checkmark}>✓</Text>}
+            {value && <Text allowFontScaling={false} style={styles.checkmark}>✓</Text>}
         </TouchableOpacity>
     );
     const CustomRadioButton = ({ selected, onPress, disabled }) => (
@@ -273,25 +273,26 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                     keyboardShouldPersistTaps="handled"
                                 >
                                     <View style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.mainView] : [styles.mainView, styles.mainViewBoxx]}>
-                                        <Text style={styles.mainViewTxt}>{questionObj?.questionnaire?.questionnaireName}
+                                        <Text allowFontScaling={false} style={styles.mainViewTxt}>{questionObj?.questionnaire?.questionnaireName}
                                         </Text>
-                                        <Text style={styles.mainViewTxt}>Instructions: {" "}
-                                            <Text style={styles.mainViewTxtSpan}>{questionObj?.questionnaire?.questionnaireDescription}</Text>
+                                        <Text allowFontScaling={false} style={styles.mainViewTxt}>Instructions: {" "}
+                                            <Text allowFontScaling={false} style={styles.mainViewTxtSpan}>{questionObj?.questionnaire?.questionnaireDescription}</Text>
                                         </Text>
-                                        <Text style={styles.mainViewTxt}>Date: {" "}
-                                            <Text style={styles.mainViewTxtSpan}>{moment(questionObj?.assignedOn).format("DD-MM-YYYY")}</Text>
+                                        <Text allowFontScaling={false} style={styles.mainViewTxt}>Date: {" "}
+                                            <Text allowFontScaling={false} style={styles.mainViewTxtSpan}>{moment(questionObj?.assignedOn).format("DD-MM-YYYY")}</Text>
                                         </Text>
                                         {
                                             questionsData.map((obj, index) => {
                                                 return (
                                                     <View style={styles.containers}>
-                                                        <Text style={styles.questionBX}>{index + 1}.{" "}{obj.question}</Text>
+                                                        <Text allowFontScaling={false} style={styles.questionBX}>{index + 1}.{" "}{obj.question}</Text>
                                                         <View style={styles.textAreaBX}>
                                                             {
                                                                 obj.optionType == "4" ?
                                                                     <>
                                                                         <TextInput
                                                                             style={styles.textArea}
+                                                                            allowFontScaling={false}
                                                                             placeholder=""
                                                                             multiline={true}
                                                                             // numberOfLines={4}  // Adjust the number of lines as needed
@@ -326,7 +327,7 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                                             }
                                                                                             disabled={selectedDocadmintype === 1 || selectedDocStatus === "Completed"}
                                                                                         />
-                                                                                        <Text style={styles.label}>{optionObj.option}</Text>
+                                                                                        <Text allowFontScaling={false} style={styles.label}>{optionObj.option}</Text>
                                                                                     </View>
                                                                                 )}
                                                                                 {/** Checkbox */}
@@ -341,7 +342,7 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                                                 }
                                                                                                 disabled={selectedDocadmintype === 1 || selectedDocStatus === "Completed"}
                                                                                             />
-                                                                                            <Text style={styles.label}>{optionObj.option}</Text>
+                                                                                            <Text allowFontScaling={false} style={styles.label}>{optionObj.option}</Text>
                                                                                         </View>
                                                                                     )
                                                                                         :
@@ -359,7 +360,7 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                             <>
 
                                                                                 <View style={styles.pickerContainer}>
-                                                                                    <RNPickerSelect
+                                                                                    {/* <RNPickerSelect
                                                                                         onValueChange={(value) => handleSelectedDropdownChanges(value, index, obj)}
                                                                                         value={questionsData[index]?.selectedOptionId !== null ? questionsData[index]?.selectedOptionId : ""}
                                                                                         items={
@@ -377,6 +378,51 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                                         // style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
                                                                                         style={pickerStyle}
                                                                                         disabled={selectedDocadmintype === 1 || selectedDocStatus === "Completed"}
+                                                                                    /> */}
+                                                                                    <RNPickerSelect
+                                                                                        onValueChange={(value) => handleSelectedDropdownChanges(value, index, obj)}
+                                                                                        value={
+                                                                                            questionsData[index]?.selectedOptionId !== null
+                                                                                                ? questionsData[index]?.selectedOptionId
+                                                                                                : ""
+                                                                                        }
+                                                                                        items={obj?.options.map((optionObj) => ({
+                                                                                            label: optionObj.option,
+                                                                                            value: optionObj.optionId,
+                                                                                        }))}
+
+                                                                                        pickerProps={{
+                                                                                            numberOfLines: 2,
+                                                                                        }}
+
+                                                                                        style={{
+                                                                                            ...pickerStyle,
+                                                                                            inputIOS: {
+                                                                                                ...styles.picker,
+                                                                                                allowFontScaling: false,
+                                                                                                fontSize: 14,
+                                                                                            },
+                                                                                            inputAndroid: {
+                                                                                                ...styles.picker,
+                                                                                                // ...pickerStyle.inputAndroid,
+                                                                                                allowFontScaling: false,
+                                                                                                fontSize: 14,
+                                                                                            },
+                                                                                            placeholder: {
+                                                                                                ...pickerStyle.placeholder,
+                                                                                                allowFontScaling: false,
+                                                                                                fontSize: 14,
+                                                                                            },
+                                                                                        }}
+
+                                                                                        textInputProps={{
+                                                                                            allowFontScaling: false,
+                                                                                            maxFontSizeMultiplier: 1,
+                                                                                            numberOfLines: 2,
+                                                                                        }}
+
+                                                                                        useNativeAndroidPickerStyle={false} // IMPORTANT: to apply custom text props on Android
+                                                                                        disabled={selectedDocadmintype === 1 || selectedDocStatus === "Completed"}
                                                                                     />
                                                                                 </View>
                                                                             </>
@@ -390,9 +436,10 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                             (
                                                                                 <>
                                                                                     <View>
-                                                                                        <Text style={styles.additionalCommentsLabel}>Additional Comments</Text>
+                                                                                        <Text allowFontScaling={false} style={styles.additionalCommentsLabel}>Additional Comments</Text>
                                                                                         <TextInput
                                                                                             style={styles.textAreaAdditionalComments}
+                                                                                            allowFontScaling={false}
                                                                                             placeholder=""
                                                                                             multiline={true}
                                                                                             //numberOfLines={1}  // Adjust the number of lines as needed
@@ -412,7 +459,7 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                                                     obj?.comments == null ||
                                                                                                     obj?.comments == undefined) ? (
                                                                                                 <View>
-                                                                                                    <Text style={styles.errorMsg}>Please enter comments</Text>
+                                                                                                    <Text allowFontScaling={false} style={styles.errorMsg}>Please enter comments</Text>
                                                                                                 </View>
                                                                                             ) : (
                                                                                                 ""
@@ -426,7 +473,7 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                                                     obj?.comments == null ||
                                                                                                     obj?.comments == undefined) ? (
                                                                                                 <View>
-                                                                                                    <Text style={styles.errorMsg}>Please enter comments</Text>
+                                                                                                    <Text allowFontScaling={false} style={styles.errorMsg}>Please enter comments</Text>
                                                                                                 </View>
                                                                                             ) : (
                                                                                                 ""
@@ -460,7 +507,7 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                 {/* Fixed Submit Button */}
                 <View style={styles.footer}>
                     <View style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.actionRowBoxs] : [styles.actionRowBoxsPart]}>
-                        <Text style={styles.mainViewTxtTotal}>Total Score: {sumofData}</Text>
+                        <Text allowFontScaling={false} style={styles.mainViewTxtTotal}>Total Score: {sumofData}</Text>
                         <View
                             style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.actionRow] : [styles.actionRowBox]}
                         >
@@ -469,24 +516,24 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                     <>
 
                                         <TouchableOpacity style={[styles.actionButton, styles.cancelButton]} onPress={() => handleBackPress()}>
-                                            <Text style={styles.buttonText}>Cancel</Text>
+                                            <Text allowFontScaling={false} style={styles.buttonText}>Cancel</Text>
                                         </TouchableOpacity>
                                         <View style={styles.buttonRowBoxs}>
                                             <TouchableOpacity style={[styles.actionButton, styles.saveExitButton]} onPress={() => handleSubmitForm('Incomplete')}>
-                                                <Text style={[styles.buttonText, styles.saveExitButtonTxt]}>Save & Exit</Text>
+                                                <Text allowFontScaling={false} style={[styles.buttonText, styles.saveExitButtonTxt]}>Save & Exit</Text>
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
                                                 style={[styles.actionButton, styles.SendButton]}
                                                 onPress={() => handleSubmitForm('Completed')}
                                             >
-                                                <Text style={styles.buttonText}>Submit</Text>
+                                                <Text allowFontScaling={false} style={styles.buttonText}>Submit</Text>
                                             </TouchableOpacity>
                                         </View>
                                     </>
                                     :
                                     <TouchableOpacity style={[styles.actionButton, styles.cancelButton]} onPress={() => handleBackPress()}>
-                                        <Text style={styles.buttonText}>Close</Text>
+                                        <Text allowFontScaling={false} style={styles.buttonText}>Close</Text>
                                     </TouchableOpacity>
                             }
                         </View>
@@ -507,7 +554,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 0,
-        backgroundColor:'#dff7f8',
+        backgroundColor: '#dff7f8',
         padding: 0,
         // backgroundColor: '#E6F6F3',
     },
@@ -515,7 +562,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         paddingHorizontal: 0,
-       // backgroundColor: 'red',
+        // backgroundColor: 'red',
     },
     input: {
         borderWidth: 1,
@@ -703,7 +750,7 @@ const styles = StyleSheet.create({
         width: '100%',              // Set the width of the picker
         color: '#666',
         fontSize: 16,
-        padding: Platform.OS == 'ios' ? 5 : 0,
+        padding: Platform.OS == 'ios' ? 5 : 5,
         // backgroundColor: 'white', // Input background for light theme
     },
     actionRowBoxs: {
@@ -825,8 +872,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
 
     },
-    scrollViewContent:{
-       backgroundColor: 'transparent',
+    scrollViewContent: {
+        backgroundColor: 'transparent',
     }
 
 });

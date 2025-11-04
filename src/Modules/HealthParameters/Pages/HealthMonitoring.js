@@ -57,7 +57,7 @@ const ICONS = {
 function Chip({ label, active, onPress }) {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.chip, active ? styles.chipActive : styles.chipInactive]}>
-      <Text style={[styles.chipText, active ? styles.chipTextActive : styles.chipTextInactive]}>{label}</Text>
+      <Text allowFontScaling={false} style={[styles.chipText, active ? styles.chipTextActive : styles.chipTextInactive]}>{label}</Text>
     </TouchableOpacity>
   );
 }
@@ -302,7 +302,7 @@ export default function HealthMonitoring() {
             <TouchableOpacity style={styles.subHeaderBackBtn} onPress={handleGoBack}>
               <FontAwesome6 name="arrow-left-long" size={20} color={Colors.black} />
             </TouchableOpacity>
-            <Text style={styles.subHeaderTitle}>Previous Records</Text>
+            <Text allowFontScaling={false} style={styles.subHeaderTitle}>Previous Records</Text>
           </View>
           <TouchableOpacity style={styles.refreshBtn}
             onPress={() => refreshBtnFn()}
@@ -319,19 +319,19 @@ export default function HealthMonitoring() {
         >
           {/* Filters */}
           <View style={styles.filters}>
-            <Text style={styles.filterLabel}>Year</Text>
+            <Text allowFontScaling={false} style={styles.filterLabel}>Year</Text>
             <View style={styles.filterRow}>
               {YEARS.map((y) => (
                 <Chip key={y} label={String(y)} active={y === activeYear} onPress={() => setActiveYear(y)} />
               ))}
             </View>
-            <Text style={[styles.filterLabel, { marginTop: 10 }]}>Month</Text>
+            <Text allowFontScaling={false} style={[styles.filterLabel, { marginTop: 10 }]}>Month</Text>
             <View style={styles.filterRow}>
               {MONTHS.map((m, index) => (
                 <Chip key={m} label={m} active={index === activeMonth} onPress={() => setActiveMonth(index)} />
               ))}
             </View>
-            <Text style={styles.helperText}>Only the months for which you entered readings are displayed here.</Text>
+            <Text allowFontScaling={false} style={styles.helperText}>Only the months for which you entered readings are displayed here.</Text>
           </View>
 
           {/* Table */}
@@ -370,7 +370,7 @@ export default function HealthMonitoring() {
             {/* Fixed left column */}
             <View style={styles.fixedColumn}>
               <View style={[styles.headerCell, styles.fixedHeader]}>
-                <Text style={[styles.headerText, styles.headerTextStart]}>Date</Text>
+                <Text allowFontScaling={false} style={[styles.headerText, styles.headerTextStart]}>Date</Text>
               </View>
               {rows.map((r, idx) => (
                 <View
@@ -378,7 +378,7 @@ export default function HealthMonitoring() {
                   style={[styles.cellMetric, idx % 2 === 0 ? styles.rowEven : styles.rowOdd]}>
                   <View style={styles.metricCellInner}>
                     <IconCell iconKey={r.key} />
-                    <Text style={styles.metricLabel}>{r.label}</Text>
+                    <Text allowFontScaling={false} style={styles.metricLabel}>{r.label}</Text>
                   </View>
                 </View>
               ))}
@@ -392,7 +392,7 @@ export default function HealthMonitoring() {
                   {Object.keys(dates).length > 0 &&
                     Object.values(dates).map((d, index) => (
                       <View key={index} style={[styles.cellDate, styles.headerCell]}>
-                        <Text style={styles.headerText}>{d}</Text>
+                        <Text allowFontScaling={false} style={styles.headerText}>{d}</Text>
                       </View>
                     ))}
                 </View>
@@ -408,7 +408,7 @@ export default function HealthMonitoring() {
                   >
                     {r.values.map((v, i) => (
                       <View key={i} style={[styles.cellDate, styles.valueCell]}>
-                        <Text style={styles.valueText}>{v}</Text>
+                        <Text allowFontScaling={false}style={styles.valueText}>{v}</Text>
                       </View>
                     ))}
                   </View>
@@ -416,7 +416,7 @@ export default function HealthMonitoring() {
                 {
                   Object.keys(dates).length === 0 && (
                     <View style={styles.noDataContainer}>
-                      <Text style={styles.noDataText}>No data available for selected month</Text>
+                      <Text allowFontScaling={false} style={styles.noDataText}>No data available for selected month</Text>
                     </View>
                   )
                 }

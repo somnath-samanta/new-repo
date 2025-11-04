@@ -231,11 +231,12 @@ function LoginScreen(props) {
                     style={[LoginStyle.oaktreeLogo]}
                 />
                 <View style={LoginStyle.loginBox}>
-                    <Text style={LoginStyle.loginTxt}>Login</Text>
+                    <Text allowFontScaling={false} style={LoginStyle.loginTxt}>Login</Text>
                     <View style={LoginStyle.inputContainerBoxes}>
                         <View style={LoginStyle.inputContainer}>
                             <TextInput
                                 style={LoginStyle.input}
+                                allowFontScaling={false}
                                 placeholder="Username"
                                 placeholderTextColor={Colors.gray99}
                                 value={email}
@@ -245,11 +246,12 @@ function LoginScreen(props) {
                                 //onSubmitEditing={() => { loginSubmit() }}
                                 autoCapitalize="none"
                             />
-                            {emailError != "" ? <Text style={LoginStyle.errorMsg}>{emailError}</Text> : null}
+                            {emailError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{emailError}</Text> : null}
                         </View>
                         <View style={LoginStyle.inputContainer}>
                             <TextInput
                                 style={[LoginStyle.input, { flex: 1 }]}
+                                allowFontScaling={false}
                                 placeholder="Password"
                                 placeholderTextColor={Colors.gray99}
                                 secureTextEntry={!isPasswordVisible}
@@ -266,26 +268,26 @@ function LoginScreen(props) {
                                     color={Colors.secondary}
                                 />
                             </TouchableOpacity>
-                            {passwordError != "" ? <Text style={LoginStyle.errorMsg}>{passwordError}</Text> : null}
+                            {passwordError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{passwordError}</Text> : null}
                         </View>
                     </View>
                     {/* Forgot password */}
                     <View style={LoginStyle.forgetYourPasswordBox}>
                         <TouchableOpacity style={LoginStyle.ForgetYourPassword} onPress={ForgetYourPassword}>
-                            <Text style={LoginStyle.ForgetYourPasswordText}>Forgot your password ?</Text>
+                            <Text allowFontScaling={false} style={LoginStyle.ForgetYourPasswordText}>Forgot your password ?</Text>
                         </TouchableOpacity>
                     </View>
 
                     <View style={LoginStyle.loginBtnInner}>
                         <TouchableOpacity style={LoginStyle.loginButton} onPress={loginSubmit}>
-                            <Text style={LoginStyle.loginButtonText}>Log In</Text>
+                            <Text allowFontScaling={false} style={LoginStyle.loginButtonText}>Log In</Text>
                         </TouchableOpacity>
 
                     </View>
                     <View style={LoginStyle.signUpRow}>
-                        <Text style={LoginStyle.signUpText}>
+                        <Text allowFontScaling={false} style={LoginStyle.signUpText}>
                             Don't have an account ?{' '}
-                            <Text style={LoginStyle.signUpLink} onPress={gotoSignUpPage}>
+                            <Text allowFontScaling={false} style={LoginStyle.signUpLink} onPress={gotoSignUpPage}>
                                 Sign up
                             </Text>
                         </Text>

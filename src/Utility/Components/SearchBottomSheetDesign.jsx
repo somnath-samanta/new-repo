@@ -52,7 +52,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
             ]}
             onPress={() => setActiveTab(index)} // Set active tab on press
         >
-            <Text style={[styles.tabText, activeTab === index && styles.activeTabText]}>
+            <Text allowFontScaling={false} style={[styles.tabText, activeTab === index && styles.activeTabText]}>
                 {item}
             </Text>
         </TouchableOpacity>
@@ -234,7 +234,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
             ]}
             onPress={onPress}
         >
-            {value && <Text style={styles.checkmark}>✓</Text>}
+            {value && <Text allowFontScaling={false} style={styles.checkmark}>✓</Text>}
         </TouchableOpacity>
     );
 
@@ -307,12 +307,12 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
         <SafeAreaView style={styles.Container}>
             <Loader loading={isLoadingKeywords} />
             <View style={styles.containerTopBox}>
-                <Text style={[styles.containerTopBoxTxt, styles.containerTopBoxTxtLeft]}>Filters</Text>
+                <Text allowFontScaling={false} style={[styles.containerTopBoxTxt, styles.containerTopBoxTxtLeft]}>Filters</Text>
                 <TouchableOpacity
                     style={[styles.containerTopBoxTxt, styles.containerTopBoxTxtRight]}
                     onPress={() => clearFilters()}
                 >
-                    <Text style={[styles.containerTopBoxTxt, styles.containerTopBoxTxtRight, { textDecorationLine: 'underline' }]}>Clear Filters</Text>
+                    <Text allowFontScaling={false} style={[styles.containerTopBoxTxt, styles.containerTopBoxTxtRight, { textDecorationLine: 'underline' }]}>Clear Filters</Text>
                 </TouchableOpacity>
 
             </View>
@@ -337,7 +337,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                             timeLineFilter &&
 
                             <View style={styles.searchBoxPanel}>
-                                <Text style={styles.searchBoxPanelTitle}>Timeline</Text>
+                                <Text allowFontScaling={false} style={styles.searchBoxPanelTitle}>Timeline</Text>
                                 <View style={styles.searchBoxPanelRow}>
                                     {/* Column 1 */}
                                     <View style={styles.column}>
@@ -350,7 +350,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                 <View style={styles.outerCircle}>
                                                     {selectedTimelineOption === option.value && <View style={styles.innerCircle} />}
                                                 </View>
-                                                <Text style={styles.label}>{option.label}</Text>
+                                                <Text allowFontScaling={false} style={styles.label}>{option.label}</Text>
                                             </TouchableOpacity>
                                         ))}
                                     </View>
@@ -365,7 +365,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                 <View style={styles.outerCircle}>
                                                     {selectedTimelineOption === option.value && <View style={styles.innerCircle} />}
                                                 </View>
-                                                <Text style={styles.label}>{option.label}</Text>
+                                                <Text allowFontScaling={false} style={styles.label}>{option.label}</Text>
                                             </TouchableOpacity>
                                         ))}
                                     </View>
@@ -375,7 +375,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                         {
                             paymentStatusFilter &&
                             <View style={styles.searchBoxPanel}>
-                                <Text style={styles.searchBoxPanelTitle}>Payment Status</Text>
+                                <Text allowFontScaling={false} style={styles.searchBoxPanelTitle}>Payment Status</Text>
                                 <View style={styles.searchBoxPanelRow}>
                                     {/* Column 1 */}
                                     <View style={styles.column}>
@@ -389,7 +389,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                     value={selectedPaymentStatusOption === option.value}
                                                     onPress={() => handleSelect(option.value, "PaymentStatus")}
                                                 />
-                                                <Text style={styles.label}>{option.label}</Text>
+                                                <Text allowFontScaling={false} style={styles.label}>{option.label}</Text>
                                             </TouchableOpacity>
                                         ))}
                                     </View>
@@ -405,7 +405,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                     value={selectedPaymentStatusOption === option.value}
                                                     onPress={() => handleSelect(option.value, "PaymentStatus")}
                                                 />
-                                                <Text style={styles.label}>{option.label}</Text>
+                                                <Text allowFontScaling={false} style={styles.label}>{option.label}</Text>
                                             </TouchableOpacity>
                                         ))}
                                     </View>
@@ -415,7 +415,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                         {
                             paymentModeFilter &&
                             <View style={styles.searchBoxPanel}>
-                                <Text style={styles.searchBoxPanelTitle}>Payment Mode</Text>
+                                <Text allowFontScaling={false} style={styles.searchBoxPanelTitle}>Payment Mode</Text>
                                 <>
                                     {SelectOptionForPaymentMode.map((option) => (
                                         <TouchableOpacity
@@ -427,7 +427,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                 value={selectedPaymentModeOption === option.value}
                                                 onPress={() => handleSelect(option.value, "PaymentMode")}
                                             />
-                                            <Text style={styles.label}>{option.label}</Text>
+                                            <Text allowFontScaling={false} style={styles.label}>{option.label}</Text>
                                         </TouchableOpacity>
 
                                     ))}
@@ -440,7 +440,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                 <View style={styles.searchBoxPanelSelectRow}>
                                     {/* Column 1 */}
                                     <View style={styles.column}>
-                                        <Text style={styles.searchBoxPanelTitle}>Keyword Search</Text>
+                                        <Text allowFontScaling={false} style={styles.searchBoxPanelTitle}>Keyword Search</Text>
                                     </View>
                                     {/* Column 2 */}
                                     <View style={styles.column2}>
@@ -482,7 +482,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                 <View style={styles.searchBoxPanelSelectRow}>
                                     {/* Column 1 */}
                                     <View style={styles.column}>
-                                        <Text style={styles.searchBoxPanelTitle}>Sent By</Text>
+                                        <Text allowFontScaling={false} style={styles.searchBoxPanelTitle}>Sent By</Text>
                                     </View>
                                     {/* Column 2 */}
                                     <View style={styles.column2}>
@@ -517,7 +517,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                 <View style={styles.searchBoxPanelSelectRow}>
                                     {/* Column 1 */}
                                     <View style={styles.column}>
-                                        <Text style={styles.searchBoxPanelTitle}>Document type</Text>
+                                        <Text allowFontScaling={false} style={styles.searchBoxPanelTitle}>Document type</Text>
                                     </View>
                                     {/* Column 2 */}
                                     <View style={styles.column2}>
@@ -558,7 +558,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                     style={[styles.filterbutton, styles.filterCancelbutton]}
                     onPress={() => hidesearchSheetPanel()}
                 >
-                    <Text style={styles.filterbuttonlabel}>Cancel</Text>
+                    <Text allowFontScaling={false} style={styles.filterbuttonlabel}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.filterbutton}
@@ -567,7 +567,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                         applyFiltersFn();
                     }}
                 >
-                    <Text style={styles.filterbuttonlabel}>Apply</Text>
+                    <Text allowFontScaling={false} style={styles.filterbuttonlabel}>Apply</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

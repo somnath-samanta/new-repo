@@ -160,12 +160,18 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                     });
                     if (data) {
                         // console.log("---------------------", data);
-                        setPageLoading(false);
-                        Toast.show("Saved successfully");
-                        reloadQuestionnaireList();
+                        setTimeout(() => {
+                            setPageLoading(false);
+                            Toast.show("Saved successfully");
+                            reloadQuestionnaireList();
+                        }, 500);
+                        
                     } else {
                         Toast.show("An error occurred while saving. Please try again.");
-                        setPageLoading(false);
+                        setTimeout(() => {
+                            setPageLoading(false);
+                        }, 500);
+                        
                     }
                 } else {
                     Toast.show("Please answer all the questions before submitting");
@@ -175,7 +181,10 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
             }
         } catch (error) {
             console.error("Error:", error);
-            setPageLoading(false);
+            setTimeout(() => {
+                setPageLoading(false);
+            }, 500);
+            
             // Handle error here (e.g., show a toast or alert)
         }
     }

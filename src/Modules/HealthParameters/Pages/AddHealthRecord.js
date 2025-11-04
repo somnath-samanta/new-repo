@@ -422,6 +422,7 @@ function AddHealthRecord() {
             <View style={styles.twoColRow}>
               <TextInput
                 style={styles.input}
+                allowFontScaling={false}
                 placeholder={isMetric ? 'M' : 'Ft'}
                 placeholderTextColor="#666"
                 keyboardType="numeric"
@@ -431,6 +432,7 @@ function AddHealthRecord() {
               />
               <TextInput
                 style={styles.input}
+                allowFontScaling={false}
                 placeholder={isMetric ? 'Cm' : 'In'}
                 placeholderTextColor="#666"
                 keyboardType="numeric"
@@ -450,6 +452,7 @@ function AddHealthRecord() {
             <View style={styles.twoColRow}>
               <TextInput
                 style={styles.input}
+                allowFontScaling={false}
                 placeholder={isMetric ? 'Kg' : 'Lb'}
                 placeholderTextColor="#666"
                 keyboardType="numeric"
@@ -459,6 +462,7 @@ function AddHealthRecord() {
               />
               <TextInput
                 style={styles.input}
+                allowFontScaling={false}
                 placeholder={isMetric ? 'G' : 'Oz'}
                 placeholderTextColor="#666"
                 keyboardType="numeric"
@@ -477,6 +481,7 @@ function AddHealthRecord() {
             />
             <TextInput
               style={styles.inputFull}
+              allowFontScaling={false}
               placeholder="BMI"
               placeholderTextColor="#666"
               keyboardType="numeric"
@@ -493,6 +498,7 @@ function AddHealthRecord() {
             />
             <TextInput
               style={styles.inputFull}
+              allowFontScaling={false}
               placeholder={isMetric ? 'cm' : 'inch'}
               placeholderTextColor="#666"
               keyboardType="numeric"
@@ -538,6 +544,7 @@ function AddHealthRecord() {
             <View style={styles.twoColRow}>
               <TextInput
                 style={styles.input}
+                allowFontScaling={false}
                 placeholder="Per minute"
                 placeholderTextColor="#666"
                 keyboardType="numeric"
@@ -547,6 +554,7 @@ function AddHealthRecord() {
               <View style={{ flex: 1, position: 'relative' }}>
                 <TextInput
                   style={[styles.input, bpError && styles.inputError]}
+                  allowFontScaling={false}
                   placeholder="Sys/Dia"
                   placeholderTextColor="#666"
                   keyboardType="default"

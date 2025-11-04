@@ -184,6 +184,7 @@ function ResetPassword(props) {
                                 <View style={LoginStyle.inputContainer}>
                                     <TextInput
                                         style={LoginStyle.input}
+                                        allowFontScaling={false}
                                         placeholder="Enter Your Activation Code"
                                         placeholderTextColor={Colors.gray99}
                                         value={activationCode}
@@ -203,6 +204,7 @@ function ResetPassword(props) {
                                 <View style={LoginStyle.inputContainer}>
                                     <TextInput
                                         style={[LoginStyle.input, { flex: 1 }]}
+                                        allowFontScaling={false}
                                         placeholder="Password"
                                         placeholderTextColor={Colors.gray99}
                                         secureTextEntry={!isPasswordVisible}
@@ -224,6 +226,7 @@ function ResetPassword(props) {
                                 <View style={LoginStyle.inputContainer}>
                                     <TextInput
                                         style={[LoginStyle.input, { flex: 1 }]}
+                                        allowFontScaling={false}
                                         placeholder="Confirm Password"
                                         placeholderTextColor={Colors.gray99}
                                         secureTextEntry={!isReenterPasswordVisible}

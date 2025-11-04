@@ -79,6 +79,7 @@ const QRCodeGenerator = ({ secretCode, accountName, setotpParent, verifySoftware
                             key={index}
                             ref={(input) => (inputRefs.current[index] = input)}
                             style={CommonStyle.qrInputBox}
+                            allowFontScaling={false}
                             value={data}
                             onChangeText={(value) => handleChange(value, index)}
                             onKeyPress={(event) => handleKeyPress(event, index)}

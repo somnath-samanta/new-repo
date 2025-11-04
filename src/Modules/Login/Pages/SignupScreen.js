@@ -367,6 +367,7 @@ function SignupScreen(props) {
                                         <View style={[LoginStyle.inputContainer, LoginStyle.inputContainerSignUp]}>
                                             <TextInput
                                                 style={LoginStyle.input}
+                                                allowFontScaling={false}
                                                 placeholder="First Name"
                                                 placeholderTextColor={Colors.gray99}
                                                 value={firstname}
@@ -380,6 +381,7 @@ function SignupScreen(props) {
                                         <View style={[LoginStyle.inputContainer, LoginStyle.inputContainerSignUp]}>
                                             <TextInput
                                                 style={LoginStyle.input}
+                                                allowFontScaling={false}
                                                 placeholder="Surname"
                                                 placeholderTextColor={Colors.gray99}
                                                 value={surname}
@@ -429,6 +431,7 @@ function SignupScreen(props) {
                                         <View style={[LoginStyle.inputContainer, LoginStyle.inputContainerSignUp]}>
                                             <TextInput
                                                 style={LoginStyle.input}
+                                                allowFontScaling={false}
                                                 placeholder="Phone"
                                                 placeholderTextColor={Colors.gray99}
                                                 value={phone}
@@ -449,6 +452,7 @@ function SignupScreen(props) {
                                         <View style={LoginStyle.inputContainer}>
                                             <TextInput
                                                 style={LoginStyle.input}
+                                                allowFontScaling={false}
                                                 placeholder="Email"
                                                 placeholderTextColor={Colors.gray99}
                                                 value={email}
@@ -468,6 +472,7 @@ function SignupScreen(props) {
                                         <View style={LoginStyle.inputContainer}>
                                             <TextInput
                                                 style={[LoginStyle.input, { flex: 1 }]}
+                                                allowFontScaling={false}
                                                 placeholder="Password"
                                                 placeholderTextColor={Colors.gray99}
                                                 secureTextEntry={!isPasswordVisible}
@@ -489,6 +494,7 @@ function SignupScreen(props) {
                                         <View style={LoginStyle.inputContainer}>
                                             <TextInput
                                                 style={[LoginStyle.input, { flex: 1 }]}
+                                                allowFontScaling={false}
                                                 placeholder="Confirm Password"
                                                 placeholderTextColor={Colors.gray99}
                                                 secureTextEntry={!isConfirmPasswordVisible}
@@ -519,6 +525,7 @@ function SignupScreen(props) {
                                                 <View style={[LoginStyle.inputContainer, LoginStyle.inputContainerSignUp]}>
                                                     <TextInput
                                                         style={LoginStyle.input}
+                                                        allowFontScaling={false}
                                                         placeholder="First Name"
                                                         placeholderTextColor={Colors.gray99}
                                                         value={guardianFirstName}
@@ -532,6 +539,7 @@ function SignupScreen(props) {
                                                 <View style={[LoginStyle.inputContainer, LoginStyle.inputContainerSignUp]}>
                                                     <TextInput
                                                         style={LoginStyle.input}
+                                                        allowFontScaling={false}
                                                         placeholder="Surname"
                                                         placeholderTextColor={Colors.gray99}
                                                         value={guardianSurname}

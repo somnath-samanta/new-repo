@@ -136,6 +136,7 @@ function ForgotPassword(props) {
                                 <View style={LoginStyle.inputContainer}>
                                     <TextInput
                                         style={LoginStyle.input}
+                                        allowFontScaling={false}
                                         placeholder="Registered email"
                                         placeholderTextColor={Colors.gray99}
                                         value={email}

@@ -140,6 +140,7 @@ function Verification(props) {
                                     <View style={LoginStyle.inputContainer}>
                                         <TextInput
                                             style={LoginStyle.input}
+                                            allowFontScaling={false}
                                             placeholder="Enter the verification code here"
                                             placeholderTextColor={Colors.gray99}
                                             value={verificationCode}

@@ -754,6 +754,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
               <View style={[styles.tagInputContainer]}>
                 <TextInput
                   style={[styles.input]}
+                  allowFontScaling={false}
                   value={tagInput}
                   onChangeText={setTagInput}
                   placeholder="Tags (press 'Enter' to add)"

@@ -82,8 +82,8 @@ android {
         applicationId "uk.co.oaktreeconnect.oaktree"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 27
-        versionName "0.0.27"
+        versionCode 29
+        versionName "0.0.29"
     }
 
     splits {

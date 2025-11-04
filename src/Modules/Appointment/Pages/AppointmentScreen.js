@@ -63,7 +63,7 @@ const flatListHeightFull = Platform.OS == "ios" ? screenheight * 0.80 : screenhe
 const renderEmptyComponent = () => {
     return (
         <View style={{ padding: 20, alignItems: 'center' }}>
-            <Text style={styles.norecordFound}>No records found</Text>
+            <Text allowFontScaling={false} style={styles.norecordFound}>No records found</Text>
         </View>
     );
 };
@@ -634,7 +634,7 @@ function AppointmentScreen(props) {
 
 
     const getStatusName = (status) => {
-        return <Text style={[styles.statusText, styles.yetToConfirm]}>{status}</Text>;
+        return <Text allowFontScaling={false} style={[styles.statusText, styles.yetToConfirm]}>{status}</Text>;
         /*switch (status) {
             case 'pending':
                 return <Text style={[styles.statusText, styles.yetToConfirm]}>Pending</Text>;
@@ -665,12 +665,12 @@ function AppointmentScreen(props) {
                                 <View style={[styles.appointmentCard]}>
                                     <View style={styles.appointmentCardRow}>
                                         <View style={[styles.leftView, styles.leftViewFlatListBox]}>
-                                            <Text style={[styles.nextAppointmentBoxTxt, styles.smalltxt]}>{getStatusName(obj?.item?.appointmentStatus)}</Text>
-                                            <Text style={styles.practitionerName}>{obj?.item?.appointmentType},
+                                            <Text allowFontScaling={false} style={[styles.nextAppointmentBoxTxt, styles.smalltxt]}>{getStatusName(obj?.item?.appointmentStatus)}</Text>
+                                            <Text allowFontScaling={false} style={styles.practitionerName}>{obj?.item?.appointmentType},
                                                 {obj?.item?.appointmentMode === "Video Consultation" ? "Online" : ""}
                                             </Text>
-                                            <Text style={[styles.practitionerName, styles.marginMore]}>{obj?.item?.practitionerName}</Text>
-                                            <Text style={styles.practitionerSpeciality}>
+                                            <Text allowFontScaling={false} style={[styles.practitionerName, styles.marginMore]}>{obj?.item?.practitionerName}</Text>
+                                            <Text allowFontScaling={false} style={styles.practitionerSpeciality}>
                                                 {/* {moment(item.appointmentDate, 'DD-MM-YYYY').format('DD-MM-YYYY')} */}
                                                 {moment(obj?.item?.appointmentDate, "DD-MM-YYYY").format("DD MMM. YY")}, {" "}
                                                 {obj?.item?.appointmentTime.toUpperCase()}
@@ -998,11 +998,11 @@ function AppointmentScreen(props) {
                                                 <View style={[styles.appointmentCard]}>
                                                     <View style={styles.appointmentCardRow}>
                                                         <View style={[styles.leftView, styles.leftViewListBoxNext]}>
-                                                            <Text style={styles.nextAppointmentBoxTxt}>Next Appointment</Text>
-                                                            <Text style={styles.practitionerName}>{nextAppointment["appointmentType"]}, {nextAppointment["appointmentMode"] === "Video Consultation" ? "Online" : ""}</Text>
-                                                            <Text style={[styles.practitionerName, styles.marginMore]}>
+                                                            <Text allowFontScaling={false} style={styles.nextAppointmentBoxTxt}>Next Appointment</Text>
+                                                            <Text allowFontScaling={false} style={styles.practitionerName}>{nextAppointment["appointmentType"]}, {nextAppointment["appointmentMode"] === "Video Consultation" ? "Online" : ""}</Text>
+                                                            <Text allowFontScaling={false} style={[styles.practitionerName, styles.marginMore]}>
                                                                 {nextAppointment["practitionerName"]}</Text>
-                                                            <Text style={styles.practitionerSpeciality}>
+                                                            <Text allowFontScaling={false} style={styles.practitionerSpeciality}>
                                                                 {moment(nextAppointment["appointmentDate"], "DD-MM-YYYY").format("DD MMM. YY")}, {" "}
                                                                 {moment(nextAppointment["appointmentTime"], "hh:mm a").format("hh.mm a")}
                                                             </Text>
@@ -1091,7 +1091,7 @@ function AppointmentScreen(props) {
                                 }
                                 <TouchableOpacity style={styles.searchBoX} onPress={() => handleFilter()}>
                                     <Image source={require('../../../Utility/Public/images/filter.png')} style={styles.filtericon} />
-                                    <Text style={styles.searchBoXTxt}>Filters</Text>
+                                    <Text allowFontScaling={false} style={styles.searchBoXTxt}>Filters</Text>
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity style={styles.refreshBtn}
@@ -1199,7 +1199,7 @@ function AppointmentScreen(props) {
                                                 </View>
                                             </View> */}
                                             <View style={[styles.contentLI, styles.contentLIQues]}>
-                                                <Text style={[styles.contentLIText, styles.contentLITextQues]}>You will incur charges if you cancel. Are you sure you want to cancel appointment?
+                                                <Text allowFontScaling={false} style={[styles.contentLIText, styles.contentLITextQues]}>You will incur charges if you cancel. Are you sure you want to cancel appointment?
                                                 </Text>
                                             </View>
                                         </View>
@@ -1221,14 +1221,14 @@ function AppointmentScreen(props) {
                                                 onPress={() => Linking.openURL('tel:+442039277699')}
                                             >
                                                 <View style={styles.iconBoxContact}><Ionicons name="call" size={16} color="#fff" /></View>
-                                                <Text style={styles.footerBoxMultipleBoxText}> +44 20 3927 7699</Text>
+                                                <Text allowFontScaling={false} style={styles.footerBoxMultipleBoxText}> +44 20 3927 7699</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity
                                                 style={styles.footerBoxMultipleBox}
                                                 onPress={() => Linking.openURL('mailto:clinicadmin@oaktreeconnect.co.uk')}
                                             >
                                                 <View style={[styles.iconBoxContact, styles.emailiconBox]}><EvilIcons name="envelope" size={24} color="#fff" /></View>
-                                                <Text style={styles.footerBoxMultipleBoxText}>clinicadmin@oaktreeconnect.co.uk</Text>
+                                                <Text allowFontScaling={false} style={styles.footerBoxMultipleBoxText}>clinicadmin@oaktreeconnect.co.uk</Text>
                                             </TouchableOpacity>
                                         </View>
                                     </>

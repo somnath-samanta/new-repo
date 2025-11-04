@@ -10,28 +10,28 @@ const BottomSheetDesign = ({ handalContactUs, handalFeedback, handalPrescription
                     <Image source={require('../Public/images/ContactUs.png')} style={[styles.img]} />
                 </View>
 
-                <Text style={styles.text}>Contact Us</Text>
+                <Text allowFontScaling={false} style={styles.text}>Contact Us</Text>
             </TouchableOpacity>
             {/* <View style={styles.blankBorder}></View> */}
             <TouchableOpacity style={styles.row} onPress={() => handalFeedback()}>
                 <View style={styles.imgBox}>
                     <Image source={require('../Public/images/feedback.png')} style={[styles.img, styles.smallimg]} />
                 </View>
-                <Text style={styles.text}>Feedback</Text>
+                <Text allowFontScaling={false} style={styles.text}>Feedback</Text>
             </TouchableOpacity>
             {/* <View style={styles.blankBorder}></View> */}
             <TouchableOpacity style={styles.row} onPress={() => handalPrescription()}>
                 <View style={styles.imgBox}>
                     <Image source={require('../Public/images/prescription.png')} style={[styles.img, styles.smallimg]} />
                 </View>
-                <Text style={styles.text}>Prescription</Text>
+                <Text allowFontScaling={false} style={styles.text}>Prescription</Text>
             </TouchableOpacity>
             {/* <View style={styles.blankBorder}></View> */}
             <TouchableOpacity style={styles.row} onPress={() => handalSupport()}>
                 <View style={styles.imgBox}>
                     <Image source={require('../Public/images/support.png')} style={[styles.img, styles.smallimg]} />
                 </View>
-                <Text style={styles.text}>Support</Text>
+                <Text allowFontScaling={false} style={styles.text}>Support</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );

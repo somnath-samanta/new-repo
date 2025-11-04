@@ -55,7 +55,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const renderEmptyComponent = () => {
     return (
         <View style={{ padding: 20, alignItems: 'center' }}>
-            <Text style={styles.norecordFound}>No records found</Text>
+            <Text allowFontScaling={false} style={styles.norecordFound}>No records found</Text>
         </View>
     );
 };
@@ -228,24 +228,24 @@ function MyDocument({ props }) {
                             <View style={styles.rowPractitioner}>
                                 <View style={styles.textContainer}>
                                     {/* <Text style={styles.practitionerSpeciality}>{item?.item?.documentType}</Text> */}
-                                    <Text style={styles.practitionerName}>{item?.item?.documentName}</Text>
+                                    <Text allowFontScaling={false} style={styles.practitionerName}>{item?.item?.documentName}</Text>
                                 </View>
                             </View>
                             <View style={styles.row}>
-                                <Text style={[styles.marginLeftClass, styles.showText]}>{moment(item?.item?.createdOn, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
+                                <Text allowFontScaling={false} style={[styles.marginLeftClass, styles.showText]}>{moment(item?.item?.createdOn, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
                             </View>
                         </View>
                         <View style={styles.rightView}>
                             {
                                 ["jpg", "jpeg", "png"].includes(item?.item?.documentUrl.split(".").pop().toLowerCase()) ?
                                     <TouchableOpacity style={styles.eyeButton} onPress={() => handalShowDocument(item.item)}>
-                                        <Text style={styles.eyeButtonTxt}>{item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
+                                        <Text allowFontScaling={false} style={styles.eyeButtonTxt}>{item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
                                             : item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "doc" || item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "docx" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
                                                 : <Ionicons name="document-text-outline" size={18} color="#fff" />} View</Text>
                                     </TouchableOpacity>
                                     :
                                     <TouchableOpacity style={styles.eyeButton} onPress={() => downloadPDFLink(item.item)}>
-                                        <Text style={styles.eyeButtonTxt}>{item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
+                                        <Text allowFontScaling={false} style={styles.eyeButtonTxt}>{item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "pdf" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
                                             : item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "doc" || item?.item?.documentUrl.split(".")[item?.item?.documentUrl.split(".").length - 1].toString().toLowerCase() === "docx" ? <Ionicons name="document-text-outline" size={18} color="#fff" />
                                                 : <Ionicons name="document-text-outline" size={18} color="#fff" />} View</Text>
                                     </TouchableOpacity>
@@ -597,11 +597,11 @@ function MyDocument({ props }) {
                 <>
                     <View style={styles.infoBox}>
                         <View style={styles.inninfoBox}>
-                            <Text style={styles.mainHeading}>Valid forms of  Photo IDs</Text>
+                            <Text allowFontScaling={false} style={styles.mainHeading}>Valid forms of  Photo IDs</Text>
                             {items.map((item, index) => (
                                 <View key={index} style={styles.listItem}>
-                                    <Text style={styles.bullet}><Entypo name="dot-single" size={20} color="#000" style={styles.bulletStyle} /></Text>
-                                    <Text style={styles.itemText}>{item}</Text>
+                                    <Text allowFontScaling={false} style={styles.bullet}><Entypo name="dot-single" size={20} color="#000" style={styles.bulletStyle} /></Text>
+                                    <Text allowFontScaling={false} style={styles.itemText}>{item}</Text>
                                 </View>
                             ))}
                         </View>
@@ -609,18 +609,18 @@ function MyDocument({ props }) {
                     <View style={styles.uploadButtonBox}>
                         <TouchableOpacity style={styles.uploadButton} onPress={() => handleUpload()}>
                             <View style={styles.buttonContent}>
-                                <Text style={styles.buttonInnText}>Upload Your ID</Text>
+                                <Text allowFontScaling={false} style={styles.buttonInnText}>Upload Your ID</Text>
                                 <View style={styles.uploadIconContainer}>
                                     <Feather name="upload" size={40} color="#fff" style={styles.uploadIcon} />
                                 </View>
-                                <Text style={styles.hintTxt}>You can upload PDF/Word document or PNG/JPEG  files with Max 5 MB.</Text>
+                                <Text allowFontScaling={false} style={styles.hintTxt}>You can upload PDF/Word document or PNG/JPEG  files with Max 5 MB.</Text>
                             </View>
 
                         </TouchableOpacity>
                     </View>
                     <View style={styles.allDocumentBox}>
                         <TouchableOpacity style={styles.allDocument} onPress={() => viewDocument()}>
-                            <Text style={styles.allDocumentText}>View Document </Text>
+                            <Text allowFontScaling={false} style={styles.allDocumentText}>View Document </Text>
                         </TouchableOpacity>
                     </View>
 
@@ -650,7 +650,7 @@ function MyDocument({ props }) {
                 header={true}
                 headerTitle={
                     <View >
-                        <Text style={styles.uploadDocumentTxt}>Upload Document</Text>
+                        <Text allowFontScaling={false} style={styles.uploadDocumentTxt}>Upload Document</Text>
 
                     </View>
                 }
@@ -677,14 +677,14 @@ function MyDocument({ props }) {
                         <View style={[styles.imgmodalContent]}>
                             {errorFlag ?
                                 <View style={styles.noImageContainer}>
-                                    <Text style={styles.messageTxt}>Document not found or cannot be loaded.</Text>
+                                    <Text allowFontScaling={false} style={styles.messageTxt}>Document not found or cannot be loaded.</Text>
                                 </View>
                                 :
                                 <>
                                     {imageLoading && (
                                         <View style={styles.imageLoadingContainer}>
                                             <ActivityIndicator size="large" color="#24ad91" />
-                                            <Text style={styles.loadingText}>Loading Document...</Text>
+                                            <Text allowFontScaling={false} style={styles.loadingText}>Loading Document...</Text>
                                         </View>
                                     )}
                                     <Image
@@ -716,7 +716,7 @@ function MyDocument({ props }) {
                                     onPress={() => setImageShowFlag(false)}
                                 >
                                     <Ionicons name="close-circle-outline" size={18} color="#fff" />
-                                    <Text style={styles.eyeButtonTxt}>Close</Text>
+                                    <Text allowFontScaling={false} style={styles.eyeButtonTxt}>Close</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
@@ -728,7 +728,7 @@ function MyDocument({ props }) {
                                     disabled={isDownloading}
                                 >
                                     <Ionicons name="download-outline" size={18} color="#fff" />
-                                    <Text style={styles.eyeButtonTxt}>
+                                    <Text allowFontScaling={false} style={styles.eyeButtonTxt}>
                                         {isDownloading ? 'Downloading...' : 'Download'}
                                     </Text>
                                 </TouchableOpacity>
@@ -800,7 +800,7 @@ function MyDocument({ props }) {
                                         {webViewLoading && (
                                             <View style={styles.webViewLoadingContainer}>
                                                 <ActivityIndicator size="large" color="#24ad91" />
-                                                <Text style={styles.loadingText}>Loading document...</Text>
+                                                <Text allowFontScaling={false} style={styles.loadingText}>Loading document...</Text>
                                             </View>
                                         )}
                                     </>
@@ -812,7 +812,7 @@ function MyDocument({ props }) {
                                         onPress={() => modalColseWevview()}
                                     >
                                         <Ionicons name="close-circle-outline" size={18} color="#fff" />
-                                        <Text style={styles.eyeButtonTxt}>Close</Text>
+                                        <Text allowFontScaling={false} style={styles.eyeButtonTxt}>Close</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[
@@ -824,7 +824,7 @@ function MyDocument({ props }) {
                                         disabled={isDownloading}
                                     >
                                         <Ionicons name="download-outline" size={18} color="#fff" />
-                                        <Text style={styles.eyeButtonTxt}>
+                                        <Text allowFontScaling={false} style={styles.eyeButtonTxt}>
                                             {isDownloading ? 'Downloading...' : 'Download'}
                                         </Text>
                                     </TouchableOpacity>

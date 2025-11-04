@@ -245,7 +245,7 @@ function Home({ props }) {
 
                     <View style={styles.panel}>
                         <View style={styles.topPanelTaxtBox}>
-                            <Text style={styles.topPanelTaxt}>
+                            <Text allowFontScaling={false} style={styles.topPanelTaxt}>
                                 Welcome to Oaktree Connect
                             </Text>
                         </View>
@@ -263,7 +263,7 @@ function Home({ props }) {
                                     />
                                 </View>
                                 <View style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>
-                                    <Text style={[styles.panelBoxRightMainTextDownDocumentText]}>
+                                    <Text allowFontScaling={false} style={[styles.panelBoxRightMainTextDownDocumentText]}>
                                         View & Start Appointment</Text>
                                 </View>
                             </TouchableOpacity>
@@ -274,19 +274,19 @@ function Home({ props }) {
                                         source={require('../../../Utility/Public/images/icon1.png')}
                                         style={[styles.calenderImage, styles.appointmentsIcon]}
                                     />
-                                    <Text style={styles.panelBoxRightMainTextDown}>View / Upload{'\n'}3rd Party Documents</Text>
+                                    <Text allowFontScaling={false} style={styles.panelBoxRightMainTextDown}>View / Upload{'\n'}3rd Party Documents</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.middlePanelBox} onPress={myDocumentLink}>
                                     <Image
                                         source={require('../../../Utility/Public/images/icon2.png')}
                                         style={[styles.calenderImage, styles.appointmentsIcon]}
                                     />
-                                    <Text style={styles.panelBoxRightMainTextDown}>Upload ID</Text>
+                                    <Text allowFontScaling={false} style={styles.panelBoxRightMainTextDown}>Upload ID</Text>
                                 </TouchableOpacity>
                             </View>
 
                             <View style={styles.middlePanelBoxRight}>
-                                <Text style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
+                                <Text allowFontScaling={false} style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
                                 <View style={styles.myTherapyTasks}>
                                     <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={healthParameterLink}>
                                         <View style={styles.roundiconBox}>
@@ -295,7 +295,7 @@ function Home({ props }) {
                                                 style={styles.heartRatingImage}
                                             />
                                         </View>
-                                        <Text style={styles.panelBoxRightMainTextDown}>View / Add{'\n'}Physical Parameters</Text>
+                                        <Text allowFontScaling={false} style={styles.panelBoxRightMainTextDown}>View / Add{'\n'}Physical Parameters</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.myTherapyTasksPanelBox]} onPress={questionnaireLink}>
                                         <View style={styles.roundiconBox}>
@@ -304,7 +304,7 @@ function Home({ props }) {
                                                 style={styles.calenderImage}
                                             />
                                         </View>
-                                        <Text style={styles.panelBoxRightMainTextDown}> View / Complete{'\n'}Questionnaires</Text>
+                                        <Text allowFontScaling={false} style={styles.panelBoxRightMainTextDown}> View / Complete{'\n'}Questionnaires</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>

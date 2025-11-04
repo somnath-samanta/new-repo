@@ -581,7 +581,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         <View style={styles.documentTypeSecBox}>
           <View style={[styles.documentTypeSec, styles.documentTypeSecPicker]}>
             <View style={[styles.documentTypeBox, styles.documentTypeBoxLeft]}>
-              <Text>Select Document Type</Text>
+              <Text allowFontScaling={false}>Select Document Type</Text>
             </View>
             <View style={[styles.documentTypeBox, styles.documentTypeBoxRight]}>
               <Dropdown
@@ -610,11 +610,12 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         {
           useFor === "ThirdPartyDocument" && selectedDocument === "Investigations" &&
           <View style={styles.documentTypeSecBoxThirdParty}>
-            <Text style={styles.documentTypeSecTxtBox}>Blood tests, X-rays / MRI / other imaging reports, lab tests done by your GP or hospital</Text>
-            <View style={styles.documentTypeSecc}>
+            <Text allowFontScaling={false} style={styles.documentTypeSecTxtBox}>Blood tests, X-rays / MRI / other imaging reports, lab tests done by your GP or hospital</Text>
+            <View allowFontScaling={false} style={styles.documentTypeSecc}>
               <View style={[documentNameError ? styles.inputContainermandatory : styles.inputContainer]}>
                 <TextInput
                   style={styles.input}
+                  allowFontScaling={false}
                   value={documentName}
                   onChangeText={(text) => {
                     setDocumentName(text),
@@ -624,7 +625,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                   placeholderTextColor="#333"
                 />
                 {!documentName && (
-                  <Text style={styles.redAsterisk}>*</Text>
+                  <Text allowFontScaling={false} style={styles.redAsterisk}>*</Text>
                 )}
               </View>
 
@@ -646,7 +647,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     </>
                     :
                     // <Text style={{ color: Colors.black }}>Date of Report <Text style={{ color: Colors.red }}>*</Text></Text>
-                    <Text style={{ color: '#333', }}> Date of Report <Text style={{ color: 'red', fontSize: 16 }}>*</Text></Text>
+                    <Text allowFontScaling={false} style={{ color: '#333', }}> Date of Report <Text allowFontScaling={false} style={{ color: 'red', fontSize: 16 }}>*</Text></Text>
 
                   }
                 </TouchableOpacity>
@@ -664,7 +665,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     size={22}
                     color={Colors.secondary}
                   /></TouchableOpacity>
-                {dateOfReport == "" ? <Text style={LoginStyle.errorMsg}>{selectedDateError}</Text> : null}
+                {dateOfReport == "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{selectedDateError}</Text> : null}
               </View>
 
               {/* <View style={[documentAutherError ? styles.inputContainermandatory : styles.inputContainer]}>
@@ -692,7 +693,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                   placeholderTextColor="#333"
                 />
                 {!organisationName && (
-                  <Text style={[styles.redAsterisk, styles.redAsteriskOrgName]}>*</Text>
+                  <Text allowFontScaling={false} style={[styles.redAsterisk, styles.redAsteriskOrgName]}>*</Text>
                 )}
               </View>
 
@@ -710,11 +711,12 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     }
                   }}
                   blurOnSubmit={false}
+                  allowFontScaling={false}
                 />
                 <View style={styles.tagsContainer}>
                   {tags.map((tag, index) => (
                     <View key={index} style={styles.tag}>
-                      <Text style={styles.tagText}>{tag}</Text>
+                      <Text allowFontScaling={false} style={styles.tagText}>{tag}</Text>
                       <TouchableOpacity
                         onPress={() => {
                           const newTags = [...tags];
@@ -723,7 +725,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                         }}
                         style={styles.tagRemove}
                       >
-                        <Text style={styles.tagRemoveText}>×</Text>
+                        <Text allowFontScaling={false} style={styles.tagRemoveText}>×</Text>
                       </TouchableOpacity>
                     </View>
                   ))}
@@ -752,25 +754,25 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         <View style={styles.photoModalcontainerRow}>
           <TouchableOpacity style={styles.photoModalcustomButton} onPress={takePhoto}>
             <View style={styles.photoModalbuttonIcon}><Entypo name="camera" size={30} color="#fff" /></View>
-            <Text style={styles.photoModalbuttonText}>Take Photo</Text>
+            <Text allowFontScaling={false} style={styles.photoModalbuttonText}>Take Photo</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.photoModalcustomButton} onPress={selectFile}>
             <View style={styles.photoModalbuttonIcon}><Feather name="upload" size={30} color="#fff" /></View>
-            <Text style={styles.photoModalbuttonText}>Select File
+            <Text allowFontScaling={false} style={styles.photoModalbuttonText}>Select File
               {/* {"\n"}
               <Text style={styles.photoModalbuttonSubText}>(Image/PDF/Doc)</Text> */}
             </Text>
           </TouchableOpacity>
         </View>
         <Text></Text>
-        <Text style={styles.hintTxt}>Camera Permission is required to take photo</Text>
+        <Text allowFontScaling={false} style={styles.hintTxt}>Camera Permission is required to take photo</Text>
         {useFor === "ThirdPartyDocument" && (
           <>
-            <Text style={styles.hintTxt}>You can upload PDF/Word documents or PNG/JPEG files with max 5MB. </Text>
+            <Text allowFontScaling={false} style={styles.hintTxt}>You can upload PDF/Word documents or PNG/JPEG files with max 5MB. </Text>
           </>
         )}
       </View>
-      <View><Text>{Object.keys(documentObj).length > 0 ? Object.keys(documentObj).length : ""}</Text></View>
+      <View><Text allowFontScaling={false}>{Object.keys(documentObj).length > 0 ? Object.keys(documentObj).length : ""}</Text></View>
       {Object.keys(documentObj).length > 0 && (
         <View style={styles.photoModalimageBoxess}>
           <SafeAreaView style={styles.scrollViewcontainer} edges={['top']}>
@@ -779,7 +781,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                 {
                   Object.entries(documentObj).map(([key, obj], index) => (
                     <View key={`${key}-${index}`} style={styles.photoModalimageBox}>
-                      <Text style={styles.phototypeTxt}>{formatString(key).length > 17 ? `${formatString(key).slice(0, 17)}...` : formatString(key)}</Text>
+                      <Text allowFontScaling={false} style={styles.phototypeTxt}>{formatString(key).length > 17 ? `${formatString(key).slice(0, 17)}...` : formatString(key)}</Text>
 
                       <TouchableOpacity style={styles.closeButton} onPress={() => handleClose(key)}>
                         <AntDesign name="closecircle" size={18} color="#f00" />
@@ -800,7 +802,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
       {Object.keys(documentObj).length > 0 && (
         <View style={styles.submitButtonBox}>
           <TouchableOpacity style={styles.uploadButton} onPress={uploadFile}>
-            <Text style={styles.uploadButtonText}>Upload</Text>
+            <Text allowFontScaling={false} style={styles.uploadButtonText}>Upload</Text>
           </TouchableOpacity>
 
         </View>

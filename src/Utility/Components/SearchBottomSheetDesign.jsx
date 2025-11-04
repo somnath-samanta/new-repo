@@ -247,7 +247,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
         } else if (filterFor === "questionnaire") {
             setSelectedSendByFilter(selectedSendBy);
             setSelectedKeyword(selectedKeywordText);
-        }else{
+        } else {
             setSelectedDocumentType(selectedDocumentType);
         }
     };
@@ -273,13 +273,13 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
         }
         if (sentByFilter) {
             setSelectedSentBy("");
-             setSelectedSendBy("")
+            setSelectedSendBy("")
         }
         if (documentTypeFilter) {
             setSelectedDocumentType("");
         }
 
-        if(keywordSearchFilter){
+        if (keywordSearchFilter) {
             setSelectedKeywordText("");
         }
 
@@ -445,7 +445,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                     {/* Column 2 */}
                                     <View style={styles.column2}>
                                         <View style={{ position: 'relative' }}>
-                                            <Dropdown
+                                            {/* <Dropdown
                                                 style={[styles.dropdown, isFocusForKeyword && { borderColor: 'blue' }]}
                                                 placeholderStyle={styles.placeholderStyle}
                                                 selectedTextStyle={styles.selectedTextStyle}
@@ -470,7 +470,69 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                     fetchQuestionnaireNames(text);
                                                 }}
                                                 disable={isLoadingKeywords}
+                                            /> */}
+                                            <Dropdown
+                                                style={[styles.dropdown, isFocusForKeyword && { borderColor: 'blue' }]}
+                                                data={keywordOptionData}
+                                                labelField="label"
+                                                valueField="value"
+                                                search
+                                                searchPlaceholder="Type to search..."
+                                                maxHeight={300}
+                                                disable={isLoadingKeywords}
+                                                value={selectedKeyword}
+                                                onFocus={() => setIsFocusForKeyword(true)}
+                                                onBlur={() => setIsFocusForKeyword(false)}
+                                                onChange={item => {
+                                                    setSelectedKeyword(item.value);
+                                                    setIsFocusForKeyword(false);
+                                                }}
+                                                onChangeText={text => {
+                                                    setKeywordSearchText(text);
+                                                    fetchQuestionnaireNames(text);
+                                                }}
+                                                itemContainerStyle={styles.itemContainerStyle}
+
+                                                // Render dropdown items
+                                                renderItem={item => (
+                                                    <View style={{ paddingVertical: 6 }}>
+                                                        <Text
+                                                            allowFontScaling={false}
+                                                            maxFontSizeMultiplier={1}
+                                                            style={styles.itemTextStyle}
+                                                            numberOfLines={1}>
+                                                            {item.label}
+                                                        </Text>
+                                                    </View>
+                                                )}
+
+                                                // Render selected item
+                                                renderSelectedItem={item => (
+                                                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                                                        <Text
+                                                            allowFontScaling={false}
+                                                            maxFontSizeMultiplier={1}
+                                                            style={styles.selectedTextStyle}
+                                                            numberOfLines={1}>
+                                                            {item.label}
+                                                        </Text>
+                                                    </View>
+                                                )}
+
+                                                // Render placeholder
+                                                renderPlaceholder={() => (
+                                                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                                                        <Text
+                                                            allowFontScaling={false}
+                                                            maxFontSizeMultiplier={1}
+                                                            style={styles.placeholderStyle}
+                                                            numberOfLines={1}>
+                                                            Search questionnaire...
+                                                        </Text>
+                                                    </View>
+                                                )}
                                             />
+
                                         </View>
                                     </View>
                                 </View>
@@ -486,7 +548,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                     </View>
                                     {/* Column 2 */}
                                     <View style={styles.column2}>
-                                        <Dropdown
+                                        {/* <Dropdown
                                             style={[styles.dropdown, isFocusForSentBy && { borderColor: 'blue' }]}
                                             placeholderStyle={styles.placeholderStyle}
                                             selectedTextStyle={styles.selectedTextStyle}
@@ -506,7 +568,62 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                 setSelectedSentBy(item.value);
                                                 setIsFocusForSentBy(false);
                                             }}
+                                        /> */}
+                                        <Dropdown
+                                            style={[styles.dropdown, isFocusForSentBy && { borderColor: 'blue' }]}
+                                            data={selectOptionForSentBy}
+                                            labelField="label"
+                                            valueField="value"
+                                            placeholder="Select item"
+                                            search
+                                            searchPlaceholder="Search..."
+                                            maxHeight={300}
+                                            value={selectedSentBy}
+                                            onFocus={() => setIsFocusForSentBy(true)}
+                                            onBlur={() => setIsFocusForSentBy(false)}
+                                            onChange={item => {
+                                                setSelectedSentBy(item.value);
+                                                setIsFocusForSentBy(false);
+                                            }}
+                                            itemContainerStyle={styles.itemContainerStyle}
+
+                                            renderItem={item => (
+                                                <View style={{ paddingVertical: 6 }}>
+                                                    <Text
+                                                        allowFontScaling={false}
+                                                        maxFontSizeMultiplier={1}
+                                                        style={styles.itemTextStyle}
+                                                        numberOfLines={1}>
+                                                        {item.label}
+                                                    </Text>
+                                                </View>
+                                            )}
+
+                                            renderSelectedItem={item => (
+                                                <View style={{ flex: 1, justifyContent: 'center' }}>
+                                                    <Text
+                                                        allowFontScaling={false}
+                                                        maxFontSizeMultiplier={1}
+                                                        style={styles.selectedTextStyle}
+                                                        numberOfLines={1}>
+                                                        {item.label}
+                                                    </Text>
+                                                </View>
+                                            )}
+
+                                            renderPlaceholder={() => (
+                                                <View style={{ flex: 1, justifyContent: 'center' }}>
+                                                    <Text
+                                                        allowFontScaling={false}
+                                                        maxFontSizeMultiplier={1}
+                                                        style={styles.placeholderStyle}
+                                                        numberOfLines={1}>
+                                                        Select item
+                                                    </Text>
+                                                </View>
+                                            )}
                                         />
+
                                     </View>
                                 </View>
                             </View>
@@ -521,7 +638,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                     </View>
                                     {/* Column 2 */}
                                     <View style={styles.column2}>
-                                        <Dropdown
+                                        {/* <Dropdown
                                             style={[styles.dropdown, isFocusForDocumentType && { borderColor: 'blue' }]}
                                             placeholderStyle={styles.placeholderStyle}
                                             selectedTextStyle={styles.selectedTextStyle}
@@ -541,7 +658,61 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                 setSelectedDocumentType(item.value);
                                                 setIsFocusForDocumentType(false);
                                             }}
+                                        /> */}
+                                        <Dropdown
+                                            style={[styles.dropdown, isFocusForDocumentType && { borderColor: 'blue' }]}
+                                            data={documentTypeFilterOption}
+                                            labelField="label"
+                                            valueField="value"
+                                            search
+                                            searchPlaceholder="Search..."
+                                            maxHeight={300}
+                                            value={selectedDocumentType}
+                                            onFocus={() => setIsFocusForDocumentType(true)}
+                                            onBlur={() => setIsFocusForDocumentType(false)}
+                                            onChange={item => {
+                                                setSelectedDocumentType(item.value);
+                                                setIsFocusForDocumentType(false);
+                                            }}
+                                            itemContainerStyle={styles.itemContainerStyle}
+
+                                            renderItem={item => (
+                                                <View style={{ paddingVertical: 6 }}>
+                                                    <Text
+                                                        allowFontScaling={false}
+                                                        maxFontSizeMultiplier={1}
+                                                        style={styles.itemTextStyle}
+                                                        numberOfLines={1}>
+                                                        {item.label}
+                                                    </Text>
+                                                </View>
+                                            )}
+
+                                            renderSelectedItem={item => (
+                                                <View style={{ flex: 1, justifyContent: 'center' }}>
+                                                    <Text
+                                                        allowFontScaling={false}
+                                                        maxFontSizeMultiplier={1}
+                                                        style={styles.selectedTextStyle}
+                                                        numberOfLines={1}>
+                                                        {item.label}
+                                                    </Text>
+                                                </View>
+                                            )}
+
+                                            renderPlaceholder={() => (
+                                                <View style={{ flex: 1, justifyContent: 'center' }}>
+                                                    <Text
+                                                        allowFontScaling={false}
+                                                        maxFontSizeMultiplier={1}
+                                                        style={styles.placeholderStyle}
+                                                        numberOfLines={1}>
+                                                        Select item
+                                                    </Text>
+                                                </View>
+                                            )}
                                         />
+
                                     </View>
                                 </View>
                             </View>
@@ -611,7 +782,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         fontFamily: 'Montserrat-Bold',
-        fontWeight:'700'
+        fontWeight: '700'
     },
     containerTopBoxTxtRight: {
         fontFamily: 'Montserrat-Bold',
@@ -771,7 +942,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         fontFamily: 'Arimo-Bold',
-        fontWeight:700,
+        fontWeight: 700,
     },
     searchBoxPanelRow: {
         //backgroundColor: '#007AFF',
@@ -807,12 +978,12 @@ const styles = StyleSheet.create({
         borderBottomColor: '#000'
     },
     placeholderStyle: {
-        fontSize: 16,
-        color: '#999',
+        fontSize: 14,
+        color: '#000',
     },
     selectedTextStyle: {
-        fontSize: 16,
-        color: '#333',
+        fontSize: 14,
+        color: '#000',
     },
     loaderContainer: {
         position: 'absolute',
@@ -820,6 +991,13 @@ const styles = StyleSheet.create({
         top: 10,
         zIndex: 1000,
     },
+      itemTextStyle: {
+    fontSize: 14,
+    color: '#000',
+    lineHeight: 16,
+    // backgroundColor:'red',
+    padding: 5,
+  },
 
 
 });

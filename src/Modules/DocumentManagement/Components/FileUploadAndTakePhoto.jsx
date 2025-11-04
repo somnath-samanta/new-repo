@@ -602,57 +602,57 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                 maxHeight={200} // adjust based on modal size
                 placeholderTextColor="#333"
               /> */}
-             <Dropdown
-  style={styles.dropdown}
-  data={SelectOptionForDocument}
-  labelField="label"
-  valueField="value"
-  placeholder="Select..."
-  value={selectedDocument}
-  onChange={item => {
-    setSelectedDocument(item.value);
-    setDocumentType(item.value);
-  }}
-  maxHeight={200}
-  placeholderTextColor="#333"
-  itemContainerStyle={styles.itemContainerStyle}
-  
-  renderItem={item => (
-    <View style={{ paddingVertical: 6 }}>
-      <Text
-        allowFontScaling={false}
-        maxFontSizeMultiplier={1}
-        style={styles.itemTextStyle}
-        numberOfLines={1}>
-        {item.label}
-      </Text>
-    </View>
-  )}
-  
-  renderSelectedItem={item => (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
-      <Text
-        allowFontScaling={false}
-        maxFontSizeMultiplier={1}
-        style={styles.selectedTextStyle}
-        numberOfLines={1}>
-        {item.label}
-      </Text>
-    </View>
-  )}
+              <Dropdown
+                style={styles.dropdown}
+                data={SelectOptionForDocument}
+                labelField="label"
+                valueField="value"
+                placeholder="Select..."
+                value={selectedDocument}
+                onChange={item => {
+                  setSelectedDocument(item.value);
+                  setDocumentType(item.value);
+                }}
+                maxHeight={200}
+                placeholderTextColor="#333"
+                itemContainerStyle={styles.itemContainerStyle}
 
-  renderPlaceholder={() => (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
-      <Text
-        allowFontScaling={false}
-        maxFontSizeMultiplier={1}
-        style={styles.placeholderStyle}
-        numberOfLines={1}>
-        Select...
-      </Text>
-    </View>
-  )}
-/>
+                renderItem={item => (
+                  <View style={{ paddingVertical: 6 }}>
+                    <Text
+                      allowFontScaling={false}
+                      maxFontSizeMultiplier={1}
+                      style={styles.itemTextStyle}
+                      numberOfLines={1}>
+                      {item.label}
+                    </Text>
+                  </View>
+                )}
+
+                renderSelectedItem={item => (
+                  <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <Text
+                      allowFontScaling={false}
+                      maxFontSizeMultiplier={1}
+                      style={styles.selectedTextStyle}
+                      numberOfLines={1}>
+                      {item.label}
+                    </Text>
+                  </View>
+                )}
+
+                renderPlaceholder={() => (
+                  <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <Text
+                      allowFontScaling={false}
+                      maxFontSizeMultiplier={1}
+                      style={styles.placeholderStyle}
+                      numberOfLines={1}>
+                      Select...
+                    </Text>
+                  </View>
+                )}
+              />
 
 
             </View>
@@ -766,7 +766,6 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                     }
                   }}
                   blurOnSubmit={false}
-                  allowFontScaling={false}
                 />
                 <View style={styles.tagsContainer}>
                   {tags.map((tag, index) => (

@@ -227,7 +227,11 @@ function AddHealthRecord() {
     const match = bp.match(bpPattern);
 
     if (!match) {
-      setBpError('Invalid format. Use format: 120/80');
+      if(bp.includes('/')){
+        setBpError('Invalid data entered');
+      }else{
+        setBpError('Invalid format. Use format: 120/80');
+      }
       return false;
     }
 
@@ -584,6 +588,7 @@ function AddHealthRecord() {
 
       // Validate blood pressure format before saving
       if (bp && !validateBp()) {
+        Toast.show(bpError);
         return;
       }
 

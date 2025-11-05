@@ -407,6 +407,19 @@ function AddHealthRecord() {
             }
           }
         });
+      }else{
+        vitalsdata.push({
+          resourceType: 'Observation',
+          status: '1',
+          valueString: '-',
+          valueInteger: 1,
+          valueQuantity: { value: 0, unit: heightDim },
+          code: {
+            coding: {
+              code: ""
+            }
+          }
+        });
       }
 
       // Weight
@@ -421,6 +434,19 @@ function AddHealthRecord() {
           valueString: weightString,
           valueInteger: 2,
           valueQuantity: { value: Number(total), unit: weightDim },
+          code: {
+            coding: {
+              system: "1"
+            }
+          }
+        });
+      }else{
+        vitalsdata.push({
+          resourceType: 'Observation',
+          status: '1',
+          valueString: '-',
+          valueInteger: 2,
+          valueQuantity: { value: 0, unit: weightDim },
           code: {
             coding: {
               system: "1"
@@ -445,6 +471,18 @@ function AddHealthRecord() {
             }
           });
         }
+      }else{
+        vitalsdata.push({
+          resourceType: 'Observation',
+          status: '1',
+          valueString: '-',
+          valueInteger: 3,
+          code: {
+            coding: {
+              system: ""
+            }
+          }
+        });
       }
 
       // Waist Circumference
@@ -465,6 +503,18 @@ function AddHealthRecord() {
             }
           });
         }
+      }else{
+        vitalsdata.push({
+          resourceType: 'Observation',
+          status: '1',
+          valueString: '-',
+          valueInteger: 4,
+          code: {
+            coding: {
+              system: ""
+            }
+          }
+        });
       }
 
       // BP
@@ -476,6 +526,18 @@ function AddHealthRecord() {
           valueInteger: 5,
           status: '1',
           valueQuantity: { value: isNaN(sys) ? undefined : Number(sys), unit: 'mmHg' },
+          code: {
+            coding: {
+              system: ""
+            }
+          }
+        });
+      }else{
+        vitalsdata.push({
+          resourceType: 'Observation',
+          status: '1',
+          valueString: '-',
+          valueInteger: 5,
           code: {
             coding: {
               system: ""
@@ -501,6 +563,18 @@ function AddHealthRecord() {
             }
           });
         }
+      }else{
+        vitalsdata.push({
+          resourceType: 'Observation',
+          status: '1',
+          valueString: '-',
+          valueInteger: 6,
+          code: {
+            coding: {
+              system: ""
+            }
+          }
+        });
       }
 
       if (vitalsdata.length === 0) {

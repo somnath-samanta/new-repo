@@ -303,6 +303,11 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                             editable={!(selectedDocadmintype == "1"
                                                                                 ||
                                                                                 selectedDocStatus === "Completed")}
+
+                                                                            blurOnSubmit={true}
+
+                                                                            returnKeyType="done"
+                                                                            inputAccessoryViewID={Platform.OS === 'ios' ? 'doneButton' : undefined}
                                                                         />
                                                                     </>
                                                                     : ""
@@ -450,6 +455,11 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                                             editable={!(selectedDocadmintype === 1
                                                                                                 ||
                                                                                                 selectedDocStatus === "Completed")}
+
+                                                                                            blurOnSubmit={true}
+
+                                                                                            returnKeyType="done"
+                                                                                            inputAccessoryViewID={Platform.OS === 'ios' ? 'doneButton' : undefined}
                                                                                         />
                                                                                     </View>
                                                                                     {obj.isCommentBoxRequired == "1" && selectedDocadmintype === 2 ? (

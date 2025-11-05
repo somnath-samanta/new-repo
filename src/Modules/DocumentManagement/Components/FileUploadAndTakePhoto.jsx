@@ -765,7 +765,9 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                       setTagInput('');
                     }
                   }}
-                  blurOnSubmit={false}
+                  // blurOnSubmit={false}
+                  returnKeyType="done"
+                  inputAccessoryViewID={Platform.OS === 'ios' ? 'doneButton' : undefined}
                 />
                 <View style={styles.tagsContainer}>
                   {tags.map((tag, index) => (

@@ -55,6 +55,82 @@ function AddHealthRecord() {
     };
   }, []);
 
+  // Helper function to allow only integer input
+  const handleIntegerInput = (text, setter) => {
+    // Remove all non-numeric characters
+    const numericOnly = text.replace(/[^0-9]/g, '');
+    setter(numericOnly);
+  };
+
+  // Function to convert values when switching between Metric and Imperial
+  const handleUnitToggle = (newIsMetric) => {
+    const mOrFt = parseFloat(heightM || '0');
+    const cmOrIn = parseFloat(heightCm || '0');
+    const kgOrLb = parseFloat(weightKg || '0');
+    const gOrOz = parseFloat(weightG || '0');
+    const waistVal = parseFloat(waist || '0');
+
+    if (!newIsMetric) {
+      // Converting from Metric to Imperial
+      
+      // Height: meters and cm to feet and inches
+      if (mOrFt > 0 || cmOrIn > 0) {
+        const totalCm = mOrFt * 100 + cmOrIn;
+        const totalInches = totalCm / 2.54;
+        const feet = Math.floor(totalInches / 12);
+        const inches = Math.round(totalInches % 12);
+        setHeightM(feet > 0 ? feet.toString() : '');
+        setHeightCm(inches > 0 ? inches.toString() : '');
+      }
+
+      // Weight: kg and g to lb and oz
+      if (kgOrLb > 0 || gOrOz > 0) {
+        const totalKg = kgOrLb + gOrOz / 1000;
+        const totalPounds = totalKg * 2.20462;
+        const pounds = Math.floor(totalPounds);
+        const ounces = Math.round((totalPounds - pounds) * 16);
+        setWeightKg(pounds > 0 ? pounds.toString() : '');
+        setWeightG(ounces > 0 ? ounces.toString() : '');
+      }
+
+      // Waist: cm to inches
+      if (waistVal > 0) {
+        const inches = Math.round(waistVal / 2.54);
+        setWaist(inches > 0 ? inches.toString() : '');
+      }
+    } else {
+      // Converting from Imperial to Metric
+      
+      // Height: feet and inches to meters and cm
+      if (mOrFt > 0 || cmOrIn > 0) {
+        const totalInches = mOrFt * 12 + cmOrIn;
+        const totalCm = totalInches * 2.54;
+        const meters = Math.floor(totalCm / 100);
+        const cm = Math.round(totalCm % 100);
+        setHeightM(meters > 0 ? meters.toString() : '');
+        setHeightCm(cm > 0 ? cm.toString() : '');
+      }
+
+      // Weight: lb and oz to kg and g
+      if (kgOrLb > 0 || gOrOz > 0) {
+        const totalPounds = kgOrLb + gOrOz / 16;
+        const totalKg = totalPounds / 2.20462;
+        const kg = Math.floor(totalKg);
+        const grams = Math.round((totalKg - kg) * 1000);
+        setWeightKg(kg > 0 ? kg.toString() : '');
+        setWeightG(grams > 0 ? grams.toString() : '');
+      }
+
+      // Waist: inches to cm
+      if (waistVal > 0) {
+        const cm = Math.round(waistVal * 2.54);
+        setWaist(cm > 0 ? cm.toString() : '');
+      }
+    }
+
+    setIsMetric(newIsMetric);
+  };
+
   // Handle hardware back button
   useFocusEffect(
     React.useCallback(() => {
@@ -158,13 +234,13 @@ function AddHealthRecord() {
     const systolic = parseInt(match[1]);
     const diastolic = parseInt(match[2]);
 
-    if (systolic < 70 || systolic > 250) {
-      setBpError('Systolic should be between 70-250');
+    if (systolic < 70 || systolic > 275) {
+      setBpError('Systolic should be between 70-275');
       return false;
     }
 
-    if (diastolic < 40 || diastolic > 150) {
-      setBpError('Diastolic should be between 40-150');
+    if (diastolic < 40 || diastolic > 195) {
+      setBpError('Diastolic should be between 40-195');
       return false;
     }
 
@@ -187,6 +263,122 @@ function AddHealthRecord() {
         Toast.show('No internet connection');
         return;
       }
+
+      // Validation section
+      // Height validation
+      if (heightM || heightCm) {
+        const mOrFt = parseFloat(heightM || '0');
+        const cmOrIn = parseFloat(heightCm || '0');
+        
+        if (isMetric) {
+          // Metric: max 2m (200cm total)
+          const totalCm = mOrFt * 100 + cmOrIn;
+          if (totalCm > 200) {
+            Toast.show('Height must not exceed 2 m (200 cm)');
+            return;
+          }
+          // Small category: max 99cm
+          if (cmOrIn > 99) {
+            Toast.show('Height (cm) must not exceed 99 cm');
+            return;
+          }
+        } else {
+          // Imperial: max 7ft (84 inches total)
+          const totalInches = mOrFt * 12 + cmOrIn;
+          if (totalInches > 84) {
+            Toast.show('Height must not exceed 7 ft (84 inches)');
+            return;
+          }
+          // Small category: max 39 inches
+          if (cmOrIn > 39) {
+            Toast.show('Height (inches) must not exceed 39 inches');
+            return;
+          }
+        }
+      }
+
+      // Weight validation
+      if (weightKg || weightG) {
+        const kgOrLb = parseFloat(weightKg || '0');
+        const gOrOz = parseFloat(weightG || '0');
+        
+        if (isMetric) {
+          // Large category: max 200kg
+          if (kgOrLb > 200) {
+            Toast.show('Weight must not exceed 200 kg');
+            return;
+          }
+          // Small category: max 999g
+          if (gOrOz > 999) {
+            Toast.show('Weight (grams) must not exceed 999 g');
+            return;
+          }
+        } else {
+          // Imperial: max 441lb
+          if (kgOrLb > 441) {
+            Toast.show('Weight must not exceed 441 lb');
+            return;
+          }
+          // Small category: max 35oz
+          if (gOrOz > 35) {
+            Toast.show('Weight (ounces) must not exceed 35 oz');
+            return;
+          }
+        }
+      }
+
+      // Waist validation
+      if (waist) {
+        const waistNum = parseFloat(waist);
+        if (!isNaN(waistNum)) {
+          if (isMetric) {
+            // Metric: max 127cm
+            if (waistNum > 127) {
+              Toast.show('Waist circumference must not exceed 127 cm');
+              return;
+            }
+          } else {
+            // Imperial: max 50 inches
+            if (waistNum > 50) {
+              Toast.show('Waist circumference must not exceed 50 inches');
+              return;
+            }
+          }
+        }
+      }
+
+      // Blood pressure validation
+      if (bp) {
+        const bpPattern = /^(\d{2,3})\/(\d{2,3})$/;
+        const match = bp.match(bpPattern);
+        
+        if (match) {
+          const systolic = parseInt(match[1]);
+          const diastolic = parseInt(match[2]);
+          
+          // Maximum limits: 275/195
+          if (systolic > 275) {
+            Toast.show('Systolic pressure must not exceed 275 mmHg');
+            return;
+          }
+          if (diastolic > 195) {
+            Toast.show('Diastolic pressure must not exceed 195 mmHg');
+            return;
+          }
+        }
+      }
+
+      // Pulse rate validation
+      if (pulse) {
+        const pulseNum = parseFloat(pulse);
+        if (!isNaN(pulseNum)) {
+          if (pulseNum > 200) {
+            Toast.show('Pulse rate must not exceed 200 bpm');
+            return;
+          }
+        }
+      }
+
       const vitalsdata = [];
       const ftMtInput = isMetric ? 'M' : 'Ft';
       const inCmInput = isMetric ? 'Cm' : 'In';
@@ -406,7 +598,7 @@ function AddHealthRecord() {
             <Text allowFontScaling={false} style={styles.unitLabel}>Imperial</Text>
             <Switch
               value={isMetric}
-              onValueChange={setIsMetric}
+              onValueChange={handleUnitToggle}
               trackColor={{ true: '#3bbfb5' }}
               thumbColor="#fff"
             />
@@ -427,7 +619,7 @@ function AddHealthRecord() {
                 placeholderTextColor="#666"
                 keyboardType="numeric"
                 value={heightM}
-                onChangeText={setHeightM}
+                onChangeText={(text) => handleIntegerInput(text, setHeightM)}
                 returnKeyType="next"
               />
               <TextInput
@@ -437,7 +629,7 @@ function AddHealthRecord() {
                 placeholderTextColor="#666"
                 keyboardType="numeric"
                 value={heightCm}
-                onChangeText={setHeightCm}
+                onChangeText={(text) => handleIntegerInput(text, setHeightCm)}
                 returnKeyType="next"
               />
             </View>
@@ -457,7 +649,7 @@ function AddHealthRecord() {
                 placeholderTextColor="#666"
                 keyboardType="numeric"
                 value={weightKg}
-                onChangeText={setWeightKg}
+                onChangeText={(text) => handleIntegerInput(text, setWeightKg)}
                 returnKeyType="next"
               />
               <TextInput
@@ -467,7 +659,7 @@ function AddHealthRecord() {
                 placeholderTextColor="#666"
                 keyboardType="numeric"
                 value={weightG}
-                onChangeText={setWeightG}
+                onChangeText={(text) => handleIntegerInput(text, setWeightG)}
                 returnKeyType="next"
               />
             </View>
@@ -486,7 +678,8 @@ function AddHealthRecord() {
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={bmi}
-              onChangeText={setBmi}
+              readOnly
+              onChangeText={(text) => handleIntegerInput(text, setBmi)}
             />
           </View>
 
@@ -503,7 +696,7 @@ function AddHealthRecord() {
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={waist}
-              onChangeText={setWaist}
+              onChangeText={(text) => handleIntegerInput(text, setWaist)}
             />
           </View>
 
@@ -549,7 +742,7 @@ function AddHealthRecord() {
                 placeholderTextColor="#666"
                 keyboardType="numeric"
                 value={pulse}
-                onChangeText={setPulse}
+                onChangeText={(text) => handleIntegerInput(text, setPulse)}
               />
               <View style={{ flex: 1, position: 'relative' }}>
                 <TextInput
@@ -563,11 +756,11 @@ function AddHealthRecord() {
                   onBlur={validateBp}
                   maxLength={7}
                 />
-                {bpError ? (
+                {/* {bpError ? (
                   <Text allowFontScaling={false} style={styles.errorText}>{bpError}</Text>
                 ) : (
                   <Text allowFontScaling={false} style={styles.hint}>* 120/80 mmHg</Text>
-                )}
+                )} */}
               </View>
             </View>
           </View>

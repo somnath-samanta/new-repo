@@ -13,6 +13,8 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-simple-toast';
+import Entypo from 'react-native-vector-icons/Entypo';
+
 
 const screen = Dimensions.get('window');
 const screenWidth = screen.width;
@@ -95,7 +97,7 @@ export default function HealthMonitoring() {
   const navigation = useNavigation();
   const hasFetchedVitalsRef = useRef(false);
   const [refreshing, setRefreshing] = useState(false);
-
+  const [rowHeights, setRowHeights] = useState({});
   // Handle hardware back button: always go to HealthParameter
   useFocusEffect(
     React.useCallback(() => {
@@ -115,15 +117,15 @@ export default function HealthMonitoring() {
     if (isManual) setRefreshing(true); else setPageLoading(true);
     try {
       const res = await getPatientHealthProfile({ id: userId });
-      const vitalsList = res?.Patient?.healthProfile?.vitals || [];  
-      
-      console.log("vitalsListvitalsListvitalsList---",vitalsList.length)
-      if(vitalsList.length == 0 ){
+      const vitalsList = res?.Patient?.healthProfile?.vitals || [];
+
+      console.log("vitalsListvitalsListvitalsList---", vitalsList.length)
+      if (vitalsList.length == 0) {
         setTimeout(() => {
           setPageLoading(false);
         }, 500);
         return
-      } 
+      }
 
       let lastRecordIndex = vitalsList.length - 1;
       // Set the last record month as active month
@@ -290,6 +292,48 @@ export default function HealthMonitoring() {
     }
   };
 
+
+  const scrollRef = useRef(null);
+
+  const handleNext = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        x: scrollRef.currentContentOffsetX + 200 || 200,
+        animated: true,
+      });
+    }
+  };
+
+  const handlePrevious = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        x: scrollRef.currentContentOffsetX - 200 || 0,
+        animated: true,
+      });
+    }
+  };
+
+  // Track current scroll position
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.currentContentOffsetX = 0;
+    }
+  }, []);
+
+  const onScroll = (event) => {
+    if (scrollRef.current) {
+      scrollRef.currentContentOffsetX = event.nativeEvent.contentOffset.x;
+    }
+  };
+
+  const onRowLayout = (index, event) => {
+    const height = event.nativeEvent.layout.height;
+    setRowHeights(prev => {
+      if (prev[index] === height) return prev;
+      return { ...prev, [index]: height };
+    });
+  };
+
   return (
 
     <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
@@ -375,7 +419,12 @@ export default function HealthMonitoring() {
               {rows.map((r, idx) => (
                 <View
                   key={r.key}
-                  style={[styles.cellMetric, idx % 2 === 0 ? styles.rowEven : styles.rowOdd]}>
+                  style={[
+                    styles.cellMetric,
+                    { height: rowHeights[idx] || 'auto' },
+                    idx % 2 === 0 ? styles.rowEven : styles.rowOdd,
+                  ]}
+                >
                   <View style={styles.metricCellInner}>
                     <IconCell iconKey={r.key} />
                     <Text allowFontScaling={false} style={styles.metricLabel}>{r.label}</Text>
@@ -385,43 +434,69 @@ export default function HealthMonitoring() {
             </View>
 
             {/* Scrollable right section */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View>
-                {/* Header row */}
-                <View style={[styles.tableRow, styles.headerRow]}>
-                  {Object.keys(dates).length > 0 &&
-                    Object.values(dates).map((d, index) => (
-                      <View key={index} style={[styles.cellDate, styles.headerCell]}>
-                        <Text allowFontScaling={false} style={styles.headerText}>{d}</Text>
-                      </View>
-                    ))}
-                </View>
-
-                {/* Data rows */}
-                {rows.map((r, idx) => (
-                  <View
-                    key={r.key}
-                    style={[
-                      styles.tableRow,
-                      idx % 2 === 0 ? styles.rowEven : styles.rowOdd,
-                    ]}
-                  >
-                    {r.values.map((v, i) => (
-                      <View key={i} style={[styles.cellDate, styles.valueCell]}>
-                        <Text allowFontScaling={false}style={styles.valueText}>{v}</Text>
-                      </View>
-                    ))}
+            <View style={{ flex: 1 }}>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                ref={scrollRef}
+                onScroll={onScroll}
+                scrollEventThrottle={16}
+              >
+                <View>
+                  {/* Header row */}
+                  <View style={[styles.tableRow, styles.headerRow]}>
+                    {Object.keys(dates).length > 0 &&
+                      Object.values(dates).map((d, index) => (
+                        <View key={index} style={[styles.cellDate, styles.headerCell]}>
+                          <Text allowFontScaling={false} style={styles.headerText}>{d}</Text>
+                        </View>
+                      ))}
                   </View>
-                ))}
-                {
-                  Object.keys(dates).length === 0 && (
-                    <View style={styles.noDataContainer}>
-                      <Text allowFontScaling={false} style={styles.noDataText}>No data available for selected month</Text>
+
+                  {/* Data rows */}
+                  {rows.map((r, idx) => (
+                    <View
+                      key={r.key}
+                      onLayout={(e) => onRowLayout(idx, e)}
+                      style={[
+                        styles.tableRow,
+                        idx % 2 === 0 ? styles.rowEven : styles.rowOdd,
+                      ]}
+                    >
+                      {r.values.map((v, i) => (
+                        <View key={i} style={[styles.cellDate, styles.valueCell]}>
+                          <Text allowFontScaling={false} style={styles.valueText}>{v}</Text>
+                        </View>
+                      ))}
                     </View>
-                  )
-                }
-              </View>
-            </ScrollView>
+                  ))}
+                  {
+                    Object.keys(dates).length === 0 && (
+                      <View style={styles.noDataContainer}>
+                        <Text allowFontScaling={false} style={styles.noDataText}>No data available for selected month</Text>
+                      </View>
+                    )
+                  }
+                </View>
+              </ScrollView>
+
+
+            </View>
+            {/* Next / Previous Buttons */}
+            <View style={styles.scrollButtonsContainer}>
+              <TouchableOpacity
+                onPress={handlePrevious}
+                style={[styles.scrollBtn, styles.prevBtn]}
+              >
+                <Entypo name="chevron-with-circle-left" size={35} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleNext}
+                style={[styles.scrollBtn, styles.nextBtn]}
+              >
+                <Entypo name="chevron-with-circle-right" size={35} color="#000" />
+              </TouchableOpacity>
+            </View>
           </View>
 
         </ScrollView>
@@ -509,7 +584,7 @@ const styles = StyleSheet.create({
     borderColor: BORDER,
     paddingVertical: 10,
     paddingHorizontal: 10,
-   // backgroundColor: 'red',
+    //backgroundColor: 'pink',
 
   },
   headerText: {
@@ -517,10 +592,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontSize: 12,
     fontWeight: 700,
-    minWidth:130,
-    maxWidth:130,
-    textAlign:'center'
-   // backgroundColor:'red'
+    minWidth: 130,
+    maxWidth: 130,
+    textAlign: 'center'
+    // backgroundColor:'red'
     //paddingLeft:10
   },
   headerTextStart: {
@@ -532,16 +607,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#eaf8f6',
     borderWidth: 1,
     borderColor: BORDER,
-    padding: 10.23,
+    padding: 10,
+    // backgroundColor: 'pink'
   },
   cellDate: {
     minWidth: 130,
     borderWidth: 1,
     borderColor: BORDER,
-    padding: 11.05,
+    padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    maxWidth:130,
+    maxWidth: 130,
+    //backgroundColor: 'red'
 
 
   },
@@ -550,6 +627,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
+    //backgroundColor: 'green'
   },
   metricLabel: {
     color: '#000',
@@ -580,7 +658,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingHorizontal: 0,
     paddingVertical: Platform.OS === 'ios' ? 10 : 8,
-   // backgroundColor:'red',
+    //backgroundColor: 'blue',
   },
   subHeaderRow: {
     gap: 10,
@@ -638,5 +716,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo-Regular',
     fontSize: 14,
     textAlign: 'center',
+  },
+  ////////////////////////////////
+  scrollButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 0,
+    position: 'absolute',
+    right: 0,
+    bottom: -40
+  },
+  scrollBtn: {
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+    borderRadius: 100,
   },
 });

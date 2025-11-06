@@ -42,11 +42,12 @@ import EventEmitter from '../../../Contexts/EventEmitter';
 import { LogOut } from '../../../Utility/Components/LogOut';
 import { WebView } from 'react-native-webview';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function Home({ props }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const insets = useSafeAreaInsets();
     const reduxAuthJson = useSelector((state) => state);
     const [pageLoading, setPageLoading] = useState(false);
     const [filterFlag, setFilterFlag] = useState(false);
@@ -159,7 +160,10 @@ function Home({ props }) {
     ), [webViewData, hideBookAppointmentScreen]);
 
     return (
-        <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
+        <SafeAreaView
+            style={[styles.safeArea, { paddingBottom: insets.bottom || 12 }]}
+            edges={['left', 'right', 'bottom']}   // ← add bottom
+        >
             <Loader style={styles.loadingCss} loading={pageLoading} />
             {webViewFlag ? renderWebView() : (
                 <View style={styles.container}>
@@ -204,7 +208,7 @@ function Home({ props }) {
                                     <Text
                                         allowFontScaling={false}
                                         style={[styles.panelBoxRightMainTextDownDocumentText]}
-                                        // Text will wrap; no visual change
+                                    // Text will wrap; no visual change
                                     >
                                         View & Start Appointment
                                     </Text>
@@ -294,7 +298,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         width: '100%',
-        paddingBottom: isSmallDevice ? 10 : 20,
+        paddingBottom: (isSmallDevice ? 10 : 20) + 8, // small bump
     },
     loadingCss: {
         display: 'flex',
@@ -425,7 +429,7 @@ const styles = StyleSheet.create({
         height: 70,
     },
     panelBoxRightMainTextDown: {
-        fontSize: Platform.OS == 'ios' ? 13 : 13,
+        fontSize: Platform.OS == 'ios' ? 12 : 13,
         color: '#000',
         fontFamily: 'Arimo-Bold',
         textAlign: 'center',
@@ -433,8 +437,8 @@ const styles = StyleSheet.create({
         lineHeight: Platform.OS == 'ios' ? 16 : 16, // FIX: taller lines avoid cramping
         marginTop: 15,
         fontWeight: '700',
-        paddingHorizontal: 6,      // FIX: gives breathing room on minis
-        flexShrink: 1,             // FIX: allow text to wrap instead of overflow
+        paddingHorizontal: 0,      // FIX: gives breathing room on minis
+        flexShrink: 1,
     },
     panelBoxRightMainTextDownSec: {
         marginTop: 0,
@@ -447,7 +451,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 6,
         marginTop: 10,
     },
     panelBoxRightMainTextDownDocumentText: {

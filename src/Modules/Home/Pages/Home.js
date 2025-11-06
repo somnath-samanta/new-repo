@@ -29,7 +29,7 @@ const isLargeDevice = screenHeight > 800;
 const welcomeLogoHeight = isSmallDevice ? screenHeight * 0.08 : screenHeight * 0.1;
 const welcomeMSGHeight = isSmallDevice ? screenHeight * 0.05 : screenHeight * 0.06;
 const viewButtonHeight = isSmallDevice ? screenHeight * 0.16 : screenHeight * 0.18;
-const buttonSpacing = isSmallDevice ? 8 : 12;
+const buttonSpacing = isSmallDevice ? 8 : 8;
 const screenheight = screen.height;
 const mydocumentheight = screenheight * (Platform.OS == 'ios' ? 0.22 : 0.26);
 

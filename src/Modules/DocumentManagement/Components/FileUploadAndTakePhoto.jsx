@@ -2,7 +2,7 @@ const screen = Dimensions.get("window");
 const screenWidth = screen.width;
 const screenheight = screen.height;
 import React, { useEffect, useState } from 'react';
-import { View, Button, Image, Alert, Platform, PermissionsAndroid, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView, Dimensions } from 'react-native';
+import { View, Button, Image, Alert, Platform, PermissionsAndroid, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView, Dimensions, PixelRatio } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 // import DocumentPicker from 'react-native-document-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -26,6 +26,10 @@ import { pick } from '@react-native-documents/picker'
 // import DatePicker from "react-native-date-picker";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+const sysScale = PixelRatio.getFontScale();
+// Tweak the cap if you want slightly larger/smaller. 1.25–1.30 usually looks right.
+const SCALE_CAP = 1.25;
+const scaled = (size) => size * Math.min(sysScale, SCALE_CAP);
 const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientName }) => {
   const [documentObj, setDocumentObj] = useState({});
   const [selectedDocument, setSelectedDocument] = useState("");
@@ -617,25 +621,18 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
                 placeholderTextColor="#333"
                 itemContainerStyle={styles.itemContainerStyle}
 
+                /* ↓↓↓ ADD THESE ↓↓↓ */
+                selectedTextStyle={styles.selectedTextStyle}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                placeholderProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                itemTextStyle={styles.itemTextStyle}
+                itemTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1 }}
+                /* ↑↑↑ ADD THESE ↑↑↑ */
+
                 renderItem={item => (
                   <View style={{ paddingVertical: 6 }}>
-                    <Text
-                      allowFontScaling={false}
-                      maxFontSizeMultiplier={1}
-                      style={styles.itemTextStyle}
-                      numberOfLines={1}>
-                      {item.label}
-                    </Text>
-                  </View>
-                )}
-
-                renderSelectedItem={item => (
-                  <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text
-                      allowFontScaling={false}
-                      maxFontSizeMultiplier={1}
-                      style={styles.selectedTextStyle}
-                      numberOfLines={1}>
+                    <Text allowFontScaling={false} maxFontSizeMultiplier={1} style={styles.itemTextStyle} numberOfLines={1}>
                       {item.label}
                     </Text>
                   </View>
@@ -643,16 +640,13 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
 
                 renderPlaceholder={() => (
                   <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text
-                      allowFontScaling={false}
-                      maxFontSizeMultiplier={1}
-                      style={styles.placeholderStyle}
-                      numberOfLines={1}>
+                    <Text allowFontScaling={false} maxFontSizeMultiplier={1} style={styles.placeholderStyle} numberOfLines={1}>
                       Select...
                     </Text>
                   </View>
                 )}
               />
+
 
 
             </View>
@@ -1238,25 +1232,13 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 5,
   },
-  placeholderStyle: {
-    fontSize: 14,
-    color: '#000',
-  },
-  selectedTextStyle: {
-    fontSize: 14,
-    color: '#000',
-  },
+  placeholderStyle: { fontSize: scaled(14), color: '#000' },
+  selectedTextStyle: { fontSize: scaled(14), color: '#000' },
+  itemTextStyle: { fontSize: scaled(14), color: '#000', lineHeight: scaled(16), padding: 5 },
   itemContainerStyle: {
     paddingVertical: 0,
     margin: 0,
-    minHeight: 25, // allows text to fit without overlap
-    padding: 5,
-  },
-  itemTextStyle: {
-    fontSize: 14,
-    color: '#000',
-    lineHeight: 16,
-    // backgroundColor:'red',
+    minHeight: 25,
     padding: 5,
   },
 });

@@ -425,12 +425,12 @@ const styles = StyleSheet.create({
         height: 70,
     },
     panelBoxRightMainTextDown: {
-        fontSize: Platform.OS == 'ios' ? 14 : 13.5,
+        fontSize: Platform.OS == 'ios' ? 13 : 13,
         color: '#000',
         fontFamily: 'Arimo-Bold',
         textAlign: 'center',
         width: "100%",
-        lineHeight: Platform.OS == 'ios' ? 18 : 18, // FIX: taller lines avoid cramping
+        lineHeight: Platform.OS == 'ios' ? 16 : 16, // FIX: taller lines avoid cramping
         marginTop: 15,
         fontWeight: '700',
         paddingHorizontal: 6,      // FIX: gives breathing room on minis

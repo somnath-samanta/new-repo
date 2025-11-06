@@ -7,6 +7,7 @@ const bookingscreenWidth = screenWidth - 30
 const bookingscreenWidthLeft = bookingscreenWidth - 50;
 const liHeight = screenheight * 0.04;
 const flatlistHeight = screenheight * 0.04;
+    const isSmallIOS = Platform.OS === 'ios' && screenheight <= 812; // 12/13 mini and similar
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import {
     FlatList,
@@ -845,18 +846,22 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#dff7f8',
         width: screenWidth,
-        height: screenheight,
+
+        // height: screenheight,
     },
+
     infoBox: {
-        // backgroundColor: '#fff',
         width: screenWidth,
-        height: Platform.OS == 'ios' ? fortyPercentOfScreenHeight : sixtyPercentOfScreenHeight,
+        // On small iPhones give a floor so it doesn't crowd;
+        // On Android (and larger iPhones) let content decide the height
+        minHeight: isSmallIOS ? fortyPercentOfScreenHeight : undefined,
         padding: 15,
         paddingTop: 0,
     },
+
     inninfoBox: {
         width: '100%',
-        height: '100%',
+        // height: '100%',            // ✅ let it size to its content
         backgroundColor: '#fff',
         padding: 15,
         borderRadius: 5,
@@ -1150,8 +1155,8 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         fontFamily: 'Arimo-Bold',
-        textAlign:'center',
-        fontWeight:700,
+        textAlign: 'center',
+        fontWeight: 700,
     },
     photoModalimage: {
         width: 95,
@@ -1176,7 +1181,7 @@ const styles = StyleSheet.create({
         // padding:10,
     },
     imgmodalContent: {
-         width: '100%',
+        width: '100%',
         height: '100%',
         borderRadius: 0,
         paddingBottom: 0,
@@ -1215,7 +1220,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         //maxHeight: screenheight - 300,
-         maxHeight: screenheight - 400
+        maxHeight: screenheight - 400
     },
     pdfmodalContent: {
         width: '100%',

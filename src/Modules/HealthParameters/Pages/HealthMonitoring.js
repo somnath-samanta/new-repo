@@ -98,6 +98,8 @@ export default function HealthMonitoring() {
   const hasFetchedVitalsRef = useRef(false);
   const [refreshing, setRefreshing] = useState(false);
   const [rowHeights, setRowHeights] = useState({});
+  const [isAtStart, setIsAtStart] = useState(true);
+  const [isAtEnd, setIsAtEnd] = useState(false);
   // Handle hardware back button: always go to HealthParameter
   useFocusEffect(
     React.useCallback(() => {
@@ -320,9 +322,22 @@ export default function HealthMonitoring() {
     }
   }, []);
 
+  // const onScroll = (event) => {
+  //   if (scrollRef.current) {
+  //     scrollRef.currentContentOffsetX = event.nativeEvent.contentOffset.x;
+  //   }
+  // };
   const onScroll = (event) => {
     if (scrollRef.current) {
-      scrollRef.currentContentOffsetX = event.nativeEvent.contentOffset.x;
+      const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+      scrollRef.currentContentOffsetX = contentOffset.x;
+
+      // If scrolled to start
+      setIsAtStart(contentOffset.x <= 0);
+
+      // If scrolled to end
+      const endReached = contentOffset.x + layoutMeasurement.width >= contentSize.width - 10;
+      setIsAtEnd(endReached);
     }
   };
 
@@ -486,15 +501,18 @@ export default function HealthMonitoring() {
             <View style={styles.scrollButtonsContainer}>
               <TouchableOpacity
                 onPress={handlePrevious}
-                style={[styles.scrollBtn, styles.prevBtn]}
+                disabled={isAtStart}
+                style={[styles.scrollBtn, styles.prevBtn, isAtStart && { opacity: 0.4 }]}
               >
-                <Entypo name="chevron-with-circle-left" size={35} color="#000" />
+                <Entypo name="chevron-with-circle-left" size={30} color={isAtStart ? "#999" : "#000"} />
               </TouchableOpacity>
+
               <TouchableOpacity
                 onPress={handleNext}
-                style={[styles.scrollBtn, styles.nextBtn]}
+                disabled={isAtEnd}
+                style={[styles.scrollBtn, styles.nextBtn, isAtEnd && { opacity: 0.4 }]}
               >
-                <Entypo name="chevron-with-circle-right" size={35} color="#000" />
+                <Entypo name="chevron-with-circle-right" size={30} color={isAtEnd ? "#999" : "#000"} />
               </TouchableOpacity>
             </View>
           </View>
@@ -690,6 +708,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderColor: BORDER,
     borderWidth: 1,
+    marginTop: 10,
   },
   fixedColumn: {
     backgroundColor: '#eaf8f6',
@@ -704,7 +723,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#2aa394',
     borderRightWidth: 1,
     borderColor: BORDER,
-    fontWeight: 700
+    fontWeight: 700,
+    paddingHorizontal: 9,
   },
   noDataContainer: {
     padding: 20,
@@ -724,11 +744,14 @@ const styles = StyleSheet.create({
     marginTop: 0,
     position: 'absolute',
     right: 0,
-    bottom: -40
+    top: -35
   },
   scrollBtn: {
     paddingVertical: 0,
     paddingHorizontal: 0,
     borderRadius: 100,
   },
+  prevBtn:{
+    marginRight:3,
+  }
 });

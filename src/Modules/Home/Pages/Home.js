@@ -228,11 +228,12 @@ function Home({ props }) {
     ), [webViewData, hideBookAppointmentScreen]);
 
     return (
-        <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
+        <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'top']}>
             <Loader style={styles.loadingCss} loading={pageLoading} />
             {webViewFlag ? renderWebView() : (
                 <View style={styles.container}>
                     <Image source={require('../../../Utility/Public/images/oaktreeLogo.png')} style={styles.oaktreeLogo} />
+                  
                     <TouchableOpacity
                         style={styles.signout}
                         onPress={logoutApp}
@@ -324,22 +325,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#dff7f8',
         flex: 1,
         paddingTop: 0,
-        paddingBottom: 0,
     },
     container: {
         flex: 1,
         width: '100%',
+        paddingTop: 10,
     },
     panel: {
         flex: 1,
         width: '100%',
         paddingHorizontal: isSmallDevice ? 15 : 20,
-        paddingTop: isSmallDevice ? welcomeLogoHeight * 1.5 : welcomeLogoHeight * 1.2,
+        paddingTop: isSmallDevice ? 10 : 15,
     },
     contentContainer: {
         flex: 1,
         width: '100%',
         paddingBottom: isSmallDevice ? 10 : 20,
+        marginTop: isSmallDevice ? 5 : 0,
     },
     loadingCss: {
         display: 'flex',
@@ -354,7 +356,7 @@ const styles = StyleSheet.create({
         width: 110,
         position: 'absolute',
         left: -20,
-        top: -10,
+        top: -40,
         objectFit: 'contain',
     },
     signout: {
@@ -362,7 +364,7 @@ const styles = StyleSheet.create({
         width: isSmallDevice ? 36 : 40,
         position: 'absolute',
         right: isSmallDevice ? 10 : 15,
-        top: isSmallDevice ? 10 : 15,
+        top: isSmallDevice ? 10 : 0,
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 9,
@@ -395,13 +397,22 @@ const styles = StyleSheet.create({
         //paddingVertical:10,
         paddingTop: Platform.OS == 'ios' ? 20 : 5,
         paddingBottom: Platform.OS == 'ios' ? 15 : 5,
-    },
-    topPanelTaxt: {
-        fontSize: 19,
-        color: '#000',
-        fontFamily: 'Montserrat-Medium',
+        marginBottom: 0,
+        padding: 0,
         width: "100%",
         textAlign: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:50
+    },
+    topPanelTaxt: {
+        fontSize: isSmallDevice ? 17 : 19,
+        color: '#000',
+        fontFamily: 'Montserrat-Medium',
+        width: "80%",
+        textAlign: 'center',
+        lineHeight: isSmallDevice ? 22 : 24,
     },
     panelBox: {
         backgroundColor: '#fff',

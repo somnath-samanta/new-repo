@@ -10,14 +10,20 @@ import { getPatientHealthProfile } from '../Controller/HealthParametersControlle
 import { useSelector } from 'react-redux';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+
+
 
 const screen = Dimensions.get("window");
 const screenWidth = screen.width;
 const screenHeight = screen.height;
 const cardHeight = screenHeight * 0.23;
-const cardBoxesHeight = screenHeight * .75;
+const cardBoxesHeight = screenHeight * .734;
 function HealthParameter() {
+    const insets = useSafeAreaInsets();
+    const bottomSafe = Platform.OS === 'android'
+        ? Math.max(insets.bottom, 16)  // Android often returns 0; ensure at least 16px
+        : (insets.bottom || 12);
     const [webViewFlag, setWebViewFlag] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
     const navigation = useNavigation();
@@ -240,7 +246,7 @@ function HealthParameter() {
                         onRefresh={() => fetchVitals(true)}
                     />
                 </View>
-                <View style={styles.footerBtns}>
+                <View style={[styles.footerBtns, { paddingBottom: bottomSafe }]}>
                     <TouchableOpacity style={[styles.ctaBtn, styles.ctaPrimary]} onPress={onViewMonitoring}>
                         <Text allowFontScaling={false} style={styles.ctaText}>View Health Monitoring</Text>
                     </TouchableOpacity>
@@ -283,7 +289,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingTop: 0,
         paddingBottom: 0,
-        //backgroundColor: 'blue',
+       // backgroundColor: 'red',
         //height: screenHeight - 170
     },
     topContent: {
@@ -293,22 +299,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row'
     },
-    flatListContent:{
-       // backgroundColor:'blue',
-        height:cardBoxesHeight,
-        overflow:'hidden'
-       // display:'flex',
-       // justifyContent:'space-between',
-   
+    flatListContent: {
+        //backgroundColor: 'blue',
+        height: cardBoxesHeight,
+        // overflow:'hidden'
+        // display:'flex',
+        // justifyContent:'space-between',
+        overflow: 'hidden',
+
     },
     gridContent: {
         paddingTop: 10,
-        paddingBottom: 100, // Space for bottom buttons
+        // paddingBottom: 100, // Space for bottom buttons
         flexGrow: 1,
+        paddingBottom: 12,
     },
     row: {
         justifyContent: 'space-between',
-       // marginBottom: 12,
+        // marginBottom: 12,
     },
     card: {
         backgroundColor: '#fff',
@@ -323,7 +331,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         //aspectRatio: .95, // Makes cards square
-        height:cardHeight,
+        height: cardHeight,
         marginBottom: 12,
 
     },
@@ -394,7 +402,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         zIndex: 999,
         gap: 12,
-        margin:0,
+        margin: 0,
     },
 
     ctaBtn: {

@@ -31,6 +31,16 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
     const [pageLoading, setPageLoading] = useState(false);
 
     const [isSelected, setSelection] = useState(false);
+
+
+
+    const [expanded, setExpanded] = useState(false);
+    const fullText = questionObj?.questionnaire?.questionnaireDescription || '';
+    const shouldTruncate = fullText.length > 50;
+    const previewText = shouldTruncate ? fullText.substring(0, 45) + '...' : fullText;
+
+
+
     useEffect(() => {
         //console.log("------------------------|||", selectedDocStatus);
         handleSelectedDocument(questionsData)
@@ -275,6 +285,9 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
         }
     }, []);
 
+
+
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <Loader style={styles.loadingCss} loading={pageLoading} />
@@ -302,12 +315,36 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                     keyboardShouldPersistTaps="handled"
                                 >
                                     <View style={(selectedDocadmintype === 2 || selectedDocadmintype === 3) && selectedDocStatus == "Incomplete" ? [styles.mainView] : [styles.mainView, styles.mainViewBoxx]}>
-                                        <Text allowFontScaling={false} style={styles.mainViewTxt}>{questionObj?.questionnaire?.questionnaireName}
+                                        <Text allowFontScaling={false} style={styles.mainViewTxt}>
+                                            <Text allowFontScaling={false} style={styles.mainViewTxtBold}>{questionObj?.questionnaire?.questionnaireName}</Text>
                                         </Text>
-                                        <Text allowFontScaling={false} style={styles.mainViewTxt}>Instructions: {" "}
+                                        {/* <Text allowFontScaling={false} style={styles.mainViewTxt}>Instructions: {" "}
                                             <Text allowFontScaling={false} style={styles.mainViewTxtSpan}>{questionObj?.questionnaire?.questionnaireDescription}</Text>
-                                        </Text>
-                                        <Text allowFontScaling={false} style={styles.mainViewTxt}>Date: {" "}
+                                        </Text> */}
+                                        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                                            <Text allowFontScaling={false} style={styles.mainViewTxt}>
+                                                <Text allowFontScaling={false} style={styles.mainViewTxtBold}>
+                                                    Instructions:{' '}
+                                                </Text>
+
+                                                <Text allowFontScaling={false} style={styles.mainViewTxtSpan}>
+                                                    {expanded || !shouldTruncate ? fullText : previewText}
+                                                </Text>
+
+                                                {shouldTruncate && (
+                                                    <Text
+                                                        allowFontScaling={false}
+                                                        onPress={() => setExpanded(!expanded)}
+                                                        style={[styles.mainViewTxtSpan, { color: '#007b80', fontWeight: 'bold' }]}
+                                                    >
+                                                        {expanded ? ' Show less' : ' Show more'}
+                                                    </Text>
+                                                )}
+                                            </Text>
+
+                                        </View>
+                                        <Text allowFontScaling={false} style={styles.mainViewTxt}>
+                                            <Text allowFontScaling={false} style={styles.mainViewTxtBold}>Date:</Text> {" "}
                                             <Text allowFontScaling={false} style={styles.mainViewTxtSpan}>{moment(questionObj?.assignedOn).format("DD-MM-YYYY")}</Text>
                                         </Text>
                                         {
@@ -654,6 +691,10 @@ const styles = StyleSheet.create({
     mainViewTxt: {
         color: '#000', fontSize: 14, fontFamily: 'Montserrat-Bold',
         paddingVertical: 2.5,
+
+    },
+    mainViewTxtBold: {
+        fontWeight: 700,
     },
     mainViewTxtSpan: {
         color: '#000', fontSize: 14, fontFamily: 'Arimo-Regular',
@@ -776,7 +817,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         paddingHorizontal: 6,
         paddingVertical: 2,
-       // backgroundColor:'red'
+        // backgroundColor:'red'
     },
     picker: {
         height: 50,                 // Set the height of the picker
@@ -915,8 +956,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 5,
         backgroundColor: '#fff',
-        paddingRight:0,
-        position:'relative'
+        paddingRight: 0,
+        position: 'relative'
     },
     dropdownPlaceholder: {
         color: '#9CA3AF',
@@ -941,7 +982,7 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
         justifyContent: 'center',
-       // backgroundColor:'red'
+        // backgroundColor:'red'
     },
     arrowBtn: {
         fontSize: 20,
@@ -960,8 +1001,8 @@ const styles = StyleSheet.create({
         borderTopColor: '#000', // red top triangle
     },
     placeholderStyle: { fontSize: scaled(14), color: '#000' },
-    selectedTextStyle: { fontSize: scaled(14), color: '#000', paddingRight:20, },
-    itemTextStyle: { fontSize: scaled(14), color: '#000', lineHeight: scaled(16), padding: 5,},
+    selectedTextStyle: { fontSize: scaled(14), color: '#000', paddingRight: 20, },
+    itemTextStyle: { fontSize: scaled(14), color: '#000', lineHeight: scaled(16), padding: 5, },
     itemContainerStyle: {
         paddingVertical: 0,
         margin: 0,

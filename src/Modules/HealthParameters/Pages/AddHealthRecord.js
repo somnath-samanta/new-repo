@@ -191,6 +191,7 @@ function AddHealthRecord() {
     setPulse('');
     setBp('');
     setBpError('');
+    setIsMetric(true)
   };
 
   // Handle blood pressure input with auto-formatting
@@ -258,6 +259,7 @@ function AddHealthRecord() {
   };
 
   const handleGoBack = () => {
+    resetForm();
     navigation.navigate('HealthParameter');
   };
 

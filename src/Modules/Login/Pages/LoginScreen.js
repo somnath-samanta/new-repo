@@ -43,7 +43,7 @@ function LoginScreen(props) {
     const chooseEnv = useSelector((state) => state.environment);
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [email, setEmail] = useState(__DEV__ ? 'ankita.das@yopmail.com' : '');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState(__DEV__ ? 'Mettle1!2' : '');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');

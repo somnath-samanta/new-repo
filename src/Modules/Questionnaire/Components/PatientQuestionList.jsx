@@ -415,7 +415,11 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                                         selectedTextStyle={styles.dropdownSelectedText}
                                                                                         itemTextStyle={styles.dropdownItemText}
                                                                                         containerStyle={styles.dropdownMenuContainer}
-                                                                                        renderRightIcon={() => <Text>▾</Text>}
+                                                                                        renderRightIcon={() => (
+                                                                                            <View pointerEvents="none" style={styles.dropdownIconContainer}>
+                                                                                                <Text allowFontScaling={false} style={styles.arrowBtn}>▾</Text>
+                                                                                            </View>
+                                                                                        )}
                                                                                     />
                                                                                 </View>
                                                                             </>
@@ -901,6 +905,29 @@ const styles = StyleSheet.create({
         borderColor: '#E5E7EB',
         borderRadius: 8,
     },
+    dropdownIconContainer: {
+        position: 'absolute',      // ⬅️ place the arrow visually on the right
+        right: 8,
+        top: 0,
+        bottom: 0,
+        justifyContent: 'center',
+    },
+    arrowBtn: {
+        fontSize: 20,
+        backgroundColor: '#000',
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+        borderLeftWidth: 7,
+        borderRightWidth: 7,
+        borderBottomWidth: 0,
+        borderTopWidth: 10,
+        borderLeftColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderBottomColor: 'transparent',
+        borderTopColor: '#000', // red top triangle
+    }
 });
 const pickerStyle = {
     inputIOS: {

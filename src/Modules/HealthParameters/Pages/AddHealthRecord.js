@@ -363,16 +363,13 @@ function AddHealthRecord() {
           const diastolic = parseInt(match[2]);
 
           // Minimum and maximum limits: 120-200 for systolic
-          if (systolic < 120) {
-            Toast.show('Systolic pressure must be at least 120 mmHg');
+
+          if (systolic > 275) {
+            Toast.show('Systolic pressure must not exceed 275 mmHg');
             return;
           }
-          if (systolic > 200) {
-            Toast.show('Systolic pressure must not exceed 200 mmHg');
-            return;
-          }
-          if (diastolic > 200) {
-            Toast.show('Diastolic pressure must not exceed 200 mmHg');
+          if (diastolic > 195) {
+            Toast.show('Diastolic pressure must not exceed 195 mmHg');
             return;
           }
         }

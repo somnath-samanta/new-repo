@@ -3,7 +3,9 @@ const screenWidth = screen.width;
 const screenheight = screen.height;
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, Button, FlatList, TouchableOpacity, Dimensions, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+// ⬇️ CHANGED: replace RNPickerSelect with Dropdown
+// import RNPickerSelect from 'react-native-picker-select';
+import { Dropdown } from 'react-native-element-dropdown';
 import moment from "moment";
 import Colors from '../../../Utility/Colors';
 import { updatePatientQuestionnaireUpdate } from '../Controller/QuestionnaireController';
@@ -305,7 +307,7 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                         {
                                             questionsData.map((obj, index) => {
                                                 return (
-                                                    <View style={styles.containers}>
+                                                    <View style={styles.containers} key={`q-${index}`}>
                                                         <Text allowFontScaling={false} style={styles.questionBX}>{index + 1}.{" "}{obj.question}</Text>
                                                         <View style={styles.textAreaBX}>
                                                             {
@@ -386,40 +388,35 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                             <>
 
                                                                                 <View style={styles.pickerContainer}>
-                                                                                    <RNPickerSelect
-                                                                                        onValueChange={(value) => handleSelectedDropdownChanges(value, index, obj)}
-                                                                                        // If no selection yet, use null (NOT "" or undefined)
-                                                                                        value={questionsData[index]?.selectedOptionId ?? null}
-                                                                                        items={obj?.options.map((optionObj) => ({
-                                                                                            label: String(optionObj.option),
-                                                                                            value: Number(optionObj.optionId), // keep types consistent
+                                                                                    {/* ⬇️ CHANGED: RNPickerSelect -> Dropdown */}
+                                                                                    <Dropdown
+                                                                                        data={(obj?.options ?? []).map(o => ({
+                                                                                            label: String(o.option),
+                                                                                            value: String(o.optionId),
                                                                                         }))}
+                                                                                        labelField="label"
+                                                                                        valueField="value"
+                                                                                        placeholder="Select an option…"
+                                                                                        value={
+                                                                                            questionsData[index]?.selectedOptionId != null
+                                                                                                ? String(questionsData[index]?.selectedOptionId)
+                                                                                                : null
+                                                                                        }
+                                                                                        onChange={(item) =>
+                                                                                            // reuse existing handler; keep state numeric
+                                                                                            handleSelectedDropdownChanges(item?.value, index, obj)
+                                                                                        }
+                                                                                        disable={selectedDocadmintype === 1 || selectedDocStatus === 'Completed'}
+                                                                                        maxHeight={280}
 
-                                                                                        // Give iOS a proper placeholder and iOS styles
-                                                                                        placeholder={{ label: 'Select an option…', value: null }}
-                                                                                        style={{
-                                                                                            ...pickerStyle,
-                                                                                            inputIOS: {
-                                                                                                // ensure it’s visible/tappable on iOS
-                                                                                                fontSize: 16,
-                                                                                                paddingVertical: 12,
-                                                                                                paddingHorizontal: 10,
-                                                                                                borderWidth: 1,
-                                                                                                borderColor: '#ccc',
-                                                                                                borderRadius: 8,
-                                                                                                color: '#000',
-                                                                                            },
-                                                                                            inputIOSContainer: { paddingVertical: 4 },
-                                                                                            iconContainer: { right: 10, top: 12 },
-                                                                                        }}
-
-                                                                                        // numberOfLines is Android-only; harmless but doesn’t do anything on iOS
-                                                                                        pickerProps={{ numberOfLines: 2 }}
-
-                                                                                        // sanity check you’re not disabling it accidentally
-                                                                                        disabled={selectedDocadmintype === 1 || selectedDocStatus === 'Completed'}
+                                                                                        // Visuals
+                                                                                        style={styles.dropdown}
+                                                                                        placeholderStyle={styles.dropdownPlaceholder}
+                                                                                        selectedTextStyle={styles.dropdownSelectedText}
+                                                                                        itemTextStyle={styles.dropdownItemText}
+                                                                                        containerStyle={styles.dropdownMenuContainer}
+                                                                                        renderRightIcon={() => <Text>▾</Text>}
                                                                                     />
-
                                                                                 </View>
                                                                             </>
                                                                         )
@@ -745,6 +742,9 @@ const styles = StyleSheet.create({
         color: '#666',
         fontSize: 14,
         fontFamily: 'Arimo-Regular',
+        borderRadius: 4,
+        paddingHorizontal: 6,
+        paddingVertical: 2
     },
     picker: {
         height: 50,                 // Set the height of the picker
@@ -875,8 +875,32 @@ const styles = StyleSheet.create({
     },
     scrollViewContent: {
         backgroundColor: 'transparent',
-    }
+    },
 
+    // ⬇️ NEW: minimal styles for react-native-element-dropdown (iOS & Android friendly)
+    dropdown: {
+        height: 44,
+        justifyContent: 'center',
+        paddingHorizontal: 8,
+        backgroundColor: '#fff',
+    },
+    dropdownPlaceholder: {
+        color: '#9CA3AF',
+        fontSize: 16,
+    },
+    dropdownSelectedText: {
+        color: '#111827',
+        fontSize: 16,
+    },
+    dropdownItemText: {
+        color: '#111827',
+        fontSize: 16,
+    },
+    dropdownMenuContainer: {
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+        borderRadius: 8,
+    },
 });
 const pickerStyle = {
     inputIOS: {

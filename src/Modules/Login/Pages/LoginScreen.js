@@ -44,7 +44,8 @@ function LoginScreen(props) {
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState(__DEV__ ? 'Mettle1!2' : '');
+    // const [password, setPassword] = useState(__DEV__ ? 'Mettle1!2' : '');
+    const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [loading, setLoading] = useState(false);

@@ -239,13 +239,13 @@ function AddHealthRecord() {
     const systolic = parseInt(match[1]);
     const diastolic = parseInt(match[2]);
 
-    if (systolic < 70 || systolic > 275) {
-      setBpError('Systolic should be between 70-275');
+    if (systolic < 120 || systolic > 200) {
+      setBpError('Systolic should be between 120-200');
       return false;
     }
 
-    if (diastolic < 40 || diastolic > 195) {
-      setBpError('Diastolic should be between 40-195');
+    if (diastolic > 200) {
+      setBpError('Diastolic should not exceed 200');
       return false;
     }
 
@@ -309,9 +309,9 @@ function AddHealthRecord() {
         const gOrOz = parseFloat(weightG || '0');
 
         if (isMetric) {
-          // Large category: max 200kg
-          if (kgOrLb > 200) {
-            Toast.show('Weight must not exceed 200 kg');
+          // Large category: max 300kg
+          if (kgOrLb > 300) {
+            Toast.show('Weight must not exceed 300 kg');
             return;
           }
           // Small category: max 999g
@@ -320,9 +320,9 @@ function AddHealthRecord() {
             return;
           }
         } else {
-          // Imperial: max 441lb
-          if (kgOrLb > 441) {
-            Toast.show('Weight must not exceed 441 lb');
+          // Imperial: max 661lb (300kg converted)
+          if (kgOrLb > 661) {
+            Toast.show('Weight must not exceed 661 lb');
             return;
           }
           // Small category: max 35oz
@@ -338,15 +338,15 @@ function AddHealthRecord() {
         const waistNum = parseFloat(waist);
         if (!isNaN(waistNum)) {
           if (isMetric) {
-            // Metric: max 127cm
-            if (waistNum > 127) {
-              Toast.show('Waist circumference must not exceed 127 cm');
+            // Metric: max 200cm
+            if (waistNum > 200) {
+              Toast.show('Waist circumference must not exceed 200 cm');
               return;
             }
           } else {
-            // Imperial: max 50 inches
-            if (waistNum > 50) {
-              Toast.show('Waist circumference must not exceed 50 inches');
+            // Imperial: max 79 inches (200cm converted)
+            if (waistNum > 79) {
+              Toast.show('Waist circumference must not exceed 79 inches');
               return;
             }
           }
@@ -362,24 +362,28 @@ function AddHealthRecord() {
           const systolic = parseInt(match[1]);
           const diastolic = parseInt(match[2]);
 
-          // Maximum limits: 275/195
-          if (systolic > 275) {
-            Toast.show('Systolic pressure must not exceed 275 mmHg');
+          // Minimum and maximum limits: 120-200 for systolic
+          if (systolic < 120) {
+            Toast.show('Systolic pressure must be at least 120 mmHg');
             return;
           }
-          if (diastolic > 195) {
-            Toast.show('Diastolic pressure must not exceed 195 mmHg');
+          if (systolic > 200) {
+            Toast.show('Systolic pressure must not exceed 200 mmHg');
+            return;
+          }
+          if (diastolic > 200) {
+            Toast.show('Diastolic pressure must not exceed 200 mmHg');
             return;
           }
         }
       }
 
-      // Pulse rate validation
+      // Pulse rate (Heart Rate) validation
       if (pulse) {
         const pulseNum = parseFloat(pulse);
         if (!isNaN(pulseNum)) {
-          if (pulseNum > 200) {
-            Toast.show('Pulse rate must not exceed 200 bpm');
+          if (pulseNum > 250) {
+            Toast.show('Heart rate must not exceed 250 bpm');
             return;
           }
         }

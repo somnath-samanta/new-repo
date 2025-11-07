@@ -239,13 +239,13 @@ function AddHealthRecord() {
     const systolic = parseInt(match[1]);
     const diastolic = parseInt(match[2]);
 
-    if (systolic < 120 || systolic > 200) {
-      setBpError('Systolic should be between 120-200');
+    if (systolic > 275) {
+      setBpError('Systolic should not exceed 275');
       return false;
     }
 
-    if (diastolic > 200) {
-      setBpError('Diastolic should not exceed 200');
+    if (diastolic > 195) {
+      setBpError('Diastolic should not exceed 195');
       return false;
     }
 

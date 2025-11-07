@@ -72,7 +72,7 @@ function AddHealthRecord() {
 
     if (!newIsMetric) {
       // Converting from Metric to Imperial
-      
+
       // Height: meters and cm to feet and inches
       if (mOrFt > 0 || cmOrIn > 0) {
         const totalCm = mOrFt * 100 + cmOrIn;
@@ -100,7 +100,7 @@ function AddHealthRecord() {
       }
     } else {
       // Converting from Imperial to Metric
-      
+
       // Height: feet and inches to meters and cm
       if (mOrFt > 0 || cmOrIn > 0) {
         const totalInches = mOrFt * 12 + cmOrIn;
@@ -227,9 +227,9 @@ function AddHealthRecord() {
     const match = bp.match(bpPattern);
 
     if (!match) {
-      if(bp.includes('/')){
+      if (bp.includes('/')) {
         setBpError('Invalid data entered');
-      }else{
+      } else {
         setBpError('Invalid format. Use format: 120/80');
       }
       return false;
@@ -263,7 +263,7 @@ function AddHealthRecord() {
 
   const onSave = async () => {
     try {
-      if(!isconnected){
+      if (!isconnected) {
         Toast.show('No internet connection');
         return;
       }
@@ -273,7 +273,7 @@ function AddHealthRecord() {
       if (heightM || heightCm) {
         const mOrFt = parseFloat(heightM || '0');
         const cmOrIn = parseFloat(heightCm || '0');
-        
+
         if (isMetric) {
           // Metric: max 2m (200cm total)
           const totalCm = mOrFt * 100 + cmOrIn;
@@ -305,7 +305,7 @@ function AddHealthRecord() {
       if (weightKg || weightG) {
         const kgOrLb = parseFloat(weightKg || '0');
         const gOrOz = parseFloat(weightG || '0');
-        
+
         if (isMetric) {
           // Large category: max 200kg
           if (kgOrLb > 200) {
@@ -355,11 +355,11 @@ function AddHealthRecord() {
       if (bp) {
         const bpPattern = /^(\d{2,3})\/(\d{2,3})$/;
         const match = bp.match(bpPattern);
-        
+
         if (match) {
           const systolic = parseInt(match[1]);
           const diastolic = parseInt(match[2]);
-          
+
           // Maximum limits: 275/195
           if (systolic > 275) {
             Toast.show('Systolic pressure must not exceed 275 mmHg');
@@ -411,7 +411,7 @@ function AddHealthRecord() {
             }
           }
         });
-      }else{
+      } else {
         vitalsdata.push({
           resourceType: 'Observation',
           status: '1',
@@ -444,7 +444,7 @@ function AddHealthRecord() {
             }
           }
         });
-      }else{
+      } else {
         vitalsdata.push({
           resourceType: 'Observation',
           status: '1',
@@ -475,7 +475,7 @@ function AddHealthRecord() {
             }
           });
         }
-      }else{
+      } else {
         vitalsdata.push({
           resourceType: 'Observation',
           status: '1',
@@ -507,7 +507,7 @@ function AddHealthRecord() {
             }
           });
         }
-      }else{
+      } else {
         vitalsdata.push({
           resourceType: 'Observation',
           status: '1',
@@ -536,7 +536,7 @@ function AddHealthRecord() {
             }
           }
         });
-      }else{
+      } else {
         vitalsdata.push({
           resourceType: 'Observation',
           status: '1',
@@ -567,7 +567,7 @@ function AddHealthRecord() {
             }
           });
         }
-      }else{
+      } else {
         vitalsdata.push({
           resourceType: 'Observation',
           status: '1',
@@ -751,7 +751,7 @@ function AddHealthRecord() {
               title="BMI"
             />
             <TextInput
-              style={styles.inputFull}
+              style={[styles.inputFull, styles.disabled]}
               allowFontScaling={false}
               placeholder="BMI"
               placeholderTextColor="#666"
@@ -969,6 +969,9 @@ const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
     marginBottom: 10,
     height: 45,
+  },
+  disabled: {
+    backgroundColor: '#e0e0e0',
   },
   footerBtns: {
     position: 'absolute',

@@ -28,7 +28,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const sysScale = PixelRatio.getFontScale();
 // Tweak the cap if you want slightly larger/smaller. 1.25–1.30 usually looks right.
-const SCALE_CAP = 1.25;
+const SCALE_CAP = 1.00;
 const scaled = (size) => size * Math.min(sysScale, SCALE_CAP);
 const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientName }) => {
   const [documentObj, setDocumentObj] = useState({});

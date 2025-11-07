@@ -97,8 +97,8 @@ const CommonStyle = StyleSheet.create({
         lineHeight: 40,
     },
     modalCancelCrossBtn: {
-        width: 25,
-        height: 25,
+        width: 35,
+        height: 35,
         alignSelf: 'center',
         alignItems: 'center',
         textAlign: 'center',

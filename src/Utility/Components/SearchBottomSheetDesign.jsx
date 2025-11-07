@@ -3,7 +3,7 @@ const screenWidth = screen.width;
 const screenheight = screen.height;
 const filterContainerheight = screenheight * 0.65;
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Dimensions, Alert, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Dimensions, Alert, Platform, ActivityIndicator, PixelRatio } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import CheckBox from '@react-native-community/checkbox';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -11,6 +11,11 @@ import { getPatientQuestionnaireName } from '../../Modules/Questionnaire/Control
 import { useSelector } from 'react-redux';
 import Loader from './Loader';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+
+const sysScale = PixelRatio.getFontScale();
+// Tweak the cap if you want slightly larger/smaller. 1.25–1.30 usually looks right.
+const SCALE_CAP = 1.00;
+const scaled = (size) => size * Math.min(sysScale, SCALE_CAP);
 
 const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine, setSelectedPaymentStatus, setSelectedPaymentMode, applyFilters, selectOptionForSentBy, setSelectedSendBy, clearFilterFn, forceClearFilterFlag, selectedTimeLine, selectedPaymentStatus, selectedPaymentMode, selectedSendBy, filterFor, refreshBtnFnFlag, timeLineFilter, paymentStatusFilter, paymentModeFilter, keywordSearchFilter, sentByFilter, documentTypeFilter = false, setSelectedDocumentType, selectedDocumentType, setSelectedKeywordText, selectedKeywordText }) => {
 
@@ -476,9 +481,15 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                 data={keywordOptionData}
                                                 labelField="label"
                                                 valueField="value"
-                                                search
-                                                searchPlaceholder="Type to search..."
-                                                maxHeight={300}
+                                                // search
+                                                // searchPlaceholder="Type to search..."
+                                                // inputSearchStyle={{
+                                                //     color: '#333',
+                                                //     fontSize: 16,
+                                                //     allowFontScaling: false,
+                                                //     maxFontSizeMultiplier: 1,
+                                                // }}
+                                                maxHeight={200}
                                                 disable={isLoadingKeywords}
                                                 value={selectedKeyword}
                                                 onFocus={() => setIsFocusForKeyword(true)}
@@ -493,6 +504,14 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                 }}
                                                 itemContainerStyle={styles.itemContainerStyle}
 
+                                                /* ↓↓↓ ADD THESE ↓↓↓ */
+                                                selectedTextStyle={styles.selectedTextStyle}
+                                                placeholderStyle={styles.placeholderStyle}
+                                                selectedTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                                                placeholderProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                                                itemTextStyle={styles.itemTextStyle}
+                                                itemTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1 }}
+
                                                 // Render dropdown items
                                                 renderItem={item => (
                                                     <View style={{ paddingVertical: 6 }}>
@@ -500,7 +519,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                             allowFontScaling={false}
                                                             maxFontSizeMultiplier={1}
                                                             style={styles.itemTextStyle}
-                                                            numberOfLines={1}>
+                                                        >
                                                             {item.label}
                                                         </Text>
                                                     </View>
@@ -575,9 +594,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                             labelField="label"
                                             valueField="value"
                                             placeholder="Select item"
-                                            search
-                                            searchPlaceholder="Search..."
-                                            maxHeight={300}
+                                            maxHeight={200}
                                             value={selectedSentBy}
                                             onFocus={() => setIsFocusForSentBy(true)}
                                             onBlur={() => setIsFocusForSentBy(false)}
@@ -586,6 +603,14 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                 setIsFocusForSentBy(false);
                                             }}
                                             itemContainerStyle={styles.itemContainerStyle}
+
+                                            /* ↓↓↓ ADD THESE ↓↓↓ */
+                                            selectedTextStyle={styles.selectedTextStyle}
+                                            placeholderStyle={styles.placeholderStyle}
+                                            selectedTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                                            placeholderProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                                            itemTextStyle={styles.itemTextStyle}
+                                            itemTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1 }}
 
                                             renderItem={item => (
                                                 <View style={{ paddingVertical: 6 }}>
@@ -664,9 +689,9 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                             data={documentTypeFilterOption}
                                             labelField="label"
                                             valueField="value"
-                                            search
-                                            searchPlaceholder="Search..."
-                                            maxHeight={300}
+                                            // search
+                                            // searchPlaceholder="Search..."
+                                            maxHeight={200}
                                             value={selectedDocumentType}
                                             onFocus={() => setIsFocusForDocumentType(true)}
                                             onBlur={() => setIsFocusForDocumentType(false)}
@@ -675,6 +700,14 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                                                 setIsFocusForDocumentType(false);
                                             }}
                                             itemContainerStyle={styles.itemContainerStyle}
+
+                                            /* ↓↓↓ ADD THESE ↓↓↓ */
+                                            selectedTextStyle={styles.selectedTextStyle}
+                                            placeholderStyle={styles.placeholderStyle}
+                                            selectedTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                                            placeholderProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                                            itemTextStyle={styles.itemTextStyle}
+                                            itemTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1 }}
 
                                             renderItem={item => (
                                                 <View style={{ paddingVertical: 6 }}>
@@ -991,13 +1024,22 @@ const styles = StyleSheet.create({
         top: 10,
         zIndex: 1000,
     },
-      itemTextStyle: {
-    fontSize: 14,
-    color: '#000',
-    lineHeight: 16,
-    // backgroundColor:'red',
-    padding: 5,
-  },
+    itemTextStyle: {
+        fontSize: 14,
+        color: '#000',
+        lineHeight: 16,
+        // backgroundColor:'red',
+        padding: 5,
+    },
+    placeholderStyle: { fontSize: scaled(14), color: '#000' },
+    selectedTextStyle: { fontSize: scaled(14), color: '#000' },
+    itemTextStyle: { fontSize: scaled(14), color: '#000', lineHeight: scaled(16), padding: 5 },
+    itemContainerStyle: {
+        paddingVertical: 0,
+        margin: 0,
+        minHeight: 25,
+        padding: 5,
+    },
 
 
 });

@@ -2,7 +2,7 @@ const screen = Dimensions.get("window");
 const screenWidth = screen.width;
 const screenheight = screen.height;
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, Button, FlatList, TouchableOpacity, Dimensions, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, Button, FlatList, TouchableOpacity, Dimensions, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar, PixelRatio } from 'react-native';
 // ⬇️ CHANGED: replace RNPickerSelect with Dropdown
 // import RNPickerSelect from 'react-native-picker-select';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -13,6 +13,12 @@ import Toast from 'react-native-simple-toast';
 import Loader from '../../../Utility/Components/Loader';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+const sysScale = PixelRatio.getFontScale();
+// Tweak the cap if you want slightly larger/smaller. 1.25–1.30 usually looks right.
+const SCALE_CAP = 1.00;
+const scaled = (size) => size * Math.min(sysScale, SCALE_CAP);
+
 
 const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaireList }) => {
     var [selectedDocadmintype, setSelectedDocadmintype] = useState(questionObj?.questionnaire?.administeredType)
@@ -388,8 +394,8 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                             <>
 
                                                                                 <View style={styles.pickerContainer}>
-                                                                                    {/* ⬇️ CHANGED: RNPickerSelect -> Dropdown */}
                                                                                     <Dropdown
+                                                                                        style={styles.dropdown}
                                                                                         data={(obj?.options ?? []).map(o => ({
                                                                                             label: String(o.option),
                                                                                             value: String(o.optionId),
@@ -403,24 +409,45 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                                                 : null
                                                                                         }
                                                                                         onChange={(item) =>
-                                                                                            // reuse existing handler; keep state numeric
                                                                                             handleSelectedDropdownChanges(item?.value, index, obj)
                                                                                         }
-                                                                                        disable={selectedDocadmintype === 1 || selectedDocStatus === 'Completed'}
-                                                                                        maxHeight={280}
+                                                                                        maxHeight={200}
+                                                                                        placeholderTextColor="#333"
+                                                                                        itemContainerStyle={styles.itemContainerStyle}
 
-                                                                                        // Visuals
-                                                                                        style={styles.dropdown}
-                                                                                        placeholderStyle={styles.dropdownPlaceholder}
-                                                                                        selectedTextStyle={styles.dropdownSelectedText}
-                                                                                        itemTextStyle={styles.dropdownItemText}
-                                                                                        containerStyle={styles.dropdownMenuContainer}
+                                                                                        /* ↓↓↓ ADD THESE ↓↓↓ */
+                                                                                        selectedTextStyle={styles.selectedTextStyle}
+                                                                                        placeholderStyle={styles.placeholderStyle}
+                                                                                        selectedTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, }}
+                                                                                        placeholderProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                                                                                        itemTextStyle={styles.itemTextStyle}
+                                                                                        itemTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1 }}
+                                                                                        /* ↑↑↑ ADD THESE ↑↑↑ */
+
+                                                                                        renderItem={item => (
+                                                                                            <View style={{ paddingVertical: 6 }}>
+                                                                                                <Text allowFontScaling={false} maxFontSizeMultiplier={1} style={styles.itemTextStyle} >
+                                                                                                    {item.label}
+                                                                                                </Text>
+                                                                                            </View>
+                                                                                        )}
+
+                                                                                        renderPlaceholder={() => (
+                                                                                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                                                                                <Text allowFontScaling={false} maxFontSizeMultiplier={1} style={styles.placeholderStyle} numberOfLines={1}>
+                                                                                                    Select an option…
+                                                                                                </Text>
+                                                                                            </View>
+                                                                                        )}
+
                                                                                         renderRightIcon={() => (
                                                                                             <View pointerEvents="none" style={styles.dropdownIconContainer}>
                                                                                                 <Text allowFontScaling={false} style={styles.arrowBtn}>▾</Text>
                                                                                             </View>
                                                                                         )}
                                                                                     />
+
+
                                                                                 </View>
                                                                             </>
                                                                         )
@@ -748,7 +775,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Arimo-Regular',
         borderRadius: 4,
         paddingHorizontal: 6,
-        paddingVertical: 2
+        paddingVertical: 2,
+       // backgroundColor:'red'
     },
     picker: {
         height: 50,                 // Set the height of the picker
@@ -885,8 +913,10 @@ const styles = StyleSheet.create({
     dropdown: {
         height: 44,
         justifyContent: 'center',
-        paddingHorizontal: 8,
+        paddingHorizontal: 5,
         backgroundColor: '#fff',
+        paddingRight:0,
+        position:'relative'
     },
     dropdownPlaceholder: {
         color: '#9CA3AF',
@@ -911,6 +941,7 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
         justifyContent: 'center',
+       // backgroundColor:'red'
     },
     arrowBtn: {
         fontSize: 20,
@@ -927,32 +958,18 @@ const styles = StyleSheet.create({
         borderRightColor: 'transparent',
         borderBottomColor: 'transparent',
         borderTopColor: '#000', // red top triangle
-    }
-});
-const pickerStyle = {
-    inputIOS: {
-        width: '100%',              // Set the width of the picker
-        color: '#000',
-        fontSize: 16,
+    },
+    placeholderStyle: { fontSize: scaled(14), color: '#000' },
+    selectedTextStyle: { fontSize: scaled(14), color: '#000', paddingRight:20, },
+    itemTextStyle: { fontSize: scaled(14), color: '#000', lineHeight: scaled(16), padding: 5,},
+    itemContainerStyle: {
+        paddingVertical: 0,
+        margin: 0,
+        minHeight: 25,
         padding: 5,
-        paddingVertical: 10,
-        margin: 0,
-        fontFamily: 'Arimo-Regular',
     },
-    placeholder: {
-        color: '#000',
-        fontSize: 16,
-    },
-    inputAndroid: {
-        width: '100%',              // Set the width of the picker
-        color: '#000',
-        fontSize: 16,
-        fontWeight: 'bold',
-        padding: 0,
-        margin: 0,
-        fontFamily: 'Arimo-Regular',
-    },
-};
+});
+
 
 
 export default PatientQuestionList;

@@ -65,23 +65,44 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
         setQuestionsData([...duplicateQuestionData]);
     };
 
+    // const handleSelectedDropdownChanges = (itemValue, qidx, optionsList) => {
+    //     var optionsList1 = optionsList.options.filter(e => e.optionId.toString() === itemValue.toString());
+
+    //     var dropdownSelectedValue = optionsList1[0]?.option;
+    //     var selectedOptionId1 = optionsList1[0]?.optionId;
+    //     let duplicateQuestionData = questionsData.map((obj) => ({
+    //         ...obj,
+    //     }));
+
+    //     let duplicateQuestion = duplicateQuestionData[qidx];
+    //     duplicateQuestion["selectedOptionId"] = selectedOptionId1;
+    //     duplicateQuestion.selectedOptionText = dropdownSelectedValue;
+
+    //     setQuestionsData([...duplicateQuestionData]);
+    // };
+
+
     const handleSelectedDropdownChanges = (itemValue, qidx, optionsList) => {
-        var optionsList1 = optionsList.options.filter(e => e.optionId.toString() === itemValue.toString());
+        // itemValue will be whatever you put in items[].value (keep the same type!)
+        // If your optionId is numeric, ensure Number(...) here, otherwise keep as string consistently.
+        const selectedOptionId = Number(itemValue);
 
-        var dropdownSelectedValue = optionsList1[0]?.option;
-        var selectedOptionId1 = optionsList1[0]?.optionId;
-        let duplicateQuestionData = questionsData.map((obj) => ({
-            ...obj,
-        }));
+        const match = optionsList.options.find(
+            e => Number(e.optionId) === selectedOptionId
+        );
 
-        let duplicateQuestion = duplicateQuestionData[qidx];
-        duplicateQuestion["selectedOptionId"] = selectedOptionId1;
-        duplicateQuestion.selectedOptionText = dropdownSelectedValue;
-
-        setQuestionsData([...duplicateQuestionData]);
+        setQuestionsData(prev =>
+            prev.map((q, i) =>
+                i === qidx
+                    ? {
+                        ...q,
+                        selectedOptionId,
+                        selectedOptionText: match?.option ?? "",
+                    }
+                    : q
+            )
+        );
     };
-
-
     const handleSelectedCommentChanges = (comment, qidx) => {
         let duplicateQuestionData = questionsData.map((obj) => ({
             ...obj,
@@ -365,70 +386,40 @@ const PatientQuestionList = ({ questionObj, handleBackPress, reloadQuestionnaire
                                                                             <>
 
                                                                                 <View style={styles.pickerContainer}>
-                                                                                    {/* <RNPickerSelect
-                                                                                        onValueChange={(value) => handleSelectedDropdownChanges(value, index, obj)}
-                                                                                        value={questionsData[index]?.selectedOptionId !== null ? questionsData[index]?.selectedOptionId : ""}
-                                                                                        items={
-                                                                                            [
-
-                                                                                                ...obj?.options.map((optionObj) => ({
-                                                                                                    label: optionObj.option,
-                                                                                                    value: optionObj.optionId,
-                                                                                                }))
-                                                                                            ]
-                                                                                        }
-                                                                                        //multiline={true}
-                                                                                        //textInputProps={{multiline: true}} 
-                                                                                        pickerProps={{ numberOfLines: 2 }}
-                                                                                        // style={{ inputIOS: styles.picker, inputAndroid: styles.picker }}
-                                                                                        style={pickerStyle}
-                                                                                        disabled={selectedDocadmintype === 1 || selectedDocStatus === "Completed"}
-                                                                                    /> */}
                                                                                     <RNPickerSelect
                                                                                         onValueChange={(value) => handleSelectedDropdownChanges(value, index, obj)}
-                                                                                        value={
-                                                                                            questionsData[index]?.selectedOptionId !== null
-                                                                                                ? questionsData[index]?.selectedOptionId
-                                                                                                : ""
-                                                                                        }
+                                                                                        // If no selection yet, use null (NOT "" or undefined)
+                                                                                        value={questionsData[index]?.selectedOptionId ?? null}
                                                                                         items={obj?.options.map((optionObj) => ({
-                                                                                            label: optionObj.option,
-                                                                                            value: optionObj.optionId,
+                                                                                            label: String(optionObj.option),
+                                                                                            value: Number(optionObj.optionId), // keep types consistent
                                                                                         }))}
 
-                                                                                        pickerProps={{
-                                                                                            numberOfLines: 2,
-                                                                                        }}
-
+                                                                                        // Give iOS a proper placeholder and iOS styles
+                                                                                        placeholder={{ label: 'Select an option…', value: null }}
                                                                                         style={{
                                                                                             ...pickerStyle,
                                                                                             inputIOS: {
-                                                                                                ...styles.picker,
-                                                                                                allowFontScaling: false,
-                                                                                                fontSize: 14,
+                                                                                                // ensure it’s visible/tappable on iOS
+                                                                                                fontSize: 16,
+                                                                                                paddingVertical: 12,
+                                                                                                paddingHorizontal: 10,
+                                                                                                borderWidth: 1,
+                                                                                                borderColor: '#ccc',
+                                                                                                borderRadius: 8,
+                                                                                                color: '#000',
                                                                                             },
-                                                                                            inputAndroid: {
-                                                                                                ...styles.picker,
-                                                                                                // ...pickerStyle.inputAndroid,
-                                                                                                allowFontScaling: false,
-                                                                                                fontSize: 14,
-                                                                                            },
-                                                                                            placeholder: {
-                                                                                                ...pickerStyle.placeholder,
-                                                                                                allowFontScaling: false,
-                                                                                                fontSize: 14,
-                                                                                            },
+                                                                                            inputIOSContainer: { paddingVertical: 4 },
+                                                                                            iconContainer: { right: 10, top: 12 },
                                                                                         }}
 
-                                                                                        textInputProps={{
-                                                                                            allowFontScaling: false,
-                                                                                            maxFontSizeMultiplier: 1,
-                                                                                            numberOfLines: 2,
-                                                                                        }}
+                                                                                        // numberOfLines is Android-only; harmless but doesn’t do anything on iOS
+                                                                                        pickerProps={{ numberOfLines: 2 }}
 
-                                                                                        useNativeAndroidPickerStyle={false} // IMPORTANT: to apply custom text props on Android
-                                                                                        disabled={selectedDocadmintype === 1 || selectedDocStatus === "Completed"}
+                                                                                        // sanity check you’re not disabling it accidentally
+                                                                                        disabled={selectedDocadmintype === 1 || selectedDocStatus === 'Completed'}
                                                                                     />
+
                                                                                 </View>
                                                                             </>
                                                                         )

@@ -2,111 +2,137 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>Oaktree</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<false/>
-		<key>NSAllowsLocalNetworking</key>
-		<true/>
-	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Oaktree requires camera access to take photos for document uploads and for video calls.</string>
-	<key>NSDocumentDirectoryUsageDescription</key>
-	<string>Oaktree requires access to save and manage your documents securely within the app.</string>
-	<key>NSFileProtectionKey</key>
-	<string>NSFileProtectionCompleteUntilFirstUserAuthentication</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Oaktree requires microphone access to record audio for communication purposes.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Oaktree requires permission to save edited or captured photos to your library.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Oaktree requires access to your photo library to select photos or documents for upload.</string>
-	<key>NSDocumentsFolderUsageDescription</key>
-	<string>Allow Oaktree to access your documents.</string>
-	<key>RCTNewArchEnabled</key>
-	<true/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>AntDesign.ttf</string>
-		<string>Arimo-Bold.ttf</string>
-		<string>Arimo-Regular.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>FontAwesome6_Brands.ttf</string>
-		<string>FontAwesome6_Regular.ttf</string>
-		<string>FontAwesome6_Solid.ttf</string>
-		<string>Fontisto.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Montserrat-Black.ttf</string>
-		<string>Montserrat-Bold.ttf</string>
-		<string>Montserrat-ExtraBold.ttf</string>
-		<string>Montserrat-Light.ttf</string>
-		<string>Montserrat-Medium.ttf</string>
-		<string>Montserrat-Regular.ttf</string>
-		<string>Montserrat-SemiBold.ttf</string>
-		<string>Montserrat-Thin.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>Poppins-Bold.ttf</string>
-		<string>Poppins-Italic.ttf</string>
-		<string>Poppins-Light.ttf</string>
-		<string>Poppins-Medium.ttf</string>
-		<string>Poppins-Regular.ttf</string>
-		<string>Poppins-SemiBold.ttf</string>
-		<string>Poppins-Thin.ttf</string>
-		<string>Roboto-Black.ttf</string>
-		<string>Roboto-Bold.ttf</string>
-		<string>Roboto-Light.ttf</string>
-		<string>Roboto-Medium.ttf</string>
-		<string>Roboto-Regular.ttf</string>
-		<string>Roboto-Thin.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
-	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>BootSplash</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>arm64</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+    <!-- Existing keys remain the same until the end of the file -->
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleDisplayName</key>
+    <string>Oaktree</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$(MARKETING_VERSION)</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleVersion</key>
+    <string>$(CURRENT_PROJECT_VERSION)</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    
+    <!-- Add Associated Domains capability for password autofill -->
+    <key>com.apple.developer.associated-domains</key>
+    <array>
+        <!-- Replace 'yourapp.com' with your actual domain -->
+        <string>applinks:yourapp.com</string>
+        <string>webcredentials:yourapp.com</string>
+        <string>activitycontinuation:yourapp.com</string>
+    </array>
+    
+    <!-- Add password autofill settings -->
+    <key>com.apple.developer.authentication-services.autofill-credential-provider</key>
+    <array>
+        <string>$(PRODUCT_BUNDLE_IDENTIFIER).CredentialProviderExtension</string>
+    </array>
+    
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <false/>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+    </dict>
+    
+    <!-- Existing permissions and other keys remain the same -->
+    <key>NSCameraUsageDescription</key>
+    <string>Oaktree requires camera access to take photos for document uploads and for video calls.</string>
+    <key>NSDocumentDirectoryUsageDescription</key>
+    <string>Oaktree requires access to save and manage your documents securely within the app.</string>
+    <key>NSFileProtectionKey</key>
+    <string>NSFileProtectionCompleteUntilFirstUserAuthentication</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string></string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Oaktree requires microphone access to record audio for communication purposes.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Oaktree requires permission to save edited or captured photos to your library.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Oaktree requires access to your photo library to select photos or documents for upload.</string>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>Allow Oaktree to access your documents.</string>
+    
+    <!-- Add contacts usage description for autofill -->
+    <key>NSContactsUsageDescription</key>
+    <string>Oaktree would like to access your contacts to enable autofill of your information.</string>
+    
+    <key>RCTNewArchEnabled</key>
+    <true/>
+    
+    <!-- Rest of your existing configuration remains the same -->
+    <key>UIAppFonts</key>
+    <array>
+        <string>AntDesign.ttf</string>
+        <string>Arimo-Bold.ttf</string>
+        <string>Arimo-Regular.ttf</string>
+        <string>Entypo.ttf</string>
+        <string>EvilIcons.ttf</string>
+        <string>Feather.ttf</string>
+        <string>FontAwesome.ttf</string>
+        <string>FontAwesome5_Brands.ttf</string>
+        <string>FontAwesome5_Regular.ttf</string>
+        <string>FontAwesome5_Solid.ttf</string>
+        <string>FontAwesome6_Brands.ttf</string>
+        <string>FontAwesome6_Regular.ttf</string>
+        <string>FontAwesome6_Solid.ttf</string>
+        <string>Fontisto.ttf</string>
+        <string>Foundation.ttf</string>
+        <string>Ionicons.ttf</string>
+        <string>MaterialCommunityIcons.ttf</string>
+        <string>MaterialIcons.ttf</string>
+        <string>Montserrat-Black.ttf</string>
+        <string>Montserrat-Bold.ttf</string>
+        <string>Montserrat-ExtraBold.ttf</string>
+        <string>Montserrat-Light.ttf</string>
+        <string>Montserrat-Medium.ttf</string>
+        <string>Montserrat-Regular.ttf</string>
+        <string>Montserrat-SemiBold.ttf</string>
+        <string>Montserrat-Thin.ttf</string>
+        <string>Octicons.ttf</string>
+        <string>Poppins-Bold.ttf</string>
+        <string>Poppins-Italic.ttf</string>
+        <string>Poppins-Light.ttf</string>
+        <string>Poppins-Medium.ttf</string>
+        <string>Poppins-Regular.ttf</string>
+        <string>Poppins-SemiBold.ttf</string>
+        <string>Poppins-Thin.ttf</string>
+        <string>Roboto-Black.ttf</string>
+        <string>Roboto-Bold.ttf</string>
+        <string>Roboto-Light.ttf</string>
+        <string>Roboto-Medium.ttf</string>
+        <string>Roboto-Regular.ttf</string>
+        <string>Roboto-Thin.ttf</string>
+        <string>SimpleLineIcons.ttf</string>
+        <string>Zocial.ttf</string>
+    </array>
+    <key>UILaunchStoryboardName</key>
+    <string>BootSplash</string>
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+        <string>arm64</string>
+    </array>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <false/>
 </dict>
 </plist>

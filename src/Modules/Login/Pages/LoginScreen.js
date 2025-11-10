@@ -235,7 +235,7 @@ function LoginScreen(props) {
                     <Text allowFontScaling={false} style={LoginStyle.loginTxt}>Login</Text>
                     <View style={LoginStyle.inputContainerBoxes}>
                         <View style={LoginStyle.inputContainer}>
-                            <TextInput
+                            {/* <TextInput
                                 style={LoginStyle.input}
                                 allowFontScaling={false}
                                 placeholder="Username"
@@ -246,11 +246,27 @@ function LoginScreen(props) {
                                 returnKeyType='done'
                                 //onSubmitEditing={() => { loginSubmit() }}
                                 autoCapitalize="none"
+                            /> */}
+                            <TextInput
+                                style={LoginStyle.input}
+                                allowFontScaling={false}
+                                placeholder="Username"
+                                placeholderTextColor={Colors.gray99}
+                                value={email}
+                                onChangeText={(text) => { setEmail(text); setEmailError("") }}
+                                returnKeyLabel='Done'
+                                returnKeyType='done'
+                                autoCapitalize="none"
+                                autoComplete="username" // Add this for username autofill
+                                textContentType="username" // For iOS 11+
+                                autoCorrect={false}
+                                spellCheck={false}
+                                keyboardType="email-address" // If this is an email field
                             />
                             {emailError != "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{emailError}</Text> : null}
                         </View>
                         <View style={LoginStyle.inputContainer}>
-                            <TextInput
+                            {/* <TextInput
                                 style={[LoginStyle.input, { flex: 1 }]}
                                 allowFontScaling={false}
                                 placeholder="Password"
@@ -261,6 +277,23 @@ function LoginScreen(props) {
                                 returnKeyLabel='Done'
                                 returnKeyType='done'
                             //onSubmitEditing={() => { loginSubmit() }}
+                            /> */}
+                            <TextInput
+                                style={[LoginStyle.input, { flex: 1 }]}
+                                allowFontScaling={false}
+                                placeholder="Password"
+                                placeholderTextColor={Colors.gray99}
+                                secureTextEntry={!isPasswordVisible}
+                                value={password}
+                                onChangeText={(text) => { setPassword(text); setPasswordError(""); }}
+                                returnKeyLabel='Done'
+                                returnKeyType='done'
+                                autoComplete="current-password" // Add this for password autofill
+                                textContentType="password" // For iOS 11+
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                spellCheck={false}
+                                
                             />
                             <TouchableOpacity onPress={togglePasswordVisibility}>
                                 <Feather

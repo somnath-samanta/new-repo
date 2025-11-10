@@ -36,8 +36,8 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 
-// 🔑 Keychain service name for storing the last-used email
-const LAST_EMAIL_SERVICE = 'last-used-email';
+// 🔑 Single Keychain service name for storing last-used email + password
+const LAST_LOGIN_SERVICE = 'last-login';
 
 function LoginScreen(props) {
   const authContext = useContext(AuthContext);
@@ -62,14 +62,15 @@ function LoginScreen(props) {
   const [webViewFlagForForgotPassword, setWebViewFlagForForgotPassword] = useState(false);
   const [webViewSourceUrl, setWebViewSourceUrl] = useState({});
 
-  // ✅ Load last-used email from Keychain on mount
+  // ✅ Load last-used email + password from Keychain on mount
   useEffect(() => {
     (async () => {
       try {
-        const creds = await Keychain.getGenericPassword({ service: LAST_EMAIL_SERVICE });
+        const creds = await Keychain.getGenericPassword({ service: LAST_LOGIN_SERVICE });
         if (creds) {
-          // We store email in the "password" slot (common generic storage trick)
-          setEmail(creds.password || '');
+          // We store email as "username" and password as "password"
+          setEmail(creds.username || '');
+          setPassword(creds.password || '');
         }
       } catch {
         // ignore (don't block UI)
@@ -77,11 +78,11 @@ function LoginScreen(props) {
     })();
   }, []);
 
-  // ✅ Store last-used email after successful login
-  const saveLastEmail = async (value) => {
+  // ✅ Store last-used email + password after successful login
+  const saveLastLogin = async (emailValue, passwordValue) => {
     try {
-      await Keychain.setGenericPassword('placeholder', value, {
-        service: LAST_EMAIL_SERVICE,
+      await Keychain.setGenericPassword(emailValue, passwordValue, {
+        service: LAST_LOGIN_SERVICE,
         accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED, // iOS option
       });
     } catch {
@@ -171,8 +172,8 @@ function LoginScreen(props) {
 
           await AsyncStorage.setItem('token', response.data.accessToken);
 
-          // 🔑 Save last-used email to Keychain
-          await saveLastEmail(email);
+          // 🔑 Save last-used login (email + password) to Keychain
+          await saveLastLogin(email, password);
         } else if (response.status === 0) {
           if (response.code === 'NotAuthorizedException') {
             Toast.show('The email or password you entered do not match with those provided at sign up.');

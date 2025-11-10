@@ -290,7 +290,9 @@ export default function HealthMonitoring() {
       console.error("Error refreshing data:", error);
       Toast.show('Failed to refresh data');
     } finally {
-      setPageLoading(false);       // hide loader
+      setTimeout(() => {
+        setPageLoading(false);
+      }, 500);
     }
   };
 
@@ -751,7 +753,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     borderRadius: 100,
   },
-  prevBtn:{
-    marginRight:3,
+  prevBtn: {
+    marginRight: 3,
   }
 });

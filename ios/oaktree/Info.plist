@@ -68,8 +68,10 @@
     <string>Allow Oaktree to access your documents.</string>
     
     <!-- Add contacts usage description for autofill -->
-    <key>NSContactsUsageDescription</key>
-    <string>Oaktree would like to access your contacts to enable autofill of your information.</string>
+   <key>NSContactsUsageDescription</key>
+<string>This app needs access to your contacts to help you connect with friends.</string>
+<key>ITSAppUsesNonExemptEncryption</key>
+<false/>
     
     <key>RCTNewArchEnabled</key>
     <true/>

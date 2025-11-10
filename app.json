@@ -1,4 +1,16 @@
 {
   "name": "oaktree",
-  "displayName": "oaktree"
+  "displayName": "oaktree",
+  "ios": {
+    "bundleIdentifier": "com.yourapp.oaktree",
+    "supportsTablet": true,
+    "infoPlist": {
+      "ITSAppUsesNonExemptEncryption": false,
+      "NSContactsUsageDescription": "This app needs access to your contacts to help you connect with friends."
+    },
+    "associatedDomains": ["applinks:yourapp.com"]
+  },
+  "android": {
+    "package": "com.yourapp.oaktree"
+  }
 }

@@ -32,7 +32,8 @@
         android:supportsRtl="true">
         <meta-data
             android:name="android.webkit.WebView"
-            android:value="true" />
+            android:value="true"
+            android:resource="@xml/associated_domains" />
 
         <activity
             android:name=".MainActivity"

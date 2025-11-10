@@ -262,7 +262,6 @@ function LoginScreen(props) {
                                 autoCorrect={false}
                                 spellCheck={false}
                                 keyboardType="email-address"
-                                autoFocus={true}
                                 blurOnSubmit={false}
                                 onSubmitEditing={() => {
                                     // Move focus to password field

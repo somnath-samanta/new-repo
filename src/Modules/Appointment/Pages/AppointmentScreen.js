@@ -919,8 +919,27 @@ function AppointmentScreen(props) {
     }
 
     const handalContactUs = () => {
-        setContactUsFlag(true);
+        // setContactUsFlag(true);
         // hideBottomSheet();
+            Alert.alert(
+        "Confirmation",
+        "Please note that you will be redirected to our website or the OC Patient Portal to complete this task",
+        [
+            {
+                text: "Cancel",
+                style: "cancel",
+            },
+            {
+                text: "Yes",
+                onPress: () => {
+                    Linking.openURL(Config.contactUsUrl).catch((err) =>
+                        console.error("Couldn't load page", err)
+                    );
+                },
+            },
+        ],
+        { cancelable: true } // Allow dismissal by tapping outside the alert
+    );
     };
     const hideContactUsFlag = () => {
         setContactUsFlag(false);

@@ -217,6 +217,19 @@ function AddHealthRecord() {
     try {
       if (!isconnected) { Toast.show('No internet connection'); return; }
 
+      if (
+        !heightM &&
+        !heightCm &&
+        !weightKg &&
+        !weightG &&
+        !waist &&
+        !bp &&
+        !pulse
+      ) {
+        Toast.show('Please enter at least one record');
+        return;
+      }
+
       // --- validations (unchanged) ---
       if (heightM || heightCm) {
         const mOrFt = parseFloat(heightM || '0');
@@ -436,6 +449,7 @@ function AddHealthRecord() {
               value={heightM}
               onChangeText={(text) => handleIntegerInput(text, setHeightM)}
               returnKeyType="next"
+              maxLength={2}
             />
             <TextInput
               style={styles.input}
@@ -446,6 +460,7 @@ function AddHealthRecord() {
               value={heightCm}
               onChangeText={(text) => handleIntegerInput(text, setHeightCm)}
               returnKeyType="next"
+              maxLength={3}
             />
           </View>
         </View>
@@ -466,6 +481,7 @@ function AddHealthRecord() {
               value={weightKg}
               onChangeText={(text) => handleIntegerInput(text, setWeightKg)}
               returnKeyType="next"
+              maxLength={4}
             />
             <TextInput
               style={styles.input}
@@ -476,6 +492,7 @@ function AddHealthRecord() {
               value={weightG}
               onChangeText={(text) => handleIntegerInput(text, setWeightG)}
               returnKeyType="next"
+              maxLength={3}
             />
           </View>
         </View>
@@ -512,6 +529,7 @@ function AddHealthRecord() {
             keyboardType="numeric"
             value={waist}
             onChangeText={(text) => handleIntegerInput(text, setWaist)}
+              maxLength={3}
           />
         </View>
 
@@ -546,6 +564,7 @@ function AddHealthRecord() {
               keyboardType="numeric"
               value={pulse}
               onChangeText={(text) => handleIntegerInput(text, setPulse)}
+              maxLength={3}
             />
             <View style={{ flex: 1, position: 'relative' }}>
               <TextInput
@@ -719,7 +738,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: scale(12),
     backgroundColor: '#E6F6F3',
-    paddingVertical:5,
+    paddingVertical: 5,
   },
   ctaBtn: {
     flex: 1,

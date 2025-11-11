@@ -37,7 +37,7 @@ import {
 } from 'react-native-responsive-dimensions';
 
 // 🔑 Single Keychain service name for storing last-used email + password
-const LAST_LOGIN_SERVICE = 'last-login';
+// const LAST_LOGIN_SERVICE = 'last-login';
 
 function LoginScreen(props) {
   const authContext = useContext(AuthContext);
@@ -63,32 +63,32 @@ function LoginScreen(props) {
   const [webViewSourceUrl, setWebViewSourceUrl] = useState({});
 
   // ✅ Load last-used email + password from Keychain on mount
-  useEffect(() => {
-    (async () => {
-      try {
-        const creds = await Keychain.getGenericPassword({ service: LAST_LOGIN_SERVICE });
-        if (creds) {
-          // We store email as "username" and password as "password"
-          setEmail(creds.username || '');
-          setPassword(creds.password || '');
-        }
-      } catch {
-        // ignore (don't block UI)
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const creds = await Keychain.getGenericPassword({ service: LAST_LOGIN_SERVICE });
+  //       if (creds) {
+  //         // We store email as "username" and password as "password"
+  //         setEmail(creds.username || '');
+  //         setPassword(creds.password || '');
+  //       }
+  //     } catch {
+  //       // ignore (don't block UI)
+  //     }
+  //   })();
+  // }, []);
 
   // ✅ Store last-used email + password after successful login
-  const saveLastLogin = async (emailValue, passwordValue) => {
-    try {
-      await Keychain.setGenericPassword(emailValue, passwordValue, {
-        service: LAST_LOGIN_SERVICE,
-        accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED, // iOS option
-      });
-    } catch {
-      // ignore
-    }
-  };
+  // const saveLastLogin = async (emailValue, passwordValue) => {
+  //   try {
+  //     await Keychain.setGenericPassword(emailValue, passwordValue, {
+  //       service: LAST_LOGIN_SERVICE,
+  //       accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED, // iOS option
+  //     });
+  //   } catch {
+  //     // ignore
+  //   }
+  // };
 
   // ✅ Network monitoring
   useEffect(() => {
@@ -170,10 +170,10 @@ function LoginScreen(props) {
           dispatch(setUserDetails(response.data.loginUserDetails));
           Toast.show('You are logged in');
 
-          await AsyncStorage.setItem('token', response.data.accessToken);
+         await AsyncStorage.setItem('token', response.data.accessToken);
 
           // 🔑 Save last-used login (email + password) to Keychain
-          await saveLastLogin(email, password);
+        //  await saveLastLogin(email, password);
         } else if (response.status === 0) {
           if (response.code === 'NotAuthorizedException') {
             Toast.show('The email or password you entered do not match with those provided at sign up.');
@@ -192,6 +192,78 @@ function LoginScreen(props) {
         Toast.show('Something went wrong');
       });
   };
+  
+    // const loginSubmit = () => {
+    //     if (isconnected) {
+    //         try {
+    //             let valid = validation();
+    //             if (valid) {
+    //                 let data = {}
+    //                 data["email"] = email
+    //                 data["password"] = password
+    //                 //data["userEnd"] = "customerEnd"
+    //                 // data["userEnd"] = "backOffice"
+    //                 setLoading(true);
+    //                 loginGetApi(data).then(async (response) => {
+    //                     console.log("response>>>>>>>>>>", response)
+    //                     console.log("response>>>>>>>>>>", response.data.loginUserDetails)
+    //                     setLoading(false);
+    //                     if(response.data.loginUserDetails.accountStatus === 0){
+    //                         Toast.show("Your Account is Deactivated. Please contact Administrator");
+    //                         return;
+    //                     }
+    //                     if (response.status === 1) {
+    //                         // setLoginAnimationFlag(true)
+    //                         // setTimeout(async() => {
+    //                         const tokenHash = {
+    //                             refreshToken: response.data.refreshToken,
+    //                             accesToken: response.data.accessToken,
+    //                             tokenExpiryDate: response.data.expiresIn,
+    //                             loginUserId: response.data.loginUserDetails.identificationKey
+    //                         };
+
+    //                         dispatch(setToken(tokenHash));
+    //                         // dispatch({ type: 'SET_TOKEN', payload: tokenHash });
+    //                         let userRowData = response.data.loginUserDetails;
+    //                         // dispatch({ type: 'SET_USER_DETAILS', payload: userRowData});
+    //                         //console.log("userRowData", userRowData);
+    //                         dispatch(setUserDetails(userRowData));
+    //                         Toast.show("You are logged in");
+    //                         await _storeData(response)
+    //                         //  navigation.navigate("Appointment");
+    //                         // setLoginAnimationFlag(false)
+    //                         // }, 300);
+    //                     } else if (response.status === 0) {
+    //                         if (response.code == "NotAuthorizedException") {
+    //                             Toast.show("The email or password you have entered do not match with those provided at sign up.");
+    //                         } else if (response.code == "UserNotConfirmedException") {
+    //                             setWebViewSourceUrl({ uri: `${Config.verificationUrl}?data=${email}` })
+    //                             setWebViewFlagForUserVerification(true);
+    //                             //  navigation.navigate("Verification")
+    //                             // Linking.openURL(Config.verificationUrl + "?data=" + email).catch((err) => console.error("Couldn't load page", err));
+    //                         } else {
+    //                             Toast.show(response.message);
+    //                         }
+    //                     }
+    //                 }).catch((error) => {
+    //                     //console.log("===error: " + error.response.data);
+
+    //                     setLoading(false);
+    //                     //Toast.show(`Session expired please login again`);
+    //                 });
+
+    //             } else {
+    //                 setLoading(false);
+    //             }
+    //         } catch (error) {
+    //             console.error("Error fetching questionnaire list:", error);
+    //             setLoading(false);
+    //             // Handle error here (e.g., show a toast or alert)
+    //         }
+    //     } else {
+    //         Toast.show("No internet connection");
+    //     }
+    // }
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);

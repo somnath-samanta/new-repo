@@ -63,7 +63,7 @@ const isLargeDevice = screenHeight > 800;
 // Responsive height calculations (keep these; they’re proportions, not fixed px)
 const welcomeLogoHeight = isSmallDevice ? screenHeight * 0.08 : screenHeight * 0.1;
 const welcomeMSGHeight = isSmallDevice ? screenHeight * 0.05 : screenHeight * 0.06;
-const viewButtonHeight = isSmallDevice ? screenHeight * 0.16 : screenHeight * 0.18;
+const viewButtonHeight = isSmallDevice ? screenHeight * 0.17 : screenHeight * 0.18;
 const buttonSpacing = isSmallDevice ? 8 : 8;
 const mydocumentheight = screenHeight * (Platform.OS === 'ios' ? 0.22 : 0.26);
 /* -------------------------------------------------------------------------- */
@@ -343,8 +343,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'ios' ? vScale(20) : vScale(5),
-    paddingBottom: Platform.OS === 'ios' ? vScale(15) : vScale(5),
+    paddingTop: Platform.OS === 'ios' ? vScale(20) : vScale(2),
+    paddingBottom: Platform.OS === 'ios' ? vScale(15) : vScale(2),
   },
   topPanelTaxt: {
     fontSize: font(19),
@@ -352,6 +352,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Medium',
     width: '100%',
     textAlign: 'center',
+    fontWeight:600
   },
 
   panelBox: {
@@ -436,7 +437,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo-Bold',
     textAlign: 'center',
     width: '100%',
-    lineHeight: font(15),
+    lineHeight: font(16),
     marginTop: vScale(15),
     fontWeight: '700',
     paddingHorizontal: scale(0),
@@ -456,7 +457,7 @@ const styles = StyleSheet.create({
     marginTop: vScale(10),
   },
   panelBoxRightMainTextDownDocumentText: {
-    fontSize: font(16),
+    fontSize: font(15),
     color: '#000',
     lineHeight: font(18),
     fontFamily: 'Arimo-Bold',
@@ -541,13 +542,13 @@ const styles = StyleSheet.create({
     marginBottom: vScale(buttonSpacing),
   },
   myTherapyTasksText: {
-    fontSize: font(16),
+    fontSize: font(15),
     color: '#fff',
     lineHeight: font(16),
     fontFamily: 'Montserrat-Bold',
     textAlign: 'center',
     padding: scale(5),
-    marginBottom: vScale(8),
+    marginBottom: vScale(6),
     fontWeight: '700',
   },
 });

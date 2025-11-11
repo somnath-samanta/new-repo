@@ -334,7 +334,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
                 </View> */}
                 <View style={styles.containerRight}>
                     <ScrollView
-                        style={{ height: availableHeight }}
+                       // style={{ height: availableHeight }}
                         contentContainerStyle={{ paddingBottom: 5 }}
                         showsVerticalScrollIndicator={true}
                     >
@@ -756,7 +756,7 @@ const SearchBottomSheetDesign = ({ hidesearchSheet, useFor, setSelectedTimeLine,
 
             <View style={[
                 styles.containerBottom,
-                { paddingBottom: insets.bottom + 5 } // ensures spacing even with gesture bar
+                 // ensures spacing even with gesture bar
             ]}>
                 <TouchableOpacity
                     style={[styles.filterbutton, styles.filterCancelbutton]}
@@ -963,7 +963,7 @@ const styles = StyleSheet.create({
     },
 
     searchBoxPanel: {
-        //backgroundColor: 'green',
+        backgroundColor: '#fff',
         display: 'flex',
         width: screenWidth - 15,
         margin: 0,

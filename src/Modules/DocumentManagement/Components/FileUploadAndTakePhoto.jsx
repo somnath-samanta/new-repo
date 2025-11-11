@@ -1,8 +1,23 @@
 const screen = Dimensions.get("window");
 const screenWidth = screen.width;
 const screenheight = screen.height;
-import React, { useEffect, useState } from 'react';
-import { View, Button, Image, Alert, Platform, PermissionsAndroid, StyleSheet, TouchableOpacity, Text, TextInput, ScrollView, Dimensions, PixelRatio } from 'react-native';
+
+import React, { useEffect, useState, useRef } from 'react';
+import {
+  View,
+  Button,
+  Image,
+  Alert,
+  Platform,
+  PermissionsAndroid,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  TextInput,
+  ScrollView,
+  Dimensions,
+  PixelRatio,
+} from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 // import DocumentPicker from 'react-native-document-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -22,14 +37,27 @@ import Utility from '../../../Utility/Utility';
 import LoginStyle from '../../../Modules/Login/Public/css/LoginStyle';
 import { Dropdown } from 'react-native-element-dropdown';
 import { pick } from '@react-native-documents/picker'
-
-// import DatePicker from "react-native-date-picker";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+/* ------------------ Responsive helpers (PixelRatio + Dimensions) ------------------ */
+// Base device you designed for
+const BASE_WIDTH = 375;   // iPhone 11 width
+const BASE_HEIGHT = 812;  // iPhone 11 height
+const { width: W, height: H } = Dimensions.get('window');
+
+const scale = (size) => (W / BASE_WIDTH) * size;     // horizontal/general scaling
+const vScale = (size) => (H / BASE_HEIGHT) * size;   // vertical scaling
+const mScale = (size, factor = 0.5) => size + (scale(size) - size) * factor;
+
+// Exact-size font helper: ignores system font scaling (prevents “zoomed” fonts shrinking)
+const font = (size) => Math.round(PixelRatio.roundToNearestPixel(size));
+/* ---------------------------------------------------------------------------------- */
+
+// Anti-zoom for Dropdown etc. (keep your cap for dropdown internals)
 const sysScale = PixelRatio.getFontScale();
-// Tweak the cap if you want slightly larger/smaller. 1.25–1.30 usually looks right.
 const SCALE_CAP = 1.00;
 const scaled = (size) => size * Math.min(sysScale, SCALE_CAP);
+
 const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientName }) => {
   const [documentObj, setDocumentObj] = useState({});
   const [selectedDocument, setSelectedDocument] = useState("");
@@ -51,16 +79,25 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
   const [selectedDateError, setSelectedDateError] = useState("");
   const [dobError, setDobError] = useState("");
 
-  // const [SelectOptionForDocument, setselectOptionForDocument] = useState([
-  //   { label: 'Passport', value: 'Current_signed_passport' },
-  //   { label: 'Residence Permit', value: 'Residence_permit_issued_by_the_Home_Office' },
-  //   { label: 'National Identity', value: 'EU_or_Swiss_national_identity_photo-card' },
-  //   { label: 'Driving Licence', value: 'Valid_UK_photo-card_driving_licence' },
-  //   { label: "Armed or police force's ID", value: "Valid_armed_or_police_force's_photographic_identity_card" },
-  //   { label: 'Disabled blue badge', value: 'Photographic_disabled_blue_badge' },
-  //   { label: 'Citizen card', value: 'Citizen_card' },
-  //   { label: 'Valid student ID', value: 'Valid_student_ID_with_photograph' },
-  // ]);
+  // ---- NEW: modal scroll handling ----
+  const modalScrollRef = useRef(null);
+  const prevCountRef = useRef(0);
+
+  const scrollModalToBottom = () => {
+    requestAnimationFrame(() => {
+      modalScrollRef.current?.scrollToEnd({ animated: true });
+    });
+  };
+
+  useEffect(() => {
+    const count = Object.keys(documentObj).length;
+    if (count > prevCountRef.current) {
+      scrollModalToBottom();
+    }
+    prevCountRef.current = count;
+  }, [documentObj]);
+  // ------------------------------------
+
   const [SelectOptionForDocument, setselectOptionForDocument] = useState([
     { label: 'Passport', value: 'Current_signed_passport' },
     { label: 'Residence Permit', value: 'Residence_permit_issued_by_the_Home_Office' },
@@ -80,12 +117,6 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
   useEffect(() => {
     if (useFor === "ThirdPartyDocument") {
       setselectOptionForDocument([
-        // { label: 'Referral Letter', value: 'Referral Letter' },
-        // { label: 'GP Enquiry', value: 'GP Enquiry' },
-        // { label: 'Medical Report', value: 'Medical Report' },
-        // { label: 'Therapy Letter', value: 'Therapy Letter' },
-        // { label: 'Investigations', value: 'Investigations' },
-        // { label: 'Imaging Report', value: 'Imaging Report' }
         { label: 'Investigations', value: 'Investigations' },
         { label: 'Others', value: 'Other' },
       ]);
@@ -113,87 +144,8 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
       return false;
     }
   };
-  // const takePhoto = async () => {
-  //   if (selectedDocument === "") {
-  //     Toast.show("Please select document type");
-  //   } else {
-  //     if (Platform.OS === 'android') {
-  //       const isCameraPermitted = await requestCameraPermission();
-  //       if (!isCameraPermitted) {
-  //         console.log('Camera permission denied');
-  //         return;
-  //       }
-  //     }
 
-  //     launchCamera(
-  //       { mediaType: 'photo', quality: 0.5, includeBase64: true, saveToPhotos: true },
-  //       (response) => {
-  //         if (response.didCancel) {
-  //           console.log('User cancelled image picker');
-  //         } else if (response.errorCode) {
-  //           console.log('ImagePicker Error: ', response.errorMessage);
-  //         } else if (response.assets) {
-  //           const fileSize = response.assets[0].fileSize / 1024 / 1024; // in MiB
-  //           if (fileSize > 1) {
-  //             Toast.show("Please make sure your document is not more than 1 MB.");
-  //             return;
-  //           }
-
-  //           const fileType = response.assets[0].type;
-  //           // Convert image to base64
-  //           const imageBase64 = `data:${fileType};base64,${response.assets[0].base64}`;
-  //           console.log(imageBase64)
-
-  //           return false;
-
-  //           setDocumentObj((prevImageUri) => ({
-  //             ...prevImageUri,
-  //             // [selectedDocument]: response.assets[0],
-  //             [selectedDocument]: { uri: imageBase64, type: fileType, name: response.assets[0].name }
-  //           }));
-  //           setSelectedDocument("");
-  //         }
-  //       }
-  //     );
-  //   }
-  // };
-  // const takePhoto = async () => {
-  //   if (selectedDocument === "") {
-  //     Toast.show("Please select document type");
-  //   } else {
-  //     if (Object.keys(documentObj).length < 3) {
-  //       ImagePicker.openCamera({
-  //         width: 300,
-  //         height: 400,
-  //         cropping: true,
-  //         includeBase64: true
-  //       }).then(image => {
-  //         const fileSize = (response[0].size / (1024 * 1024)) * 5; // in MiB
-  //         if (fileSize > 5) {
-  //           Toast.show("Please make sure your document is not more than 5 MB.");
-  //           return false;
-  //         }
-
-  //         const fileType = image.mime;
-  //         // Convert image to base64
-  //         const imageBase64 = `data:${fileType};base64,${image.data}`;
-
-  //         const fileNameArray = image.path.split("/")
-  //         // console.log(imageBase64);
-  //         setDocumentObj((prevImageUri) => ({
-  //           ...prevImageUri,
-  //           // [selectedDocument]: response.assets[0],
-  //           [selectedDocument]: { uri: imageBase64, type: fileType, name: fileNameArray[fileNameArray.length - 1] }
-  //         }));
-  //         setSelectedDocument("");
-  //       });
-  //     } else {
-  //       Toast.show("Maximum upload limit reached. You can only upload up to 3 documents.")
-  //     }
-  //   }
-  // };
   const takePhoto = async () => {
-    // console.log("selectedDocument======", selectedDocument)
     if (selectedDocument == null || selectedDocument == "") {
       Toast.show("Please select a document type.");
     } else {
@@ -207,22 +159,18 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           compressImageMaxWidth: 1024,
           compressImageMaxHeight: 1024,
         }).then((image) => {
-          // Convert file size from bytes to MB
-          const fileSize = image.size / (1024 * 1024); // Size in MB
-
+          const fileSize = image.size / (1024 * 1024);
           if (fileSize > 5) {
             Toast.show("Please ensure that the document you upload is no more than 5 MB");
             return false;
           }
 
-          const fileType = image.mime; // MIME type of the image
-          const imageBase64 = `data:${fileType};base64,${image.data}`; // Convert to Base64
+          const fileType = image.mime;
+          const imageBase64 = `data:${fileType};base64,${image.data}`;
 
-          // Extract file name from path
           const fileNameArray = image.path.split("/");
           const fileName = fileNameArray[fileNameArray.length - 1];
-          // console.log("fileType---------------", fileType);
-          // Update document object
+
           setDocumentObj((prevImageUri) => ({
             ...prevImageUri,
             [selectedDocument]: {
@@ -232,13 +180,14 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
             },
           }));
           if (useFor !== "ThirdPartyDocument") {
-            setSelectedDocument(""); // Reset document type selection
+            setSelectedDocument("");
           }
+
+          // NEW: encourage immediate scroll (effect will also catch this)
+          scrollModalToBottom();
         }).catch((err) => {
-          // Handle errors from the image picker
           console.error("Error opening camera:", err.code);
           CrashLogger.logCrash(err, 'Camera - takePhoto');
-
           if (err.code === "E_NO_CAMERA_PERMISSION") {
             Toast.show("Please grant camera and photo library permissions.");
           } else {
@@ -256,26 +205,20 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
       const [result] = await pick({
         mode: 'open',
         type: [
-          'public.item', // allows all files (works best on iOS)
-          'application/pdf',           // PDF files
-          'image/*',                   // Images (jpg, png, etc.)
-          'application/msword',        // .doc
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-        ], // allow both
-
+          'public.item',
+          'application/pdf',
+          'image/*',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ],
       });
 
       if (!result) return;
-
-      console.log('Document selected:', result);
 
       const fileType = result.mimeType || result.type || '';
       const fileName = result.name || 'file';
       const uri = result.fileCopyUri || result.uri;
 
-      // If it's an image, convert to Base64
-      //  if (fileType.startsWith('image/')) {
-      // Fetch and convert image to base64
       const response = await fetch(uri);
       const blob = await response.blob();
       const reader = new FileReader();
@@ -283,14 +226,12 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
       reader.onloadend = () => {
         const base64data = reader.result;
 
-        // Convert file size from bytes to MB
         const fileSize = blob.size / (1024 * 1024);
         if (fileSize > 5) {
           Toast.show('Please ensure that the document you upload is no more than 5 MB');
           return;
         }
 
-        // Update state
         setDocumentObj(prev => ({
           ...prev,
           [selectedDocument]: {
@@ -299,19 +240,11 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
             name: fileName,
           },
         }));
+
+        // NEW: encourage immediate scroll (effect will also catch this)
+        scrollModalToBottom();
       };
       reader.readAsDataURL(blob);
-      /* } else if (fileType === 'application/pdf') {
-         // For PDF, we don’t convert to Base64 (optional)
-         setDocumentObj(prev => ({
-           ...prev,
-           [selectedDocument]: {
-             uri,
-             type: fileType,
-             name: fileName,
-           },
-         }));
-       }*/
     } catch (error) {
       console.error('Document picker error:', error);
       Toast.show('Failed to pick document');
@@ -322,90 +255,22 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     if (selectedDocument == null || selectedDocument == "") {
       Toast.show("Please select a document type.");
     } else {
-      selectDocument()
+      selectDocument();
     }
     return
-    /* if (selectedDocument == null || selectedDocument == "") {
-       Toast.show("Please select a document type");
-     } else {
-       if (Object.keys(documentObj).length < 3) {
-         try {
-           // Use ImagePicker to select from gallery
-           const image = await ImagePicker.openPicker({
-             width: 300,
-             height: 400,
-             cropping: true,
-             includeBase64: true,
-             mediaType: 'photo',
-             compressImageQuality: 0.7, // Compress to 70% quality
-             compressImageMaxWidth: 1024,
-             compressImageMaxHeight: 1024,
-           });
- 
-           // Convert file size from bytes to MB
-           const fileSize = image.size / (1024 * 1024);
- 
-           if (fileSize > 5) {
-             Toast.show("Please ensure that the document you upload is no more than 5 MB");
-             return false;
-           }
- 
-           const fileType = image.mime; // MIME type of the image
-           const imageBase64 = `data:${fileType};base64,${image.data}`; // Convert to Base64
- 
-           // Extract file name from path
-           const fileNameArray = image.path.split("/");
-           const fileName = fileNameArray[fileNameArray.length - 1];
- 
-           // Update document object
-           setDocumentObj((prevImageUri) => ({
-             ...prevImageUri,
-             [selectedDocument]: {
-               uri: imageBase64,
-               type: fileType,
-               name: fileName,
-             },
-           }));
- 
-           if (useFor !== "ThirdPartyDocument") {
-             setSelectedDocument(""); // Reset document type selection
-           }
-           Toast.show("Image selected successfully!");
-         } catch (err) {
-           if (err.code === 'E_PICKER_CANCELLED') {
-             console.log('User cancelled image picker');
-           } else {
-             console.error("ImagePicker Error:", err);
-             CrashLogger.logCrash(err, 'Gallery - selectFile');
-             Toast.show("An error occurred while selecting the file.");
-           }
-         }
-       } else {
-         Toast.show("Maximum upload up to 3 documents.");
-       }
-     }*/
   };
 
-
   const cropImage = async (uri, fileExtension) => {
-    // console.log(uri)
     try {
       const croppedImage = await ImagePicker.openCropper({
         path: uri,
-        width: 300, // Specify the crop width
-        height: 300, // Specify the crop height
-        cropping: true, // Enable cropping
+        width: 300,
+        height: 300,
+        cropping: true,
       });
-      // console.log("croppedImage", croppedImage)
-      // console.log("croppedImage path", croppedImage.path)
       let mimeType = `image/${fileExtension}`;
-
-
       const fileUri = Platform.OS === 'android' ? croppedImage.path : croppedImage.path.replace('file://', '');
-      // console.log("fileUri", fileUri)
       const base64String = await RNFS.readFile(fileUri, 'base64');
-      // console.log("-----------", base64String)
-
       let base64WithPrefix = `data:${mimeType};base64,${base64String}`;
       const fileNameArray = croppedImage.path.split("/")
 
@@ -413,50 +278,39 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         ...prevImageUri,
         [selectedDocument]: { uri: base64WithPrefix, type: croppedImage.mime, name: fileNameArray[fileNameArray.length - 1] },
       }));
-
       setSelectedDocument("");
 
-
+      scrollModalToBottom(); // optional, if you use the cropper path
       return croppedImage
     } catch (err) {
       console.log('Error cropping image:', err);
     }
   };
 
-  // Upload file function
   const uploadFile = async () => {
-    // Format date to DD/MM/YYYY
     const formatDateToDDMMYYYY = (date) => {
       if (!date) return "";
-
       const isoDate = new Date(date).toISOString();
       return isoDate;
-
-      const d = new Date(date);
-      const day = String(d.getDate()).padStart(2, '0');
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const year = d.getFullYear();
-      return `${day}/${month}/${year}`;
     };
 
     const reportedFormattedDate = formatDateToDDMMYYYY(dateOfReport);
     try {
       let submitdataFlag = true;
       if (useFor === "ThirdPartyDocument" && selectedDocument !== 'Other') {
-        if (documentName == "" || documentName == null || documentName == undefined) {
+        if (!documentName) {
           setdocumentNameError(true)
           Toast.show("Please enter document name");
           submitdataFlag = false;
           return
         }
-
-        if (reportedFormattedDate == "" || reportedFormattedDate == null || reportedFormattedDate == undefined) {
+        if (!reportedFormattedDate) {
           setorganisationNameError(true)
           Toast.show("Please select Date of Report");
           submitdataFlag = false;
           return
         }
-        if (organisationName == "" || organisationName == null || organisationName == undefined) {
+        if (!organisationName) {
           setorganisationNameError(true)
           Toast.show("Please enter organisation Name");
           submitdataFlag = false;
@@ -467,13 +321,9 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
         setPageLoading(true);
 
         let uploadArrayOfHash = {}
-
-
         for (const key in documentObj) {
-          // console.log(key);
           uploadArrayOfHash[key] = documentObj[key].uri;
         }
-
 
         const variables = {
           documents: JSON.stringify(uploadArrayOfHash),
@@ -489,11 +339,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           tags: tags || []
         }
 
-        console.log("variables", variables);
-
-        const result = await savePatientDocumentsMutation({
-          variables: variables,
-        });
+        const result = await savePatientDocumentsMutation({ variables });
         setPageLoading(false);
         if (result.data.PomsPatientDocumentCreate.id !== "") {
           Toast.show("Document uploaded and saved successfully!");
@@ -509,10 +355,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     }
   };
 
-  const formatString = (keyName) => {
-    return keyName.replace(/_/g, ' ');
-  }
-
+  const formatString = (keyName) => keyName.replace(/_/g, ' ');
   const handleClose = (key) => {
     setDocumentObj((prevObj) => {
       const newObj = { ...prevObj };
@@ -523,338 +366,261 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
 
   function formatDateWithSuffix(date) {
     const day = date.getDate();
-    const month = date.toLocaleString("default", { month: "short" }); // "Apr"
+    const month = date.toLocaleString("default", { month: "short" });
     const year = date.getFullYear();
-
-    // Determine suffix
     let suffix = "th";
     if (day % 10 === 1 && day !== 11) suffix = "st";
     else if (day % 10 === 2 && day !== 12) suffix = "nd";
     else if (day % 10 === 3 && day !== 13) suffix = "rd";
-
     return `${day}${suffix} ${month} ${year}`;
   }
 
-  const openDatePicker = () => {
-    setIsDateOfReportPickerOpen(true);
-  };
-
-  const closeDatePicker = () => {
-    setIsDateOfReportPickerOpen(false);
-  };
-
-  const clearDate = () => {
-    setDateOfReport("");
-  };
-
-  const handleDateChange = (dateOfReport) => {
-    setDateOfReport(dateOfReport);
-    setIsDateOfReportPickerOpen(false);
-  };
+  const openDatePicker = () => setIsDateOfReportPickerOpen(true);
+  const closeDatePicker = () => setIsDateOfReportPickerOpen(false);
+  const clearDate = () => setDateOfReport("");
+  const handleDateChange = (d) => { setDateOfReport(d); setIsDateOfReportPickerOpen(false); };
 
   return (
-    // <View style={styles.photoModalcontainer}>
-    //   <Loader style={styles.loadingCss} loading={pageLoading} />
-    //   {/* Document type picker */}
-    //   <Picker
-    //     selectedValue={selectedDocument}
-    //     onValueChange={(itemValue) => setSelectedDocument(itemValue)}
-    //     style={styles.picker}
-    //   >
-    //     <Picker.Item label="Select Document Type" value="" />
-    //     {SelectOptionForDocument.map((option) => (
-    //       <Picker.Item key={option.value} label={option.label} value={option.value} />
-    //     ))}
-    //   </Picker>
-
-
-    //   <TouchableOpacity style={styles.photoModalcustomButton} onPress={selectFile}>
-    //     <Text style={styles.photoModalbuttonText}>Select File (Image/PDF)</Text>
-    //   </TouchableOpacity>
-
-    //   {Object.keys(documentObj).length > 0 && (
-    //     <TouchableOpacity style={styles.uploadButton} onPress={uploadFile}>
-    //       <Text style={styles.uploadButtonText}>Upload</Text>
-    //     </TouchableOpacity>
-    //   )}
-    // </View>
     <View style={styles.photoModalcontainer}>
-      {/* <ScrollView style={[styles.photoModalimageBoxesScroll]}> */}
-      <View>
-        <Loader style={styles.loadingCss} loading={pageLoading} />
-        <View style={styles.documentTypeSecBox}>
-          <View style={[styles.documentTypeSec, styles.documentTypeSecPicker]}>
-            <View style={[styles.documentTypeBox, styles.documentTypeBoxLeft]}>
-              <Text allowFontScaling={false}>Select Document Type</Text>
-            </View>
-            <View style={[styles.documentTypeBox, styles.documentTypeBoxRight]}>
-              {/* <Dropdown
-                style={[styles.dropdown]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                itemTextStyle={styles.itemTextStyle}
-                itemContainerStyle={styles.itemContainerStyle}
-                data={SelectOptionForDocument}
-                labelField="label"
-                valueField="value"
-                placeholder="Select..."
-                value={selectedDocument}
-                onChange={item => {
-                  setSelectedDocument(item.value);
-                  setDocumentType(item.value);
-                }}
-                maxHeight={200} // adjust based on modal size
-                placeholderTextColor="#333"
-              /> */}
-              <Dropdown
-                style={styles.dropdown}
-                data={SelectOptionForDocument}
-                labelField="label"
-                valueField="value"
-                placeholder="Select..."
-                value={selectedDocument}
-                onChange={item => {
-                  setSelectedDocument(item.value);
-                  setDocumentType(item.value);
-                }}
-                maxHeight={200}
-                placeholderTextColor="#333"
-                itemContainerStyle={styles.itemContainerStyle}
-
-                /* ↓↓↓ ADD THESE ↓↓↓ */
-                selectedTextStyle={styles.selectedTextStyle}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
-                placeholderProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
-                itemTextStyle={styles.itemTextStyle}
-                itemTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1 }}
-                /* ↑↑↑ ADD THESE ↑↑↑ */
-
-                renderItem={item => (
-                  <View style={{ paddingVertical: 6 }}>
-                    <Text allowFontScaling={false} maxFontSizeMultiplier={1} style={styles.itemTextStyle} numberOfLines={1}>
-                      {item.label}
-                    </Text>
-                  </View>
-                )}
-
-                renderPlaceholder={() => (
-                  <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text allowFontScaling={false} maxFontSizeMultiplier={1} style={styles.placeholderStyle} numberOfLines={1}>
-                      Select...
-                    </Text>
-                  </View>
-                )}
-              />
-
-
-
-            </View>
-
-          </View>
-        </View>
-
-        {
-          useFor === "ThirdPartyDocument" && selectedDocument === "Investigations" &&
-          <View style={styles.documentTypeSecBoxThirdParty}>
-            <Text allowFontScaling={false} style={styles.documentTypeSecTxtBox}>Blood tests, X-rays / MRI / other imaging reports, lab tests done by your GP or hospital</Text>
-            <View allowFontScaling={false} style={styles.documentTypeSecc}>
-              <View style={[documentNameError ? styles.inputContainermandatory : styles.inputContainer]}>
-                <TextInput
-                  style={styles.input}
-                  allowFontScaling={false}
-                  value={documentName}
-                  onChangeText={(text) => {
-                    setDocumentName(text),
-                      setdocumentNameError(false)
-                  }}
-                  placeholder="Document Name "
-                  placeholderTextColor="#333"
-                />
-                {!documentName && (
-                  <Text allowFontScaling={false} style={styles.redAsterisk}>*</Text>
-                )}
+      <ScrollView
+        ref={modalScrollRef}                  // <-- NEW
+        style={[styles.photoModalcontainerScroll]}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View>
+          <Loader style={styles.loadingCss} loading={pageLoading} />
+          <View style={styles.documentTypeSecBox}>
+            <View style={[styles.documentTypeSec, styles.documentTypeSecPicker]}>
+              <View style={[styles.documentTypeBox, styles.documentTypeBoxLeft]}>
+                <Text allowFontScaling={false} style={{ fontSize: font(14), color: '#000' }}>Select Document Type</Text>
               </View>
+              <View style={[styles.documentTypeBox, styles.documentTypeBoxRight]}>
+                <Dropdown
+                  style={styles.dropdown}
+                  data={SelectOptionForDocument}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Select..."
+                  value={selectedDocument}
+                  onChange={item => {
+                    setSelectedDocument(item.value);
+                    setDocumentType(item.value);
+                  }}
+                  maxHeight={vScale(200)}
+                  placeholderTextColor="#333"
+                  itemContainerStyle={styles.itemContainerStyle}
 
+                  selectedTextStyle={styles.selectedTextStyle}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                  placeholderProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1, numberOfLines: 1 }}
+                  itemTextStyle={styles.itemTextStyle}
+                  itemTextProps={{ allowFontScaling: false, maxFontSizeMultiplier: 1 }}
 
-              <View style={styles.dateFieldBoxx}>
-                <TouchableOpacity onPress={openDatePicker} style={styles.dateFieldd}>
-                  {dateOfReport ?
-                    <>
-                      <Text style={styles.dateFieldSec}>
-                        {Utility.formatDate(dateOfReport)}
-                        <TouchableOpacity onPress={clearDate} style={styles.dateClear}>
-                          <AntDesign
-                            name="closecircle"
-                            size={16}
-                            color={Colors.secondary}
-                          />
-                        </TouchableOpacity>
+                  renderItem={item => (
+                    <View style={{ paddingVertical: vScale(6) }}>
+                      <Text allowFontScaling={false} maxFontSizeMultiplier={1} style={styles.itemTextStyle} numberOfLines={1}>
+                        {item.label}
                       </Text>
-                    </>
-                    :
-                    // <Text style={{ color: Colors.black }}>Date of Report <Text style={{ color: Colors.red }}>*</Text></Text>
-                    <Text allowFontScaling={false} style={{ color: '#333', }}> Date of Report <Text allowFontScaling={false} style={{ color: 'red', fontSize: 16 }}>*</Text></Text>
-
-                  }
-                </TouchableOpacity>
-                <CommonDatePicker
-                  open={isDateOfReportPickerOpen}
-                  date={dateOfReport}
-                  onDateChange={handleDateChange}
-                  closeDatePicker={closeDatePicker}
-                  type="Filter"
-                  locale="en"
-                />
-                <TouchableOpacity onPress={openDatePicker} style={styles.dateFieldicon}>
-                  <Feather
-                    name="calendar"
-                    size={22}
-                    color={Colors.secondary}
-                  /></TouchableOpacity>
-                {dateOfReport == "" ? <Text allowFontScaling={false} style={LoginStyle.errorMsg}>{selectedDateError}</Text> : null}
-              </View>
-
-              {/* <View style={[documentAutherError ? styles.inputContainermandatory : styles.inputContainer]}>
-                <TextInput
-                    style={styles.input}
-                  value={documentAuther}
-                  onChangeText={(text) => {
-                    setDocumentAuther(text),
-                    setdocumentAutherError(false)
-                  }}
-                  placeholder="Enter Author"
-                  placeholderTextColor="#000"
-                />
-              </View> */}
-
-              <View style={[organisationNameError ? styles.inputContainermandatory : styles.inputContainer]}>
-                <TextInput
-                  style={styles.input}
-                  allowFontScaling={false}
-                  value={organisationName}
-                  onChangeText={(text) => {
-                    setOrganisationName(text),
-                      setorganisationNameError(false)
-                  }}
-                  placeholder="Organisation Name "
-                  placeholderTextColor="#333"
-                />
-                {!organisationName && (
-                  <Text allowFontScaling={false} style={[styles.redAsterisk, styles.redAsteriskOrgName]}>*</Text>
-                )}
-              </View>
-
-              <View style={[styles.tagInputContainer]}>
-                <TextInput
-                  style={[styles.input]}
-                  allowFontScaling={false}
-                  value={tagInput}
-                  onChangeText={setTagInput}
-                  placeholder="Tags (press 'Enter' to add)"
-                  placeholderTextColor="#333"
-                  onSubmitEditing={() => {
-                    if (tagInput.trim() !== '' && !tags.includes(tagInput.trim())) {
-                      setTags([...tags, tagInput.trim()]);
-                      setTagInput('');
-                    }
-                  }}
-                  // blurOnSubmit={false}
-                  returnKeyType="done"
-                  inputAccessoryViewID={Platform.OS === 'ios' ? 'doneButton' : undefined}
-                />
-                <View style={styles.tagsContainer}>
-                  {tags.map((tag, index) => (
-                    <View key={index} style={styles.tag}>
-                      <Text allowFontScaling={false} style={styles.tagText}>{tag}</Text>
-                      <TouchableOpacity
-                        onPress={() => {
-                          const newTags = [...tags];
-                          newTags.splice(index, 1);
-                          setTags(newTags);
-                        }}
-                        style={styles.tagRemove}
-                      >
-                        <Text allowFontScaling={false} style={styles.tagRemoveText}>×</Text>
-                      </TouchableOpacity>
                     </View>
-                  ))}
+                  )}
+
+                  renderPlaceholder={() => (
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                      <Text allowFontScaling={false} maxFontSizeMultiplier={1} style={styles.placeholderStyle} numberOfLines={1}>
+                        Select...
+                      </Text>
+                    </View>
+                  )}
+                />
+              </View>
+            </View>
+          </View>
+
+          {useFor === "ThirdPartyDocument" && selectedDocument === "Investigations" && (
+            <View style={styles.documentTypeSecBoxThirdParty}>
+              <Text allowFontScaling={false} style={styles.documentTypeSecTxtBox}>
+                Blood tests, X-rays / MRI / other imaging reports, lab tests done by your GP or hospital
+              </Text>
+
+              <View allowFontScaling={false} style={styles.documentTypeSecc}>
+                <View style={[documentNameError ? styles.inputContainermandatory : styles.inputContainer]}>
+                  <TextInput
+                    style={styles.input}
+                    allowFontScaling={false}
+                    value={documentName}
+                    onChangeText={(text) => { setDocumentName(text); setdocumentNameError(false); }}
+                    placeholder="Document Name "
+                    placeholderTextColor="#333"
+                  />
+                  {!documentName && (<Text allowFontScaling={false} style={styles.redAsterisk}>*</Text>)}
+                </View>
+                <View style={styles.dateFieldBoxx}>
+                  <View style={styles.dateFieldRow}>
+                    {/* Left side: tap date text to open the picker */}
+                    <TouchableOpacity
+                      style={styles.dateTextWrap}
+                      onPress={openDatePicker}
+                      activeOpacity={0.7}
+                    >
+                      {dateOfReport ? (
+                        <Text allowFontScaling={false} style={styles.dateFieldSec} numberOfLines={1}>
+                          {Utility.formatDate(dateOfReport)}
+                        </Text>
+                      ) : (
+                        <Text allowFontScaling={false} style={styles.dateFieldSec} numberOfLines={1}>
+                          Date of Report <Text style={{ color: 'red' }}>*</Text>
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+
+                    {/* Middle: clear button (visible only when a date exists) */}
+                    {Boolean(dateOfReport) && (
+                      <TouchableOpacity
+                        onPress={clearDate}
+                        style={styles.dateClearBtn}
+                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                      >
+                        <AntDesign name="closecircle" size={16} color={Colors.secondary} />
+                      </TouchableOpacity>
+                    )}
+
+                    {/* Right: calendar icon */}
+                    <TouchableOpacity
+                      onPress={openDatePicker}
+                      style={styles.dateCalendarBtn}
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                      <Feather name="calendar" size={22} color={Colors.secondary} />
+                    </TouchableOpacity>
+                  </View>
+
+                  <CommonDatePicker
+                    open={isDateOfReportPickerOpen}
+                    date={dateOfReport}
+                    onDateChange={handleDateChange}
+                    closeDatePicker={closeDatePicker}
+                    type="Filter"
+                    locale="en"
+                  />
+                </View>
+
+
+
+                <View style={[organisationNameError ? styles.inputContainermandatory : styles.inputContainer]}>
+                  <TextInput
+                    style={styles.input}
+                    allowFontScaling={false}
+                    value={organisationName}
+                    onChangeText={(text) => { setOrganisationName(text); setorganisationNameError(false); }}
+                    placeholder="Organisation Name "
+                    placeholderTextColor="#333"
+                  />
+                  {!organisationName && (<Text allowFontScaling={false} style={[styles.redAsterisk, styles.redAsteriskOrgName]}>*</Text>)}
+                </View>
+
+                <View style={[styles.tagInputContainer]}>
+                  <TextInput
+                    style={[styles.input]}
+                    allowFontScaling={false}
+                    value={tagInput}
+                    onChangeText={setTagInput}
+                    placeholder="Tags (press 'Enter' to add)"
+                    placeholderTextColor="#333"
+                    onSubmitEditing={() => {
+                      if (tagInput.trim() !== '' && !tags.includes(tagInput.trim())) {
+                        setTags([...tags, tagInput.trim()]);
+                        setTagInput('');
+                      }
+                    }}
+                    returnKeyType="done"
+                    inputAccessoryViewID={Platform.OS === 'ios' ? 'doneButton' : undefined}
+                  />
+                  <View style={styles.tagsContainer}>
+                    {tags.map((tag, index) => (
+                      <View key={index} style={styles.tag}>
+                        <Text allowFontScaling={false} style={styles.tagText}>{tag}</Text>
+                        <TouchableOpacity
+                          onPress={() => {
+                            const newTags = [...tags];
+                            newTags.splice(index, 1);
+                            setTags(newTags);
+                          }}
+                          style={styles.tagRemove}
+                        >
+                          <Text allowFontScaling={false} style={styles.tagRemoveText}>×</Text>
+                        </TouchableOpacity>
+                      </View>
+                    ))}
+                  </View>
                 </View>
               </View>
-              {/* <View style={styles.documentTypeSecBox}>
-            <View style={styles.documentTypeSec}>
-              <Picker
-                selectedValue={documentTag}
-                onValueChange={(itemValue) => setDocumentTag(itemValue)}
-                style={[styles.picker, { width: "100%", paddingRight: 0 }]}
-                dropdownIconColor="#428174" // Custom icon color for iOS
-              >
-                <Picker.Item label="Select Document Type" value={""} color="#428174" style={{
-                  width: "100%",
-                }} />
-                {SelectOptionForTag.map((option) => (
-                  <Picker.Item key={option.value} label={option.label} value={option.value} />
-                ))}
-              </Picker>
             </View>
-          </View> */}
-            </View>
-          </View>
-        }
-        <View style={styles.photoModalcontainerRow}>
-          <TouchableOpacity style={styles.photoModalcustomButton} onPress={takePhoto}>
-            <View style={styles.photoModalbuttonIcon}><Entypo name="camera" size={30} color="#fff" /></View>
-            <Text allowFontScaling={false} style={styles.photoModalbuttonText}>Take Photo</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.photoModalcustomButton} onPress={selectFile}>
-            <View style={styles.photoModalbuttonIcon}><Feather name="upload" size={30} color="#fff" /></View>
-            <Text allowFontScaling={false} style={styles.photoModalbuttonText}>Select File
-              {/* {"\n"}
-              <Text style={styles.photoModalbuttonSubText}>(Image/PDF/Doc)</Text> */}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <Text></Text>
-        <Text allowFontScaling={false} style={styles.hintTxt}>Camera Permission is required to take photo</Text>
-        {useFor === "ThirdPartyDocument" && (
-          <>
-            <Text allowFontScaling={false} style={styles.hintTxt}>You can upload PDF/Word documents or PNG/JPEG files with max 5MB. </Text>
-          </>
-        )}
-      </View>
-      <View><Text allowFontScaling={false}>{Object.keys(documentObj).length > 0 ? Object.keys(documentObj).length : ""}</Text></View>
-      {Object.keys(documentObj).length > 0 && (
-        <View style={styles.photoModalimageBoxess}>
-          <SafeAreaView style={styles.scrollViewcontainer} edges={['top']}>
-            <ScrollView style={[styles.photoModalimageBoxesScroll]}>
-              <View style={[styles.photoModalimageBoxes]}>
-                {
-                  Object.entries(documentObj).map(([key, obj], index) => (
-                    <View key={`${key}-${index}`} style={styles.photoModalimageBox}>
-                      <Text allowFontScaling={false} style={styles.phototypeTxt}>{formatString(key).length > 17 ? `${formatString(key).slice(0, 17)}...` : formatString(key)}</Text>
+          )}
 
-                      <TouchableOpacity style={styles.closeButton} onPress={() => handleClose(key)}>
-                        <AntDesign name="closecircle" size={18} color="#f00" />
-                      </TouchableOpacity>
-                      {
-                        obj.type === "pdf" ?
-                          <Image source={require('../../../Utility/Public/images/pdf.png')} style={styles.photoModalimagePDF} />
-                          : obj.type === "application/pdf" ? <Image source={require('../../../Utility/Public/images/pdf.png')} style={styles.photoModalimagePDF} /> : obj.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? <Image source={require('../../../Utility/Public/images/doc.png')} style={styles.photoModalimagePDF} /> : <Image source={{ uri: obj.uri }} style={styles.photoModalimage} />
-                      }
-                    </View>
-                  ))}
-              </View>
-            </ScrollView>
-          </SafeAreaView>
+          <View style={styles.photoModalcontainerRow}>
+            <TouchableOpacity style={styles.photoModalcustomButton} onPress={takePhoto}>
+              <View style={styles.photoModalbuttonIcon}><Entypo name="camera" size={font(30)} color="#fff" /></View>
+              <Text allowFontScaling={false} style={styles.photoModalbuttonText}>Take Photo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.photoModalcustomButton} onPress={selectFile}>
+              <View style={styles.photoModalbuttonIcon}><Feather name="upload" size={font(30)} color="#fff" /></View>
+              <Text allowFontScaling={false} style={styles.photoModalbuttonText}>Select File</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text />
+
+          <Text allowFontScaling={false} style={styles.hintTxt}>Camera Permission is required to take photo</Text>
+          {useFor === "ThirdPartyDocument" && (
+            <Text allowFontScaling={false} style={styles.hintTxt}>
+              You can upload PDF/Word documents or PNG/JPEG files with max 5MB.
+            </Text>
+          )}
         </View>
-      )}
-      {/* </ScrollView> */}
+        <View style={styles.bottomBoxesPanel}>
+          <View style={styles.bottomBoxesPanelTxt}>
+            <Text allowFontScaling={false} style={{ fontSize: font(12), color: '#000' }}>
+              {Object.keys(documentObj).length > 0 ? Object.keys(documentObj).length : ""}
+            </Text>
+          </View>
+
+          {Object.keys(documentObj).length > 0 && (
+            <View style={styles.photoModalimageBoxess}>
+              <SafeAreaView style={styles.scrollViewcontainer} edges={['top']}>
+                <ScrollView style={[styles.photoModalimageBoxesScroll]}>
+                  <View style={[styles.photoModalimageBoxes]}>
+                    {Object.entries(documentObj).map(([key, obj], index) => (
+                      <View key={`${key}-${index}`} style={styles.photoModalimageBox}>
+                        <Text allowFontScaling={false} style={styles.phototypeTxt}>
+                          {formatString(key).length > 17 ? `${formatString(key).slice(0, 17)}...` : formatString(key)}
+                        </Text>
+
+                        <TouchableOpacity style={styles.closeButton} onPress={() => handleClose(key)}>
+                          <AntDesign name="closecircle" size={font(18)} color="#f00" />
+                        </TouchableOpacity>
+
+                        {obj.type === "pdf" || obj.type === "application/pdf" ? (
+                          <Image source={require('../../../Utility/Public/images/pdf.png')} style={styles.photoModalimagePDF} />
+                        ) : obj.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
+                          <Image source={require('../../../Utility/Public/images/doc.png')} style={styles.photoModalimagePDF} />
+                        ) : (
+                          <Image source={{ uri: obj.uri }} style={styles.photoModalimage} />
+                        )}
+                      </View>
+                    ))}
+                  </View>
+                </ScrollView>
+              </SafeAreaView>
+            </View>
+          )}
+        </View>
+      </ScrollView>
       {Object.keys(documentObj).length > 0 && (
         <View style={styles.submitButtonBox}>
           <TouchableOpacity style={styles.uploadButton} onPress={uploadFile}>
             <Text allowFontScaling={false} style={styles.uploadButtonText}>Upload</Text>
           </TouchableOpacity>
-
         </View>
       )}
     </View>
@@ -863,270 +629,222 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
 
 const styles = StyleSheet.create({
   photoModalcontainer: {
-    //flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 15,
-    //padding:15,
-    minHeight: 150,
-    //backgroundColor: "red",
+    paddingBottom: vScale(15),
+    minHeight: vScale(150),
     width: '100%',
-    maxHeight: screenheight - 70,
+    maxHeight: screenheight - vScale(250),
+    padding: 0,
+  },
+  photoModalcontainerScroll: {
+    paddingBottom: vScale(15),
+    width: '100%',
+    maxHeight: screenheight - vScale(250),
     padding: 0,
   },
   documentTypeSecBox: {
-    // paddingHorizontal: 5,
-    paddingHorizontal: 20,
-    // width:'100%',
-    //padding:30,
-    // backgroundColor: 'yellow',
+    paddingHorizontal: scale(20),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   documentTypeSecBoxThirdParty: {
-    paddingHorizontal: 20,
+    paddingHorizontal: scale(20),
   },
   documentTypeSecTxtBox: {
-    // backgroundColor: 'yellow',
-    // borderColor:'red',
-    // borderWidth:1,
-    fontSize: 12,
+    fontSize: font(12),
+    color: '#000',
   },
   documentTypeSec: {
     borderRadius: 0,
-    // shadowColor: '#fff',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.3,
-    // shadowRadius: 4,
-    // elevation: 3,
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#000',
     color: '#000',
     width: '100%',
-    //backgroundColor: 'pink',
     padding: 0,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row'
   },
-  documentTypeBox: {
-    //width:'49%',
-    // backgroundColor:'red'
-
-  },
+  documentTypeBox: {},
   documentTypeBoxLeft: {
-    width: Platform.OS === 'ios' ? '50%' : '50%',
+    width: '50%',
   },
   documentTypeBoxRight: {
-    width: Platform.OS === 'ios' ? '50%' : '50%',
+    width: '50%',
   },
-  documentTypeSecPicker: {
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#000',
-  },
-  picker: {                // Set the height of the picker
-    width: '100%',              // Set the width of the picker
+  picker: {
+    width: '100%',
     color: '#000',
-    fontSize: 18,
+    fontSize: font(18),
     fontWeight: 'bold',
     padding: 0,
     margin: 0,
     fontFamily: 'Arimo-Regular',
   },
   photoModalcontainerRow: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 15,
-    paddingHorizontal: 10,
-    //backgroundColor:'red',
+    marginTop: vScale(15),
+    paddingHorizontal: scale(10),
     width: '100%',
   },
   photoModalcustomButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    // marginVertical: 10,
+    paddingVertical: vScale(10),
+    paddingHorizontal: scale(24),
+    borderRadius: scale(8),
     shadowColor: '#fff',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
-    shadowRadius: 4,
+    shadowRadius: scale(4),
     elevation: 3,
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#428174',
-    // borderBottomStyle: 'dashed',
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
     color: '#428174',
-    marginLeft: 5,
-    marginRight: 5,
+    marginLeft: scale(5),
+    marginRight: scale(5),
     width: '48%',
     flexDirection: 'column',
     backgroundColor: "#ddd",
-
   },
   photoModalbuttonIcon: {
     backgroundColor: '#428174',
-    width: 60,
-    height: 60,
-    display: 'flex',
+    width: scale(60),
+    height: scale(60),
     justifyContent: 'center',
     alignItems: 'center',
-    color: '#fff',
     borderRadius: 50
   },
   photoModalbuttonText: {
     color: '#000',
-    fontSize: 14,
+    fontSize: font(14),
     textAlign: 'center',
-    marginTop: 5,
-    fontVariant: '700',
+    marginTop: vScale(5),
     fontFamily: 'Arimo-Bold',
-    fontWeight: 700
-
+    fontWeight: '700'
   },
   photoModalbuttonSubText: {
     color: '#000',
-    fontSize: 12,
+    fontSize: font(12),
   },
   tagInputContainer: {
     width: '100%',
-    marginBottom: 5,
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#000',
-    marginTop: 5,
+    marginBottom: vScale(5),
+    marginTop: vScale(5),
   },
   tagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 8,
+    marginTop: vScale(8),
   },
   tag: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#e0e0e0',
-    borderRadius: 15,
-    paddingVertical: 4,
-    paddingHorizontal: 12,
-    marginRight: 8,
-    marginBottom: 8,
+    borderRadius: scale(15),
+    paddingVertical: vScale(4),
+    paddingHorizontal: scale(12),
+    marginRight: scale(8),
+    marginBottom: vScale(8),
   },
   tagText: {
     color: '#333',
-    fontSize: 14,
-    marginRight: 4,
+    fontSize: font(14),
+    marginRight: scale(4),
   },
   tagRemove: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
+    width: scale(18),
+    height: scale(18),
+    borderRadius: scale(9),
     backgroundColor: '#999',
     justifyContent: 'center',
     alignItems: 'center',
   },
   tagRemoveText: {
     color: 'white',
-    fontSize: 14,
-    lineHeight: 14,
+    fontSize: font(14),
+    lineHeight: font(14),
     textAlign: 'center',
     marginTop: -1,
   },
   photoModalimageBoxess: {
-    // backgroundColor: 'pink',
-    paddingHorizontal: 15,
+    paddingHorizontal: scale(15),
     width: '100%',
-    marginTop: 10,
+    marginTop: vScale(10),
   },
   photoModalimageBoxesScroll: {
     width: '100%',
   },
   photoModalimageBoxes: {
     width: '100%',
-    display: 'flex',
     justifyContent: 'space-around',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    // backgroundColor:'blue',
-
   },
   photoModalimageBox: {
     position: 'relative',
-    // backgroundColor: '#ccc',
-    textAlign: 'center',
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     width: '47%',
-
   },
   phototype: {
     color: '#428174',
-    fontSize: 16,
+    fontSize: font(16),
     fontWeight: 'bold',
     textAlign: 'center',
   },
   phototypeTxt: {
     color: '#000',
-    fontSize: 12,
+    fontSize: font(12),
     textAlign: 'center',
-    marginBottom: 5,
-    marginTop: 5,
+    marginBottom: vScale(5),
+    marginTop: vScale(5),
   },
   photoModalimage: {
-    width: 95,
-    height: 95,
+    width: scale(95),
+    height: scale(95),
     marginTop: 0,
     borderRadius: 0,
     marginBottom: 0,
     borderStyle: 'solid',
     borderColor: '#428174',
-    borderWidth: 5,
+    borderWidth: scale(5),
   },
   photoModalimagePDF: {
     objectFit: 'contain',
-    width: 95,
-    height: 95,
+    width: scale(95),
+    height: scale(95),
     padding: 0,
-
   },
   closeButton: {
     position: 'absolute',
-    right: Platform.OS === 'ios' ? 25 : 5,
-    top: 20,
+    right: Platform.OS === 'ios' ? scale(25) : scale(5),
+    top: vScale(20),
     zIndex: 999,
-    color: 'red',
     backgroundColor: '#fff',
     borderRadius: 50,
   },
   submitButtonBox: {
     backgroundColor: '#fff',
-    width: "90%",
-    marginTop: 10,
-
+    width: "100%",
+    marginTop: vScale(10),
+    paddingHorizontal: 10,
   },
   uploadButton: {
-    padding: 12,
-    borderRadius: 5,
-    display: 'flex',
-    textAlign: 'center',
+    padding: vScale(12),
+    borderRadius: scale(5),
     justifyContent: 'flex-start',
     alignItems: 'center',
-    position: 'relative',
     backgroundColor: '#007667',
-
   },
   uploadButtonText: {
-    fontSize: 16,
+    fontSize: font(16),
     color: '#fff',
     fontWeight: 'bold',
     fontFamily: 'Arimo-Bold',
   },
   loadingCss: {
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -1134,47 +852,40 @@ const styles = StyleSheet.create({
     top: 0
   },
   scrollViewcontainer: {
-    maxHeight: 220,
-    //backgroundColor: '#666',
+    maxHeight: vScale(220),
     width: '100%',
-    justifyContent: 'center', // This should be applied to contentContainerStyle
+    justifyContent: 'center',
     alignItems: 'center',
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 5,
+    marginBottom: vScale(5),
     borderRadius: 0,
     position: 'relative',
-    marginTop: 5,
+    marginTop: vScale(5),
     width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: '#666',
   },
   inputContainermandatory: {
-
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    //marginBottom: 20,
-    //borderBottomColor: 'red',
     borderBottomWidth: 1,
     borderRadius: 0,
     position: 'relative',
-    marginTop: 5,
+    marginTop: vScale(5),
     width: '100%',
     borderColor: '#666',
-
   },
   input: {
-    //flex: 1,
-    height: 40,
-    fontSize: 14,
+    height: vScale(40),
+    fontSize: font(14),
     color: '#000',
-    paddingHorizontal: 4,
+    paddingHorizontal: scale(4),
     paddingVertical: 0,
-    //backgroundColor: 'red',
     fontFamily: 'Arimo-Regular',
     width: '100%',
     opacity: 1,
@@ -1184,64 +895,91 @@ const styles = StyleSheet.create({
   hintTxt: {
     color: '#000',
     fontFamily: 'Arimo-Regular',
-    fontSize: 13,
-    paddingHorizontal: 15,
+    fontSize: font(13),
+    paddingHorizontal: scale(15),
     textAlign: 'center',
-    paddingTop: 5,
+    paddingTop: vScale(5),
   },
   dateFieldBoxx: {
     width: '100%',
-    marginTop: 5,
+    marginTop: vScale(5),
+  },
+  dateFieldRow: {
+    width: '100%',
+    borderBottomWidth: 1,
+    borderColor: '#666',
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: vScale(10),
+    paddingHorizontal: 0,
+  },
+  dateTextWrap: {
+    flex: 1,
+    paddingRight: scale(8),
+  },
+  dateFieldSec: {
+    color: '#000',
+    fontSize: font(14),     // your PixelRatio-aware font helper
+    paddingLeft:5,
+  },
+  dateClearBtn: {
+    marginRight: scale(15),
+  },
+  dateCalendarBtn: {
+    // keeps the icon aligned; add marginLeft if you want spacing
   },
   dateFieldd: {
     width: '100%',
     backgroundColor: '#fff',
-    padding: 10,
+    padding: scale(10),
     paddingHorizontal: 0,
     borderColor: '#666',
     borderBottomWidth: 1,
     margin: 0
   },
-  dateFieldSec: {
-    //backgroundColor: 'red',
+  dateFieldSecDuplicate: { // renamed to avoid duplicate key names
     width: '100%',
     color: '#000',
-    fontSize: 14,
+    fontSize: font(14),
     padding: 0,
   },
   dateClear: {
-    marginLeft: 50,
-    paddingLeft: 5,
+    marginLeft: scale(50),
+    paddingLeft: scale(5),
   },
   redAsterisk: {
     position: 'absolute',
     left: '37%',
-    top: 5,
+    top: vScale(5),
     color: 'red',
-    fontSize: 16,
+    fontSize: font(16),
   },
   redAsteriskOrgName: {
     left: '41%',
   },
-  dateFieldicon: { position: 'absolute', right: 10, top: 7, },
+  dateFieldicon: { position: 'absolute', right: scale(10), top: vScale(7) },
   dropdown: {
-    height: 40,
+    height: vScale(40),
     borderBottomColor: '#333',
     borderBottomWidth: 1,
-    marginTop: 5,
+    marginTop: vScale(5),
     width: '100%',
-    paddingHorizontal: 5,
+    paddingHorizontal: scale(5),
   },
+
+  // Dropdown text styles (kept your anti-zoom cap via `scaled`)
   placeholderStyle: { fontSize: scaled(14), color: '#000' },
   selectedTextStyle: { fontSize: scaled(14), color: '#000' },
-  itemTextStyle: { fontSize: scaled(14), color: '#000', lineHeight: scaled(16), padding: 5 },
+  itemTextStyle: { fontSize: scaled(14), color: '#000', lineHeight: scaled(16), padding: scale(5) },
   itemContainerStyle: {
     paddingVertical: 0,
     margin: 0,
-    minHeight: 25,
-    padding: 5,
+    minHeight: vScale(25),
+    padding: scale(5),
   },
+  bottomBoxesPanel: { textAlign: 'center', padding: 10, },
+  bottomBoxesPanelTxt: { width: '100%', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }
 });
-
 
 export default FileUploadAndTakePhoto;

@@ -392,7 +392,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           <View style={styles.documentTypeSecBox}>
             <View style={[styles.documentTypeSec, styles.documentTypeSecPicker]}>
               <View style={[styles.documentTypeBox, styles.documentTypeBoxLeft]}>
-                <Text allowFontScaling={false} style={{ fontSize: font(14), color: '#000' }}>Select Document Type</Text>
+                <Text allowFontScaling={false} style={styles.documendropdownLabelTxt}>Select Document Type</Text>
               </View>
               <View style={[styles.documentTypeBox, styles.documentTypeBoxRight]}>
                 <Dropdown
@@ -921,7 +921,7 @@ const styles = StyleSheet.create({
   dateFieldSec: {
     color: '#000',
     fontSize: font(14),     // your PixelRatio-aware font helper
-    paddingLeft:5,
+    paddingLeft: 5,
   },
   dateClearBtn: {
     marginRight: scale(15),
@@ -950,13 +950,13 @@ const styles = StyleSheet.create({
   },
   redAsterisk: {
     position: 'absolute',
-    left: '37%',
+    left: scale(0.37 * BASE_WIDTH),
     top: vScale(5),
     color: 'red',
     fontSize: font(16),
   },
   redAsteriskOrgName: {
-    left: '41%',
+    left: scale(0.41 * BASE_WIDTH),
   },
   dateFieldicon: { position: 'absolute', right: scale(10), top: vScale(7) },
   dropdown: {
@@ -979,7 +979,11 @@ const styles = StyleSheet.create({
     padding: scale(5),
   },
   bottomBoxesPanel: { textAlign: 'center', padding: 10, },
-  bottomBoxesPanelTxt: { width: '100%', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }
+  bottomBoxesPanelTxt: { width: '100%', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' },
+  documendropdownLabelTxt: {
+    fontSize: scaled(14),
+    color: '#000'
+  }
 });
 
 export default FileUploadAndTakePhoto;

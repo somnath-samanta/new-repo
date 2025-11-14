@@ -950,7 +950,7 @@ const styles = StyleSheet.create({
   },
   redAsterisk: {
     position: 'absolute',
-    left: scale(0.37 * BASE_WIDTH),
+    left:  Platform.OS === 'ios' ? scale(0.35 * BASE_WIDTH) : scale(0.37 * BASE_WIDTH),
     top: vScale(5),
     color: 'red',
     fontSize: font(16),

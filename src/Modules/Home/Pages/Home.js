@@ -422,8 +422,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'ios' ? vScale(20) : vScale(2),
-    paddingBottom: Platform.OS === 'ios' ? vScale(15) : vScale(2),
+    paddingTop: Platform.OS === 'ios' ? vScale(10) : vScale(2),
+    paddingBottom: Platform.OS === 'ios' ? vScale(10) : vScale(2),
   },
   topPanelTaxt: {
     fontSize: font(19),

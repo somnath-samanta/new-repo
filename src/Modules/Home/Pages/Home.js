@@ -444,6 +444,7 @@ const styles = StyleSheet.create({
     borderColor: '#f3f3f3',
     borderRadius: scale(0),
     marginVertical: vScale(10),
+    marginTop:Platform.OS === 'ios' ? 0 : 10,
   },
   panelBoxDocument: {
     flexDirection: 'column',

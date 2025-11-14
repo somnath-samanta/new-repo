@@ -254,12 +254,12 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     color: '#222',
-    fontSize: font(13),
+    fontSize: font(12.4),
     fontFamily: 'Arimo-Bold',
     textAlign: 'center',
     marginBottom: vScale(4),
     fontWeight: '700',
-    paddingHorizontal: scale(2),
+    paddingHorizontal: scale(0),
   },
   cardValue: { marginBottom: vScale(8) },
   cardValueNumber: {

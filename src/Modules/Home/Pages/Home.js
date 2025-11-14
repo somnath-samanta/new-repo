@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   FlatList,
   Text,
@@ -18,7 +18,7 @@ import {
   Alert,
   BackHandler,
   StatusBar,
-  PixelRatio,              // 👈 added
+  PixelRatio,
 } from 'react-native';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -33,34 +33,36 @@ import CustomHeader from '../../../Utility/Components/CustomHeader';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /* ------------------ Responsive helpers (PixelRatio + Dimensions) ------------------ */
-// Base device you designed for (tweak if needed)
-const BASE_WIDTH = 375;   // iPhone 11 width
-const BASE_HEIGHT = 812;  // iPhone 11 height
+// Base device you designed for
+const BASE_WIDTH = 375; // iPhone 11 width
+const BASE_HEIGHT = 812; // iPhone 11 height
 
 const { width: W, height: H } = Dimensions.get('window');
 
-const scale = (size) => (W / BASE_WIDTH) * size;                 // horizontal / general
-const vScale = (size) => (H / BASE_HEIGHT) * size;                // vertical
-const mScale = (size, factor = 0.5) => size + (scale(size) - size) * factor;
+const scale = (size) => (W / BASE_WIDTH) * size; // horizontal / general
+const vScale = (size) => (H / BASE_HEIGHT) * size; // vertical
+const mScale = (size, factor = 0.5) =>
+  size + (scale(size) - size) * factor;
 
 // Keep fonts visually consistent even if user bumps system font size
-const font = (size) => Math.round(PixelRatio.roundToNearestPixel(size / PixelRatio.getFontScale()));
+const font = (size) =>
+  Math.round(PixelRatio.roundToNearestPixel(size / PixelRatio.getFontScale()));
 /* ---------------------------------------------------------------------------------- */
 
-// (Optional) disable font scaling globally for Text / TextInput to “prevent zoom”
+// disable font scaling globally for Text / TextInput
 if (Text.defaultProps == null) Text.defaultProps = {};
 Text.defaultProps.allowFontScaling = false;
 if (TextInput.defaultProps == null) TextInput.defaultProps = {};
 TextInput.defaultProps.allowFontScaling = false;
 
-/* ------------------ Your existing dimension-driven flags ------------------ */
+/* ------------------ Dimension-driven flags ------------------ */
 const screen = Dimensions.get('window');
 const screenWidth = screen.width;
 const screenHeight = screen.height;
 const isSmallDevice = screenHeight < 700;
 const isLargeDevice = screenHeight > 800;
 
-// Responsive height calculations (keep these; they’re proportions, not fixed px)
+// Responsive height calculations
 const welcomeLogoHeight = isSmallDevice ? screenHeight * 0.08 : screenHeight * 0.1;
 const welcomeMSGHeight = isSmallDevice ? screenHeight * 0.05 : screenHeight * 0.06;
 const viewButtonHeight = isSmallDevice ? screenHeight * 0.17 : screenHeight * 0.18;
@@ -81,12 +83,16 @@ function Home({ props }) {
   const snapPoints = ['50%'];
   const { clearLocalStorage } = LogOut();
 
+  const hideBookAppointmentScreen = useCallback(() => {
+    setWebViewFlag(false);
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
       return () => {
         hideBookAppointmentScreen();
       };
-    }, [])
+    }, [hideBookAppointmentScreen])
   );
 
   useEffect(() => {
@@ -97,7 +103,10 @@ function Home({ props }) {
       }
       return false;
     };
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButtonPress);
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackButtonPress
+    );
     return () => backHandler.remove();
   }, [webViewFlag]);
 
@@ -156,50 +165,79 @@ function Home({ props }) {
     }
   };
 
-  const hideBookAppointmentScreen = useCallback(() => {
-    setWebViewFlag(false);
-  }, []);
-
   const renderWebView = useCallback(
     () => (
       <>
-        <CustomHeader pageName={'Book an Appointment'} hideBookAppointmentScreen={hideBookAppointmentScreen} />
-        <WebView
-          source={{ uri: `${Config.bookingUrl}?data=${webViewData}` }}
-          mediaPlaybackRequiresUserAction={false}
-          allowsInlineMediaPlayback
-          javaScriptEnabled
-          domStorageEnabled
-          onMessage={handleMessage}
+        <CustomHeader
+          pageName={'Book an Appointment'}
+          hideBookAppointmentScreen={hideBookAppointmentScreen}
         />
+        <View style={{ flex: 1 }}>
+          <WebView
+            style={{ flex: 1 }}
+            source={{ uri: `${Config.bookingUrl}?data=${webViewData}` }}
+            mediaPlaybackRequiresUserAction={false}
+            allowsInlineMediaPlayback
+            javaScriptEnabled
+            domStorageEnabled
+            onMessage={handleMessage}
+          />
+        </View>
       </>
     ),
     [webViewData, hideBookAppointmentScreen]
   );
 
   return (
-    <SafeAreaView style={[styles.safeArea, { paddingBottom: insets.bottom || vScale(12) }]} edges={['left', 'right', 'bottom']}>
+    <SafeAreaView
+      style={styles.safeArea}
+      // we only protect bottom / sides to keep same top look as image B
+      edges={['bottom', 'left', 'right']}
+    >
+      <StatusBar barStyle="dark-content" backgroundColor="#dff7f8" />
       <Loader style={styles.loadingCss} loading={pageLoading} />
+
       {webViewFlag ? (
         renderWebView()
       ) : (
-        <View style={styles.container}>
+        <View
+          style={[
+            styles.container,
+            // bottom adjusts automatically for nav bar / home indicator
+            { paddingBottom: insets.bottom || vScale(12) },
+          ]}
+        >
+          {/* Logo (same position as your previous layout) */}
           <Image
             source={require('../../../Utility/Public/images/oaktreeLogo.png')}
             style={styles.oaktreeLogo}
             resizeMode="contain"
           />
-          <TouchableOpacity style={styles.signout} onPress={logoutApp}>
-            <Image source={require('../../../Utility/Public/images/signout.png')} style={{ width: scale(24), height: vScale(24) }} resizeMode="contain" />
+
+          {/* Signout icon (same position as your previous layout) */}
+          <TouchableOpacity
+            style={styles.signout}
+            onPress={logoutApp}
+          >
+            <Image
+              source={require('../../../Utility/Public/images/signout.png')}
+              style={{ width: scale(24), height: vScale(24) }}
+              resizeMode="contain"
+            />
           </TouchableOpacity>
 
           <View style={styles.panel}>
             <View style={styles.topPanelTaxtBox}>
-              <Text style={styles.topPanelTaxt}>Welcome to Oaktree Connect</Text>
+              <Text style={styles.topPanelTaxt}>
+                Welcome to Oaktree Connect
+              </Text>
             </View>
 
             <View style={styles.contentContainer}>
-              <TouchableOpacity style={[styles.panelBox, styles.panelBoxDocument]} onPress={appointmentLink}>
+              <TouchableOpacity
+                style={[styles.panelBox, styles.panelBoxDocument]}
+                onPress={appointmentLink}
+              >
                 <View style={styles.innerPanelBoxDocument}>
                   <Image
                     source={require('../../../Utility/Public/images/clock.png')}
@@ -208,11 +246,19 @@ function Home({ props }) {
                   />
                   <Image
                     source={require('../../../Utility/Public/images/calender.png')}
-                    style={[styles.calenderImage, styles.calenderImagedocument]}
+                    style={[
+                      styles.calenderImage,
+                      styles.calenderImagedocument,
+                    ]}
                     resizeMode="contain"
                   />
                 </View>
-                <View style={[styles.panelBoxRightMainTextDown, styles.panelBoxRightMainTextDownDocument]}>
+                <View
+                  style={[
+                    styles.panelBoxRightMainTextDown,
+                    styles.panelBoxRightMainTextDownDocument,
+                  ]}
+                >
                   <Text
                     numberOfLines={1}
                     adjustsFontSizeToFit
@@ -225,23 +271,40 @@ function Home({ props }) {
               </TouchableOpacity>
 
               <View style={styles.middlePanelBoxes}>
-                <TouchableOpacity style={styles.middlePanelBox} onPress={thirdPartyDocumentLink}>
+                <TouchableOpacity
+                  style={styles.middlePanelBox}
+                  onPress={thirdPartyDocumentLink}
+                >
                   <Image
                     source={require('../../../Utility/Public/images/icon1.png')}
                     style={[styles.calenderImage, styles.appointmentsIcon]}
                     resizeMode="contain"
                   />
-                  <Text numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.9} style={styles.panelBoxRightMainTextDown}>
+                  <Text
+                    numberOfLines={2}
+                    adjustsFontSizeToFit
+                    minimumFontScale={0.9}
+                    style={styles.panelBoxRightMainTextDown}
+                  >
                     View / Upload{'\n'}3rd Party Documents
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.middlePanelBox} onPress={myDocumentLink}>
+
+                <TouchableOpacity
+                  style={styles.middlePanelBox}
+                  onPress={myDocumentLink}
+                >
                   <Image
                     source={require('../../../Utility/Public/images/icon2.png')}
                     style={[styles.calenderImage, styles.appointmentsIcon]}
                     resizeMode="contain"
                   />
-                  <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.9} style={styles.panelBoxRightMainTextDown}>
+                  <Text
+                    numberOfLines={1}
+                    adjustsFontSizeToFit
+                    minimumFontScale={0.9}
+                    style={styles.panelBoxRightMainTextDown}
+                  >
                     Upload ID
                   </Text>
                 </TouchableOpacity>
@@ -250,7 +313,10 @@ function Home({ props }) {
               <View style={styles.middlePanelBoxRight}>
                 <Text style={styles.myTherapyTasksText}>My Therapy Tasks</Text>
                 <View style={styles.myTherapyTasks}>
-                  <TouchableOpacity style={styles.myTherapyTasksPanelBox} onPress={healthParameterLink}>
+                  <TouchableOpacity
+                    style={styles.myTherapyTasksPanelBox}
+                    onPress={healthParameterLink}
+                  >
                     <View style={styles.roundiconBox}>
                       <Image
                         source={require('../Public/images/physicalParametersIcon.png')}
@@ -258,11 +324,20 @@ function Home({ props }) {
                         resizeMode="contain"
                       />
                     </View>
-                    <Text numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.9} style={styles.panelBoxRightMainTextDown}>
+                    <Text
+                      numberOfLines={2}
+                      adjustsFontSizeToFit
+                      minimumFontScale={0.9}
+                      style={styles.panelBoxRightMainTextDown}
+                    >
                       View / Add{'\n'}Physical Parameters
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.myTherapyTasksPanelBox} onPress={questionnaireLink}>
+
+                  <TouchableOpacity
+                    style={styles.myTherapyTasksPanelBox}
+                    onPress={questionnaireLink}
+                  >
                     <View style={styles.roundiconBox}>
                       <Image
                         source={require('../Public/images/questionnairesIcon.png')}
@@ -270,7 +345,12 @@ function Home({ props }) {
                         resizeMode="contain"
                       />
                     </View>
-                    <Text numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.9} style={styles.panelBoxRightMainTextDown}>
+                    <Text
+                      numberOfLines={2}
+                      adjustsFontSizeToFit
+                      minimumFontScale={0.9}
+                      style={styles.panelBoxRightMainTextDown}
+                    >
                       View / Complete{'\n'}Questionnaires
                     </Text>
                   </TouchableOpacity>
@@ -290,8 +370,6 @@ const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: '#dff7f8',
     flex: 1,
-    paddingTop: 0,
-    paddingBottom: 0,
   },
   container: {
     flex: 1,
@@ -301,8 +379,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     paddingHorizontal: scale(isSmallDevice ? 15 : 20),
-    // keep your logo spacing logic but make it vertical-scale friendly
-    paddingTop: isSmallDevice ? welcomeLogoHeight * 1.5 : welcomeLogoHeight * 1.2,
+    paddingTop: isSmallDevice
+      ? welcomeLogoHeight * 1.5
+      : welcomeLogoHeight * 1.2,
   },
   contentContainer: {
     flex: 1,
@@ -322,14 +401,14 @@ const styles = StyleSheet.create({
     width: scale(110),
     position: 'absolute',
     left: scale(-20),
-    top: vScale(-10),
+    top: vScale(-10), // same as your original (image B)
   },
   signout: {
     height: vScale(isSmallDevice ? 36 : 40),
     width: scale(isSmallDevice ? 36 : 40),
     position: 'absolute',
     right: scale(isSmallDevice ? 10 : 15),
-    top: vScale(isSmallDevice ? 10 : 15),
+    top: vScale(isSmallDevice ? 10 : 15), // same as your original (image B)
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 9,
@@ -352,7 +431,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Medium',
     width: '100%',
     textAlign: 'center',
-    fontWeight:600
+    fontWeight: '600',
   },
 
   panelBox: {
@@ -373,7 +452,6 @@ const styles = StyleSheet.create({
     paddingRight: scale(30),
     borderWidth: 1,
     borderColor: '#219980',
-    // keep proportional min height (prevents crush; still flexible)
     minHeight: mydocumentheight,
     justifyContent: 'center',
     backgroundColor: '#219980',
@@ -486,7 +564,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: scale(3.84),
     elevation: 5,
-    minHeight: viewButtonHeight, // already proportional to screen height
+    minHeight: viewButtonHeight,
     borderWidth: 1,
     borderColor: '#3d3f3f',
   },
@@ -536,7 +614,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: scale(3.84),
     elevation: 5,
-    minHeight: viewButtonHeight, // proportional
+    minHeight: viewButtonHeight,
     borderWidth: 2,
     borderColor: '#fff',
     marginBottom: vScale(buttonSpacing),

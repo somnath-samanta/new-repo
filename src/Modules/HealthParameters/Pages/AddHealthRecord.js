@@ -345,6 +345,9 @@ function AddHealthRecord() {
 
       if (pulse) {
         const pulseNum = parseFloat(pulse);
+        if (!isNaN(pulseNum)) {
+          if (pulseNum && pulseNum > 250) { Toast.show('Pulse rate must not exceed 250'); return; }
+        }
         vitalsdata.push({
           resourceType: 'Observation',
           valueString: `${pulseNum} ${pulseunits}`,
@@ -449,7 +452,7 @@ function AddHealthRecord() {
               value={heightM}
               onChangeText={(text) => handleIntegerInput(text, setHeightM)}
               returnKeyType="next"
-              maxLength={2}
+              maxLength={1}
             />
             <TextInput
               style={styles.input}
@@ -460,7 +463,7 @@ function AddHealthRecord() {
               value={heightCm}
               onChangeText={(text) => handleIntegerInput(text, setHeightCm)}
               returnKeyType="next"
-              maxLength={3}
+              maxLength={2}
             />
           </View>
         </View>

@@ -88,8 +88,16 @@ function AddHealthRecord() {
     return () => unsubscribe();
   }, []);
 
-  const handleIntegerInput = (text, setter) => {
-    setter(text.replace(/[^0-9]/g, ''));
+  const handleIntegerInput = (text, setter, maxValue = null, fieldName = '') => {
+    const cleaned = text.replace(/[^0-9]/g, '');
+    if (maxValue !== null && cleaned !== '') {
+      const numValue = parseInt(cleaned, 10);
+      if (numValue > maxValue) {
+        Toast.show(`${fieldName} must not exceed ${maxValue}`);
+        return; // Don't update if exceeds max
+      }
+    }
+    setter(cleaned);
   };
 
   const handleUnitToggle = (newIsMetric) => {
@@ -450,7 +458,7 @@ function AddHealthRecord() {
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={heightM}
-              onChangeText={(text) => handleIntegerInput(text, setHeightM)}
+              onChangeText={(text) => handleIntegerInput(text, setHeightM, isMetric ? 2 : 7, isMetric ? 'Height (M)' : 'Height (Ft)')}
               returnKeyType="next"
               maxLength={1}
             />
@@ -461,7 +469,7 @@ function AddHealthRecord() {
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={heightCm}
-              onChangeText={(text) => handleIntegerInput(text, setHeightCm)}
+              onChangeText={(text) => handleIntegerInput(text, setHeightCm, isMetric ? 99 : 39, isMetric ? 'Height (Cm)' : 'Height (In)')}
               returnKeyType="next"
               maxLength={2}
             />
@@ -482,7 +490,7 @@ function AddHealthRecord() {
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={weightKg}
-              onChangeText={(text) => handleIntegerInput(text, setWeightKg)}
+              onChangeText={(text) => handleIntegerInput(text, setWeightKg, isMetric ? 300 : 661, isMetric ? 'Weight (Kg)' : 'Weight (Lb)')}
               returnKeyType="next"
               maxLength={4}
             />
@@ -493,7 +501,7 @@ function AddHealthRecord() {
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={weightG}
-              onChangeText={(text) => handleIntegerInput(text, setWeightG)}
+              onChangeText={(text) => handleIntegerInput(text, setWeightG, isMetric ? 999 : 35, isMetric ? 'Weight (G)' : 'Weight (Oz)')}
               returnKeyType="next"
               maxLength={3}
             />
@@ -531,7 +539,7 @@ function AddHealthRecord() {
             placeholderTextColor="#666"
             keyboardType="numeric"
             value={waist}
-            onChangeText={(text) => handleIntegerInput(text, setWaist)}
+            onChangeText={(text) => handleIntegerInput(text, setWaist, isMetric ? 200 : 79, isMetric ? 'Waist (cm)' : 'Waist (inch)')}
               maxLength={3}
           />
         </View>
@@ -566,7 +574,7 @@ function AddHealthRecord() {
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={pulse}
-              onChangeText={(text) => handleIntegerInput(text, setPulse)}
+              onChangeText={(text) => handleIntegerInput(text, setPulse, 250, 'Pulse rate')}
               maxLength={3}
             />
             <View style={{ flex: 1, position: 'relative' }}>

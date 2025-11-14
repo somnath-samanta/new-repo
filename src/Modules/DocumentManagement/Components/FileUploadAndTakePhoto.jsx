@@ -950,13 +950,13 @@ const styles = StyleSheet.create({
   },
   redAsterisk: {
     position: 'absolute',
-    left:  Platform.OS === 'ios' ? scale(0.35 * BASE_WIDTH) : scale(0.37 * BASE_WIDTH),
-    top: vScale(5),
+    left:  Platform.OS === 'ios' ? scale(0.30 * BASE_WIDTH) : scale(0.37 * BASE_WIDTH),
+    top:  Platform.OS === 'ios' ? vScale(6) : vScale(5),
     color: 'red',
     fontSize: font(16),
   },
   redAsteriskOrgName: {
-    left: scale(0.41 * BASE_WIDTH),
+    left: Platform.OS === 'ios' ? scale(0.35 * BASE_WIDTH) : scale(0.41 * BASE_WIDTH),
   },
   dateFieldicon: { position: 'absolute', right: scale(10), top: vScale(7) },
   dropdown: {

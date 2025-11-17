@@ -559,7 +559,7 @@ function AddHealthRecord() {
               <Text allowFontScaling={false} style={[styles.sectionTitle, styles.sectionTitleWintHing]}>Blood Pressure</Text>
               <TouchableOpacity
                 style={{ marginLeft: 3 }}
-                onPress={() => Toast.show('Enter your blood pressure in mmHg (e.g., 120/80)', Toast.LONG, Toast.TOP, { yOffset: 20 })}
+                onPress={() => Toast.show('Enter BP in mmHg (e.g., 120/80), max allowed: 275/195.', Toast.LONG, Toast.TOP, { yOffset: 20 })}
               >
                 <FontAwesome name="info-circle" size={14} color="#333" />
               </TouchableOpacity>

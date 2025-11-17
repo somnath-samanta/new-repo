@@ -266,8 +266,8 @@ function AddHealthRecord() {
       if (waist) {
         const waistNum = parseFloat(waist);
         if (!isNaN(waistNum)) {
-          if (isMetric && waistNum > 127) { Toast.show('Waist circumference must not exceed 127 cm'); return; }
-          if (!isMetric && waistNum > 50) { Toast.show('Waist circumference must not exceed 50 inches'); return; }
+          if (isMetric && waistNum > 200) { Toast.show('Waist circumference must not exceed 200 cm'); return; }
+          if (!isMetric && waistNum > 78) { Toast.show('Waist circumference must not exceed 78 inches'); return; }
         }
       }
       if (bp && !validateBp()) { Toast.show(bpError || 'Invalid BP'); return; }
@@ -539,7 +539,7 @@ function AddHealthRecord() {
             placeholderTextColor="#666"
             keyboardType="numeric"
             value={waist}
-            onChangeText={(text) => handleIntegerInput(text, setWaist, isMetric ? 127 : 50, isMetric ? 'Waist (cm)' : 'Waist (inch)')}
+            onChangeText={(text) => handleIntegerInput(text, setWaist, isMetric ? 200 : 78, isMetric ? 'Waist (cm)' : 'Waist (inch)')}
               maxLength={3}
           />
         </View>

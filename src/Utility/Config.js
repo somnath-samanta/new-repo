@@ -18,9 +18,9 @@ const Config = ({
     forgotPasswordLink: environment === 'stage' ?`${stageUrl}/forgot-password`:`${prodUrl}/forgot-password`,
     signUp: environment === 'stage' ?`${stageUrl}/signup`:`${prodUrl}/signup`,
     verificationUrl: environment === 'stage' ?`${stageUrl}/verification`:`${prodUrl}/verification`, 
-    feedbackUrl: environment === 'stage' ?`http://oaktree-stag-website.s3-website.eu-west-2.amazonaws.com/feedback/`:`https://www.oaktreeconnect.co.uk/feedback/`,
-    contactUsUrl: environment === 'stage' ?`http://oaktree-stag-website.s3-website.eu-west-2.amazonaws.com/contact-us/`:`https://www.oaktreeconnect.co.uk/contact-us/`,
-    supportUrl: environment === 'stage' ?`http://oaktree-stag-website.s3-website.eu-west-2.amazonaws.com/help/`:`https://www.oaktreeconnect.co.uk/help-and-faqs/`,
+    feedbackUrl: environment === 'stage' ?`https://www.oaktreeconnect.co.uk/feedback/`:`https://www.oaktreeconnect.co.uk/feedback/`,
+    contactUsUrl: environment === 'stage' ?`https://www.oaktreeconnect.co.uk/contact-us/`:`https://www.oaktreeconnect.co.uk/contact-us/`,
+    supportUrl: environment === 'stage' ?`https://www.oaktreeconnect.co.uk/help-and-faqs/`:`https://www.oaktreeconnect.co.uk/help-and-faqs/`,
     bookingUrl: environment === 'stage' ?`${stageUrl}/appointment/book-new-appointment`:`${prodUrl}/appointment/book-new-appointment`,
     videoCallLink: environment === 'stage' ?`${stageUrl}/appointment/mobile-video-consultation`:`${prodUrl}/appointment/mobile-video-consultation`,
     bookFollowUpUrl: environment === 'stage' ?`${stageUrl}/appointment/book-followup`:`${prodUrl}/appointment/book-followup/`

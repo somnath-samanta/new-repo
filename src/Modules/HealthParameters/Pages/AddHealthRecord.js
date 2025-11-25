@@ -203,20 +203,33 @@ function AddHealthRecord() {
   };
 
   const validateBp = () => {
-    if (!bp) { setBpError(''); return true; }
+    if (!bp) { setBpError(''); return { isValid: true, error: '' }; }
     const bpPattern = /^(\d{2,3})\/(\d{2,3})$/;
     const match = bp.match(bpPattern);
     if (!match) {
-      setBpError(bp.includes('/') ? 'Invalid data entered' : 'Invalid format. Use format: 120/80');
-      return false;
+      const error = bp.includes('/') ? 'Invalid data entered' : 'Invalid format. Use format: 120/80';
+      setBpError(error);
+      return { isValid: false, error };
     }
     const systolic = parseInt(match[1], 10);
     const diastolic = parseInt(match[2], 10);
-    if (systolic > 275) { setBpError('Systolic should not exceed 275'); return false; }
-    if (diastolic > 195) { setBpError('Diastolic should not exceed 195'); return false; }
-    if (systolic <= diastolic) { setBpError('Systolic must be greater than diastolic'); return false; }
+    if (systolic > 275) { 
+      const error = 'Systolic should not exceed 275';
+      setBpError(error);
+      return { isValid: false, error };
+    }
+    if (diastolic > 195) { 
+      const error = 'Diastolic should not exceed 195';
+      setBpError(error);
+      return { isValid: false, error };
+    }
+    if (systolic <= diastolic) { 
+      const error = 'Systolic must be greater than diastolic';
+      setBpError(error);
+      return { isValid: false, error };
+    }
     setBpError('');
-    return true;
+    return { isValid: true, error: '' };
   };
 
   const handleGoBack = () => { resetForm(); navigation.navigate('HealthParameter'); };
@@ -270,7 +283,13 @@ function AddHealthRecord() {
           if (!isMetric && waistNum > 78) { Toast.show('Waist circumference must not exceed 78 inches'); return; }
         }
       }
-      if (bp && !validateBp()) { Toast.show(bpError || 'Invalid BP'); return; }
+      if (bp) {
+        const bpValidation = validateBp();
+        if (!bpValidation.isValid) {
+          Toast.show(bpValidation.error || 'Invalid BP');
+          return;
+        }
+      }
 
       const vitalsdata = [];
       const ftMtInput = isMetric ? 'M' : 'Ft';

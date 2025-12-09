@@ -464,7 +464,7 @@ function ThirdPartyDocument({ props }) {
             <View style={styles.uploadIconContainer}>
               <Feather name="upload" size={scale(40)} color="#fff" style={styles.uploadIcon} />
             </View>
-            <Text style={styles.hintTxt}>You can upload PDF/Word documents or<br></br>
+            <Text style={styles.hintTxt}>You can upload PDF/Word documents or
               PNG/JPEG files with max 5MB. </Text>
           </View>
         </TouchableOpacity>

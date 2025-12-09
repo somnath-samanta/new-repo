@@ -57,12 +57,12 @@ function HealthParameter() {
   const [refreshing, setRefreshing] = useState(false);
 
   const [metrics, setMetrics] = useState([
-    { key: 'height', title: 'Height', value: '-', unit: '', lastUpdate: '22.04.2024, 9.30 am', icon: require('../../../Utility/Public/images/healthIcon1.png') },
-    { key: 'weight', title: 'Weight', value: '-', unit: '', lastUpdate: '22.04.2024, 9.30 am', icon: require('../../../Utility/Public/images/healthIcon2.png') },
-    { key: 'bmi', title: 'BMI', value: '-', unit: '', lastUpdate: '22.04.2024, 9.30 am', icon: require('../../../Utility/Public/images/healthIcon3.png') },
-    { key: 'waist', title: 'Waist Circumference', value: '-', unit: '', lastUpdate: '22.04.2024, 9.30 am', icon: require('../../../Utility/Public/images/healthIcon4.png') },
-    { key: 'pulse', title: 'Pulse Rate', value: '-', unit: '', lastUpdate: '22.04.2024, 9.30 am', icon: require('../../../Utility/Public/images/healthIcon5.png') },
-    { key: 'bp', title: 'Blood Pressure', value: '00/00', unit: '', lastUpdate: '22.04.2024, 9.30 am', icon: require('../../../Utility/Public/images/healthIcon6.png') },
+    { key: 'height', title: 'Height', value: '-', unit: '', lastUpdate: '', icon: require('../../../Utility/Public/images/healthIcon1.png') },
+    { key: 'weight', title: 'Weight', value: '-', unit: '', lastUpdate: '', icon: require('../../../Utility/Public/images/healthIcon2.png') },
+    { key: 'bmi', title: 'BMI', value: '-', unit: '', lastUpdate: '', icon: require('../../../Utility/Public/images/healthIcon3.png') },
+    { key: 'waist', title: 'Waist Circumference', value: '-', unit: '', lastUpdate: '', icon: require('../../../Utility/Public/images/healthIcon4.png') },
+    { key: 'pulse', title: 'Pulse Rate', value: '-', unit: '', lastUpdate: '', icon: require('../../../Utility/Public/images/healthIcon5.png') },
+    { key: 'bp', title: 'Blood Pressure', value: '00/00', unit: '', lastUpdate: '', icon: require('../../../Utility/Public/images/healthIcon6.png') },
   ]);
 
   const intToKey = { 1: 'height', 2: 'weight', 3: 'bmi', 4: 'waist', 5: 'bp', 6: 'pulse' };
@@ -119,7 +119,9 @@ function HealthParameter() {
   useFocusEffect(React.useCallback(() => { hasFetchedVitalsRef.current = false; fetchVitals(false); }, []));
 
   const hideBookAppointmentScreen = () => {};
-  const renderMetric = ({ item }) => (
+  const renderMetric = ({ item }) => 
+    {
+      return(
     <View style={styles.card}>
       <Image source={item.icon} style={styles.iconCircle} />
       <Text allowFontScaling={false} style={styles.cardTitle}>{item.title}</Text>
@@ -131,6 +133,7 @@ function HealthParameter() {
       <Text allowFontScaling={false} style={styles.lastUpdateText}>{item.lastUpdate}</Text>
     </View>
   );
+}
 
   const onViewMonitoring = () => navigation.navigate('HealthMonitoring');
   const onAddNewRecord = () => navigation.navigate('AddHealthRecord');

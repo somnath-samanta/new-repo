@@ -902,7 +902,7 @@ const styles = StyleSheet.create({
         borderColor: '#333',  // Border color
         backgroundColor: '#fff',  // Background color
         borderRadius: 0, // Rounded corners
-        padding: Platform.OS == "android" ? 0 : 5,
+        padding: Platform.OS == "android" ? 0 : 0,
         paddingLeft: 2,
         color: '#fff',
         marginRight: 5,

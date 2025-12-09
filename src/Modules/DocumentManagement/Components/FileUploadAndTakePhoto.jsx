@@ -574,7 +574,7 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           <Text allowFontScaling={false} style={styles.hintTxt}>Camera Permission is required to take photo</Text>
           {useFor === "ThirdPartyDocument" && (
             <Text allowFontScaling={false} style={styles.hintTxt}>
-              You can upload PDF/Word documents or PNG/JPEG files with max 5MB.
+              You can upload PDF/Word documents or{"\n"} PNG/JPEG files with max 5MB.
             </Text>
           )}
         </View>

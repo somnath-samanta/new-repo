@@ -896,14 +896,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 0,
     },
     checkbox: {
-        height: 24,
-        width: 24,
-        borderWidth: 1,
-        borderColor: '#666',  // Border color
+        height: 20,
+        width: 20,
+        borderWidth: 2,
+        borderColor: '#333',  // Border color
         backgroundColor: '#fff',  // Background color
         borderRadius: 0, // Rounded corners
         padding: Platform.OS == "android" ? 0 : 5,
-        paddingLeft: 5,
+        paddingLeft: 2,
         color: '#fff',
         marginRight: 5,
     },
@@ -919,6 +919,7 @@ const styles = StyleSheet.create({
     checkmark: {
         color: '#333',
         fontFamily: 'Montserrat-Bold',
+        lineHeight:15,
     },
     filterbutton: {
         // Add padding for better spacing

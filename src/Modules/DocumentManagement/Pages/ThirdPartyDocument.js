@@ -838,7 +838,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    padding: scale(10),
+    padding: scale(5),
     paddingBottom: 0,
     fontSize: font(16),
     color: '#428174',
@@ -847,7 +847,7 @@ const styles = StyleSheet.create({
   },
   buttonInnText: {
     color: '#000',
-    fontSize: font(16),
+    fontSize: font(15),
     fontFamily: 'Arimo-Bold',
     textAlign: 'center',
     fontWeight: '700'

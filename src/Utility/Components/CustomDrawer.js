@@ -100,7 +100,7 @@ function CustomDrawerContent(props) {
   ];
   const therapyTaskSubItems = [
     { label: 'Physical Parameters', icon: 'pulse', route: 'HealthParameter' },
-    { label: 'Questionnaire', icon: 'clipboard-list', route: 'Questionnaire' },
+    { label: 'Questionnaires', icon: 'clipboard-list', route: 'Questionnaire' },
   ];
 
   const logoutApp = () => {

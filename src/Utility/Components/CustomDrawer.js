@@ -95,8 +95,8 @@ function CustomDrawerContent(props) {
   ];
 
   const documentSubItems = [
-    { label: 'My Documents', icon: 'book', route: 'MyDocument' },
     { label: '3rd Party Documents', icon: 'book', route: 'ThirdPartyDocument' },
+    { label: 'My Documents', icon: 'book', route: 'MyDocument' },
   ];
   const therapyTaskSubItems = [
     { label: 'Physical Parameters', icon: 'pulse', route: 'HealthParameter' },

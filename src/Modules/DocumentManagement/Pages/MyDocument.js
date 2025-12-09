@@ -411,8 +411,17 @@ function MyDocument({ props }) {
     setRefreshing(true)
     getAppointmentListFn("refresh")
   }
-  const callbackhandler = () => setviewDocumentFlag(false);
-  const handleGoBack = () => navigation.goBack();
+  const callbackhandler = () =>{ 
+    setviewDocumentFlag(false); 
+  }
+  const handleGoBack = () => {
+    if (viewDocumentFlag) {
+      setviewDocumentFlag(false);
+      return true;
+    }else{
+      navigation.goBack();
+    }
+  }
 
   return (
     <View style={styles.container}>

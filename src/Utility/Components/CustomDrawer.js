@@ -91,7 +91,7 @@ function CustomDrawerContent(props) {
     { label: 'Appointment', icon: 'calendar', route: 'Appointment' },
     { label: 'My Therapy Tasks', icon: 'new-message', route: 'Therapy', isDropdown: true, dropdownType: 'therapyTasks' },
     { label: 'Documents', icon: 'book', route: 'Document', isDropdown: true, dropdownType: 'documents' },
-    { label: 'Profile', icon: 'user', route: 'Profile' },
+    { label: 'Profile ', icon: 'user', route: 'Profile' },
   ];
 
   const documentSubItems = [

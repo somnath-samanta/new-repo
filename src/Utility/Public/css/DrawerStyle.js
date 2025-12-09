@@ -37,6 +37,7 @@ const lightTheme = {
     drawerItems: {
         flexGrow: 1,
         marginTop: 16,
+       backgroundColor:'red'
     },
     drawerItem: {
         flexDirection: 'row',
@@ -44,7 +45,7 @@ const lightTheme = {
         padding: 10,
         marginHorizontal: 16,
         borderRadius: 0,
-        // backgroundColor: Colors.lightGray,
+        backgroundColor: 'red',
        // marginVertical: 5,
         // borderBottomWidth:1,
         // borderBottomColor:'#eee',
@@ -54,6 +55,7 @@ const lightTheme = {
         padding:20,
         paddingTop:10,
         paddingBottom:10,
+        backgroundColor:'red'
     },
     drawerItemText: {
         fontSize: 16,

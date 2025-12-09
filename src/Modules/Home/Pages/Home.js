@@ -265,7 +265,7 @@ function Home({ props }) {
                     minimumFontScale={0.9}
                     style={styles.panelBoxRightMainTextDownDocumentText}
                   >
-                    View & Start Appointment
+                    View & Start Appointments
                   </Text>
                 </View>
               </TouchableOpacity>

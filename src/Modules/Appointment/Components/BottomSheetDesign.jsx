@@ -22,7 +22,7 @@ const BottomSheetDesign = ({ handalContactUs, handalFeedback, handalPrescription
 
     return (
         <SafeAreaView style={styles.Container}>
-            {
+            {/* {
                 Object.keys(appointmentCancelObj).length > 0 && appointmentStatus === "Approved" && (new Date(appointmentDate[2], parseInt(appointmentDate[1]) - 1, appointmentDate[0]) >= new Date(today[2], parseInt(today[1]) - 1, today[0])) &&
 
                 <TouchableOpacity style={styles.row} onPress={() => handalCancelAppointment()}>
@@ -32,7 +32,7 @@ const BottomSheetDesign = ({ handalContactUs, handalFeedback, handalPrescription
 
                     <Text allowFontScaling={false} style={styles.text}>Cancel Appointment</Text>
                 </TouchableOpacity>
-            }
+            } */}
             <TouchableOpacity style={styles.row} onPress={() => handalContactUs()}>
                 <View style={styles.imgBox}>
                     <Image source={require('../Public/images/ContactUs.png')} style={[styles.img]} />

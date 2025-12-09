@@ -215,7 +215,7 @@ function Home({ props }) {
           />
 
           {/* Signout icon (same position as your previous layout) */}
-          <TouchableOpacity
+         {/* <TouchableOpacity
             style={styles.signout}
             onPress={logoutApp}
           >
@@ -224,7 +224,7 @@ function Home({ props }) {
               style={{ width: scale(24), height: vScale(24) }}
               resizeMode="contain"
             />
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
 
           <View style={styles.panel}>
             <View style={styles.topPanelTaxtBox}>

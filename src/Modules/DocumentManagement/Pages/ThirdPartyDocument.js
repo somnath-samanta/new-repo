@@ -235,7 +235,7 @@ function ThirdPartyDocument({ props }) {
                 {item?.item?.documentType.toString().toLowerCase() !== "other" &&
                   <Text style={[styles.marginLeftClass, styles.showText]}>Reported date : {moment(item?.item?.report_date, 'YYYY-MM-DD').format('DD MMM. YY')}</Text>
                 }
-                <Text style={styles.practitionerSpeciality}>{item?.item?.documentType} from</Text>
+                <Text style={styles.practitionerSpeciality}>{item?.item?.documentType}</Text>
               </View>
             </View>
           </View>
@@ -464,7 +464,7 @@ function ThirdPartyDocument({ props }) {
             <View style={styles.uploadIconContainer}>
               <Feather name="upload" size={scale(40)} color="#fff" style={styles.uploadIcon} />
             </View>
-            <Text style={styles.hintTxt}>You can upload PDF/Word documents or
+            <Text style={styles.hintTxt}>You can upload PDF/Word documents or<br></br>
               PNG/JPEG files with max 5MB. </Text>
           </View>
         </TouchableOpacity>
@@ -961,7 +961,7 @@ const styles = StyleSheet.create({
   hintTxt: {
     color: '#333',
     fontFamily: 'Arimo-Regular',
-    fontSize: font(13),
+    fontSize: font(14),
     paddingTop: vScale(10),
     textAlign: 'center'
   },

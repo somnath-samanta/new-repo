@@ -453,7 +453,7 @@ function MyDocument({ props }) {
                   <Feather name="upload" size={40} color="#fff" style={styles.uploadIcon} />
                 </View>
                 <Text allowFontScaling={false} style={styles.hintTxt}>
-                  You can upload PDF/Word document or PNG/JPEG files with Max 5 MB.
+                  You can upload PDF/Word document or{"\n"} PNG/JPEG files with Max 5 MB.
                 </Text>
               </View>
             </TouchableOpacity>
@@ -1013,7 +1013,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo-Regular',
     fontSize: fontLocked(14, { clamp: [1, 1.1] }),
     paddingTop: vScale(10),
-    textAlign: 'center'
+    textAlign: 'center',
+    lineHeight: fontLocked(18), // corrected line height using same scaling logic
   },
   noImageContainer: {
     flex: 1,

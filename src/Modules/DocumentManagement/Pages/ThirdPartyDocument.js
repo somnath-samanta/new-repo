@@ -464,7 +464,7 @@ function ThirdPartyDocument({ props }) {
             <View style={styles.uploadIconContainer}>
               <Feather name="upload" size={scale(40)} color="#fff" style={styles.uploadIcon} />
             </View>
-            <Text style={styles.hintTxt}>You can upload PDF/Word documents or
+            <Text style={styles.hintTxt}>You can upload PDF/Word documents or{"\n"}
               PNG/JPEG files with max 5MB. </Text>
           </View>
         </TouchableOpacity>
@@ -958,13 +958,14 @@ const styles = StyleSheet.create({
   closeButtonStyle: { backgroundColor: '#f44336' },
   downloadButtonStyle: { backgroundColor: '#24ad91' },
   downloadButtonDisabled: { backgroundColor: '#9e9e9e', opacity: 0.6 },
-  hintTxt: {
-    color: '#333',
-    fontFamily: 'Arimo-Regular',
-    fontSize: font(14),
-    paddingTop: vScale(10),
-    textAlign: 'center'
-  },
+hintTxt: {
+  color: '#333',
+  fontFamily: 'Arimo-Regular',
+  fontSize: font(14),
+  paddingTop: vScale(10),
+  textAlign: 'center',
+  lineHeight: font(20), // corrected line height using same scaling logic
+},
   noImageContainer: {
     flex: 1,
     justifyContent: 'center',

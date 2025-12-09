@@ -88,15 +88,15 @@ function CustomDrawerContent(props) {
 
   const drawerItems = [
     { label: 'Home', icon: 'home', route: 'Home' },
-    { label: 'Appointment', icon: 'calendar', route: 'Appointment' },
-    { label: 'My Therapy Tasks', icon: 'new-message', route: 'Therapy', isDropdown: true, dropdownType: 'therapyTasks' },
+    { label: 'Appointments', icon: 'calendar', route: 'Appointment' },
     { label: 'Documents', icon: 'book', route: 'Document', isDropdown: true, dropdownType: 'documents' },
+    { label: 'My Therapy Tasks', icon: 'new-message', route: 'Therapy', isDropdown: true, dropdownType: 'therapyTasks' },
     { label: 'Profile ', icon: 'user', route: 'Profile' },
   ];
 
   const documentSubItems = [
     { label: 'My Documents', icon: 'book', route: 'MyDocument' },
-    { label: '3rd Party Document', icon: 'book', route: 'ThirdPartyDocument' },
+    { label: '3rd Party Documents', icon: 'book', route: 'ThirdPartyDocument' },
   ];
   const therapyTaskSubItems = [
     { label: 'Physical Parameters', icon: 'pulse', route: 'HealthParameter' },

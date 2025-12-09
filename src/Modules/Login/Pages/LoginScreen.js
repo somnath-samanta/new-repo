@@ -328,8 +328,8 @@ function LoginScreen(props) {
               <TextInput
                 style={LoginStyle.input}
                 allowFontScaling={false}
-                placeholder="Email"
-                placeholderTextColor={Colors.gray99}
+                placeholder="Username"
+                placeholderTextColor={Colors.black}
                 value={email}
                 onChangeText={(text) => {
                   setEmail(text);
@@ -362,7 +362,7 @@ function LoginScreen(props) {
                 style={[LoginStyle.input, { flex: 1 }]}
                 allowFontScaling={false}
                 placeholder="Password"
-                placeholderTextColor={Colors.gray99}
+                placeholderTextColor={Colors.black}
                 secureTextEntry={!isPasswordVisible}
                 value={password}
                 onChangeText={(text) => {

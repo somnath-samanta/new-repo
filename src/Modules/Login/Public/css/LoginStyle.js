@@ -67,6 +67,7 @@ const LoginStyle = StyleSheet.create({
         fontSize: 30,
         color: '#000',
         fontFamily: 'Montserrat-Bold',
+       // fontWeight: 700
         //fontFamily:'Poppins-Bold'
     },
     verificationTxt: {
@@ -157,12 +158,13 @@ const LoginStyle = StyleSheet.create({
         flex: 1,
         height: 50,
         fontSize: 13,
-        color: Colors.secondary,
+        color: Colors.lightBlack,
         paddingHorizontal: 10,
-        fontFamily: 'Arimo-Regular',
         paddingVertical: 0,
         backgroundColor: '#fff',
         borderRadius: 10,
+        fontFamily: 'Arimo-Regular',
+        fontWeight: '400',   // adds weight to both text & placeholder
     },
     errorMsg: {
         position: 'absolute',
@@ -299,6 +301,7 @@ const LoginStyle = StyleSheet.create({
         color: Colors.white,
         fontSize: 20,
         fontFamily: 'Arimo-Bold',
+        //fontWeight:700,
     },
     gotologinButtonText: {
         fontSize: 16,

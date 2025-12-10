@@ -906,7 +906,7 @@ const styles = StyleSheet.create({
   },
   dateFieldRow: {
     width: '100%',
-    borderBottomWidth: 1.5,
+    borderBottomWidth:Platform.OS === 'ios' ? 1 : 1.5,
     borderColor: '#333',
     backgroundColor: '#fff',
     flexDirection: 'row',

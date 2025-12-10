@@ -130,7 +130,10 @@ function AddHealthRecord() {
         const totalInches = mOrFt * 12 + cmOrIn;
         const totalCm = totalInches * 2.54;
         const meters = Math.floor(totalCm / 100);
-        const cm = Math.round(totalCm % 100);
+        let cm = Math.round(totalCm % 100);
+        if(meters == 2){
+          cm = ""
+        }
         setHeightM(meters ? String(meters) : '');
         setHeightCm(cm ? String(cm) : '');
       }
@@ -258,22 +261,28 @@ function AddHealthRecord() {
         if (isMetric) {
           const totalCm = mOrFt * 100 + cmOrIn;
           if (totalCm > 200) { Toast.show('Height must not exceed 2 m (200 cm)'); return; }
+          if (mOrFt === 2 && cmOrIn > 0) { Toast.show('Height (cm) must be 0 when meters is 2'); return; }
           if (cmOrIn > 99) { Toast.show('Height (cm) must not exceed 99 cm'); return; }
         } else {
           const totalInches = mOrFt * 12 + cmOrIn;
-          if (totalInches > 84) { Toast.show('Height must not exceed 7 ft (84 inches)'); return; }
-          if (cmOrIn > 39) { Toast.show('Height (inches) must not exceed 39 inches'); return; }
+          if (totalInches > 79) { Toast.show('Height must not exceed 6 ft 7 in (79 inches)'); return; }
+          if (mOrFt === 6 && cmOrIn > 7) { Toast.show('Height (inches) must not exceed 7 when feet is 6'); return; }
+          if (cmOrIn > 11) { Toast.show('Height (inches) must not exceed 11 inches'); return; }
         }
       }
       if (weightKg || weightG) {
         const kgOrLb = parseFloat(weightKg || '0');
         const gOrOz = parseFloat(weightG || '0');
         if (isMetric) {
-          if (kgOrLb > 300) { Toast.show('Weight must not exceed 300 kg'); return; }
+          const totalKg = kgOrLb + gOrOz / 1000;
+          if (totalKg > 300) { Toast.show('Weight must not exceed 300 kg'); return; }
+          if (kgOrLb === 300 && gOrOz > 0) { Toast.show('Weight (grams) must be 0 when kg is 300'); return; }
           if (gOrOz > 999) { Toast.show('Weight (grams) must not exceed 999 g'); return; }
         } else {
-          if (kgOrLb > 661) { Toast.show('Weight must not exceed 661 lb'); return; }
-          if (gOrOz > 35) { Toast.show('Weight (ounces) must not exceed 35 oz'); return; }
+          const totalOz = kgOrLb * 16 + gOrOz;
+          if (totalOz > 10582) { Toast.show('Weight must not exceed 661 lb 6 oz'); return; }
+          if (kgOrLb === 661 && gOrOz > 6) { Toast.show('Weight (ounces) must not exceed 6 when lb is 661'); return; }
+          if (gOrOz > 15) { Toast.show('Weight (ounces) must not exceed 15 oz'); return; }
         }
       }
       if (waist) {
@@ -477,20 +486,34 @@ function AddHealthRecord() {
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={heightM}
-              onChangeText={(text) => handleIntegerInput(text, setHeightM, isMetric ? 2 : 7, isMetric ? 'Height (M)' : 'Height (Ft)')}
+              onChangeText={(text) => {
+                handleIntegerInput(text, setHeightM, isMetric ? 2 : 7, isMetric ? 'Height (M)' : 'Height (Ft)');
+                if (isMetric && text === '2') {
+                  setHeightCm('');
+                }else if(!isMetric && text === '6' && heightCm > 7){
+                  setHeightCm('7');
+                }
+              }}
               returnKeyType="next"
               maxLength={1}
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, (isMetric && heightM === '2') && styles.disabled]}
               allowFontScaling={false}
               placeholder={isMetric ? 'Cm' : 'In'}
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={heightCm}
-              onChangeText={(text) => handleIntegerInput(text, setHeightCm, isMetric ? 99 : 39, isMetric ? 'Height (Cm)' : 'Height (In)')}
+              onChangeText={(text) => {
+                if (!isMetric && heightM === '6') {
+                  handleIntegerInput(text, setHeightCm, 7, 'Height (In)');
+                } else {
+                  handleIntegerInput(text, setHeightCm, isMetric ? 99 : 11, isMetric ? 'Height (Cm)' : 'Height (In)');
+                }
+              }}
               returnKeyType="next"
               maxLength={2}
+              editable={!(isMetric && heightM === '2')}
             />
           </View>
         </View>
@@ -509,20 +532,34 @@ function AddHealthRecord() {
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={weightKg}
-              onChangeText={(text) => handleIntegerInput(text, setWeightKg, isMetric ? 300 : 661, isMetric ? 'Weight (Kg)' : 'Weight (Lb)')}
+              onChangeText={(text) => {
+                handleIntegerInput(text, setWeightKg, isMetric ? 300 : 661, isMetric ? 'Weight (Kg)' : 'Weight (Lb)');
+                if (isMetric && text === '300') {
+                  setWeightG('');
+                } else if (!isMetric && text === '661') {
+                  setWeightG('');
+                }
+              }}
               returnKeyType="next"
               maxLength={4}
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, ((isMetric && weightKg === '300')) && styles.disabled]}
               allowFontScaling={false}
               placeholder={isMetric ? 'G' : 'Oz'}
               placeholderTextColor="#666"
               keyboardType="numeric"
               value={weightG}
-              onChangeText={(text) => handleIntegerInput(text, setWeightG, isMetric ? 999 : 35, isMetric ? 'Weight (G)' : 'Weight (Oz)')}
+              onChangeText={(text) => {
+                if (!isMetric && weightKg === '661') {
+                  handleIntegerInput(text, setWeightG, 6, 'Weight (Oz)');
+                } else {
+                  handleIntegerInput(text, setWeightG, isMetric ? 999 : 15, isMetric ? 'Weight (G)' : 'Weight (Oz)');
+                }
+              }}
               returnKeyType="next"
               maxLength={3}
+              editable={!((isMetric && weightKg === '300'))}
             />
           </View>
         </View>

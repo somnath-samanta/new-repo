@@ -1,6 +1,6 @@
 {
   "name": "uk.co.oaktreeconnect.oaktree",
-  "version": "0.0.30",
+  "version": "0.0.39",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

@@ -889,7 +889,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo-Regular',
     width: '100%',
     opacity: 1,
-    borderBottomWidth: 1.5,
+    borderBottomWidth:Platform.OS === 'ios' ? 1 : 1.5,
     borderColor: '#333',
   },
   hintTxt: {

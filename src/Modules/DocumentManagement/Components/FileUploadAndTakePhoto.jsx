@@ -867,7 +867,7 @@ const styles = StyleSheet.create({
     marginTop: vScale(5),
     width: '100%',
     borderBottomWidth: 1,
-    borderBottomColor: '#666',
+    borderBottomColor: '#333',
   },
   inputContainermandatory: {
     flexDirection: 'row',
@@ -878,7 +878,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginTop: vScale(5),
     width: '100%',
-    borderColor: '#666',
+    borderColor: '#333',
   },
   input: {
     height: vScale(40),
@@ -889,8 +889,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo-Regular',
     width: '100%',
     opacity: 1,
-    borderBottomWidth: 1,
-    borderColor: '#666',
+    borderBottomWidth: 1.5,
+    borderColor: '#333',
   },
   hintTxt: {
     color: '#000',
@@ -906,8 +906,8 @@ const styles = StyleSheet.create({
   },
   dateFieldRow: {
     width: '100%',
-    borderBottomWidth: 1,
-    borderColor: '#666',
+    borderBottomWidth: 1.5,
+    borderColor: '#333',
     backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
@@ -934,8 +934,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: scale(10),
     paddingHorizontal: 0,
-    borderColor: '#666',
-    borderBottomWidth: 1,
+    borderColor: '#333',
+    borderBottomWidth: 1.5,
     margin: 0
   },
   dateFieldSecDuplicate: { // renamed to avoid duplicate key names
@@ -962,7 +962,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: vScale(40),
     borderBottomColor: '#333',
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     marginTop: vScale(5),
     width: '100%',
     paddingHorizontal: scale(5),

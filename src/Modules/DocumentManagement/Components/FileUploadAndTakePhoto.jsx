@@ -866,8 +866,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginTop: vScale(5),
     width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    /*borderBottomWidth: 1,
+    borderBottomColor: '#333',*/
   },
   inputContainermandatory: {
     flexDirection: 'row',

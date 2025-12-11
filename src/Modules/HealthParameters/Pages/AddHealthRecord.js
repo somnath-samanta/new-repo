@@ -117,12 +117,22 @@ function AddHealthRecord() {
         setHeightCm(inches ? String(inches) : '');
       }
       if (kgOrLb > 0 || gOrOz > 0) {
-        const totalKg = kgOrLb + gOrOz / 1000;
-        const totalPounds = totalKg * 2.20462;
-        const pounds = Math.floor(totalPounds);
-        const ounces = Math.round((totalPounds - pounds) * 16);
-        setWeightKg(pounds ? String(pounds) : '');
-        setWeightG(ounces ? String(ounces) : '');
+        const totalKg = kgOrLb + gOrOz / 100;
+        const totalPounds = totalKg * 2.20462262185;
+        let pounds = Math.floor(totalPounds);
+        // Extract first 2 decimal digits as "ounces" (decimal representation)
+        const decimalPart = totalPounds - pounds;
+        let ounces = Math.round(decimalPart * 100);
+        // Handle case where ounces become 100 after rounding
+        if (ounces === 100) {
+          ounces = 0;
+          pounds += 1;
+        }
+        // console.log("totalPounds", totalPounds);
+        // console.log("pounds", pounds);
+        // console.log("ounces", ounces);
+        setWeightKg(pounds > 0 ? String(pounds) : "");
+        setWeightG(ounces > 0 ? String(ounces) : "");
       }
       if (waistVal > 0) setWaist(String(Math.round(waistVal / 2.54)));
     } else {
@@ -131,19 +141,27 @@ function AddHealthRecord() {
         const totalCm = totalInches * 2.54;
         const meters = Math.floor(totalCm / 100);
         let cm = Math.round(totalCm % 100);
-        if(meters == 2){
+        if (meters == 2) {
           cm = ""
         }
         setHeightM(meters ? String(meters) : '');
         setHeightCm(cm ? String(cm) : '');
       }
       if (kgOrLb > 0 || gOrOz > 0) {
-        const totalPounds = kgOrLb + gOrOz / 16;
-        const totalKg = totalPounds / 2.20462;
-        const kg = Math.floor(totalKg);
-        const grams = Math.round((totalKg - kg) * 1000);
-        setWeightKg(kg ? String(kg) : '');
-        setWeightG(grams ? String(grams) : '');
+        // Treat gOrOz as decimal digits (0-99), not actual ounces
+        const totalPounds = Number(kgOrLb) + Number(gOrOz) / 100;
+        const totalKg = totalPounds / 2.20462262185;
+        let kg = Math.floor(totalKg);
+        // Extract first 2 decimal digits as grams
+        const decimalPart = totalKg - kg;
+        let grams = Math.round(decimalPart * 100);
+        // Handle case where grams becomes 100 due to rounding
+        if (grams === 100) {
+          grams = 0;
+          kg += 1;
+        }
+        setWeightKg(kg > 0 ? String(kg) : "");
+        setWeightG(grams > 0 ? String(grams) : "");
       }
       if (waistVal > 0) setWaist(String(Math.round(waistVal * 2.54)));
     }
@@ -216,17 +234,17 @@ function AddHealthRecord() {
     }
     const systolic = parseInt(match[1], 10);
     const diastolic = parseInt(match[2], 10);
-    if (systolic > 275) { 
+    if (systolic > 275) {
       const error = 'Systolic should not exceed 275';
       setBpError(error);
       return { isValid: false, error };
     }
-    if (diastolic > 195) { 
+    if (diastolic > 195) {
       const error = 'Diastolic should not exceed 195';
       setBpError(error);
       return { isValid: false, error };
     }
-    if (systolic <= diastolic) { 
+    if (systolic <= diastolic) {
       const error = 'Systolic must be greater than diastolic';
       setBpError(error);
       return { isValid: false, error };
@@ -490,7 +508,7 @@ function AddHealthRecord() {
                 handleIntegerInput(text, setHeightM, isMetric ? 2 : 7, isMetric ? 'Height (M)' : 'Height (Ft)');
                 if (isMetric && text === '2') {
                   setHeightCm('');
-                }else if(!isMetric && text === '6' && heightCm > 7){
+                } else if (!isMetric && text === '6' && heightCm > 7) {
                   setHeightCm('7');
                 }
               }}
@@ -596,7 +614,7 @@ function AddHealthRecord() {
             keyboardType="numeric"
             value={waist}
             onChangeText={(text) => handleIntegerInput(text, setWaist, isMetric ? 200 : 78, isMetric ? 'Waist (cm)' : 'Waist (inch)')}
-              maxLength={3}
+            maxLength={3}
           />
         </View>
 

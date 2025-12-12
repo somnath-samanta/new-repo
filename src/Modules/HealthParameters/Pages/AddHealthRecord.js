@@ -100,25 +100,6 @@ function AddHealthRecord() {
     setter(cleaned);
   };
 
-  const convertToPoundOld = (kgOrLb, gOrOz) => {
-    const totalKg = kgOrLb + gOrOz / 100;
-    const totalPounds = totalKg * 2.20462262185;
-    let pounds = Math.floor(totalPounds);
-    // Extract first 2 decimal digits as "ounces" (decimal representation)
-    const decimalPart = totalPounds - pounds;
-    let ounces = Math.round(decimalPart * 100);
-    // Handle case where ounces become 100 after rounding
-    if (ounces === 100) {
-      ounces = 0;
-      pounds += 1;
-    }
-    // console.log("totalPounds", totalPounds);
-    // console.log("pounds", pounds);
-    // console.log("ounces", ounces);
-    setWeightKg(pounds > 0 ? String(pounds) : "");
-    setWeightG(ounces > 0 ? String(ounces) : "");
-  }
-
   const convertToPound = (kgOrLb, gOrOz) => {
     const totalKg = kgOrLb + gOrOz / 10;  // Changed from /100 to /10
     const totalPounds = totalKg * 2.20462262185;
@@ -146,23 +127,6 @@ function AddHealthRecord() {
     let grams = Math.round(decimalPart * 10);  // Changed *100 to *10
     // Handle case where grams becomes 10 due to rounding
     if (grams === 10) {  // Changed 100 to 10
-      grams = 0;
-      kg += 1;
-    }
-    setWeightKg(kg > 0 ? String(kg) : "");
-    setWeightG(grams > 0 ? String(grams) : "");
-  }
-
-  const convertToKgOld = (kgOrLb, gOrOz) => {
-    // Treat gOrOz as decimal digits (0-99), not actual ounces
-    const totalPounds = Number(kgOrLb) + Number(gOrOz) / 100;
-    const totalKg = totalPounds / 2.20462262185;
-    let kg = Math.floor(totalKg);
-    // Extract first 2 decimal digits as grams
-    const decimalPart = totalKg - kg;
-    let grams = Math.round(decimalPart * 100);
-    // Handle case where grams becomes 100 due to rounding
-    if (grams === 100) {
       grams = 0;
       kg += 1;
     }
@@ -370,8 +334,8 @@ function AddHealthRecord() {
           if (gOrOz > 999) { Toast.show('Weight (grams) must not exceed 999 g'); return; }
         } else {
           const totalOz = kgOrLb * 16 + gOrOz;
-          if (totalOz > 10582) { Toast.show('Weight must not exceed 661 lb 6 oz'); return; }
-          if (kgOrLb === 661 && gOrOz > 6) { Toast.show('Weight (ounces) must not exceed 6 when lb is 661'); return; }
+          if (totalOz > 10580) { Toast.show('Weight must not exceed 661 lb 4 oz'); return; }
+          if (kgOrLb === 661 && gOrOz > 4) { Toast.show('Weight (ounces) must not exceed 4 when lb is 661'); return; }
           if (gOrOz > 15) { Toast.show('Weight (ounces) must not exceed 15 oz'); return; }
         }
       }
@@ -642,7 +606,7 @@ function AddHealthRecord() {
               value={weightG}
               onChangeText={(text) => {
                 if (!isMetric && weightKg === '661') {
-                  handleIntegerInput(text, setWeightG, 6, 'Weight (Oz)');
+                  handleIntegerInput(text, setWeightG, 4, 'Weight (Oz)');
                 } else {
                   handleIntegerInput(text, setWeightG, isMetric ? 999 : 15, isMetric ? 'Weight (G)' : 'Weight (Oz)');
                 }

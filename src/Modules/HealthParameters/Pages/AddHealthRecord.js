@@ -100,6 +100,76 @@ function AddHealthRecord() {
     setter(cleaned);
   };
 
+  const convertToPoundOld = (kgOrLb, gOrOz) => {
+    const totalKg = kgOrLb + gOrOz / 100;
+    const totalPounds = totalKg * 2.20462262185;
+    let pounds = Math.floor(totalPounds);
+    // Extract first 2 decimal digits as "ounces" (decimal representation)
+    const decimalPart = totalPounds - pounds;
+    let ounces = Math.round(decimalPart * 100);
+    // Handle case where ounces become 100 after rounding
+    if (ounces === 100) {
+      ounces = 0;
+      pounds += 1;
+    }
+    // console.log("totalPounds", totalPounds);
+    // console.log("pounds", pounds);
+    // console.log("ounces", ounces);
+    setWeightKg(pounds > 0 ? String(pounds) : "");
+    setWeightG(ounces > 0 ? String(ounces) : "");
+  }
+
+  const convertToPound = (kgOrLb, gOrOz) => {
+    const totalKg = kgOrLb + gOrOz / 10;  // Changed from /100 to /10
+    const totalPounds = totalKg * 2.20462262185;
+    let pounds = Math.floor(totalPounds);
+    // Extract first 1 decimal digit
+    const decimalPart = totalPounds - pounds;
+    let decimal = Math.round(decimalPart * 10);  // Changed from *100 to *10
+    // Handle case where decimal becomes 10 after rounding
+    if (decimal === 10) {  // Changed from 100 to 10
+      decimal = 0;
+      pounds += 1;
+    }
+
+    setWeightKg(pounds > 0 ? String(pounds) : "");
+    setWeightG(decimal > 0 ? String(decimal) : "");  // Now shows 0-9
+  }
+
+  const convertToKg = (kgOrLb, gOrOz) => {
+    // Treat gOrOz as decimal digits (0-9), not actual ounces
+    const totalPounds = Number(kgOrLb) + Number(gOrOz) / 10;  // Changed /100 to /10
+    const totalKg = totalPounds / 2.20462262185;
+    let kg = Math.floor(totalKg);
+    // Extract first 1 decimal digit
+    const decimalPart = totalKg - kg;
+    let grams = Math.round(decimalPart * 10);  // Changed *100 to *10
+    // Handle case where grams becomes 10 due to rounding
+    if (grams === 10) {  // Changed 100 to 10
+      grams = 0;
+      kg += 1;
+    }
+    setWeightKg(kg > 0 ? String(kg) : "");
+    setWeightG(grams > 0 ? String(grams) : "");
+  }
+
+  const convertToKgOld = (kgOrLb, gOrOz) => {
+    // Treat gOrOz as decimal digits (0-99), not actual ounces
+    const totalPounds = Number(kgOrLb) + Number(gOrOz) / 100;
+    const totalKg = totalPounds / 2.20462262185;
+    let kg = Math.floor(totalKg);
+    // Extract first 2 decimal digits as grams
+    const decimalPart = totalKg - kg;
+    let grams = Math.round(decimalPart * 100);
+    // Handle case where grams becomes 100 due to rounding
+    if (grams === 100) {
+      grams = 0;
+      kg += 1;
+    }
+    setWeightKg(kg > 0 ? String(kg) : "");
+    setWeightG(grams > 0 ? String(grams) : "");
+  }
+
   const handleUnitToggle = (newIsMetric) => {
     const mOrFt = parseFloat(heightM || '0');
     const cmOrIn = parseFloat(heightCm || '0');
@@ -117,7 +187,8 @@ function AddHealthRecord() {
         setHeightCm(inches ? String(inches) : '');
       }
       if (kgOrLb > 0 || gOrOz > 0) {
-        const totalKg = kgOrLb + gOrOz / 100;
+        convertToPound(kgOrLb, gOrOz);
+        /*const totalKg = kgOrLb + gOrOz / 100;
         const totalPounds = totalKg * 2.20462262185;
         let pounds = Math.floor(totalPounds);
         // Extract first 2 decimal digits as "ounces" (decimal representation)
@@ -132,7 +203,7 @@ function AddHealthRecord() {
         // console.log("pounds", pounds);
         // console.log("ounces", ounces);
         setWeightKg(pounds > 0 ? String(pounds) : "");
-        setWeightG(ounces > 0 ? String(ounces) : "");
+        setWeightG(ounces > 0 ? String(ounces) : "");*/
       }
       if (waistVal > 0) setWaist(String(Math.round(waistVal / 2.54)));
     } else {
@@ -148,20 +219,21 @@ function AddHealthRecord() {
         setHeightCm(cm ? String(cm) : '');
       }
       if (kgOrLb > 0 || gOrOz > 0) {
-        // Treat gOrOz as decimal digits (0-99), not actual ounces
-        const totalPounds = Number(kgOrLb) + Number(gOrOz) / 100;
-        const totalKg = totalPounds / 2.20462262185;
-        let kg = Math.floor(totalKg);
-        // Extract first 2 decimal digits as grams
-        const decimalPart = totalKg - kg;
-        let grams = Math.round(decimalPart * 100);
-        // Handle case where grams becomes 100 due to rounding
-        if (grams === 100) {
-          grams = 0;
-          kg += 1;
-        }
-        setWeightKg(kg > 0 ? String(kg) : "");
-        setWeightG(grams > 0 ? String(grams) : "");
+        convertToKg(kgOrLb, gOrOz);
+        /* // Treat gOrOz as decimal digits (0-99), not actual ounces
+         const totalPounds = Number(kgOrLb) + Number(gOrOz) / 100;
+         const totalKg = totalPounds / 2.20462262185;
+         let kg = Math.floor(totalKg);
+         // Extract first 2 decimal digits as grams
+         const decimalPart = totalKg - kg;
+         let grams = Math.round(decimalPart * 100);
+         // Handle case where grams becomes 100 due to rounding
+         if (grams === 100) {
+           grams = 0;
+           kg += 1;
+         }
+         setWeightKg(kg > 0 ? String(kg) : "");
+         setWeightG(grams > 0 ? String(grams) : "");*/
       }
       if (waistVal > 0) setWaist(String(Math.round(waistVal * 2.54)));
     }

@@ -1,11 +1,12 @@
 // Config.js
-const environment = 'stage';
+// const environment = 'stage';
+const environment = 'prod';
 const stageUrl = 'https://stag-patient.oaktreeconnect.co.uk';
 const prodUrl = 'https://patient.oaktreeconnect.co.uk';
 // const stageUrl = 'https://stag-patient.oaktreeconnect.co.uk';
 const Config = ({
     // baseURL: "https://ti1tk0ryn4.execute-api.ap-south-1.amazonaws.com/devv4/",
-    baseURL: "https://stapi.oaktreeconnect.co.uk/graphql",
+    baseURL: environment === 'stage' ? "https://stapi.oaktreeconnect.co.uk/graphql" : "https://api.oaktreeconnect.co.uk/graphql",
     // Office
     // baseURL: "http://192.168.1.125:8080/graphql",
     // baseURL: "http://122.160.113.252:8080/graphql",

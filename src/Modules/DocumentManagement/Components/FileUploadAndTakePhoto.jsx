@@ -200,17 +200,81 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
     }
   };
 
+  // const selectDocument = async () => {
+  //   Alert("click");
+  //   try {
+  //     const [result] = await pick({
+  //       mode: 'open',
+  //       type: [
+  //         'public.item',
+  //         'application/pdf',
+  //         'image/*',
+  //         'application/msword',
+  //         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  //       ],
+  //     });
+
+  //     if (!result) return;
+
+  //     const fileType = result.mimeType || result.type || '';
+  //     const fileName = result.name || 'file';
+  //     const uri = result.fileCopyUri || result.uri;
+
+  //     const response = await fetch(uri);
+  //     const blob = await response.blob();
+  //     const reader = new FileReader();
+
+  //     reader.onloadend = () => {
+  //       const base64data = reader.result;
+
+  //       const fileSize = blob.size / (1024 * 1024);
+  //       if (fileSize > 5) {
+  //         Toast.show('Please ensure that the document you upload is no more than 5 MB');
+  //         return;
+  //       }
+
+  //       setDocumentObj(prev => ({
+  //         ...prev,
+  //         [selectedDocument]: {
+  //           uri: base64data,
+  //           type: fileType,
+  //           name: fileName,
+  //         },
+  //       }));
+
+  //       // NEW: encourage immediate scroll (effect will also catch this)
+  //       scrollModalToBottom();
+  //     };
+  //     reader.readAsDataURL(blob);
+  //   } catch (error) {
+  //     console.error('Document picker error:', error);
+  //     Toast.show('Failed to pick document');
+  //   }
+  // };
+  
+
+ 
+
   const selectDocument = async () => {
-    try {
+     try {
+      const pickerTypes =
+        Platform.OS === 'ios'
+          ? [
+            'public.image', // images
+            'com.adobe.pdf', // pdf
+            'com.microsoft.word.doc', // .doc
+            'org.openxmlformats.wordprocessingml.document', // .docx
+          ]
+          : [
+            'application/pdf',
+            'image/*',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          ];
+
       const [result] = await pick({
         mode: 'open',
-        type: [
-          'public.item',
-          'application/pdf',
-          'image/*',
-          'application/msword',
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        ],
+        type: pickerTypes,
       });
 
       if (!result) return;
@@ -219,16 +283,35 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
       const fileName = result.name || 'file';
       const uri = result.fileCopyUri || result.uri;
 
+      // 🔒 Extra safety: block ZIP or unknown files (iOS + Android)
+      const allowedTypes = [
+        'image/',
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      ];
+
+      const isAllowed = allowedTypes.some(t =>
+        fileType.startsWith(t)
+      );
+
+      if (!isAllowed) {
+        Toast.show('Only PDF, Image, and Word documents are allowed');
+        return;
+      }
+
       const response = await fetch(uri);
       const blob = await response.blob();
       const reader = new FileReader();
 
       reader.onloadend = () => {
         const base64data = reader.result;
-
         const fileSize = blob.size / (1024 * 1024);
+
         if (fileSize > 5) {
-          Toast.show('Please ensure that the document you upload is no more than 5 MB');
+          Toast.show(
+            'Please ensure that the document you upload is no more than 5 MB'
+          );
           return;
         }
 
@@ -241,15 +324,18 @@ const FileUploadAndTakePhoto = ({ getDocumentList, useFor, patientId, patientNam
           },
         }));
 
-        // NEW: encourage immediate scroll (effect will also catch this)
         scrollModalToBottom();
       };
+
       reader.readAsDataURL(blob);
     } catch (error) {
       console.error('Document picker error:', error);
       Toast.show('Failed to pick document');
     }
   };
+
+
+
 
   const selectFile = async () => {
     if (selectedDocument == null || selectedDocument == "") {

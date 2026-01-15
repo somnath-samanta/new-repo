@@ -621,7 +621,9 @@ function AppointmentScreen(props) {
                 //  const url = `${Config.videoCallLink}?data=${encodedData}`;
                 //  const url = `https://73dd-122-160-113-252.ngrok-free.app/appointment/video-consultation?data=${encodedData}`;
                 // Linking.openURL(url);
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
                 setWebViewFlag(true);
 
             }

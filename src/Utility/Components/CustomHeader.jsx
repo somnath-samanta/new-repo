@@ -28,6 +28,15 @@ const CustomHeader = ({ pageName, switchOrganizationSheet, refreshBtnFn, viewDoc
       if (message.organizationSwitch === true) {
         setsearchbookingId("");
       }
+
+      if (message.profileIconUpdated === true) {
+        if (typeof message.profileIcon === 'string') {
+          setprofilePicture(message.profileIcon);
+        } else {
+          const iconUrl = await AsyncStorage.getItem('profileIcon');
+          setprofilePicture(iconUrl || "");
+        }
+      }
     });
     return () => {
       listener.remove();
@@ -41,11 +50,8 @@ const CustomHeader = ({ pageName, switchOrganizationSheet, refreshBtnFn, viewDoc
   };
 
   const getProfilePictureValue = async () => {
-    const profileData = JSON.parse(await AsyncStorage.getItem('loginCredentials'));
-    if (profileData?.user_details?.profile_img_url) {
-      const parsedImage = JSON.parse(profileData.user_details.profile_img_url);
-      setprofilePicture(parsedImage?.img_url || "");
-    }
+    const iconUrl = await AsyncStorage.getItem('profileIcon');
+    setprofilePicture(iconUrl || "");
   };
 
   useEffect(() => {

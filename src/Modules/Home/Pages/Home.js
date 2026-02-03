@@ -100,13 +100,20 @@ function Home({ props }) {
 
   const getUserDetailsFn = async () => {
     try {
+      if (!loginUserId) return;
       let filterObj = {
         id: loginUserId
       };
 
       const response = await getUserQuestionnaireList(filterObj);
       const profileIcon = response?.Patient?.photo?.[0]?.url || "";
+      console.log("profileIcon-------------", profileIcon)
+      console.log("profileIcon===================", response?.Patient?.photo)
       await AsyncStorage.setItem('profileIcon', profileIcon);
+      EventEmitter.emit("broadcustMessage", {
+        profileIconUpdated: true,
+        profileIcon: profileIcon,
+      });
     } catch (error) {
       console.error("Error fetching questionnaire list:", error);
     } finally {
@@ -119,6 +126,14 @@ function Home({ props }) {
       getUserDetailsFn();
     }
   }, [loginUserId]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (loginUserId) {
+        getUserDetailsFn();
+      }
+    }, [loginUserId])
+  );
 
   useEffect(() => {
     const handleBackButtonPress = () => {

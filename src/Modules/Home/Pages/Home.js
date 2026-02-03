@@ -31,6 +31,7 @@ import { LogOut } from '../../../Utility/Components/LogOut';
 import { WebView } from 'react-native-webview';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import {getUserQuestionnaireList} from '../../Questionnaire/Controller/QuestionnaireController';
 
 /* ------------------ Responsive helpers (PixelRatio + Dimensions) ------------------ */
 // Base device you designed for
@@ -75,6 +76,7 @@ function Home({ props }) {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const reduxAuthJson = useSelector((state) => state);
+  const loginUserId = useSelector((state) => state.token?.loginUserId);
 
   const [pageLoading, setPageLoading] = useState(false);
   const [filterFlag, setFilterFlag] = useState(false);
@@ -94,6 +96,29 @@ function Home({ props }) {
       };
     }, [hideBookAppointmentScreen])
   );
+
+
+  const getUserDetailsFn = async () => {
+    try {
+      let filterObj = {
+        id: loginUserId
+      };
+
+      const response = await getUserQuestionnaireList(filterObj);
+      const profileIcon = response?.Patient?.photo?.[0]?.url || "";
+      await AsyncStorage.setItem('profileIcon', profileIcon);
+    } catch (error) {
+      console.error("Error fetching questionnaire list:", error);
+    } finally {
+      // setLoading(false); // Ensure loading state is reset
+    }
+  }
+
+  useEffect(() => {
+    if (loginUserId) {
+      getUserDetailsFn();
+    }
+  }, [loginUserId]);
 
   useEffect(() => {
     const handleBackButtonPress = () => {
@@ -215,7 +240,7 @@ function Home({ props }) {
           />
 
           {/* Signout icon (same position as your previous layout) */}
-         {/* <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.signout}
             onPress={logoutApp}
           >
@@ -444,7 +469,7 @@ const styles = StyleSheet.create({
     borderColor: '#f3f3f3',
     borderRadius: scale(0),
     marginVertical: vScale(10),
-    marginTop:Platform.OS === 'ios' ? 0 : 10,
+    marginTop: Platform.OS === 'ios' ? 0 : 10,
   },
   panelBoxDocument: {
     flexDirection: 'column',

@@ -445,3 +445,24 @@ export const DEACTIVATE_PATIENT = gql`
   }
 `;
 
+export const QUERY_GET_PATIENT_PROFILE_DETAILS = gql`
+  query GetPatientProfileDetails($id: token) {
+    Patient(_id: $id) {
+      name {
+        use
+        family
+        given
+        prefix
+      }
+      fullName
+      gender
+      birthDate
+      nationality
+      occupation
+      photo {
+        url
+        title
+      }
+    }
+  }
+`;

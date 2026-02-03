@@ -1,5 +1,5 @@
 import { questionnaireListData } from '../Model/QuestionnaireModel';
-import { Questionnaire, PatientQuestionnaireUpdate } from "../../../GraphQL/Mutation"
+import { Questionnaire, PatientQuestionnaireUpdate, QUERY_GET_PATIENT_PROFILE_DETAILS } from "../../../GraphQL/Mutation"
 import { QUERY_GET_PATIENT_QUESTIONNAIRE } from "../../../GraphQL/Queries"
 import { ApolloClient, InMemoryCache, createHttpLink, gql } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -207,4 +207,26 @@ export const getPatientQuestionnaireName = async (data) => {
     return err;
   }
   return response;
+};
+
+
+export const getUserQuestionnaireList = async (data) => {
+  // console.log("getQuestionnaireList-----", data);
+  let response = {}
+  try {
+    let variables = {
+      id: data.id
+    };
+    const result = await clientAuth
+      .query({
+        query: QUERY_GET_PATIENT_PROFILE_DETAILS,
+        variables: variables,
+        fetchPolicy: 'network-only',
+      })
+    response = result;
+  } catch (err) {
+    console.log('getQuestionnaireList Error==>>>>>', err)
+    return err
+  }
+  return questionnaireListData(response);
 };

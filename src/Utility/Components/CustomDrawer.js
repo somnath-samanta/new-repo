@@ -30,6 +30,19 @@ function CustomDrawerContent(props) {
   const [isTherapyTasksExpanded, setTherapyTasksExpanded] = useState(false);
   const appVersion = DeviceInfo.getVersion();
   const { clearLocalStorage } = LogOut();
+
+  useEffect(() => {
+    const loadProfileIcon = async () => {
+      try {
+        const iconUrl = await AsyncStorage.getItem('profileIcon');
+        setProfilePicture(iconUrl || "");
+      } catch (e) {
+        console.log('Failed to load profileIcon from AsyncStorage', e);
+      }
+    };
+
+    loadProfileIcon();
+  }, [isFocused]);
   // const DrawerItemWithIcon = ({ label, icon, onPress, isActive }) => (
   //   <TouchableOpacity
   //     style={[theme.drawerItem, isActive && theme.activeDrawerItem, { borderBottomWidth: 1, borderBottomColor: '#eee', }]}
@@ -131,18 +144,7 @@ function CustomDrawerContent(props) {
   //   dispatch({ type: 'SET_TOKEN', payload: "" });
   // }
 
-  const getProfilePictureValue = async () => {
-    let profileImage = "";
-    const profileData = JSON.parse(await AsyncStorage.getItem('loginCredentials'));
-    if (profileData?.user_details?.profile_img_url) {
-      const parsedImage = JSON.parse(profileData.user_details.profile_img_url);
-      profileImage = parsedImage?.img_url || profileImage;
-    }
-    setProfilePicture(profileImage);
-  };
-
   useEffect(() => {
-    getProfilePictureValue();
     getUserFullName();
     getUserEmail();
     getUserPhone();

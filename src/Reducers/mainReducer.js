@@ -1,9 +1,10 @@
-import { SET_TOKEN, SWIPEABLE_ROW, PREV_OPENED_ROW, TOUCH_STATE, SET_USER_DETAILS, LEAVE_DATA, ENVIRONMENT, SET_SIGN_UP_EMAIL } from '../Utility/AllActionTypes';
+import { SET_TOKEN, SWIPEABLE_ROW, PREV_OPENED_ROW, TOUCH_STATE, SET_USER_DETAILS, LEAVE_DATA, ENVIRONMENT, SET_SIGN_UP_EMAIL, SET_PROFILE_ICON } from '../Utility/AllActionTypes';
 
-const mainReducer = (state = { "token": {}, "swipRow": null, "prev_row": null, currentUserDetails: {}, leaveData: [], environment: "dev" }, action) => {
+const mainReducer = (state = { "token": {}, "swipRow": null, "prev_row": null, currentUserDetails: {}, leaveData: [], environment: "dev", profileIcon: "" }, action) => {
     switch (action.type) {
         case SET_TOKEN:
             return { ...state, "token": action.payload };
+
         case SWIPEABLE_ROW:
             return { ...state, "swipRow": action.payload };
         case PREV_OPENED_ROW:
@@ -18,6 +19,8 @@ const mainReducer = (state = { "token": {}, "swipRow": null, "prev_row": null, c
             return { ...state, "environment": action.payload };
         case SET_SIGN_UP_EMAIL:
             return { ...state, "signUpEmail": action.payload };
+        case SET_PROFILE_ICON:
+            return { ...state, "profileIcon": action.payload };
         default:
             return state;
     }

@@ -14,10 +14,12 @@ import DeviceInfo from 'react-native-device-info';
 import { LogOut } from './LogOut';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { store } from "../../Store/configureStore"
 
 function CustomDrawerContent(props) {
   const { isDarkTheme, toggleTheme } = useTheme();
   const theme = DrawerStyle(isDarkTheme);
+  let state = store.getState();
   const [profilePicture, setProfilePicture] = useState("");
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -31,18 +33,18 @@ function CustomDrawerContent(props) {
   const appVersion = DeviceInfo.getVersion();
   const { clearLocalStorage } = LogOut();
 
-  useEffect(() => {
-    const loadProfileIcon = async () => {
-      try {
-        const iconUrl = await AsyncStorage.getItem('profileIcon');
-        setProfilePicture(iconUrl || "");
-      } catch (e) {
-        console.log('Failed to load profileIcon from AsyncStorage', e);
-      }
-    };
+  // useEffect(() => {
+  //   const loadProfileIcon = async () => {
+  //     try {
+  //       const iconUrl = await AsyncStorage.getItem('profileIcon');
+  //       setProfilePicture(iconUrl || "");
+  //     } catch (e) {
+  //       console.log('Failed to load profileIcon from AsyncStorage', e);
+  //     }
+  //   };
 
-    loadProfileIcon();
-  }, [isFocused]);
+  //   loadProfileIcon();
+  // }, [isFocused]);
   // const DrawerItemWithIcon = ({ label, icon, onPress, isActive }) => (
   //   <TouchableOpacity
   //     style={[theme.drawerItem, isActive && theme.activeDrawerItem, { borderBottomWidth: 1, borderBottomColor: '#eee', }]}
@@ -209,7 +211,7 @@ function CustomDrawerContent(props) {
   };
   useEffect(() => {
     let currentRoute = props.state?.routeNames[props.state.index] || '';
-    console.log(">>>>>>>>>>>>>>>>>>>", currentRoute)
+    // console.log(">>>>>>>>>>>>>>>>>>>", currentRoute)
     if (["Home", "Appointment", "Profile",].includes(currentRoute)) {
       setDocumentsExpanded(false);
       setTherapyTasksExpanded(false);
@@ -231,7 +233,7 @@ function CustomDrawerContent(props) {
       </TouchableOpacity>
       <View style={theme.leftHeader}>
         <Image
-          source={profilePicture ? { uri: profilePicture } : require('../Public/images/usericon.png')}
+          source={state.profileIcon ? { uri: state.profileIcon } : require('../Public/images/usericon.png')}
           style={theme.leftLogo}
         />
         <Text allowFontScaling={false} style={theme.leftHeaderText}>

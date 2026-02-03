@@ -32,6 +32,7 @@ import { WebView } from 'react-native-webview';
 import CustomHeader from '../../../Utility/Components/CustomHeader';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import {getUserQuestionnaireList} from '../../Questionnaire/Controller/QuestionnaireController';
+import { SET_PROFILE_ICON } from '../../../Utility/AllActionTypes';
 
 /* ------------------ Responsive helpers (PixelRatio + Dimensions) ------------------ */
 // Base device you designed for
@@ -107,9 +108,8 @@ function Home({ props }) {
 
       const response = await getUserQuestionnaireList(filterObj);
       const profileIcon = response?.Patient?.photo?.[0]?.url || "";
-      console.log("profileIcon-------------", profileIcon)
-      console.log("profileIcon===================", response?.Patient?.photo)
-      await AsyncStorage.setItem('profileIcon', profileIcon);
+      // await AsyncStorage.setItem('profileIcon', profileIcon);
+      dispatch({ type: SET_PROFILE_ICON, payload: profileIcon });
       EventEmitter.emit("broadcustMessage", {
         profileIconUpdated: true,
         profileIcon: profileIcon,

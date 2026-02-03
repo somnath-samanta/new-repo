@@ -18,12 +18,16 @@ import { deactivatePatient } from '../Controller/ProfileController';
 import { LogOut } from '../../../Utility/Components/LogOut';
 import { useSelector } from 'react-redux';
 import Toast from 'react-native-simple-toast';
+import { store } from "../../../Store/configureStore"
+
+
+
 
 const ProfileScreen = () => {
   const { isDarkTheme } = useTheme();
   const theme = ProfileStyle(isDarkTheme);
-
-  const [profilePicture, setProfilePicture] = useState('');
+  let state = store.getState();
+  const [profilePicture, setProfilePicture] = useState("");
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -61,8 +65,8 @@ const ProfileScreen = () => {
           <View style={theme.imageContainer}>
             <Image
               source={
-                profilePicture
-                  ? { uri: profilePicture }
+                state.profileIcon
+                  ? { uri: state.profileIcon }
                   : require('../../../Utility/Public/images/usericon.png')
               }
               style={theme.userImage}

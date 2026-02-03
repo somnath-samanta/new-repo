@@ -12,3 +12,5 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
 export const SET_USER_DETAILS = 'SET_USER_DETAILS';
 export const SET_SIGN_UP_EMAIL = 'SET_SIGN_UP_EMAIL';
+
+export const SET_PROFILE_ICON = 'SET_PROFILE_ICON';
